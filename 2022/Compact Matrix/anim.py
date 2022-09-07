@@ -8,12 +8,10 @@
 
 #####################################################################################################################
 
-import sys
-import copy
-
-
 from __future__ import annotations
 from cProfile import label
+
+
 import fractions
 from imp import create_dynamic
 from multiprocessing import context
@@ -28,6 +26,117 @@ from manim_fonts import*
 import numpy as np
 import random
 from sklearn.datasets import make_blobs
-from Common.reanlea_colors import*
+from reanlea_colors import*
 
 config.background_color= REANLEA_BACKGROUND_COLOR
+
+
+###################################################################################################################
+
+class Scene1(Scene):
+    def construct(self):
+
+        zoom_exp = 1
+
+        scene = VGroup()
+
+        #object region
+
+        dumy_line = Line(8*LEFT, 8*RIGHT, stroke_width=2.0).shift(DOWN)
+        line= NumberLine(
+            x_range=[-80, 80, 1],
+            length=400,
+            include_ticks=False,
+        )
+        line.move_to(line.n2p(-2)).shift(DOWN)
+        scene.add(line)
+
+        center=line.n2p(0)
+
+        context=Square(200,fill_opacity=0.0, stroke_opacity=0.0).move_to(center)
+        scene.add(context)
+
+        zero_tick = VGroup(
+            Line(0.3 * UP, 0.3 * DOWN, stroke_width=2.0, color=REANLEA_VIOLET),
+            MathTex("0"),
+        )
+        zero_tick[0].move_to(line.n2p(0))
+        zero_tick[1].next_to(zero_tick[0], DOWN)
+
+
+        def set_zoom_exp(new_zoom_exp):
+            nonlocal zoom_exp
+            scale_factor=2**(zoom_exp - new_zoom_exp)
+            zoom_exp=new_zoom_exp
+            return scene.animate.scale(scale_factor)
+
+        
+        dot1= VGroup(
+            Dot(radius=.15).move_to(line.n2p(1.25)).set_color(REANLEA_CHARM),
+            MathTex("x_1")
+        )
+        dot1[1].next_to(dot1[0],UP)
+
+        dot2= VGroup(
+            Dot(radius=.15).move_to(line.n2p(2.5)).set_color(REANLEA_CHARM),
+            MathTex("x_2")
+        )
+        dot2[1].next_to(dot2[0],UP)
+        #dot2= Dot(radius=.15).move_to(line.n2p(2.5)).set_color(REANLEA_CHARM)
+
+        dots = VGroup()
+
+        '''for i in np.arange(3,10):
+            dots += Dot(radius=.15).move_to(line.n2p(1.25*i))
+            dots.set_color_by_gradient(REANLEA_CHARM,REANLEA_AQUA, REANLEA_GREEN_JADE)'''
+
+        for i in np.arange(3,10):
+            dots += Dot(radius=.15).move_to(line.n2p(1.25*i))
+            dots.set_color_by_gradient(REANLEA_CHARM,REANLEA_AQUA, REANLEA_GREEN_JADE)
+
+        
+
+        scene.add(dot1,dot2,dots)
+
+
+        #text region
+
+        text_1 = VGroup(*[Tex(string) for string in (
+            "Imagine you've a Dot!",
+            "Somewhere along the real line."
+        )]).arrange_submobjects(DOWN).to_edge(UP).shift(0.5*DOWN)
+
+
+
+        ####play region
+        
+        
+        self.play(
+            DrawBorderThenFill(dumy_line)
+        )
+        self.play(Create(text_1))
+        self.add(line)
+        self.play(
+            Create(dot1)
+        )
+        self.play(
+            Flash(
+                dot1[0],
+                color=RED, flash_radius=0.15+SMALL_BUFF, time_width=0.3
+            )
+        )
+        self.wait(2)
+        self.play(FadeIn(zero_tick))
+        self.wait()
+        self.play(Create(dot2))
+        self.wait(2)
+
+
+        
+        self.play(Create(dots))
+        self.play(set_zoom_exp(2.5), run_time=3)
+        self.play(FadeOut(dumy_line))
+        
+
+
+         # manim -pqh anim.py Scene1

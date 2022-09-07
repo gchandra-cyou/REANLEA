@@ -1,3 +1,11 @@
+# Changing FONTS : import any font from Google
+#some of my fav fonts: Cinzel,Kalam,Prata,Kaushan Script,Cormorant,
+# Poiret One,Merienda,Julius Sans One,Merienda One,Cinzel Decorative,
+# Marcellus SC,Contrail One,Thasadith,Spectral SC,Dongle,Cormorant SC,Comfortaa
+
+
+
+
 REANLEA_PURPLE_DARK_FILL = "#331B5D"
 REANLEA_PURPLE_DARKER = "#3B0893"
 REANLEA_PURPLE = "#8c4dfb"
@@ -85,7 +93,7 @@ REANLEA_BLUE_VIOLET = "#9933ff"
 REANLEA_GREEN_YELLOW="#99ff33"
 
 REANLEA_PORTAGE = "#9999ff" 
-REANLEA_CANARY = "FFFF99"
+REANLEA_CANARY = "#FFFF99"
 
 REANLEA_LIGHT_SKY_BLUE = "#99ccff"  
 REANLEA_PEACH_ORANGE = "#ffcc99"    
