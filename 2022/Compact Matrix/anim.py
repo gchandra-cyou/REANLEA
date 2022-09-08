@@ -17,7 +17,7 @@ from imp import create_dynamic
 from multiprocessing import context
 from multiprocessing.dummy import Value
 from numbers import Number
-from tkinter import Y, Label
+from tkinter import Y, Label, font
 from imp import create_dynamic
 from turtle import degrees
 from manim import*
@@ -80,13 +80,13 @@ class Scene1(Scene):
 
         
         dot1= VGroup(
-            Dot(radius=.15).move_to(line.n2p(1.25)).set_color(REANLEA_CHARM),
+            Dot(radius=.15).move_to(line.n2p(1.25)).set_color(REANLEA_AQUA_GREEN),
             MathTex("x_1")
         )
         dot1[1].next_to(dot1[0],UP)
 
         dot2= VGroup(
-            Dot(radius=.15).move_to(line.n2p(2.5)).set_color(REANLEA_CHARM),
+            Dot(radius=.15).move_to(line.n2p(2.5)).set_color(REANLEA_AQUA),
             MathTex("x_2")
         )
         dot2[1].next_to(dot2[0],UP)
@@ -111,7 +111,7 @@ class Scene1(Scene):
 
         for i in np.arange(3,10):
             dots += Dot(radius=.15).move_to(line.n2p(1.25*i))
-            dots.set_color_by_gradient(REANLEA_CHARM,REANLEA_AQUA, REANLEA_GREEN)
+            dots.set_color_by_gradient(REANLEA_BLUE,REANLEA_BLUE_SKY, REANLEA_YELLOW)
 
         labs=VGroup()
 
@@ -125,15 +125,20 @@ class Scene1(Scene):
 
         scene.add(dot1,dot2,dots,labs, dot3)
 
+        dash_arrow=DashedArrow(start=line.n2p(-.1), end=line.n2p(1.1),dash_length=2.0, max_tip_length_to_length_ratio=0.08, color=RED).shift(.5*UP)
+
 
 
 
         #text region
+        with RegisterFont("Comfortaa") as fonts:
+            text_1 = VGroup(*[Text(x, font=fonts[1]) for x in (
+                "Imagine you've a Dot!",
+                "Somewhere along the real line."
+            )]).arrange_submobjects(DOWN).to_edge(UP).shift(0.5*DOWN).scale(0.6).set_color_by_gradient(REANLEA_AQUA,REANLEA_GREY_DARKER)
 
-        text_1 = VGroup(*[Tex(string) for string in (
-            "Imagine you've a Dot!",
-            "Somewhere along the real line."
-        )]).arrange_submobjects(DOWN).to_edge(UP).shift(0.5*DOWN)
+            ''' a=Text("de ARTh.studio",font=fonts[0])
+            a.set_color_by_gradient(REANLEA_SAFRON,WHITE,REANLEA_GREEN_LIGHTER)'''
 
 
 
@@ -169,7 +174,10 @@ class Scene1(Scene):
         self.play(set_zoom_exp(0), run_time=1.5)
         self.play(Create(one_tick))
         self.wait(2)
+        self.play(Create(dash_arrow))
+        self.wait(3)
         
 
 
          # manim -pqh anim.py Scene1
+         # manim -sqh anim.py Scene1

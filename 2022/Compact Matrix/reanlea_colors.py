@@ -1,7 +1,7 @@
 # Changing FONTS : import any font from Google
 #some of my fav fonts: Cinzel,Kalam,Prata,Kaushan Script,Cormorant,
 # Poiret One,Merienda,Julius Sans One,Merienda One,Cinzel Decorative,
-# Marcellus SC,Contrail One,Thasadith,Spectral SC,Dongle,Cormorant SC,Comfortaa
+# Marcellus SC,Contrail One,Thasadith,Spectral SC,Dongle,Cormorant SC,Comfortaa, Josefin Sans (LOVE)
 
 
 
