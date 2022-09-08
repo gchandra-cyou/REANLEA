@@ -27,6 +27,7 @@ import numpy as np
 import random
 from sklearn.datasets import make_blobs
 from reanlea_colors import*
+from func import*
 
 config.background_color= REANLEA_BACKGROUND_COLOR
 
@@ -63,6 +64,13 @@ class Scene1(Scene):
         zero_tick[0].move_to(line.n2p(0))
         zero_tick[1].next_to(zero_tick[0], DOWN)
 
+        one_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_LIME),
+            MathTex("1").scale(.5),
+        )
+        one_tick[0].move_to(line.n2p(1))
+        one_tick[1].next_to(one_tick[0], DOWN)
+
 
         def set_zoom_exp(new_zoom_exp):
             nonlocal zoom_exp
@@ -84,19 +92,40 @@ class Scene1(Scene):
         dot2[1].next_to(dot2[0],UP)
         #dot2= Dot(radius=.15).move_to(line.n2p(2.5)).set_color(REANLEA_CHARM)
 
-        dots = VGroup()
+        
 
         '''for i in np.arange(3,10):
             dots += Dot(radius=.15).move_to(line.n2p(1.25*i))
             dots.set_color_by_gradient(REANLEA_CHARM,REANLEA_AQUA, REANLEA_GREEN_JADE)'''
 
+        '''for i in np.arange(3,10):
+            lab=MathTex(f"x_{i}")
+            dots += Dot(radius=.15).move_to(line.n2p(1.25*i))
+            #dots.set_color_by_gradient(REANLEA_CHARM,REANLEA_AQUA, REANLEA_GREEN_JADE)
+
+        dots.add(*[i.next_to(v) for i,v in zip(lab,dots)])
+
+        scene.add(dot1,dot2,dots)'''
+
+        dots = VGroup()
+
         for i in np.arange(3,10):
             dots += Dot(radius=.15).move_to(line.n2p(1.25*i))
             dots.set_color_by_gradient(REANLEA_CHARM,REANLEA_AQUA, REANLEA_GREEN_JADE)
 
-        
+        labs=VGroup()
 
-        scene.add(dot1,dot2,dots)
+        for i in np.arange(3,10):
+            labs +=MathTex(f"x_{i}")
+
+        g=VGroup()
+        g.add(*[i.next_to(v, direction=UP) for i,v in zip(labs,dots)])
+
+        dot3=Tex("...").next_to(dots[-1], direction= 10*RIGHT +UP).scale(2).set_color(REANLEA_GREEN_AQUAMARINE)
+
+        scene.add(dot1,dot2,dots,labs, dot3)
+
+
 
 
         #text region
@@ -136,6 +165,10 @@ class Scene1(Scene):
         self.play(Create(dots))
         self.play(set_zoom_exp(2.5), run_time=3)
         self.play(FadeOut(dumy_line))
+        self.wait(2)
+        self.play(set_zoom_exp(0), run_time=1.5)
+        self.play(Create(one_tick))
+        self.wait(2)
         
 
 
