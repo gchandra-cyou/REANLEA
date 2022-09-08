@@ -58,14 +58,14 @@ class Scene1(Scene):
         scene.add(context)
 
         zero_tick = VGroup(
-            Line(0.3 * UP, 0.3 * DOWN, stroke_width=2.0, color=REANLEA_VIOLET),
+            Line(0.3 * UP, 0.3 * DOWN, stroke_width=2.0, color=REANLEA_VIOLET_LIGHTER),
             MathTex("0"),
         )
         zero_tick[0].move_to(line.n2p(0))
         zero_tick[1].next_to(zero_tick[0], DOWN)
 
         one_tick = VGroup(
-            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_LIME),
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
             MathTex("1").scale(.5),
         )
         one_tick[0].move_to(line.n2p(1))
@@ -111,7 +111,7 @@ class Scene1(Scene):
 
         for i in np.arange(3,10):
             dots += Dot(radius=.15).move_to(line.n2p(1.25*i))
-            dots.set_color_by_gradient(REANLEA_CHARM,REANLEA_AQUA, REANLEA_GREEN_JADE)
+            dots.set_color_by_gradient(REANLEA_CHARM,REANLEA_AQUA, REANLEA_GREEN)
 
         labs=VGroup()
 
@@ -121,7 +121,7 @@ class Scene1(Scene):
         g=VGroup()
         g.add(*[i.next_to(v, direction=UP) for i,v in zip(labs,dots)])
 
-        dot3=Tex("...").next_to(dots[-1], direction= 10*RIGHT +UP).scale(2).set_color(REANLEA_GREEN_AQUAMARINE)
+        dot3=Tex("...").next_to(dots[-1], direction= 10*RIGHT +UP).scale(2).set_color(REANLEA_GREEN_LIGHTER)
 
         scene.add(dot1,dot2,dots,labs, dot3)
 
