@@ -202,7 +202,7 @@ class Scene1(Scene):
         self.wait(2)
         self.play(FadeOut(text_3))
 
-        self.play(set_zoom_exp(0), run_time=1.5)
+        self.play(set_zoom_exp(1), run_time=1.5)
 
 
         
