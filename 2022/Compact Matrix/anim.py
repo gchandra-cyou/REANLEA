@@ -111,7 +111,7 @@ class Scene1(Scene):
 
         for i in np.arange(3,10):
             dots += Dot(radius=.15).move_to(line.n2p(1.25*i))
-            dots.set_color_by_gradient(REANLEA_BLUE,REANLEA_BLUE_SKY, REANLEA_YELLOW)
+            dots.set_color_by_gradient(REANLEA_AQUA,REANLEA_BLUE, REANLEA_YELLOW)
 
         labs=VGroup()
 
@@ -123,7 +123,7 @@ class Scene1(Scene):
 
         dot3=Tex("...").next_to(dots[-1], direction= 10*RIGHT +UP).scale(2).set_color(REANLEA_GREEN_LIGHTER)
 
-        scene.add(dot1,dot2,dots,labs, dot3)
+        scene.add(dot1,dot2,dots,labs,dot3,one_tick)
 
         dash_arrow=DashedArrow(start=line.n2p(-.1), end=line.n2p(1.1),dash_length=2.0, max_tip_length_to_length_ratio=0.08, color=RED).shift(.5*UP)
 
@@ -131,14 +131,35 @@ class Scene1(Scene):
 
 
         #text region
-        with RegisterFont("Comfortaa") as fonts:
-            text_1 = VGroup(*[Text(x, font=fonts[1]) for x in (
+        with RegisterFont("Kalam") as fonts:
+            text_1 = VGroup(*[Text(x, font=fonts[1], weight=BOLD) for x in (
                 "Imagine you've a Dot!",
                 "Somewhere along the real line."
-            )]).arrange_submobjects(DOWN).to_edge(UP).shift(0.5*DOWN).scale(0.6).set_color_by_gradient(REANLEA_AQUA,REANLEA_GREY_DARKER)
+            )]).arrange_submobjects(DOWN).to_edge(UP).shift(0.5*DOWN).scale(0.6).set_color(REANLEA_TXT_COL)
 
-            ''' a=Text("de ARTh.studio",font=fonts[0])
-            a.set_color_by_gradient(REANLEA_SAFRON,WHITE,REANLEA_GREEN_LIGHTER)'''
+
+            text_2 = VGroup(*[Text(x, font=fonts[1], weight=BOLD) for x in (
+                "Two Different Point Represents",
+                "Two Dfferent Static Positions..."
+            )]).arrange_submobjects(DOWN).to_edge(UP).shift(0.5*DOWN).scale(0.6).set_color(REANLEA_TXT_COL)
+
+
+            text_3 = VGroup(*[Text(x, font=fonts[1], weight=BOLD) for x in (
+                "I. The Point can't be ADDED to a similar point.",
+                "II. nor it can be SCALAR MULTIPLIED"
+            )]).arrange_submobjects(DOWN).to_edge(UP).shift(0.5*DOWN).scale(0.5).set_color(REANLEA_TXT_COL)
+
+            text_4 = VGroup(*[Text(x, font=fonts[1], weight=BOLD) for x in (
+                "Magnitude & Direction",
+                "are both Added"
+            )]).arrange_submobjects(DOWN).to_edge(UP).shift(0.5*DOWN).scale(0.5).set_color(REANLEA_TXT_COL)
+
+
+            grp1=VGroup(text_1,text_2)
+
+            
+
+            
 
 
 
@@ -151,7 +172,7 @@ class Scene1(Scene):
         self.play(Create(text_1))
         self.add(line)
         self.play(
-            Create(dot1)
+            Create(dot1[0])
         )
         self.play(
             Flash(
@@ -159,25 +180,42 @@ class Scene1(Scene):
                 color=RED, flash_radius=0.15+SMALL_BUFF, time_width=0.3
             )
         )
-        self.wait(2)
+
         self.play(FadeIn(zero_tick))
         self.wait()
+        self.play(Create(one_tick))
+        self.wait(2)
+        self.play(Write(dot1[1]))
+        self.wait(2)
+
+        self.play(Transform(text_1,text_2))
         self.play(Create(dot2))
         self.wait(2)
 
-
-        
         self.play(Create(dots))
+        self.play(FadeOut(grp1))
         self.play(set_zoom_exp(2.5), run_time=3)
+        self.play(Write(text_3))
+
+
         self.play(FadeOut(dumy_line))
         self.wait(2)
+        self.play(FadeOut(text_3))
+
         self.play(set_zoom_exp(0), run_time=1.5)
-        self.play(Create(one_tick))
-        self.wait(2)
+
+
+        
         self.play(Create(dash_arrow))
+        self.wait(3)
+        self.play(Write(text_4))
         self.wait(3)
         
 
 
-         # manim -pqh anim.py Scene1
+         
          # manim -sqh anim.py Scene1
+
+
+
+         # manim -pqh anim.py Scene1

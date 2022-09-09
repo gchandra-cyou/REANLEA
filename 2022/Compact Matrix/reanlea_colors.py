@@ -1,6 +1,6 @@
 # Changing FONTS : import any font from Google
-#some of my fav fonts: Cinzel,Kalam,Prata,Kaushan Script,Cormorant,
-# Poiret One,Merienda,Julius Sans One,Merienda One,Cinzel Decorative,
+# some of my fav fonts: Cinzel,Kalam,Prata,Kaushan Script,Cormorant, Handlee,Monoton, Bad Script, Reenie Beanie, 
+# Poiret One,Merienda,Julius Sans One,Merienda One,Cinzel Decorative, Montserrat
 # Marcellus SC,Contrail One,Thasadith,Spectral SC,Dongle,Cormorant SC,Comfortaa, Josefin Sans (LOVE)
 
 
@@ -222,5 +222,10 @@ REANLEA_SLATE_BLUE_LIGHTER="#9999FF"
 REANLEA_SLATE_BLUE_LIGHTEST = "#CCCCFF"
 
 REANLEA_WHITE = "#E6E6FF"
+
+REANLEA_TXT_COL = "#B3B3CC"
+REANLEA_TXT_COL_DARKER = "#666699"
+REANLEA_TXT_COL_LIGHTER = "#E0E0EB"
+
 
 

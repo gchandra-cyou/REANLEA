@@ -25,6 +25,87 @@ config.background_color= REANLEA_BACKGROUND_COLOR
 
 ###############################################################################################################
 
+
+class Anagram(Scene):
+    def construct(self):
+        src=Tex("Welcome to REANLEA.com")
+        trgt=Tex("Here we'll make your Imagination into Reality!")
+        self.play(Write(src))
+        self.wait()
+        self.play(TransformMatchingShapes(src,trgt,path_arc=PI/2))
+        self.wait(2)
+        self.play(*[FadeOut(mobj) for mobj in self.mobjects])
+        self.wait(0.5)
+ 
+        s=Square()
+        circ=Circle()
+        s.save_state()
+        self.play(FadeIn(s),
+            run_time=2)
+        self.play(s.animate.set_color(PURPLE).set_opacity(0.5).shift(2*LEFT).scale(4))
+        self.play(s.animate.shift(5*DOWN).rotate(PI/4),
+            run_time=2  )
+        self.play(
+            Restore(s),
+            run_time=4
+        )
+        def fn(x):
+            x.scale(0.5)
+            x.shift(UP*3)
+            return x
+ 
+        self.play(
+            ApplyFunction(fn,s),
+            run_time=5
+        )
+        self.wait()
+ 
+        self.play(
+            Transform(s,circ)
+        )
+   
+        def fn(x):
+            x.scale(0.5)
+            x.shift(2*UP+4*RIGHT)
+            x.set_fill(color=GREEN, opacity=0.5)
+            return x
+        self.play(
+            *[FadeOut(mobj) for mobj in self.mobjects],
+            ApplyFunction(fn,circ),
+            run_time=3
+        )    
+        self.play(*[FadeOut(mobj) for mobj in self.mobjects])
+       
+ 
+ 
+        variables = VGroup(MathTex("a"), MathTex("b"), MathTex("c")).arrange_submobjects().shift(UP)
+ 
+        eq1 = MathTex("{{x}}^2", "+", "{{y}}^2", "=", "{{z}}^2")
+        eq2 = MathTex("{{a}}^2", "+", "{{b}}^2", "=", "{{c}}^2")
+        eq3 = MathTex("{{a}}^2", "=", "{{c}}^2", "-", "{{b}}^2")
+ 
+        self.add(eq1)
+        self.wait()
+        self.play(TransformMatchingTex(Group(eq1, variables), eq2))
+        self.wait(0.5)
+        self.play(TransformMatchingTex(eq2, eq3))
+        self.wait()
+        self.play(*[FadeOut(mobje) for mobje in self.mobjects])
+ 
+ 
+ 
+ 
+        mob=Circle(radius=4,color=TEAL_A)
+        self.play(Write(Tex("Join Us Now!"),
+            run_time=1.25),
+            Broadcast(mob))
+        self.wait()
+        self.play(*[FadeOut(mobjec) for mobjec in self.mobjects])
+
+
+        # manim -pqh test.py Anagram
+ 
+
 class LineExample(Scene):
                 def construct(self):
                     d = VGroup()
@@ -62,6 +143,43 @@ class DashedLineExample(Scene):
 class DasAr(Scene):
     def construct(self):
            arr1=DashedArrow(start=LEFT, end=RIGHT, dash_length=2.0, max_tip_length_to_length_ratio=0.15, color=RED)
-           self.play(Create(arr1))
+
+           def fun(x):
+            return Write(x)
+            
+
+           with RegisterFont("Kalam") as fonts:
+            text_1 = VGroup(*[Text(x, font=fonts[0],weight=BOLD) for x in (
+                "Arrow is",
+                "Always RIGHT"
+            )]).arrange_submobjects(DOWN).to_edge(UP).shift(0.5*DOWN).scale(0.6).set_color(REANLEA_TXT_COL)
+
+            with RegisterFont("Montserrat") as fonts:
+                a=Text("R E A N L E A",font=fonts[0], weight=THIN).set_color(REANLEA_TXT_COL).to_edge(UP).shift(0.5*DOWN).scale(0.5)
+                b=Text("P A C I F I C   R E S I L I E N C E",font=fonts[0]).set_color(REANLEA_TXT_COL).to_edge(UP).shift(0.5*DOWN).scale(0.5)
+
+
+            g=VGroup(text_1,a)
+
+
+
+            self.play(Create(arr1))
+            self.play(
+                Create(text_1)
+            )
+            self.wait(2)
+            self.play(Transform(text_1,a))
+            self.wait()
+            #self.play(FadeOut(g))
+            #self.play(Write(b))
+            self.play(
+                FadeOut(g),
+                Write(b)
+            )
+    
+            self.wait()
 
            # manim -pqh test.py DasAr
+
+
+
