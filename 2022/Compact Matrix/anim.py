@@ -155,7 +155,13 @@ class Scene1(Scene):
             )]).arrange_submobjects(DOWN).to_edge(UP).shift(0.5*DOWN).scale(0.5).set_color(REANLEA_TXT_COL)
 
 
+        with RegisterFont("Montserrat") as fonts:
+            text_5=Text("WHAT   ABOUT   D I S T A N C E ?", font=fonts[0]).scale(0.6)
+
+
             grp1=VGroup(text_1,text_2)
+
+            grp2= VGroup(line,zero_tick,one_tick,dot1,dot2,dot3,dots,labs,dash_arrow,text_1,text_2,text_3,text_4)
 
             
 
@@ -210,12 +216,79 @@ class Scene1(Scene):
         self.wait(3)
         self.play(Write(text_4))
         self.wait(3)
+
+        self.play(
+            *[FadeOut(mobj) for mobj in self.mobjects],
+            run_time=2
+        )
+        self.play(Write(text_5))
+        self.wait(1.75)
+        self.play(FadeOut(text_5))
+        self.wait(5)
         
-
-
-         
-         # manim -sqh anim.py Scene1
 
 
 
          # manim -pqh anim.py Scene1
+
+
+
+###################################################################################################################
+
+
+class Scene2(Scene):
+    def construct(self):
+
+        zoom_exp = 1
+
+        scene = VGroup()
+
+        #object region
+
+        dumy_line = Line(8*LEFT, 8*RIGHT, stroke_width=2.0).shift(DOWN)
+        line= NumberLine(
+            x_range=[-8, 8, 1],
+            length=32,
+            include_ticks=False,
+        )
+        line.move_to(line.n2p(-2)).shift(DOWN)
+        scene.add(line)
+
+        center=line.n2p(-2)
+
+        zero_tick = VGroup(
+            Line(0.2 * UP, 0.2 * DOWN, stroke_width=2.0, color=REANLEA_VIOLET_LIGHTER),
+            MathTex("0"),
+        )
+        zero_tick[0].move_to(line.n2p(0))
+        zero_tick[1].next_to(zero_tick[0], DOWN)
+
+        dot1= VGroup(
+            Dot(radius=.15).move_to(line.n2p(1.75)).set_color(REANLEA_RED_LIGHTER).scale(0.6),
+            MathTex("x").scale(0.4)
+        )
+        dot1[1].next_to(dot1[0],DOWN)
+        dot2= VGroup(
+            Dot(radius=.15).move_to(line.n2p(4)).set_color(REANLEA_YELLOW_GREEN).scale(0.6),
+            MathTex("y").scale(0.4)
+        )
+        dot2[1].next_to(dot2[0],DOWN)
+
+        grp=VGroup(dot1,dot2)
+
+
+
+
+        ####play region
+
+        self.play(
+            DrawBorderThenFill(dumy_line)
+        )
+        self.add(line)
+        self.play(Create(zero_tick))
+        self.play(Create(grp))
+        self.wait(3)
+
+
+
+        # manim -pqh anim.py Scene2

@@ -183,3 +183,94 @@ class DasAr(Scene):
 
 
 
+class ItrRiemannRects(Scene):
+    def construct(self):
+            ax=Axes(
+                x_range=[-1,10],
+                y_range=[-1,8],
+                tips=False
+            )
+            x_label=ax.get_x_axis_label(
+                Tex("$x$").scale(0.65)
+            )
+            y_label=ax.get_y_axis_label(
+                Tex("$y$").scale(0.65)
+            )
+            ax_label=VGroup(ax,x_label,y_label)  #represent axes with label
+            quad=ax.plot(lambda x : 0.1*(x-2)*(x-8)*(x-5)+5 , x_range=[0.3,9.2]) #define function
+
+            flat_rects=ax.get_riemann_rectangles(  
+                quad, 
+                x_range=[2,8],
+                dx=0.5,
+                color=[REANLEA_BLUE, REANLEA_YELLOW],
+                stroke_width=0.5,
+                fill_opacity=0.75,
+            )                                          #get riemann rectangles
+            grrl=[]                                    #create empty list to add series of riemann rectangles
+            for n in range(6):
+                a=ax.get_riemann_rectangles(
+                quad, 
+                x_range=[2,8],
+                dx=(0.5)/(2**n),
+                color=[REANLEA_BLUE,REANLEA_YELLOW],
+                stroke_width=(0.25)/(2**n),
+                fill_opacity=0.75,
+                )
+                grrl.append(a)                          #add created rectangle to previous(appended) list
+                
+
+            grp=VGroup(ax_label,quad,*grrl)             #making a vector group to transform it to another object
+            txt1=Tex("REANLEA.com").set_color_by_gradient(REANLEA_ORANGE,REANLEA_VIOLET,REANLEA_GREEN_LIGHTER)
+            txt2=Tex("HAR GHAR TIRANGA").set_color_by_gradient(REANLEA_ORANGE,REANLEA_VIOLET,REANLEA_GREEN_LIGHTER)
+
+            
+
+            self.play(
+                Create(ax_label)
+            )
+            self.play(
+                Create(quad, run_time=3)
+            )
+            self.play(
+                Create(flat_rects)
+            )
+            self.wait()
+            self.play(
+                Transform(flat_rects,grrl[0],replace_mobject_with_target_in_scene=True)   
+            )
+            for r in range (1,len(grrl)):
+                self.play(
+                    Transform(
+                        grrl[r-1],
+                        grrl[r],
+                        replace_mobject_with_target_in_scene=True
+                    ),
+                    run_time=3
+                )
+            self.wait(2)
+
+            self.play(
+                Transform(grp,txt1),
+                run_time=2
+            )
+            self.wait(2)
+            self.play(
+                *[FadeOut(mobj) for mobj in self.mobjects],    #make fading out and transformation in one scene
+                Transform(txt1,txt2),
+                run_time=2
+            )
+            self.wait(2)
+
+
+            # manim -pqh test.py ItrRiemannRects
+
+
+class FontCheck(Scene):
+    def construct(self):
+         with RegisterFont("Montserrat") as fonts:
+            tx=MarkupText("WHAT   ABOUT   D I S T A N C E ?", font=fonts[0]).scale(0.6)
+
+         self.play(Write(tx))
+
+         # manim -pqh test.py FontCheck
