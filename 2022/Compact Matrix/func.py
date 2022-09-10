@@ -97,3 +97,62 @@ class DashedArrow(DashedLine):
                 family=False,
             )
         return self
+
+
+
+class DashedDoubleArrow(DashedArrow):
+    def __init__(self, *args, **kwargs):
+        if "tip_shape_end" in kwargs:
+            kwargs["tip_shape"] = kwargs.pop("tip_shape_end")
+        tip_shape_start = kwargs.pop("tip_shape_start", ArrowTriangleFilledTip)
+        super().__init__(*args, **kwargs)
+        self.add_tip(at_start=True, tip_shape=tip_shape_start)
+
+
+
+
+class Spherez(Surface):
+    def __init__(
+        self,
+        center=ORIGIN,
+        radius=1,
+        resolution=None,
+        u_range=(0,TAU),
+        v_range=(0,PI),
+        fill_color=BLUE_D,
+        fill_opacity=1,
+        **kwargs
+    ):  
+        if config.renderer=="opengl":
+            res_value=(101,51)
+        else:
+            res_value=(24,12)
+    
+        resolution = resolution if resolution is not None else res_value
+
+        self.radius = radius
+
+        super().__init__(
+            self.func ,
+            resolution=resolution,
+            u_range=u_range,
+            v_range=v_range,
+            fill_color = fill_color,
+            fill_opacity= fill_opacity,
+            **kwargs,
+        )
+
+        self.shift(center)
+
+    def func(self, u, v):
+        return self.radius * np.array(
+        [np.cos(u) * np.sin(v), np.sin(u) * np.sin(v), -np.cos(v)],
+    )
+
+
+
+
+
+
+
+

@@ -255,6 +255,8 @@ class Scene2(Scene):
         scene.add(line)
 
         center=line.n2p(-2)
+        p1=np.array((-0.75, -0.5, 0.0))
+        p2=np.array((4.25, -0.5, 0.0))
 
         zero_tick = VGroup(
             Line(0.2 * UP, 0.2 * DOWN, stroke_width=2.0, color=REANLEA_VIOLET_LIGHTER),
@@ -276,6 +278,9 @@ class Scene2(Scene):
 
         grp=VGroup(dot1,dot2)
 
+        d_line=DashedDoubleArrow(start=p1, end=p2, dash_length=2.0,stroke_width=1, max_tip_length_to_length_ratio=0.025, color=REANLEA_MAGENTA_LIGHTER)
+        
+        
 
 
 
@@ -288,6 +293,8 @@ class Scene2(Scene):
         self.play(Create(zero_tick))
         self.play(Create(grp))
         self.wait(3)
+        self.play(Create(d_line))
+        self.wait(2)
 
 
 
