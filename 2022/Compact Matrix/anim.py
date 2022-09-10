@@ -19,6 +19,7 @@ from multiprocessing.dummy import Value
 from numbers import Number
 from tkinter import Y, Label, font
 from imp import create_dynamic
+from tracemalloc import start
 from turtle import degrees
 from manim import*
 from math import*
@@ -243,13 +244,14 @@ class Scene2(Scene):
 
         scene = VGroup()
 
-        #object region
+        # object region
 
         dumy_line = Line(8*LEFT, 8*RIGHT, stroke_width=2.0).shift(DOWN)
         line= NumberLine(
             x_range=[-8, 8, 1],
             length=32,
             include_ticks=False,
+            stroke_width=2.0
         )
         line.move_to(line.n2p(-2)).shift(DOWN)
         scene.add(line)
@@ -258,34 +260,96 @@ class Scene2(Scene):
         p1=np.array((-0.75, -0.5, 0.0))
         p2=np.array((4.25, -0.5, 0.0))
 
+        p3=np.array((-.5,-1,0))
+        p4=np.array((-.5,-.5,0))
+        p10=np.array((-.5,0,0))
+
+        p5=np.array((4,-1,0))
+        p6=np.array((4,-.5,0))
+        p11=np.array((4,1,0))
+
+        p7=np.array((-4,-1,0))
+        p8=np.array((-4,0,0))
+        p9=np.array((-4,1,0))
+
+
         zero_tick = VGroup(
-            Line(0.2 * UP, 0.2 * DOWN, stroke_width=2.0, color=REANLEA_VIOLET_LIGHTER),
+            Line(0.2 * UP, 0.2 * DOWN, stroke_width=4.0, color=REANLEA_VIOLET_LIGHTER),
             MathTex("0"),
         )
         zero_tick[0].move_to(line.n2p(0))
         zero_tick[1].next_to(zero_tick[0], DOWN)
 
         dot1= VGroup(
-            Dot(radius=.15).move_to(line.n2p(1.75)).set_color(REANLEA_RED_LIGHTER).scale(0.6),
-            MathTex("x").scale(0.4)
+            Dot(radius=.25).move_to(line.n2p(1.75)).scale(0.6).set_color(REANLEA_YELLOW_DARKER),
+            MathTex("x").scale(0.6)
         )
         dot1[1].next_to(dot1[0],DOWN)
         dot2= VGroup(
-            Dot(radius=.15).move_to(line.n2p(4)).set_color(REANLEA_YELLOW_GREEN).scale(0.6),
-            MathTex("y").scale(0.4)
+            Dot(radius=.25).move_to(line.n2p(4)).scale(0.6).set_color(REANLEA_GREEN_DARKER),
+            MathTex("y").scale(0.6)
         )
         dot2[1].next_to(dot2[0],DOWN)
 
 
         grp=VGroup(dot1,dot2)
 
-        d_line=DashedDoubleArrow(start=p1, end=p2, dash_length=2.0,stroke_width=2, max_tip_length_to_length_ratio=0.025, color=REANLEA_MAGENTA_LIGHTER)
+        d_line=DashedDoubleArrow(
+            start=p1, end=p2, dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015
+        ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+        d_line1=DashedDoubleArrow(
+            start=p8, end=p10, dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+        d_line2=DashedDoubleArrow(
+            start=p9, end=p11, dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.01, buff=10
+        ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+
+
+        v_line1=DashedLine(
+            start=p3, end=p4, stroke_width=1
+        ).set_color(RED_D)
+        v_line2=DashedLine(
+            start=p5, end=p6, stroke_width=1
+        ).set_color(RED_D)
+        v_line3=DashedLine(
+            start=p7, end=p9, stroke_width=1
+        ).set_color(RED_D)
+        v_line4=DashedLine(
+            start=p4, end=p10, stroke_width=1
+        ).set_color(RED_D)
+        v_line5=DashedLine(
+            start=p6, end=p11, stroke_width=1
+        ).set_color(RED_D)
+
+
+        grp2=VGroup(v_line1,v_line2)
+        grp3=VGroup(v_line3,v_line4,v_line5)
+        grp4=VGroup(d_line1,d_line2)
+
+
+
+
+        #### text region
+
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("D I S T A N C E ", font=fonts[0], weight=BOLD).scale(0.6).to_edge(UP).shift(0.5*DOWN)
+            text_1.set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_TXT_COL_DARKER)
+           
         
         
 
 
 
-        ####play region
+        #### play region
+
+        self.play(Write(text_1))
+        self.wait(2)
 
         self.play(
             DrawBorderThenFill(dumy_line)
@@ -293,8 +357,14 @@ class Scene2(Scene):
         self.add(line)
         self.play(Create(zero_tick))
         self.play(Create(grp))
-        self.wait(3)
-        self.play(Create(d_line))
+        self.wait()
+        self.play(Create(grp2))
+        self.wait(2)
+        self.play(Write(d_line))
+        self.wait(2)
+        self.play(Create(grp3), run_time=2.5)
+        self.wait()
+        self.play(Create(grp4), run_time=3)
         self.wait(2)
 
 
