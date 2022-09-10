@@ -278,7 +278,7 @@ class Scene2(Scene):
 
         grp=VGroup(dot1,dot2)
 
-        d_line=DashedDoubleArrow(start=p1, end=p2, dash_length=2.0,stroke_width=1, max_tip_length_to_length_ratio=0.025, color=REANLEA_MAGENTA_LIGHTER)
+        d_line=DashedDoubleArrow(start=p1, end=p2, dash_length=2.0,stroke_width=2, max_tip_length_to_length_ratio=0.025, color=REANLEA_MAGENTA_LIGHTER)
         
         
 
