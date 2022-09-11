@@ -10,11 +10,13 @@
 
 from __future__ import annotations
 from cProfile import label
+from difflib import restore
 
 
 import fractions
 from imp import create_dynamic
 from multiprocessing import context
+from multiprocessing import dummy
 from multiprocessing.dummy import Value
 from numbers import Number
 from tkinter import Y, Label, font
@@ -237,8 +239,9 @@ class Scene1(Scene):
 ###################################################################################################################
 
 
-class Scene2(Scene):
+class Scene2(MovingCameraScene):
     def construct(self):
+        self.camera.frame.save_state()
 
         zoom_exp = 1
 
@@ -257,20 +260,23 @@ class Scene2(Scene):
         scene.add(line)
 
         center=line.n2p(-2)
-        p1=np.array((-0.75, -0.5, 0.0))
-        p2=np.array((4.25, -0.5, 0.0))
 
-        p3=np.array((-.5,-1,0))
-        p4=np.array((-.5,-.5,0))
-        p10=np.array((-.5,0,0))
+        '''p1=np.array((-0.75, -0.5, 0.0))
+        p2=np.array((4.25, -0.5, 0.0))'''
 
-        p5=np.array((4,-1,0))
-        p6=np.array((4,-.5,0))
-        p11=np.array((4,1,0))
+        p1=np.array((-4,-1,0))
+        p2=np.array((-4,0,0))
+        p3=np.array((-4,1,0))
 
-        p7=np.array((-4,-1,0))
-        p8=np.array((-4,0,0))
-        p9=np.array((-4,1,0))
+        p4=np.array((-.5,-1,0))
+        p5=np.array((-.5,-.5,0))
+        p6=np.array((-.5,0,0))
+
+        p7=np.array((4,-1,0))
+        p8=np.array((4,-.5,0))
+        p9=np.array((4,1,0))
+
+        
 
 
         zero_tick = VGroup(
@@ -281,12 +287,12 @@ class Scene2(Scene):
         zero_tick[1].next_to(zero_tick[0], DOWN)
 
         dot1= VGroup(
-            Dot(radius=.25).move_to(line.n2p(1.75)).scale(0.6).set_color(REANLEA_YELLOW_DARKER),
+            Dot(radius=.25).move_to(line.n2p(1.75)).scale(0.6).set_color(REANLEA_YELLOW).set_sheen(-0.6,DOWN),
             MathTex("x").scale(0.6)
         )
         dot1[1].next_to(dot1[0],DOWN)
         dot2= VGroup(
-            Dot(radius=.25).move_to(line.n2p(4)).scale(0.6).set_color(REANLEA_GREEN_DARKER),
+            Dot(radius=.25).move_to(line.n2p(4)).scale(0.6).set_color(REANLEA_GREEN).set_sheen(-0.6,DOWN),
             MathTex("y").scale(0.6)
         )
         dot2[1].next_to(dot2[0],DOWN)
@@ -295,36 +301,40 @@ class Scene2(Scene):
         grp=VGroup(dot1,dot2)
 
         d_line=DashedDoubleArrow(
-            start=p1, end=p2, dash_length=2.0,stroke_width=2, 
-            max_tip_length_to_length_ratio=0.015
+            start=p5, end=p8, dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
         ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
 
         d_line1=DashedDoubleArrow(
-            start=p8, end=p10, dash_length=2.0,stroke_width=2, 
+            start=p2, end=p6, dash_length=2.0,stroke_width=2, 
             max_tip_length_to_length_ratio=0.015, buff=10
         ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
 
         d_line2=DashedDoubleArrow(
-            start=p9, end=p11, dash_length=2.0,stroke_width=2, 
+            start=p3, end=p9, dash_length=2.0,stroke_width=2, 
             max_tip_length_to_length_ratio=0.01, buff=10
         ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
 
 
 
         v_line1=DashedLine(
-            start=p3, end=p4, stroke_width=1
+            start=p4, end=p5, stroke_width=1
         ).set_color(RED_D)
+
         v_line2=DashedLine(
+            start=p7, end=p8, stroke_width=1
+        ).set_color(RED_D)
+
+        v_line3=DashedLine(
+            start=p1, end=p3, stroke_width=1
+        ).set_color(RED_D)
+
+        v_line4=DashedLine(
             start=p5, end=p6, stroke_width=1
         ).set_color(RED_D)
-        v_line3=DashedLine(
-            start=p7, end=p9, stroke_width=1
-        ).set_color(RED_D)
-        v_line4=DashedLine(
-            start=p4, end=p10, stroke_width=1
-        ).set_color(RED_D)
+
         v_line5=DashedLine(
-            start=p6, end=p11, stroke_width=1
+            start=p8, end=p9, stroke_width=1
         ).set_color(RED_D)
 
 
@@ -332,6 +342,7 @@ class Scene2(Scene):
         grp3=VGroup(v_line3,v_line4,v_line5)
         grp4=VGroup(d_line1,d_line2)
 
+        
 
 
 
@@ -340,27 +351,34 @@ class Scene2(Scene):
         with RegisterFont("Montserrat") as fonts:
             text_1=Text("D I S T A N C E ", font=fonts[0], weight=BOLD).scale(0.6).to_edge(UP).shift(0.5*DOWN)
             text_1.set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_TXT_COL_DARKER)
+
+        text_1.save_state()
+    
            
         
-        
-
 
 
         #### play region
 
         self.play(Write(text_1))
+        
         self.wait(2)
 
         self.play(
             DrawBorderThenFill(dumy_line)
         )
         self.add(line)
+        self.play(Uncreate(dumy_line))
         self.play(Create(zero_tick))
         self.play(Create(grp))
+        self.wait()
+        self.play(self.camera.frame.animate.scale(0.5).move_to(DOWN + 1.5*RIGHT))
         self.wait()
         self.play(Create(grp2))
         self.wait(2)
         self.play(Write(d_line))
+        self.wait(2)
+        self.play(Restore(self.camera.frame))
         self.wait(2)
         self.play(Create(grp3), run_time=2.5)
         self.wait()

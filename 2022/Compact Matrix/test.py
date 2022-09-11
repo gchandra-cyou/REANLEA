@@ -1,4 +1,5 @@
 from __future__ import annotations
+from audioop import add
 from cProfile import label
 
 
@@ -7,7 +8,7 @@ from imp import create_dynamic
 from multiprocessing import context
 from multiprocessing.dummy import Value
 from numbers import Number
-from tkinter import Y, Label
+from tkinter import Y, Label, Scale
 from imp import create_dynamic
 from tracemalloc import start
 from turtle import degrees
@@ -204,10 +205,74 @@ class FontCheck(Scene):
 
          # manim -pqh test.py FontChek
 
-class DasAr1(Scene):
+class DasAr1(MovingCameraScene):
     def construct(self):
-           arr1=DashedDoubleArrow(start=LEFT, end=RIGHT, dash_length=2.0,stroke_width=1, max_tip_length_to_length_ratio=0.05, color=RED)
-           self.play(Create(arr1))
-           self.wait(2)
+        self.camera.frame.save_state()
+        arr1=DashedDoubleArrow(
+            start=LEFT, end=RIGHT, dash_length=2.0,
+            stroke_width=1, max_tip_length_to_length_ratio=0.05, color=RED
+        )
+
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("D I S T A N C E ", font=fonts[0], weight=BOLD).scale(0.6).to_edge(UP).shift(0.5*DOWN)
+            text_1.set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_TXT_COL_DARKER)
+
+        
+        self.add(text_1)
+        self.play(Create(arr1))
+        self.play(self.camera.frame.animate.scale(0.5).move_to(DOWN))
+        self.wait(2)
 
            #  manim -pqh test.py DasAr1
+
+
+
+
+class MySquare(Square):
+            @override_animation(Scale)
+            def _scale_override(self, **kwargs):
+                return Create(self, **kwargs)
+
+class OverrideAnimationExample(Scene):
+    def construct(self):
+        #self.camera.frame.save_state()
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("D I S T A N C E ", font=fonts[0], weight=BOLD).scale(0.6).to_edge(UP).shift(0.5*DOWN)
+            text_1.set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_TXT_COL_DARKER)
+
+        self.add(text_1)
+        #self.play(FadeIn(Square()))
+        self.play(self.camera.frame.animate.scale(0.5))
+        self.wait(2)
+
+
+                # manim -pqh test.py OverrideAnimationExample
+
+
+
+class txtzx(Text):
+    @override_animate(Scale)
+    def _scale_override(self,**kwargs):
+        return Create(self, **kwargs)
+                
+                
+class DasAr2(MovingCameraScene):
+    def construct(self):
+        self.camera.frame.save_state()
+        arr1=DashedDoubleArrow(
+            start=LEFT, end=RIGHT, dash_length=2.0,
+            stroke_width=1, max_tip_length_to_length_ratio=0.05, color=RED
+        )
+
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("D I S T A N C E ", font=fonts[0], weight=BOLD).scale(0.6).to_edge(UP).shift(0.5*DOWN)
+            text_1.set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_TXT_COL_DARKER)
+
+        
+        self.add(txtzx)
+        self.play(Create(arr1))
+        self.play(self.camera.frame.animate.scale(0.5).move_to(DOWN))
+        self.wait(2)
+
+           #  manim -pqh test.py DasAr2
+
