@@ -10,7 +10,7 @@ from multiprocessing import context
 from multiprocessing.dummy import Value
 from numbers import Number
 from operator import is_not
-from tkinter import Y, Label, Scale
+from tkinter import CENTER, Y, Label, Scale
 from imp import create_dynamic
 from tracemalloc import start
 from turtle import degrees
@@ -234,20 +234,26 @@ class DasAr1(MovingCameraScene):
 class DasAr2(MovingCameraScene):
     def construct(self):
         self.camera.frame.save_state()
+
         arr1=DashedDoubleArrow(
             start=LEFT, end=RIGHT, dash_length=2.0,
             stroke_width=1, max_tip_length_to_length_ratio=0.05, color=RED
         ).shift(DOWN)
 
         with RegisterFont("Montserrat") as fonts:
-            text_1=Text("R E A N L E A ", font=fonts[0]).scale(0.6).to_edge(UP).shift(0.5*DOWN)
+            text_1=Text("R E A N L E A ", font=fonts[0]).scale(0.6).to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
             text_1.set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_TXT_COL_DARKER)
+
+        text_1.save_state()
 
         
         self.add(text_1)
         self.wait()
         self.play(Create(arr1))
-        self.play(self.camera.frame.animate.scale(0.5).move_to(DOWN))
+        self.play(
+            self.camera.frame.animate.scale(0.5).move_to(DOWN),   # .move_to(DOWN)
+            text_1.animate.scale(0.5).move_to(0.425*UP)
+        )
         self.wait(2)
 
            #  manim -pqh test.py DasAr2

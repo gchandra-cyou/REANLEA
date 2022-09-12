@@ -371,13 +371,17 @@ class Scene2(MovingCameraScene):
         self.play(Create(zero_tick))
         self.play(Create(grp))
         self.wait()
-        self.play(self.camera.frame.animate.scale(0.5).move_to(DOWN + 1.5*RIGHT))
+        self.play(
+            self.camera.frame.animate.scale(0.5).move_to(DOWN + 1.5*RIGHT),
+            text_1.animate.scale(0.5).move_to(0.425*UP + 1.5 *RIGHT)
+        )
+        
         self.wait()
         self.play(Create(grp2))
         self.wait(2)
         self.play(Write(d_line))
         self.wait(2)
-        self.play(Restore(self.camera.frame))
+        self.play(Restore(self.camera.frame), Restore(text_1))
         self.wait(2)
         self.play(Create(grp3), run_time=2.5)
         self.wait()
