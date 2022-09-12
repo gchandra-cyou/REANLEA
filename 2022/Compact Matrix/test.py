@@ -251,9 +251,11 @@ class DasAr2(MovingCameraScene):
         self.wait()
         self.play(Create(arr1))
         self.play(
-            self.camera.frame.animate.scale(0.5).move_to(DOWN),   # .move_to(DOWN)
+            self.camera.frame.animate.scale(0.5).move_to(DOWN),   
             text_1.animate.scale(0.5).move_to(0.425*UP)
         )
+        self.wait(2)
+        self.play(Restore(self.camera.frame), Restore(text_1))
         self.wait(2)
 
            #  manim -pqh test.py DasAr2
@@ -297,5 +299,46 @@ class AnimationOverrideExample2(Scene):
 
 
 
+class DasAr3(MovingCameraScene):
+    def construct(self):
+        self.camera.frame.save_state()
 
+        arr1=DashedDoubleArrow(
+            start=LEFT, end=RIGHT, dash_length=2.0,
+            stroke_width=1, max_tip_length_to_length_ratio=0.05, color=RED
+        ).shift(DOWN)
+        arr2=DashedDoubleArrow(
+            start=LEFT, end=RIGHT, dash_length=2.0,
+            stroke_width=1, max_tip_length_to_length_ratio=0.05, color=RED
+        ).shift(DOWN)
+        arr3=DashedDoubleArrow(
+            start=LEFT, end=RIGHT, dash_length=2.0,
+            stroke_width=1, max_tip_length_to_length_ratio=0.05, color=RED
+        ).shift(DOWN)
+
+
+        grp=VGroup(arr1,arr2,arr3)
+        grp.save_state()
+
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("R E A N L E A ", font=fonts[0]).scale(0.6).to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            text_1.set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER)
+
+        text_1.save_state()
+
+        
+        self.add(text_1)
+        self.wait()
+        self.play(Create(grp))
+        self.play(
+            self.camera.frame.animate.scale(0.5).move_to(DOWN + 1.5*RIGHT),   
+            text_1.animate.scale(0.5).move_to(0.425*UP +1.5*RIGHT),
+            arr2.animate.move_to(DOWN+1.5*RIGHT),
+            arr3.animate.move_to(DOWN+3*RIGHT)
+        )
+        self.wait(2)
+        self.play(Restore(self.camera.frame), Restore(text_1), Restore(grp))
+        self.wait(2)
+
+           #  manim -pqh test.py DasAr3
 
