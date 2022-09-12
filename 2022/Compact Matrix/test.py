@@ -1,6 +1,7 @@
 from __future__ import annotations
 from audioop import add
 from cProfile import label
+from distutils import text_file
 
 
 import fractions
@@ -8,6 +9,7 @@ from imp import create_dynamic
 from multiprocessing import context
 from multiprocessing.dummy import Value
 from numbers import Number
+from operator import is_not
 from tkinter import Y, Label, Scale
 from imp import create_dynamic
 from tracemalloc import start
@@ -205,6 +207,7 @@ class FontCheck(Scene):
 
          # manim -pqh test.py FontChek
 
+
 class DasAr1(MovingCameraScene):
     def construct(self):
         self.camera.frame.save_state()
@@ -227,34 +230,6 @@ class DasAr1(MovingCameraScene):
 
 
 
-
-class MySquare(Square):
-            @override_animation(Scale)
-            def _scale_override(self, **kwargs):
-                return Create(self, **kwargs)
-
-class OverrideAnimationExample(Scene):
-    def construct(self):
-        #self.camera.frame.save_state()
-        with RegisterFont("Montserrat") as fonts:
-            text_1=Text("D I S T A N C E ", font=fonts[0], weight=BOLD).scale(0.6).to_edge(UP).shift(0.5*DOWN)
-            text_1.set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_TXT_COL_DARKER)
-
-        self.add(text_1)
-        #self.play(FadeIn(Square()))
-        self.play(self.camera.frame.animate.scale(0.5))
-        self.wait(2)
-
-
-                # manim -pqh test.py OverrideAnimationExample
-
-
-
-class txtzx(Text):
-    @override_animate(Scale)
-    def _scale_override(self,**kwargs):
-        return Create(self, **kwargs)
-                
                 
 class DasAr2(MovingCameraScene):
     def construct(self):
@@ -262,17 +237,59 @@ class DasAr2(MovingCameraScene):
         arr1=DashedDoubleArrow(
             start=LEFT, end=RIGHT, dash_length=2.0,
             stroke_width=1, max_tip_length_to_length_ratio=0.05, color=RED
-        )
+        ).shift(DOWN)
 
         with RegisterFont("Montserrat") as fonts:
-            text_1=Text("D I S T A N C E ", font=fonts[0], weight=BOLD).scale(0.6).to_edge(UP).shift(0.5*DOWN)
+            text_1=Text("R E A N L E A ", font=fonts[0]).scale(0.6).to_edge(UP).shift(0.5*DOWN)
             text_1.set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_TXT_COL_DARKER)
 
         
-        self.add(txtzx)
+        self.add(text_1)
+        self.wait()
         self.play(Create(arr1))
         self.play(self.camera.frame.animate.scale(0.5).move_to(DOWN))
         self.wait(2)
 
            #  manim -pqh test.py DasAr2
+
+
+
+
+
+class CircleWithContent(VGroup):
+    def __init__(self, content):
+        super().__init__()
+        self.circle = Circle(radius=3)
+        self.content = content
+        self.add(self.circle, content)
+        content.move_to(self.circle.get_center())
+
+    def clear_content(self):
+        self.remove(self.content)
+        self.content = None
+
+    @override_animate(clear_content)
+    def _clear_content_animation(self, anim_args=None):
+        if anim_args is None:
+            anim_args = {}
+        anim = Uncreate(self.content, **anim_args)
+        self.clear_content()
+        return anim
+
+class AnimationOverrideExample2(Scene):
+    def construct(self):
+        t = Text("R E A N L E A", font="Comic Sans")
+        my_mobject = CircleWithContent(t)
+        self.play(Create(my_mobject))
+        self.wait(3)
+        self.play(my_mobject.animate.clear_content())
+        self.wait()
+
+
+        # manim -pqh test.py AnimationOverrideExample2
+
+
+
+
+
 

@@ -17,6 +17,11 @@ import numpy as np
 import random
 from sklearn.datasets import make_blobs
 from reanlea_colors import*
+from manim.camera.moving_camera import MovingCamera
+from manim.scene.scene import Scene
+from manim.utils.family import extract_mobject_family_members
+from manim.utils.iterables import list_update
+from manim.camera.multi_camera import*
 from manim.mobject.geometry.tips import ArrowTriangleFilledTip
 from manim.mobject.geometry.tips import ArrowTip
 
@@ -151,6 +156,19 @@ class Spherez(Surface):
 
 
 
+class UpdatedMovingCameraScene(Scene):
+
+    def __init__(self, camera_class= MovingCamera, **kwargs):
+        super().__init__(camera_class=camera_class, **kwargs)
+
+    def get_moving_mobjects(self, *animations):
+        moving_mobjects = super().get_moving_mobjects(*animations)
+        all_moving_mobjects = extract_mobject_family_members(moving_mobjects)
+        movement_indicators = self.renderer.camera.get_mobjects_indicating_movement()
+        for movement_indicator in movement_indicators:
+            if movement_indicator in all_moving_mobjects:
+                return list_update(self.mobjects, moving_mobjects)
+        return moving_mobjects
 
 
 

@@ -353,7 +353,6 @@ class Scene2(MovingCameraScene):
             text_1.set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_TXT_COL_DARKER)
 
         text_1.save_state()
-    
            
         
 
