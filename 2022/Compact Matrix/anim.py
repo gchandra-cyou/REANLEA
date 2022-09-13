@@ -287,7 +287,7 @@ class Scene2(MovingCameraScene):
         zero_tick[1].next_to(zero_tick[0], DOWN)
 
         dot1= VGroup(
-            Dot(radius=.25).move_to(line.n2p(1.75)).scale(0.6).set_color(REANLEA_YELLOW).set_sheen(-0.6,DOWN),
+            Dot(radius=.25).move_to(line.n2p(1.75)).scale(0.6).set_color(REANLEA_VIOLET_LIGHTER).set_sheen(-0.4,DOWN),
             MathTex("x").scale(0.6)
         )
         dot1[1].next_to(dot1[0],DOWN)
@@ -305,15 +305,21 @@ class Scene2(MovingCameraScene):
             max_tip_length_to_length_ratio=0.015, buff=10
         ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
 
+        d_line_label= MathTex("d(x,y)").next_to(d_line, .1*UP).scale(0.45).set_color(REANLEA_GREY)
+
         d_line1=DashedDoubleArrow(
             start=p2, end=p6, dash_length=2.0,stroke_width=2, 
             max_tip_length_to_length_ratio=0.015, buff=10
         ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
 
+        d_line1_label= MathTex("d(0,x)").next_to(d_line1, .1*UP).scale(0.45).set_color(REANLEA_VIOLET_LIGHTER)
+
         d_line2=DashedDoubleArrow(
             start=p3, end=p9, dash_length=2.0,stroke_width=2, 
             max_tip_length_to_length_ratio=0.01, buff=10
         ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+        d_line2_label= MathTex("d(0,y)").next_to(d_line2, .1*UP).scale(0.45).set_color(REANLEA_GREEN)
 
 
 
@@ -340,7 +346,7 @@ class Scene2(MovingCameraScene):
 
         grp2=VGroup(v_line1,v_line2)
         grp3=VGroup(v_line3,v_line4,v_line5)
-        grp4=VGroup(d_line1,d_line2)
+        grp4=VGroup(d_line1,d_line2,d_line1_label,d_line2_label)
 
         
 
@@ -381,11 +387,13 @@ class Scene2(MovingCameraScene):
         self.wait(2)
         self.play(Write(d_line))
         self.wait(2)
+        self.play(Write(d_line_label))
+        self.wait(2)
         self.play(Restore(self.camera.frame), Restore(text_1))
         self.wait(2)
-        self.play(Create(grp3), run_time=2.5)
+        self.play(Write(grp3), run_time=2.5)
         self.wait()
-        self.play(Create(grp4), run_time=3)
+        self.play(Write(grp4), run_time=3)
         self.wait(2)
 
 
