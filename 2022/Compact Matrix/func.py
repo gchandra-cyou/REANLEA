@@ -173,4 +173,16 @@ class UpdatedMovingCameraScene(Scene):
 
 
 
-
+def get_glowing_surround_circle(
+    circle, buff_min=0, buff_max=0.15, color=REANLEA_YELLOW, n=40, opacity_multiplier=1
+):
+    current_radius = circle.width / 2
+    glowing_circle = VGroup(
+        *[
+            Circle(radius=current_radius+interpolate(buff_min, buff_max, b))
+            for b in np.linspace(0, 1, n)
+        ]
+    )
+    for i, c in enumerate(glowing_circle):
+        c.set_stroke(color, width=0.5, opacity=1- i / n)
+    return glowing_circle.move_to(circle.get_center())

@@ -13,7 +13,7 @@ from operator import is_not
 from tkinter import CENTER, Y, Label, Scale
 from imp import create_dynamic
 from tracemalloc import start
-from turtle import degrees
+from turtle import degrees, dot
 from manim import*
 from math import*
 from manim_fonts import*
@@ -240,22 +240,27 @@ class DasAr2(MovingCameraScene):
             stroke_width=1, max_tip_length_to_length_ratio=0.05, color=RED
         ).shift(DOWN)
 
+        dot1=Dot(radius=.2).move_to(UP).set_color(REANLEA_GREEN).set_sheen(-0.6,DOWN)
+
+        dot1.save_state()
+
         with RegisterFont("Montserrat") as fonts:
             text_1=Text("R E A N L E A ", font=fonts[0]).scale(0.6).to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
-            text_1.set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_TXT_COL_DARKER)
+            text_1.set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER)
 
         text_1.save_state()
 
         
-        self.add(text_1)
+        self.add(text_1, dot1)
         self.wait()
         self.play(Create(arr1))
         self.play(
             self.camera.frame.animate.scale(0.5).move_to(DOWN),   
-            text_1.animate.scale(0.5).move_to(0.425*UP)
+            text_1.animate.scale(0.5).move_to(0.425*UP),
+            dot1.animate.move_to(.5*DOWN)
         )
         self.wait(2)
-        self.play(Restore(self.camera.frame), Restore(text_1))
+        self.play(Restore(self.camera.frame), Restore(text_1), Restore(dot1))
         self.wait(2)
 
            #  manim -pqh test.py DasAr2
@@ -342,3 +347,44 @@ class DasAr3(MovingCameraScene):
 
            #  manim -pqh test.py DasAr3
 
+
+
+class DasArGlowCircle(MovingCameraScene):
+    def construct(self):
+        self.camera.frame.save_state()
+
+        arr1=DashedDoubleArrow(
+            start=LEFT, end=RIGHT, dash_length=2.0,
+            stroke_width=1, max_tip_length_to_length_ratio=0.05, color=RED
+        ).shift(DOWN)
+
+        dot1=Dot(radius=.2).move_to(UP).set_color(REANLEA_GREEN).set_sheen(-0.4,DOWN)
+
+        dot1.save_state()
+
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("R E A N L E A ", font=fonts[0]).scale(0.6).to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            text_1.set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER)
+
+        text_1.save_state()
+
+        glowing_circles=[]
+        glow_circle=get_glowing_surround_circle(dot1)
+        glow_circle.save_state()
+        glowing_circles.append(FadeIn(glow_circle))
+
+        
+        self.add(text_1, dot1)
+        self.wait()
+        self.play(Create(arr1), FadeIn(glow_circle))
+        self.play(
+            self.camera.frame.animate.scale(0.5).move_to(DOWN),   
+            text_1.animate.scale(0.5).move_to(0.425*UP),
+            dot1.animate.move_to(.5*DOWN),
+            glow_circle.animate().move_to(0.5*DOWN)
+        )
+        self.wait(2)
+        self.play(Restore(self.camera.frame), Restore(text_1), Restore(dot1), Restore(glow_circle))
+        self.wait(2)
+
+           #  manim -pqh test.py DasArGlowCircle
