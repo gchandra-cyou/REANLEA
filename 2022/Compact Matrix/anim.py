@@ -9,6 +9,7 @@
 #####################################################################################################################
 
 from __future__ import annotations
+from ast import Return
 from cProfile import label
 from difflib import restore
 
@@ -319,7 +320,7 @@ class Scene2(MovingCameraScene):
             max_tip_length_to_length_ratio=0.01, buff=10
         ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
 
-        d_line2_label= MathTex("d(0,y)").next_to(d_line2, .1*UP).scale(0.45).set_color(REANLEA_GREEN)
+        d_line2_label= MathTex("d(0,y)").next_to(d_line2, .1*UP).scale(0.45).set_color(REANLEA_GREEN_LIGHTER)
 
 
 
@@ -332,7 +333,7 @@ class Scene2(MovingCameraScene):
         ).set_color(RED_D)
 
         v_line3=DashedLine(
-            start=p1, end=p3, stroke_width=1
+            start=p1, end=p2, stroke_width=1
         ).set_color(RED_D)
 
         v_line4=DashedLine(
@@ -343,9 +344,15 @@ class Scene2(MovingCameraScene):
             start=p8, end=p9, stroke_width=1
         ).set_color(RED_D)
 
+        v_line6=DashedLine(
+            start=p2, end=p3, stroke_width=1
+        ).set_color(RED_D)
+
+        
+
 
         grp2=VGroup(v_line1,v_line2)
-        grp3=VGroup(v_line3,v_line4,v_line5)
+        grp3=VGroup(v_line3,v_line6,v_line4,v_line5)
         grp4=VGroup(d_line1,d_line2,d_line1_label,d_line2_label)
 
         
@@ -356,10 +363,68 @@ class Scene2(MovingCameraScene):
 
         with RegisterFont("Montserrat") as fonts:
             text_1=Text("D I S T A N C E ", font=fonts[0], weight=BOLD).scale(0.6).to_edge(UP).shift(0.5*DOWN)
-            text_1.set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_TXT_COL_DARKER)
+            text_1.set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER)
 
         text_1.save_state()
-           
+
+
+        #glowing circle 
+
+        #1
+
+        glow_circ_grp_1_1 = VGroup(dot1,dot2)
+        glow_circ_grp_1_2 = VGroup(v_line3,v_line4,v_line5,v_line6,d_line1,d_line2,d_line1_label,d_line2_label,zero_tick,line)
+        glow_circ_grp_1_2.save_state()
+
+        glowing_circles_1=VGroup()                   # VGroup( doesn't have append method) 
+
+        for dot in glow_circ_grp_1_1:
+            glowing_circle=get_glowing_surround_circle(dot[0], color=REANLEA_YELLOW)
+            glowing_circle.save_state()
+            glowing_circles_1 += glowing_circle
+        
+        glowing_circles_1.save_state()
+
+        #2
+
+        glow_circ_grp_2_1 = VGroup(dot1,zero_tick)
+        glow_circ_grp_2_2 = VGroup(v_line1,v_line2,v_line5,v_line6,d_line,d_line2,d_line_label,d_line2_label,dot2,line)
+        glow_circ_grp_2_2.save_state()
+
+
+        glowing_circles_2=VGroup()                   # VGroup( doesn't have append method) 
+
+        for dot in glow_circ_grp_2_1:
+            glowing_circle=get_glowing_surround_circle(dot[0], color=REANLEA_YELLOW)
+            glowing_circle.save_state()
+            glowing_circles_2 += glowing_circle
+        
+        glowing_circles_2.save_state()
+
+        #3
+
+        glow_circ_grp_3_1 = VGroup(dot2,zero_tick)
+        glow_circ_grp_3_2 = VGroup(v_line1,v_line4,d_line1,d_line,d_line1_label,d_line_label,dot1,line)
+        glow_circ_grp_3_2.save_state()
+
+
+        glowing_circles_3=VGroup()                   # VGroup( doesn't have append method) 
+
+        for dot in glow_circ_grp_3_1:
+            glowing_circle=get_glowing_surround_circle(dot[0], color=REANLEA_YELLOW)
+            glowing_circle.save_state()
+            glowing_circles_3 += glowing_circle
+        
+        glowing_circles_3.save_state()
+
+
+
+
+
+
+        # equation 
+
+        eq1 = MathTex("d(0,x)", "+", "d(x,y)", "=", "d(0,y)").move_to(3*DOWN)
         
 
 
@@ -396,6 +461,56 @@ class Scene2(MovingCameraScene):
         self.play(Write(grp4), run_time=3)
         self.wait(2)
 
+
+        self.play(
+            FadeIn(*glowing_circles_1),
+            glow_circ_grp_1_2.animate.set_opacity(0.4)
+        )
+        self.wait()
+        self.play(Transform(d_line_label.copy(), eq1[2]))
+        self.wait()
+        self.play(
+            FadeOut(*glowing_circles_1),
+            Restore(glow_circ_grp_1_2)
+        )
+
+
+        self.play(
+            FadeIn(*glowing_circles_2),
+            glow_circ_grp_2_2.animate.set_opacity(0.4)
+        )
+        self.play(Transform(d_line1_label.copy(), eq1[0]))
+        self.wait()
+        self.play(
+            FadeOut(*glowing_circles_2),
+            Restore(glow_circ_grp_2_2)
+        )
+       
+
+        self.play(
+            FadeIn(*glowing_circles_3),
+            glow_circ_grp_3_2.animate.set_opacity(0.4)
+        )
+        self.play(Transform(d_line2_label.copy(), eq1[4]))
+        self.wait()
+        self.play(
+            FadeOut(*glowing_circles_3),
+            Restore(glow_circ_grp_3_2)
+            
+        )
+
+        self.wait()
+
+        self.play(
+            FadeIn(eq1[1]),
+            FadeIn(eq1[3])
+        )
+
+        self.wait(3)
+    
+        
+       
+        
 
 
         # manim -pqh anim.py Scene2

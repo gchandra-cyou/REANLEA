@@ -604,3 +604,96 @@ class DasAr7(MovingCameraScene):
         #  manim -pqh test.py DasAr7
 
         # This gives us exact result as expected....   ***
+
+
+
+
+class DasAr8(MovingCameraScene):
+    def construct(self):
+        self.camera.frame.save_state()
+
+        arr1=DashedDoubleArrow(
+            start=LEFT, end=RIGHT, dash_length=2.0,
+            stroke_width=1, max_tip_length_to_length_ratio=0.05, color=RED
+        ).shift(DOWN)
+
+        color1=[REANLEA_GREEN, REANLEA_VIOLET_LIGHTER]
+        dots=VGroup()
+        for i in np.arange(1,3,1):
+            dot=Dot(radius=0.2*i, color=color1[i-1]).move_to(UP + 2*(i-1)*LEFT).set_sheen(-0.4, DOWN)
+            dot.save_state()
+            dots += dot
+
+        dots.save_state()       
+
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("R E A N L E A ", font=fonts[0]).scale(0.6).to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            text_1.set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER)
+
+        text_1.save_state()
+
+        color2=[REANLEA_YELLOW,REANLEA_CHARM]
+
+        
+        def GlowCircFun(x):
+            glowing_circles=VGroup()
+            for i,dot in enumerate(list(x)):
+                 glowing_circle=get_glowing_surround_circle(dot, color=color2[i])
+                 #glowing_circle.save_state()
+                 glowing_circles += glowing_circle
+                 glowing_circles += dot
+
+            glowing_circles.save_state()
+            return glowing_circles
+
+                            
+        
+        
+        self.add(text_1, *dots)
+        self.wait()
+        self.play(Create(arr1), ApplyFunction(GlowCircFun,dots))
+        self.play(
+            self.camera.frame.animate.scale(0.5).move_to(DOWN),   
+            text_1.animate.scale(0.5).move_to(0.425*UP).set_fill(opacity=0.5),
+            
+        )
+        self.wait(2)
+        self.play(Restore(self.camera.frame), Restore(text_1), Restore(dots))
+        self.wait(2)
+
+
+        #  manim -pqh test.py DasAr8
+
+
+
+class ReplacementTransformOrTransform(Scene):
+            def construct(self):
+                # set up the numbers
+                r_transform = VGroup(*[Integer(i) for i in range(1,4)])
+                text_1 = Text("ReplacementTransform", color=REANLEA_BLUE_LAVENDER)
+                r_transform.add(text_1)
+
+                transform = VGroup(*[Integer(i) for i in range(4,7)])
+                text_2 = Text("Transform", color=REANLEA_GREEN_AUQA)
+                transform.add(text_2)
+
+                ints = VGroup(r_transform, transform)
+                texts = VGroup(text_1, text_2).scale(0.75)
+                r_transform.arrange(direction=UP, buff=1)
+                transform.arrange(direction=UP, buff=1)
+
+                ints.arrange(buff=2)
+                self.add(ints, texts)
+
+                # The mobs replace each other and none are left behind
+                self.play(ReplacementTransform(r_transform[0], r_transform[1]))
+                self.play(ReplacementTransform(r_transform[1], r_transform[2]))
+
+                # The mobs linger after the Transform()
+                
+                self.play(Transform(transform[1], transform[2]))
+                self.play(Transform(transform[0], transform[1]))
+                self.wait()
+
+
+                # manim -pqh test.py ReplacementTransformOrTransform

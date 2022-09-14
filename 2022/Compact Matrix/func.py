@@ -189,6 +189,11 @@ def get_glowing_surround_circle(
 
 
 
+def opacity_fun(x):
+            x.set_opacity(0.6)
+            return x
+
+
 class Restorez(ApplyMethod):
     def __init__(self, mobject: Mobject, **kwargs) -> None:
         super().__init__(mobject.restore, **kwargs)
