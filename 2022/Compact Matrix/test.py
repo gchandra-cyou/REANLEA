@@ -388,3 +388,219 @@ class DasArGlowCircle(MovingCameraScene):
         self.wait(2)
 
            #  manim -pqh test.py DasArGlowCircle
+
+
+
+class DasAr5(MovingCameraScene):
+    def construct(self):
+        self.camera.frame.save_state()
+
+        arr1=DashedDoubleArrow(
+            start=LEFT, end=RIGHT, dash_length=2.0,
+            stroke_width=1, max_tip_length_to_length_ratio=0.05, color=RED
+        ).shift(DOWN)
+
+        dot1=Dot(radius=.2).move_to(UP).set_color(REANLEA_GREEN).set_sheen(-0.4,DOWN)
+
+        dot1.save_state()
+
+        dot2=Dot(radius=.4).move_to(UP + 3*LEFT).set_color(REANLEA_VIOLET_LIGHTER).set_sheen(-0.4,DOWN)
+
+        dot2.save_state()
+
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("R E A N L E A ", font=fonts[0]).scale(0.6).to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            text_1.set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER)
+
+        text_1.save_state()
+
+        
+        glow_circle1=get_glowing_surround_circle(dot1)
+        glow_circle1.save_state()
+        glow_circle2=get_glowing_surround_circle(dot2, color=REANLEA_CHARM)
+        glow_circle2.save_state()
+        
+
+        
+        self.add(text_1, dot1,dot2)
+        self.wait()
+        self.play(Create(arr1), FadeIn(glow_circle1),FadeIn(glow_circle2))
+        self.play(
+            self.camera.frame.animate.scale(0.5).move_to(DOWN),   
+            text_1.animate.scale(0.5).move_to(0.425*UP),
+            dot1.animate.move_to(.5*DOWN),
+            dot2.animate.move_to(.5*DOWN+1.5*LEFT),
+            glow_circle1.animate().move_to(0.5*DOWN),
+            glow_circle2.animate().move_to(0.5*DOWN+1.5*LEFT)
+        )
+        self.wait(2)
+        self.play(Restore(self.camera.frame), Restore(text_1), Restore(dot1), Restore(glow_circle1))
+        self.wait(2)
+
+           #  manim -pqh test.py DasAr5
+
+
+
+class DasAr6(MovingCameraScene):
+    def construct(self):
+        self.camera.frame.save_state()
+
+        arr1=DashedDoubleArrow(
+            start=LEFT, end=RIGHT, dash_length=2.0,
+            stroke_width=1, max_tip_length_to_length_ratio=0.05, color=RED
+        ).shift(DOWN)
+
+        dots=[]
+
+        dot1=Dot(radius=.2).move_to(UP).set_color(REANLEA_GREEN).set_sheen(-0.4,DOWN)
+
+        dot1.save_state()
+        dots.append(dot1)
+
+        dot2=Dot(radius=.4).move_to(UP + 3*LEFT).set_color(REANLEA_VIOLET_LIGHTER).set_sheen(-0.4,DOWN)
+
+        dot2.save_state()
+        dots.append(dot2)
+
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("R E A N L E A ", font=fonts[0]).scale(0.6).to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            text_1.set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER)
+
+        text_1.save_state()
+
+        colorz=[REANLEA_YELLOW,REANLEA_CHARM]
+        
+        glowing_circles=[]
+        for i,dot in enumerate(dots):
+            glowing_circle=get_glowing_surround_circle(dot, color=colorz[i])
+            glowing_circle.save_state()
+            glowing_circles.append(glowing_circle)
+
+        #glowing_circles.save_state() doesn't work -> So let's think about the formation with VGroup()
+        
+        self.add(text_1, dot1,dot2)
+        self.wait()
+        self.play(Create(arr1), FadeIn(*glowing_circles))
+        self.play(
+            self.camera.frame.animate.scale(0.5).move_to(DOWN),   
+            text_1.animate.scale(0.5).move_to(0.425*UP),
+            dots[0].animate.move_to(.5*DOWN),
+            dot2.animate.move_to(.5*DOWN+1.5*LEFT),
+        )
+        self.wait(2)
+        self.play(Restore(self.camera.frame), Restore(text_1), Restore(dots[0]), Restore(dots[1]))
+        self.wait(2)
+
+           # But here we can't restore all the elements in list 'glowing_circles' at once by calling 'Resore()'
+           # even we can't restore all the mobjets in the list by save_state(), because 'list' object has no attribute 'save_state'
+
+           #  manim -pqh test.py DasAr6
+
+
+
+
+class Restorex(MovingCameraScene):
+    def construct(self):
+        self.camera.frame.save_state()
+
+        dots=VGroup()
+        for i in np.arange(1,6,1):
+            dot1 = Dot(radius=0.1*i).move_to(RIGHT*i)
+            dot1.save_state()
+            dots += dot1
+            dot2 = Dot(radius=0.1*i).move_to(LEFT*i)
+            dot2.save_state()
+            dots += dot2
+
+        dots.save_state()
+
+
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("R E A N L E A ", font=fonts[0]).scale(0.6).to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            text_1.set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER)
+
+        text_1.save_state()
+
+
+        self.add(text_1)
+        self.play(FadeIn(*dots))
+        self.play(
+            self.camera.frame.animate.scale(0.5).move_to(DOWN),   
+            text_1.animate.scale(0.5).move_to(0.425*UP),
+            dots[0].animate.move_to(2.5*DOWN)
+        )
+        self.wait()
+        self.play(Restore(self.camera.frame), Restore(text_1), Restore(dots))
+
+
+        #  manim -pqh test.py Restorex
+            
+        
+
+
+class DasAr7(MovingCameraScene):
+    def construct(self):
+        self.camera.frame.save_state()
+
+        arr1=DashedDoubleArrow(
+            start=LEFT, end=RIGHT, dash_length=2.0,
+            stroke_width=1, max_tip_length_to_length_ratio=0.05, color=RED
+        ).shift(DOWN)
+
+        color1=[REANLEA_GREEN, REANLEA_VIOLET_LIGHTER]
+        dots=VGroup()
+        for i in np.arange(1,3,1):
+            dot=Dot(radius=0.2*i, color=color1[i-1]).move_to(UP + 2*(i-1)*LEFT).set_sheen(-0.4, DOWN)
+            dot.save_state()
+            dots += dot
+
+        dots.save_state()
+
+
+        '''dot1=Dot(radius=.2).move_to(UP).set_color(REANLEA_GREEN).set_sheen(-0.4,DOWN)
+
+        dot1.save_state()
+        dots.append(dot1)
+
+        dot2=Dot(radius=.4).move_to(UP + 3*LEFT).set_color(REANLEA_VIOLET_LIGHTER).set_sheen(-0.4,DOWN)
+
+        dot2.save_state()
+        dots.append(dot2)'''          # we don't have to define separately now
+
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("R E A N L E A ", font=fonts[0]).scale(0.6).to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            text_1.set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER)
+
+        text_1.save_state()
+
+        color2=[REANLEA_YELLOW,REANLEA_CHARM]
+        
+        glowing_circles=VGroup()                   # VGroup( doesn't have append method) 
+
+        for i,dot in enumerate(list(dots)):
+            glowing_circle=get_glowing_surround_circle(dot, color=color2[i])
+            glowing_circle.save_state()
+            glowing_circles += glowing_circle
+        
+        glowing_circles.save_state()
+        
+        
+        self.add(text_1, *dots)
+        self.wait()
+        self.play(Create(arr1), FadeIn(*glowing_circles))
+        self.play(
+            self.camera.frame.animate.scale(0.5).move_to(DOWN),   
+            text_1.animate.scale(0.5).move_to(0.425*UP),
+            dots[0].animate.move_to(.5*DOWN),
+            dots[1].animate.move_to(.5*DOWN+1.5*LEFT),
+            glowing_circles[0].animate.move_to(.5*DOWN),
+            glowing_circles[1].animate.move_to(.5*DOWN +1.5*LEFT),
+        )
+        self.wait(2)
+        self.play(Restore(self.camera.frame), Restore(text_1), Restore(dots), Restore(glowing_circles))
+        self.wait(2)
+
+
+        #  manim -pqh test.py DasAr7
+
+        # This gives us exact result as expected....   ***
