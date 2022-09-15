@@ -570,8 +570,20 @@ class DasAr7(MovingCameraScene):
         with RegisterFont("Montserrat") as fonts:
             text_1=Text("R E A N L E A ", font=fonts[0]).scale(0.6).to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
             text_1.set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER)
+            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
+            water_mark.set_color_by_gradient(REANLEA_GREY)
 
         text_1.save_state()
+        water_mark.save_state()
+
+        eq1 = MathTex("d(0,x)", "+", "d(x,y)", "=", "d(0,y)").move_to(3*DOWN)
+        #eq2 = MathTex("\Rightarrow", "d(x,y)", "=", "d(0,y)", "-", "d(0,x)").move_to(3*DOWN)
+        eq2 = MathTex("d(x,y)", "=", "d(0,y)", "-", "d(0,x)").move_to(3*DOWN)
+        r_arr= MathTex("\Rightarrow").next_to(eq2, LEFT)
+        eq3 = MathTex("d(x,y)", "=", "y", "-", "x").move_to(2.15*DOWN).set_color(REANLEA_BLUE_LAVENDER)
+
+
+
 
         color2=[REANLEA_YELLOW,REANLEA_CHARM]
         
@@ -585,20 +597,44 @@ class DasAr7(MovingCameraScene):
         glowing_circles.save_state()
         
         
-        self.add(text_1, *dots)
+        self.add(text_1, water_mark, *dots)
         self.wait()
         self.play(Create(arr1), FadeIn(*glowing_circles))
         self.play(
             self.camera.frame.animate.scale(0.5).move_to(DOWN),   
             text_1.animate.scale(0.5).move_to(0.425*UP),
+            water_mark.animate.scale(0.5).move_to(0.465*UP + 2.5*LEFT),
             dots[0].animate.move_to(.5*DOWN),
             dots[1].animate.move_to(.5*DOWN+1.5*LEFT),
             glowing_circles[0].animate.move_to(.5*DOWN),
             glowing_circles[1].animate.move_to(.5*DOWN +1.5*LEFT),
         )
         self.wait(2)
-        self.play(Restore(self.camera.frame), Restore(text_1), Restore(dots), Restore(glowing_circles))
+        self.play(Restore(self.camera.frame), Restore(text_1), Restore(dots), Restore(glowing_circles), Restore(water_mark))
         self.wait(2)
+
+        self.wait()
+        self.play(Write(eq1))
+        self.wait()
+        self.play(
+            eq1.animate.scale(0.75).move_to(.25*LEFT + 2.15*DOWN).set_fill(color=REANLEA_GREY_DARKER, opacity=0.75),
+            ReplacementTransform(eq1.copy(),eq2),
+            FadeIn(r_arr)
+        )
+        self.wait()
+        self.play(
+            FadeOut(eq1),
+            FadeOut(r_arr),
+            #ReplacementTransform(eq2,eq3)
+            eq2.animate.move_to(2.15*DOWN).scale(1.1).set_fill(color=REANLEA_BLUE_LAVENDER)
+        )
+        self.play(
+            Circumscribe(eq2, color=REANLEA_CHARM, run_time=1.5)
+        )
+        self.play(
+            Transform(eq2, eq3)
+        )
+        self.wait(3)
 
 
         #  manim -pqh test.py DasAr7
@@ -697,3 +733,122 @@ class ReplacementTransformOrTransform(Scene):
 
 
                 # manim -pqh test.py ReplacementTransformOrTransform
+
+
+
+class FontCheck1(Scene):
+    def construct(self):
+        self.camera.frame.save_state()
+
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("R E A N L E A ", font=fonts[0]).scale(0.6).to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            text_1.set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER)
+
+        text_1.save_state()
+
+
+        self.add(text_1)
+        self.wait()
+        
+        self.play(
+            self.camera.frame.animate.scale(0.5).move_to(DOWN),   
+            text_1.animate.scale(0.5).move_to(0.425*UP),
+        )
+        self.wait(5)
+
+
+        # manim -pqh test.py FontCheck1
+
+
+
+class DasAr9(MovingCameraScene):
+    def construct(self):
+        self.camera.frame.save_state()
+
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
+            text_1.set_color_by_gradient(REANLEA_GREY)
+        text_1.save_state()
+
+        text_2= MathTex("\pi", "\Rightarrow")
+        text_2.save_state()
+        
+
+
+        eq1 = MathTex("d(0,x)", "+", "d(x,y)", "=", "d(0,y)").move_to(3*DOWN)
+        #eq2 = MathTex("\Rightarrow", "d(x,y)", "=", "d(0,y)", "-", "d(0,x)").move_to(3*DOWN)
+        eq2 = MathTex("d(x,y)", "=", "d(0,y)", "-", "d(0,x)").move_to(3*DOWN)
+        r_arr= MathTex("\Rightarrow").next_to(eq2, LEFT)
+        eq3 = MathTex("d(x,y)", "=", "y", "-", "x").move_to(2.15*DOWN).set_color(REANLEA_BLUE_LAVENDER)
+        eq4 = MathTex("d(x,y)", "=", "(1-t).d(x,y)").move_to(2.5*DOWN).set_color(REANLEA_BLUE_LAVENDER)
+
+        a=Tex("A")
+        b=Tex("B")
+        c=Tex("C")
+
+        text_3=VGroup(
+            Text(", where" ).scale(0.5),
+            MathTex("t"),
+            Text(" is the distance ratio").scale(0.5)
+        ).arrange(buff=0.25).next_to(eq4, DOWN)
+
+        
+
+
+        abc_grp=VGroup(a,b,c).arrange(direction=RIGHT).move_to(DOWN)
+        
+
+        grp=VGroup(eq1,eq2)
+
+        
+        self.add(text_1,text_2)
+        self.wait()
+        self.play(
+            self.camera.frame.animate.scale(0.5).move_to(DOWN),   
+            text_1.animate.scale(0.5).move_to(0.465*UP + 2.5*LEFT),
+        )
+        self.wait()
+        self.play(Restore(self.camera.frame),Restore(text_1), Restore(text_2))
+        self.wait()
+
+        #############
+
+        self.play(
+            Create(abc_grp)
+        )
+        self.wait(2)
+        self.play(
+            Transform(a, eq1[0]),
+            Transform(b, eq1[2]),
+            Transform(c, eq1[4])
+        )
+        self.wait(2)
+        self.play(Write(eq1))
+        self.play(FadeOut(abc_grp))
+        self.wait()
+        self.play(
+            eq1.animate.scale(0.75).move_to(.25*LEFT + 2.15*DOWN).set_fill(color=REANLEA_GREY_DARKER, opacity=0.75),
+            ReplacementTransform(eq1.copy(),eq2),
+            FadeIn(r_arr)
+        )
+        self.wait()
+        self.play(
+            FadeOut(eq1),
+            FadeOut(r_arr),
+            #ReplacementTransform(eq2,eq3)
+            eq2.animate.move_to(2.15*DOWN).scale(1.1).set_fill(color=REANLEA_BLUE_LAVENDER)
+        )
+        self.play(
+            Circumscribe(eq2, color=REANLEA_CHARM, run_time=1.5)
+        )
+        self.play(
+            ReplacementTransform(eq2, eq3)                    # ReplacementTransform doesn't treat eq3 as eq2 after transformation.
+        )
+        self.wait(2)
+        
+        self.play(Transform(eq3,eq4))
+        self.play(Create(text_3))
+        self.wait(3)
+
+           #  manim -pqh test.py DasAr9
+

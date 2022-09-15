@@ -301,6 +301,10 @@ class Scene2(MovingCameraScene):
 
         grp=VGroup(dot1,dot2)
 
+
+        ### dashed line 
+
+        # horizontal dashed line
         d_line=DashedDoubleArrow(
             start=p5, end=p8, dash_length=2.0,stroke_width=2, 
             max_tip_length_to_length_ratio=0.015, buff=10
@@ -322,8 +326,10 @@ class Scene2(MovingCameraScene):
 
         d_line2_label= MathTex("d(0,y)").next_to(d_line2, .1*UP).scale(0.45).set_color(REANLEA_GREEN_LIGHTER)
 
+        d_line_label_grp=VGroup(d_line_label,d_line1_label,d_line2_label)
 
 
+        # Vertical dashed line
         v_line1=DashedLine(
             start=p4, end=p5, stroke_width=1
         ).set_color(RED_D)
@@ -353,13 +359,21 @@ class Scene2(MovingCameraScene):
 
         grp2=VGroup(v_line1,v_line2)
         grp3=VGroup(v_line3,v_line6,v_line4,v_line5)
-        grp4=VGroup(d_line1,d_line2,d_line1_label,d_line2_label)
+        grp4=VGroup(d_line1,d_line2)
+        grp5=VGroup(d_line1_label,d_line2_label)
 
         
+        # WATER MARK 
+
+        with RegisterFont("Montserrat") as fonts:
+            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
+            water_mark.set_color_by_gradient(REANLEA_GREY)
+        water_mark.save_state()
 
 
 
         #### text region
+
 
         with RegisterFont("Montserrat") as fonts:
             text_1=Text("D I S T A N C E ", font=fonts[0], weight=BOLD).scale(0.6).to_edge(UP).shift(0.5*DOWN)
@@ -373,7 +387,7 @@ class Scene2(MovingCameraScene):
         #1
 
         glow_circ_grp_1_1 = VGroup(dot1,dot2)
-        glow_circ_grp_1_2 = VGroup(v_line3,v_line4,v_line5,v_line6,d_line1,d_line2,d_line1_label,d_line2_label,zero_tick,line)
+        glow_circ_grp_1_2 = VGroup(v_line3,v_line4,v_line5,v_line6,d_line1,d_line2,d_line1_label.copy(),d_line2_label.copy(),zero_tick)
         glow_circ_grp_1_2.save_state()
 
         glowing_circles_1=VGroup()                   # VGroup( doesn't have append method) 
@@ -388,7 +402,7 @@ class Scene2(MovingCameraScene):
         #2
 
         glow_circ_grp_2_1 = VGroup(dot1,zero_tick)
-        glow_circ_grp_2_2 = VGroup(v_line1,v_line2,v_line5,v_line6,d_line,d_line2,d_line_label,d_line2_label,dot2,line)
+        glow_circ_grp_2_2 = VGroup(v_line1,v_line2,v_line5,v_line6,d_line,d_line2,d_line_label.copy(),d_line2_label.copy(),dot2)
         glow_circ_grp_2_2.save_state()
 
 
@@ -404,7 +418,7 @@ class Scene2(MovingCameraScene):
         #3
 
         glow_circ_grp_3_1 = VGroup(dot2,zero_tick)
-        glow_circ_grp_3_2 = VGroup(v_line1,v_line4,d_line1,d_line,d_line1_label,d_line_label,dot1,line)
+        glow_circ_grp_3_2 = VGroup(v_line1,v_line4,d_line1,d_line,d_line1_label.copy(),d_line_label.copy(),dot1)
         glow_circ_grp_3_2.save_state()
 
 
@@ -425,11 +439,25 @@ class Scene2(MovingCameraScene):
         # equation 
 
         eq1 = MathTex("d(0,x)", "+", "d(x,y)", "=", "d(0,y)").move_to(3*DOWN)
+        #eq2 = MathTex("\Rightarrow", "d(x,y)", "=", "d(0,y)", "-", "d(0,x)").move_to(3*DOWN)
+        eq2 = MathTex("d(x,y)", "=", "d(0,y)", "-", "d(0,x)").move_to(3*DOWN)
+        r_arr= MathTex("\Rightarrow").next_to(eq2, LEFT)
+        eq3 = MathTex("d(x,y)", "=", "y", "-", "x").move_to(2.5*DOWN).set_color(REANLEA_BLUE_LAVENDER)
+        eq4 = MathTex("d(x,y)", "=", "(1-t).d(x,y)").move_to(2.5*DOWN).set_color(REANLEA_BLUE_LAVENDER)
         
+        #eq_grp=VGroup(d_line1_label.copy(),d_line2_label.copy(),d_line_label.copy())
 
+        # decriptive text 
+
+        text_2=VGroup(
+            Text(", where" ).scale(0.6),
+            MathTex("t"),
+            Text(" is the distance ratio").scale(0.6)
+        ).arrange(buff=0.25).next_to(eq4, DOWN).scale(0.5).set_color(REANLEA_TXT_COL_DARKER)
 
         #### play region
 
+        self.add(water_mark)
         self.play(Write(text_1))
         
         self.wait(2)
@@ -444,7 +472,8 @@ class Scene2(MovingCameraScene):
         self.wait()
         self.play(
             self.camera.frame.animate.scale(0.5).move_to(DOWN + 1.5*RIGHT),
-            text_1.animate.scale(0.5).move_to(0.425*UP + 1.5 *RIGHT)
+            text_1.animate.scale(0.5).move_to(0.425*UP + 1.5 *RIGHT),
+            water_mark.animate.scale(0.5).move_to(0.465*UP + LEFT),
         )
         
         self.wait()
@@ -452,13 +481,19 @@ class Scene2(MovingCameraScene):
         self.wait(2)
         self.play(Write(d_line))
         self.wait(2)
-        self.play(Write(d_line_label))
+        self.play(Write(d_line_label.copy()))
         self.wait(2)
-        self.play(Restore(self.camera.frame), Restore(text_1))
+        self.play(Restore(self.camera.frame), Restore(text_1), Restore(water_mark))
+
         self.wait(2)
         self.play(Write(grp3), run_time=2.5)
         self.wait()
-        self.play(Write(grp4), run_time=3)
+        self.play(
+            Write(grp4),
+            Write(d_line1_label.copy()),
+            Write(d_line2_label.copy()),
+            run_time=2
+        )
         self.wait(2)
 
 
@@ -501,16 +536,52 @@ class Scene2(MovingCameraScene):
 
         self.wait()
 
-        self.play(
-            FadeIn(eq1[1]),
-            FadeIn(eq1[3])
-        )
+        
+        # equation animation segment
 
-        self.wait(3)
-    
-        
        
+
+        self.play(Write(eq1))
+        self.play(FadeOut(d_line_label_grp))
+        self.wait()
+        self.play(
+            eq1.animate.scale(0.75).move_to(.25*LEFT + 2.15*DOWN).set_fill(color=REANLEA_GREY_DARKER, opacity=0.75),
+            ReplacementTransform(eq1.copy(),eq2),
+            FadeIn(r_arr),
+        )
+        self.wait()
+        self.play(
+            FadeOut(eq1),
+            FadeOut(r_arr),
+            #ReplacementTransform(eq2,eq3)
+            eq2.animate.move_to(2.5*DOWN).scale(1.1).set_fill(color=REANLEA_BLUE_LAVENDER)
+        )
+        self.play(
+            Circumscribe(eq2, color=REANLEA_CHARM, run_time=1.5)
+        )
+        self.play(
+            ReplacementTransform(eq2, eq3)
+        )
+        self.wait(3)
+
+        self.play(
+            FadeOut(grp3),
+            FadeOut(grp4),
+            FadeOut(d_line2_label),
+            FadeOut(d_line1_label)
+        )
+        self.wait()
+        self.play(ReplacementTransform(eq3,eq4))
+        self.wait()
+
+        self.play(
+            eq4.animate.scale(0.7).move_to(1.5*UP)
+        )
+        self.play(Create(text_2))
+
         
+        self.wait(3)
+
 
 
         # manim -pqh anim.py Scene2
