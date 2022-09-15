@@ -387,7 +387,7 @@ class Scene2(MovingCameraScene):
         #1
 
         glow_circ_grp_1_1 = VGroup(dot1,dot2)
-        glow_circ_grp_1_2 = VGroup(v_line3,v_line4,v_line5,v_line6,d_line1,d_line2,d_line1_label.copy(),d_line2_label.copy(),zero_tick)
+        glow_circ_grp_1_2 = VGroup(v_line3,v_line4,v_line5,v_line6,d_line1,d_line2,d_line1_label,d_line2_label,zero_tick)
         glow_circ_grp_1_2.save_state()
 
         glowing_circles_1=VGroup()                   # VGroup( doesn't have append method) 
@@ -402,7 +402,7 @@ class Scene2(MovingCameraScene):
         #2
 
         glow_circ_grp_2_1 = VGroup(dot1,zero_tick)
-        glow_circ_grp_2_2 = VGroup(v_line1,v_line2,v_line5,v_line6,d_line,d_line2,d_line_label.copy(),d_line2_label.copy(),dot2)
+        glow_circ_grp_2_2 = VGroup(v_line1,v_line2,v_line5,v_line6,d_line,d_line2,d_line_label,d_line2_label,dot2)
         glow_circ_grp_2_2.save_state()
 
 
@@ -418,7 +418,7 @@ class Scene2(MovingCameraScene):
         #3
 
         glow_circ_grp_3_1 = VGroup(dot2,zero_tick)
-        glow_circ_grp_3_2 = VGroup(v_line1,v_line4,d_line1,d_line,d_line1_label.copy(),d_line_label.copy(),dot1)
+        glow_circ_grp_3_2 = VGroup(v_line1,v_line4,d_line1,d_line,d_line1_label,d_line_label,dot1)
         glow_circ_grp_3_2.save_state()
 
 
@@ -443,7 +443,7 @@ class Scene2(MovingCameraScene):
         eq2 = MathTex("d(x,y)", "=", "d(0,y)", "-", "d(0,x)").move_to(3*DOWN)
         r_arr= MathTex("\Rightarrow").next_to(eq2, LEFT)
         eq3 = MathTex("d(x,y)", "=", "y", "-", "x").move_to(2.5*DOWN).set_color(REANLEA_BLUE_LAVENDER)
-        eq4 = MathTex("d(x,y)", "=", "(1-t).d(x,y)").move_to(2.5*DOWN).set_color(REANLEA_BLUE_LAVENDER)
+        eq4 = MathTex("d(x,z)", "=", "(1-t).d(x,y)").move_to(2.5*DOWN).set_color(REANLEA_BLUE_LAVENDER)
         
         #eq_grp=VGroup(d_line1_label.copy(),d_line2_label.copy(),d_line_label.copy())
 
@@ -453,7 +453,7 @@ class Scene2(MovingCameraScene):
             Text(", where" ).scale(0.6),
             MathTex("t"),
             Text(" is the distance ratio").scale(0.6)
-        ).arrange(buff=0.25).next_to(eq4, DOWN).scale(0.5).set_color(REANLEA_TXT_COL_DARKER)
+        ).arrange(buff=0.25).scale(0.5).set_color(REANLEA_TXT_COL_DARKER).move_to(UP+2*RIGHT)
 
         #### play region
 
@@ -481,7 +481,7 @@ class Scene2(MovingCameraScene):
         self.wait(2)
         self.play(Write(d_line))
         self.wait(2)
-        self.play(Write(d_line_label.copy()))
+        self.play(Write(d_line_label))
         self.wait(2)
         self.play(Restore(self.camera.frame), Restore(text_1), Restore(water_mark))
 
@@ -490,8 +490,8 @@ class Scene2(MovingCameraScene):
         self.wait()
         self.play(
             Write(grp4),
-            Write(d_line1_label.copy()),
-            Write(d_line2_label.copy()),
+            Write(d_line1_label),
+            Write(d_line2_label),
             run_time=2
         )
         self.wait(2)
@@ -502,7 +502,7 @@ class Scene2(MovingCameraScene):
             glow_circ_grp_1_2.animate.set_opacity(0.4)
         )
         self.wait()
-        self.play(Transform(d_line_label.copy(), eq1[2]))
+        self.play(ReplacementTransform(d_line_label.copy(), eq1[2]))
         self.wait()
         self.play(
             FadeOut(*glowing_circles_1),
@@ -514,7 +514,7 @@ class Scene2(MovingCameraScene):
             FadeIn(*glowing_circles_2),
             glow_circ_grp_2_2.animate.set_opacity(0.4)
         )
-        self.play(Transform(d_line1_label.copy(), eq1[0]))
+        self.play(ReplacementTransform(d_line1_label.copy(), eq1[0]))
         self.wait()
         self.play(
             FadeOut(*glowing_circles_2),
@@ -526,7 +526,7 @@ class Scene2(MovingCameraScene):
             FadeIn(*glowing_circles_3),
             glow_circ_grp_3_2.animate.set_opacity(0.4)
         )
-        self.play(Transform(d_line2_label.copy(), eq1[4]))
+        self.play(ReplacementTransform(d_line2_label.copy(), eq1[4]))
         self.wait()
         self.play(
             FadeOut(*glowing_circles_3),
@@ -539,10 +539,10 @@ class Scene2(MovingCameraScene):
         
         # equation animation segment
 
-       
+        eq1_sub_grp=VGroup(eq1[0], eq1[2], eq1[4])
 
-        self.play(Write(eq1))
-        self.play(FadeOut(d_line_label_grp))
+        self.play(TransformMatchingShapes(eq1_sub_grp, eq1))
+        #self.play(FadeOut(eq1_sub_grp))
         self.wait()
         self.play(
             eq1.animate.scale(0.75).move_to(.25*LEFT + 2.15*DOWN).set_fill(color=REANLEA_GREY_DARKER, opacity=0.75),
@@ -567,14 +567,18 @@ class Scene2(MovingCameraScene):
         self.play(
             FadeOut(grp3),
             FadeOut(grp4),
-            FadeOut(d_line2_label),
-            FadeOut(d_line1_label)
+            FadeOut(grp5),
+            run_time=3
         )
         self.wait()
         self.play(ReplacementTransform(eq3,eq4))
         self.wait()
 
+        scene1=VGroup(line, zero_tick, grp, grp2, d_line, d_line_label)
+
+
         self.play(
+            scene1.animate.move_to(2.5*DOWN+4*LEFT),
             eq4.animate.scale(0.7).move_to(1.5*UP)
         )
         self.play(Create(text_2))
