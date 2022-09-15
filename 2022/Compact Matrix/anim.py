@@ -45,6 +45,13 @@ class Scene1(Scene):
 
         scene = VGroup()
 
+        # WATER MARK 
+
+        with RegisterFont("Montserrat") as fonts:
+            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
+            water_mark.set_color_by_gradient(REANLEA_GREY)
+        water_mark.save_state()
+
         #object region
 
         dumy_line = Line(8*LEFT, 8*RIGHT, stroke_width=2.0).shift(DOWN)
@@ -165,7 +172,7 @@ class Scene1(Scene):
 
             grp1=VGroup(text_1,text_2)
 
-            grp2= VGroup(line,zero_tick,one_tick,dot1,dot2,dot3,dots,labs,dash_arrow,text_1,text_2,text_3,text_4)
+            grp2= VGroup(line,zero_tick,one_tick,dot1,dot2,dot3,dots,labs,dash_arrow,text_4)
 
             
 
@@ -174,6 +181,8 @@ class Scene1(Scene):
 
 
         ####play region
+
+        self.add(water_mark)
         
         
         self.play(
@@ -221,10 +230,12 @@ class Scene1(Scene):
         self.play(Write(text_4))
         self.wait(3)
 
-        self.play(
+        '''self.play(
             *[FadeOut(mobj) for mobj in self.mobjects],
             run_time=2
-        )
+        )'''
+        self.play(FadeOut(grp2))
+        #self.add(water_mark)
         self.play(Write(text_5))
         self.wait(1.75)
         self.play(FadeOut(text_5))
