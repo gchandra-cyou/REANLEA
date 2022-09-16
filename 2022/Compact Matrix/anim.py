@@ -255,9 +255,20 @@ class Scene2(MovingCameraScene):
     def construct(self):
         self.camera.frame.save_state()
 
-        zoom_exp = 1
+        # WATER MARK 
+
+        with RegisterFont("Montserrat") as fonts:
+            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
+            water_mark.set_color_by_gradient(REANLEA_GREY)
+        water_mark.save_state()
+
+        
 
         scene = VGroup()
+
+        # Tracker 
+
+        zoom_exp = 1
 
         # object region
 
@@ -272,6 +283,23 @@ class Scene2(MovingCameraScene):
         scene.add(line)
 
         center=line.n2p(-2)
+
+
+        dot1= VGroup(
+            Dot(radius=.25).move_to(line.n2p(1.75)).scale(0.6).set_color(REANLEA_VIOLET_LIGHTER).set_sheen(-0.4,DOWN),
+            MathTex("x").scale(0.6)
+        )
+        dot1[1].next_to(dot1[0],DOWN)
+        dot2= VGroup(
+            Dot(radius=.25).move_to(line.n2p(4)).scale(0.6).set_color(REANLEA_GREEN).set_sheen(-0.6,DOWN),
+            MathTex("y").scale(0.6)
+        )
+        dot2[1].next_to(dot2[0],DOWN)
+
+        
+
+
+        grp=VGroup(dot1,dot2)
 
         '''p1=np.array((-0.75, -0.5, 0.0))
         p2=np.array((4.25, -0.5, 0.0))'''
@@ -298,19 +326,7 @@ class Scene2(MovingCameraScene):
         zero_tick[0].move_to(line.n2p(0))
         zero_tick[1].next_to(zero_tick[0], DOWN)
 
-        dot1= VGroup(
-            Dot(radius=.25).move_to(line.n2p(1.75)).scale(0.6).set_color(REANLEA_VIOLET_LIGHTER).set_sheen(-0.4,DOWN),
-            MathTex("x").scale(0.6)
-        )
-        dot1[1].next_to(dot1[0],DOWN)
-        dot2= VGroup(
-            Dot(radius=.25).move_to(line.n2p(4)).scale(0.6).set_color(REANLEA_GREEN).set_sheen(-0.6,DOWN),
-            MathTex("y").scale(0.6)
-        )
-        dot2[1].next_to(dot2[0],DOWN)
-
-
-        grp=VGroup(dot1,dot2)
+        
 
 
         ### dashed line 
@@ -374,12 +390,7 @@ class Scene2(MovingCameraScene):
         grp5=VGroup(d_line1_label,d_line2_label)
 
         
-        # WATER MARK 
-
-        with RegisterFont("Montserrat") as fonts:
-            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
-            water_mark.set_color_by_gradient(REANLEA_GREY)
-        water_mark.save_state()
+        
 
 
 
@@ -387,7 +398,7 @@ class Scene2(MovingCameraScene):
 
 
         with RegisterFont("Montserrat") as fonts:
-            text_1=Text("D I S T A N C E ", font=fonts[0], weight=BOLD).scale(0.6).to_edge(UP).shift(0.5*DOWN)
+            text_1=Text("D I S T A N C E ", font=fonts[0], weight=BOLD).scale(.6).to_edge(UP).shift(0.5*DOWN)
             text_1.set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER)
 
         text_1.save_state()
@@ -442,7 +453,30 @@ class Scene2(MovingCameraScene):
         
         glowing_circles_3.save_state()
 
+        # VALUE UPDATER
+        '''value=DecimalNumber().set_color_by_gradient(REANLEA_GREEN_LIGHTER).set_sheen(-0.4,DR).scale(1.35)
 
+        value.add_updater(
+            lambda x : x.set_value((dot2[0].get_center()[0]-dot1[0].get_center()[0])/2.25)
+        )
+
+        v_line2.add_updater(
+            lambda x : x.move_to(
+                dot2[0].get_center()+ 0.25*UP
+            )
+        )
+
+        dot2[0].add_updater(lambda z : z.set_x(x.get_value()))
+
+        d_line.add_updater(
+            lambda z: z.become(
+                DashedDoubleArrow(
+                    start=dot1[0].get_center()+2*UP, end=dot2[0].get_center()+2*UP, dash_length=2.0,stroke_width=2, 
+                    max_tip_length_to_length_ratio=0.015, buff=10
+                ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+            )
+        )
+        '''
 
 
 
@@ -454,24 +488,28 @@ class Scene2(MovingCameraScene):
         eq2 = MathTex("d(x,y)", "=", "d(0,y)", "-", "d(0,x)").move_to(3*DOWN)
         r_arr= MathTex("\Rightarrow").next_to(eq2, LEFT)
         eq3 = MathTex("d(x,y)", "=", "y", "-", "x").move_to(2.5*DOWN).set_color(REANLEA_BLUE_LAVENDER)
-        eq4 = MathTex("d(x,z)", "=", "(1-t).d(x,y)").move_to(2.5*DOWN).set_color(REANLEA_BLUE_LAVENDER)
+        eq4 = MathTex("d(x,y)","=", "|y-x|").set_color(REANLEA_GREEN_LIGHTER).set_sheen(-0.4,DR).move_to(UP).scale(1.35)
+        #eq4_1= MathTex("d(x,y)", "=").set_color(REANLEA_GREEN_LIGHTER).set_sheen(-0.1,DR).move_to(UP).scale(1.35)
+        eq5=MathTex(">", "0").set_color(REANLEA_GREEN_LIGHTER).set_sheen(-0.4,DR).move_to(UP).scale(1.35)
+        eq5_grp=VGroup(eq4,eq5).arrange(RIGHT, buff=0.3).move_to(UP)
         
         #eq_grp=VGroup(d_line1_label.copy(),d_line2_label.copy(),d_line_label.copy())
 
         # decriptive text 
 
-        text_2=VGroup(
-            Text(", where" ).scale(0.6),
-            MathTex("t"),
-            Text(" is the distance ratio").scale(0.6)
-        ).arrange(buff=0.25).scale(0.5).set_color(REANLEA_TXT_COL_DARKER).move_to(UP+2*RIGHT)
+        # DESIGN
+
+        
+
+
+        
 
         #### play region
 
         self.add(water_mark)
-        self.play(Write(text_1))
+        self.play(Create(text_1))
         
-        self.wait(2)
+        self.wait()
 
         self.play(
             DrawBorderThenFill(dumy_line)
@@ -573,7 +611,7 @@ class Scene2(MovingCameraScene):
         self.play(
             ReplacementTransform(eq2, eq3)
         )
-        self.wait(3)
+        self.wait(2)
 
         self.play(
             FadeOut(grp3),
@@ -582,21 +620,23 @@ class Scene2(MovingCameraScene):
             run_time=3
         )
         self.wait()
-        self.play(ReplacementTransform(eq3,eq4))
-        self.wait()
 
         scene1=VGroup(line, zero_tick, grp, grp2, d_line, d_line_label)
 
 
         self.play(
-            scene1.animate.move_to(2.5*DOWN+4*LEFT),
-            eq4.animate.scale(0.7).move_to(1.5*UP)
+            Transform(eq3,eq4),
+            scene1.animate.move_to(1.5*DOWN+4*LEFT),
+            TransformMatchingShapes(d_line_label,eq4)
+            #eq4.animate.scale(0.7).move_to(1*UP).set_color(REANLEA_GREEN_LIGHTER).set_sheen(-0.1,DR).scale(1.5)
         )
-        self.play(Create(text_2))
-
         
         self.wait(3)
-
+        self.play(Write(eq5), run_time=2)
+        self.wait()
+        
 
 
         # manim -pqh anim.py Scene2
+
+        # manim -pql anim.py Scene2

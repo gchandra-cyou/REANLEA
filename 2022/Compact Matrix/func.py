@@ -186,14 +186,3 @@ def get_glowing_surround_circle(
     for i, c in enumerate(glowing_circle):
         c.set_stroke(color, width=0.5, opacity=1- i / n)
     return glowing_circle.move_to(circle.get_center())
-
-
-
-def opacity_fun(x):
-            x.set_opacity(0.6)
-            return x
-
-
-class Restorez(ApplyMethod):
-    def __init__(self, mobject: Mobject, **kwargs) -> None:
-        super().__init__(mobject.restore, **kwargs)

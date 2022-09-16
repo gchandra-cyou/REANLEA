@@ -1,4 +1,5 @@
 from __future__ import annotations
+from asyncore import poll2
 from audioop import add
 from cProfile import label
 from distutils import text_file
@@ -738,6 +739,8 @@ class ReplacementTransformOrTransform(Scene):
 
 class FontCheck1(Scene):
     def construct(self):
+    
+    
         self.camera.frame.save_state()
 
         with RegisterFont("Montserrat") as fonts:
@@ -852,3 +855,256 @@ class DasAr9(MovingCameraScene):
 
            #  manim -pqh test.py DasAr9
 
+
+
+class MovingDotEx(Scene):
+    def construct(self):
+
+        # WATER-MARK
+        with RegisterFont("Montserrat") as fonts:
+            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
+            water_mark.set_color_by_gradient(REANLEA_GREY)
+        water_mark.save_state()
+
+        # Tracker 
+        x=ValueTracker(-3)
+
+        # MOBJECTS
+        line1=Line(3*LEFT,3*RIGHT).set_color(REANLEA_PINK_DARKER).set_opacity(0.6)
+        
+        dot1=Dot(radius=0.25, color=REANLEA_VIOLET_LIGHTER).move_to(3*RIGHT).set_sheen(-0.6,DOWN)
+        dot2=Dot(radius=0.25, color=REANLEA_BLUE_LAVENDER).move_to(3*LEFT).set_sheen(-0.6,DOWN)
+        dot3=dot2.copy().set_opacity(0.4)
+
+
+        # POINTS
+        p1= dot1.get_center()+UP
+        p2= dot2.get_center()+UP
+        p3=dot3.get_center()
+
+
+
+        #dashed lines
+        d_line=DashedDoubleArrow(
+            start=p2, end=p1, dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+
+        v_line1=DashedLine(
+            start=dot1.get_center(), end=dot1.get_center()+UP, stroke_width=1
+        ).set_color(RED_D)
+
+        v_line2=DashedLine(
+            start=p2-DOWN, end=p2, stroke_width=1
+        ).set_color(RED_D)
+
+
+        # GROUPS
+        grp1=VGroup(line1,dot1,dot2, d_line, v_line1, v_line2)
+
+
+        #value updater
+        value=DecimalNumber().set_color_by_gradient(REANLEA_GREEN_LIGHTER).set_sheen(-0.4,DR)
+
+        value.add_updater(
+            lambda x : x.set_value(1-(dot2.get_center()[0]/3))
+        )
+        
+
+        v_line2.add_updater(
+            lambda x : x.move_to(
+                dot2.get_center()+ 0.5*UP
+            )
+        )
+
+        
+
+        dot2.add_updater(lambda z : z.set_x(x.get_value()))
+
+        d_line.add_updater(
+            lambda z: z.become(
+                DashedDoubleArrow(
+                    start=dot2.get_center()+UP, end=dot1.get_center()+UP, dash_length=2.0,stroke_width=2, 
+                    max_tip_length_to_length_ratio=0.015, buff=10
+                ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+            )
+        )
+
+
+        # TEXT
+
+        tex=MathTex("d(x,y)=").set_color(REANLEA_GREEN_LIGHTER).set_sheen(-0.4,DR)
+        grp2=VGroup(tex,value).arrange(RIGHT, buff=0.3).move_to(2*UP)
+        
+
+
+
+        # play region
+
+        self.add(water_mark)
+        self.play(Create(grp1))
+        self.play(Write(grp2))
+        self.add(dot3)
+        self.wait()
+        '''self.play(
+            MoveAlongPath(dot2, line1, rate_func=rate_functions.ease_in_out_sine),
+            run_time=3
+        )'''
+        self.play(
+            x.animate.set_value(dot1.get_center()[0]),
+            run_time=3
+        )
+        self.wait(2)
+
+
+        #  manim -pqh test.py MovingDotEx
+
+
+
+class MovingDotEx2(Scene):
+    def construct(self):
+
+        # WATER-MARK
+        with RegisterFont("Montserrat") as fonts:
+            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
+            water_mark.set_color_by_gradient(REANLEA_GREY)
+        water_mark.save_state()
+
+        # Tracker 
+        x=ValueTracker(-3)
+
+        # MOBJECTS
+        line=NumberLine(
+            x_range=[-3,3],
+            include_ticks=False,
+            include_tip=False
+        ).set_color(REANLEA_PINK_DARKER).set_opacity(0.6)
+        
+        dot1=Dot(radius=0.25, color=REANLEA_VIOLET_LIGHTER).move_to(3*RIGHT).set_sheen(-0.6,DOWN)
+        dot2=Dot(radius=0.25, color=REANLEA_BLUE_LAVENDER).move_to(3*LEFT).set_sheen(-0.6,DOWN)
+        dot3=dot2.copy().set_opacity(0.4)
+
+
+        # POINTS
+        p1= dot1.get_center()+UP
+        p2= dot2.get_center()+UP
+        p3=dot3.get_center()
+
+
+
+        #dashed lines
+        d_line=DashedDoubleArrow(
+            start=p2, end=p1, dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+
+        v_line1=DashedLine(
+            start=dot1.get_center(), end=dot1.get_center()+UP, stroke_width=1
+        ).set_color(RED_D)
+
+        v_line2=DashedLine(
+            start=p2-DOWN, end=p2, stroke_width=1
+        ).set_color(RED_D)
+
+
+        # GROUPS
+        grp1=VGroup(line,dot1,dot2, d_line, v_line1, v_line2)
+
+
+        #value updater
+        value=DecimalNumber().set_color_by_gradient(REANLEA_GREEN_LIGHTER).set_sheen(-0.4,DR)
+
+        value.add_updater(
+            lambda x : x.set_value(1-(dot2.get_center()[0]/3))
+        )
+        
+
+        v_line2.add_updater(
+            lambda x : x.move_to(
+                dot2.get_center()+ 0.5*UP
+            )
+        )
+
+        
+
+        dot2.add_updater(lambda z : z.set_x(x.get_value()))
+
+        d_line.add_updater(
+            lambda z: z.become(
+                DashedDoubleArrow(
+                    start=dot2.get_center()+UP, end=dot1.get_center()+UP, dash_length=2.0,stroke_width=2, 
+                    max_tip_length_to_length_ratio=0.015, buff=10
+                ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+            )
+        )
+
+
+        # TEXT
+
+        tex=MathTex("d(x,y)=").set_color(REANLEA_GREEN_LIGHTER).set_sheen(-0.4,DR)
+        grp2=VGroup(tex,value).arrange(RIGHT, buff=0.3).move_to(2*UP)
+        
+
+
+
+        # play region
+
+        self.add(water_mark)
+        self.play(Create(grp1))
+        self.play(Write(grp2))
+        self.add(dot3)
+        self.wait()
+        '''self.play(
+            MoveAlongPath(dot2, line1, rate_func=rate_functions.ease_in_out_sine),
+            run_time=3
+        )'''
+        self.play(
+            x.animate.set_value(dot1.get_center()[0]),
+            run_time=3
+        )
+        self.wait(2)
+
+
+        #  manim -pqh test.py MovingDotEx2
+
+
+
+class AnnuFont(Scene):
+    def construct(self):
+         
+        # WATER-MARK
+        with RegisterFont("Montserrat") as fonts:
+            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
+            water_mark.set_color_by_gradient(REANLEA_GREY)
+        water_mark.save_state()
+
+        # HEADING
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("D I S T A N C E ", font=fonts[0]).scale(2)#.to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            text_1.set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER)
+
+        text_1.save_state()
+
+        s1=AnnularSector(inner_radius=2, outer_radius=2.75, angle=2*PI, color=REANLEA_GREY_DARKER).set_opacity(0.3).move_to(5.5*LEFT)
+        s2=AnnularSector(inner_radius=.2, outer_radius=.4, angle=2*PI, color=REANLEA_GREY).set_opacity(0.3).move_to(UP + 5*RIGHT)
+        s3=AnnularSector(inner_radius=1, outer_radius=1.5, color=REANLEA_SLATE_BLUE).set_opacity(0.6).move_to(3.5*DOWN + 6.5*RIGHT).rotate(PI/2)
+        ann=VGroup(s1,s2,s3)
+
+        # PLAY REGION
+        self.add(s1,s2,s3, water_mark)
+        self.play(
+            Wiggle(s1),
+            Wiggle(s2),
+            Create(text_1),
+        )
+        self.wait()
+        self.play(
+            text_1.animate.scale(0.3).to_edge(UP).shift(0.5*DOWN).set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER),
+            FadeOut(ann)
+        )
+        self.wait()
+
+
+        #  manim -pqh test.py AnnuFont
