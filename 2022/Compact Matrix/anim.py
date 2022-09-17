@@ -250,6 +250,47 @@ class Scene1(Scene):
 
 ###################################################################################################################
 
+class DistanceHeading(Scene):
+    def construct(self):
+         
+        # WATER-MARK
+        with RegisterFont("Montserrat") as fonts:
+            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
+            water_mark.set_color_by_gradient(REANLEA_GREY)
+        water_mark.save_state()
+
+        # HEADING
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("D I S T A N C E ", font=fonts[0]).scale(2)#.to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            text_1.set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER)
+
+        text_1.save_state()
+
+        s1=AnnularSector(inner_radius=2, outer_radius=2.75, angle=2*PI, color=REANLEA_GREY_DARKER).set_opacity(0.3).move_to(5.5*LEFT)
+        s2=AnnularSector(inner_radius=.2, outer_radius=.4, angle=2*PI, color=REANLEA_GREY).set_opacity(0.3).move_to(UP + 5*RIGHT)
+        s3=AnnularSector(inner_radius=1, outer_radius=1.5, color=REANLEA_SLATE_BLUE).set_opacity(0.6).move_to(3.5*DOWN + 6.5*RIGHT).rotate(PI/2)
+        ann=VGroup(s1,s2,s3)
+
+        # PLAY REGION
+        self.add(s1,s2,s3, water_mark)
+        self.play(
+            Wiggle(s1),
+            Wiggle(s2),
+            Create(text_1),
+        )
+        self.wait()
+        self.play(
+            text_1.animate.scale(0.3).to_edge(UP).shift(0.5*DOWN).set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER),
+            FadeOut(ann)
+        )
+        self.wait(3)
+
+
+        # manim -pqk anim.py DistanceHeading
+
+
+
+
 
 class Scene2(MovingCameraScene):
     def construct(self):
@@ -398,7 +439,7 @@ class Scene2(MovingCameraScene):
 
 
         with RegisterFont("Montserrat") as fonts:
-            text_1=Text("D I S T A N C E ", font=fonts[0], weight=BOLD).scale(.6).to_edge(UP).shift(0.5*DOWN)
+            text_1=Text("D I S T A N C E ", font=fonts[0]).scale(.6).to_edge(UP).shift(0.5*DOWN)
             text_1.set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER)
 
         text_1.save_state()
@@ -506,8 +547,8 @@ class Scene2(MovingCameraScene):
 
         #### play region
 
-        self.add(water_mark)
-        self.play(Create(text_1))
+        self.add(water_mark, text_1)
+        #self.play(Create(text_1))
         
         self.wait()
 
@@ -580,7 +621,6 @@ class Scene2(MovingCameraScene):
         self.play(
             FadeOut(*glowing_circles_3),
             Restore(glow_circ_grp_3_2)
-            
         )
 
         self.wait()
@@ -639,4 +679,4 @@ class Scene2(MovingCameraScene):
 
         # manim -pqh anim.py Scene2
 
-        # manim -pql anim.py Scene2
+        # manim -pqk anim.py Scene2
