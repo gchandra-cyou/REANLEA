@@ -38,6 +38,46 @@ config.background_color= REANLEA_BACKGROUND_COLOR
 
 ###################################################################################################################
 
+class PreIntro(Scene):
+    def construct(self):
+
+        # WATER-MARK
+        with RegisterFont("Montserrat") as fonts:
+            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
+            water_mark.set_color_by_gradient(REANLEA_GREY)
+        water_mark.save_state()
+
+        # HEADING
+        with RegisterFont("Courier Prime") as fonts:
+            text_1 = Text("You MAY KNOW almost EVERYTHING if you want.", font=fonts[0]).set_color_by_gradient(REANLEA_GREY).scale(.4)
+            text_2 = Text("But without investing ENOUGH TIME you CAN'T LEARN anything ...", font=fonts[0]).set_color_by_gradient(REANLEA_GREY).scale(.4)
+            
+
+            
+        grp=VGroup(text_1,text_2).arrange(DOWN)
+
+        s1=AnnularSector(inner_radius=2, outer_radius=2.75, angle=2*PI, color=REANLEA_GREY_DARKER).set_opacity(0.3).move_to(5.5*LEFT)
+        s2=AnnularSector(inner_radius=.2, outer_radius=.4, angle=2*PI, color=REANLEA_GREY).set_opacity(0.3).move_to(UP + 5*RIGHT)
+        s3=AnnularSector(inner_radius=1, outer_radius=1.5, color=REANLEA_SLATE_BLUE).set_opacity(0.6).move_to(3.5*DOWN + 6.5*RIGHT).rotate(PI/2)
+        ann=VGroup(s1,s2,s3)
+
+
+        self.add(water_mark)
+        self.play(
+            AddTextLetterByLetter(text_1)
+        )
+        self.play(
+            AddTextLetterByLetter(text_2)
+        )
+
+        self.wait(2)
+
+        self.play(
+            *[FadeOut(mobj) for mobj in self.mobjects]
+        )
+
+        # manim -pqh anim.py PreIntro
+
 class Scene1(Scene):
     def construct(self):
 
@@ -674,9 +714,23 @@ class Scene2(MovingCameraScene):
         self.wait(3)
         self.play(Write(eq5), run_time=2)
         self.wait()
+
+        scene2=VGroup(line,zero_tick,grp,grp2,d_line)
+        scene2_1=VGroup(eq5, d_line_label, eq4, eq3)
+
+        sur_text1=get_surround_bezier(text_1)
+
+        self.play(
+            scene2.animate.set_opacity(.25),
+            Create(sur_text1),
+            scene2_1.animate.set_opacity(0.1)
+        )
+        self.wait(3)
         
 
 
         # manim -pqh anim.py Scene2
 
         # manim -pqk anim.py Scene2
+
+        # manim -pql anim.py Scene2

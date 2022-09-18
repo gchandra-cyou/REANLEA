@@ -1108,3 +1108,277 @@ class AnnuFont(Scene):
 
 
         #  manim -pqh test.py AnnuFont
+
+
+
+class CircEx(Scene):
+    def construct(self):
+        n=40
+        buff_min=0
+        buff_max=0.15
+        glowing_circle = VGroup(
+            *[
+                Circle(radius=.25+interpolate(buff_min, buff_max, b))
+                for b in np.linspace(0, 1, n)
+            ]
+        )
+        for i, c in enumerate(glowing_circle):
+            c.set_stroke(REANLEA_BLUE_LAVENDER, width=0.5, opacity=1- i / n)
+
+
+        self.play(
+            Create(glowing_circle),
+            run_time=5
+        )
+        self.wait()
+
+
+        #  manim -pqh test.py CircEx
+
+
+
+
+class BezierEx(Scene):
+    def construct(self):
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("R E A N L E A ", font=fonts[0]).scale(.55)
+            text_1.set_color_by_gradient(REANLEA_GREY)
+        text_1.save_state()
+        p1 = ParametricFunction(
+            lambda t: bezier(np.array([
+                [.3,1.13,0],
+                [.38, .09, 0],
+                [2.20, 0.95, 0],
+                [2.08, 1.02, 0],  
+            ]))(t),
+            [0, 1],
+            color=REANLEA_CHARM,
+        ).reverse_direction()
+        p2 = ParametricFunction(
+            lambda t: bezier(np.array([
+                [.3, 1.13, 0],
+                [.43, 1.91, 0],
+                [3.21, 1.89, 0],
+                [1.52, .62, 0],
+            ]))(t),
+            [0, 1],
+            color=REANLEA_CHARM,
+        )
+
+        p = ParametricFunction(
+            lambda t: bezier(np.array([
+                [2.08, 1.02, 0],
+                [2.20, 0.95, 0],
+                [.38, .09, 0],
+                [.3,1.13,0],
+                [.3, 1.13, 0],
+                [.43, 1.91, 0],
+                [3.21, 1.89, 0],
+                [1.52, .62, 0],
+            ]))(t),
+            [0, 1],
+            color=REANLEA_CHARM,
+        ).flip(axis=RIGHT).scale(1.85).move_to(text_1.get_center()).rotate(10*DEGREES)
+
+
+        p3 = ParametricFunction(
+            lambda t: bezier(np.array([
+                [1.68, .67, 0],
+                [1.65, 0.35, 0],
+                [.21, .67, 0],
+                [.3,1.13,0],
+                [.47, 1.65, 0],
+                [2.93, 0.26, 0],
+                [.97, .59, 0],
+            ]))(t),
+            [0, 1],
+            color=REANLEA_CHARM,
+        ).flip(axis=RIGHT).scale(2.5).move_to(text_1.get_center()).rotate(-15*DEGREES)
+
+
+        grp=VGroup(p1,p2).flip(axis=RIGHT).rotate(15*DEGREES).scale(1.85).move_to(text_1.get_center())
+
+        p4 = ParametricFunction(
+            lambda t: bezier(np.array([
+                [1.68,.67,0],
+                [1.65,.35, 0],
+                [.21,.67, 0],
+                [.3,1.13, 0],  
+            ]))(t),
+            [0, 1],
+            color=REANLEA_CHARM,
+        )
+        p5 = ParametricFunction(
+            lambda t: bezier(np.array([
+                [.3, 1.13, 0],
+                [.47, 1.65, 0],
+                [2.93, .26, 0],
+                [.93, .58, 0],
+            ]))(t),
+            [0, 1],
+            color=REANLEA_CHARM,
+        )
+        grp1=VGroup(p4,p5).scale(1.95).move_to(text_1.get_center()).flip(axis=RIGHT).rotate(-15*DEGREES)
+
+        self.play(
+            Write(text_1)
+        )
+        self.play(Create(grp1))
+        self.wait(2)
+
+
+        #  manim -pqh test.py BezierEx
+
+
+
+class AddTextLetterByLetterz(Scene):
+    def construct(self):
+
+        # WATER-MARK
+        with RegisterFont("Montserrat") as fonts:
+            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
+            water_mark.set_color_by_gradient(REANLEA_GREY)
+        water_mark.save_state()
+
+        # HEADING
+        with RegisterFont("Courier Prime") as fonts:
+            text_1 = Text("You MAY KNOW almost EVERYTHING if you want.", font=fonts[0]).set_color_by_gradient(REANLEA_GREY).scale(.4)
+            text_2 = Text("But without investing ENOUGH TIME you CAN'T LEARN anything ...", font=fonts[0]).set_color_by_gradient(REANLEA_GREY).scale(.4)
+            
+
+            
+        grp=VGroup(text_1,text_2).arrange(DOWN)
+
+        s1=AnnularSector(inner_radius=2, outer_radius=2.75, angle=2*PI, color=REANLEA_GREY_DARKER).set_opacity(0.3).move_to(5.5*LEFT)
+        s2=AnnularSector(inner_radius=.2, outer_radius=.4, angle=2*PI, color=REANLEA_GREY).set_opacity(0.3).move_to(UP + 5*RIGHT)
+        s3=AnnularSector(inner_radius=1, outer_radius=1.5, color=REANLEA_SLATE_BLUE).set_opacity(0.6).move_to(3.5*DOWN + 6.5*RIGHT).rotate(PI/2)
+        ann=VGroup(s1,s2,s3)
+
+
+        self.add(water_mark)
+        self.play(
+            AddTextLetterByLetter(text_1)
+        )
+        self.play(
+            AddTextLetterByLetter(text_2)
+        )
+
+        self.wait(2)
+
+        self.play(
+            *[FadeOut(mobj) for mobj in self.mobjects]
+        )
+
+
+        #  manim -pqh test.py AddTextLetterByLetterz
+
+
+class ex2(Scene):
+    def construct(self):
+
+        text1=Text("R E A N L E A ").scale(2)
+
+        a=get_surround_bezier(text1)
+
+        self.add(text1)
+        self.play(
+            Create(a),
+            text1.animate.set_opacity(0.5)
+        )
+
+         #  manim -pqh test.py ex2
+
+
+
+class BezierEx2(Scene):
+    def construct(self):
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("R E A N L E A ", font=fonts[0]).scale(.55)
+            text_1.set_color_by_gradient(REANLEA_GREY)
+        text_1.save_state()
+
+        grp=VGroup()
+
+        p1 = ParametricFunction(
+            lambda t: bezier(np.array([
+                [2.21,1.50,0],
+                [2.19, .31, 0],
+                [.33, 1.83, 0],
+                [.40, .58, 0],  
+            ]))(t),
+            [0, 1],
+            #color=REANLEA_CHARM,
+        ).flip(RIGHT)
+
+        grp += p1
+
+
+        ar= Arrow(max_stroke_width_to_length_ratio=0,max_tip_length_to_length_ratio=0.15).move_to(p1.get_end()+.55*DOWN).rotate(PI/2)
+        
+
+        
+        grp += ar
+
+        grp.set_color_by_gradient(REANLEA_BLUE_SKY)
+
+        grp.next_to(text_1, DOWN)
+
+
+        self.play(
+            Write(text_1)
+        )
+        self.play(Create(grp))
+        self.wait(2)
+
+
+        #  manim -pqh test.py BezierEx2
+
+
+
+class ex3(Scene):
+    def construct(self):
+
+        with RegisterFont("Montserrat") as fonts:
+            text1=Text("R E A N L E A ", font=fonts[0]).scale(.55)
+            text1.set_color_by_gradient(REANLEA_GREY).set_opacity(0.6)
+        
+
+        a=ArrowCubicBezierUp(text1)[0].set_color(REANLEA_BLUE_SKY)
+        b=ArrowCubicBezierUp(text1)[1].set_color(REANLEA_BLUE_SKY)
+        c=ArrowCubicBezierUp(text1).set_color(REANLEA_BLUE_SKY)
+
+
+        self.add(text1)
+        self.play(
+            Create(c),
+            run_time=2
+        )
+
+         #  manim -pqh test.py ex3
+
+
+
+class ex4(Scene):
+    def construct(self):
+
+        a=Arrow(start=LEFT, end=RIGHT).set_color(REANLEA_BLUE_SKY)
+        b=Tex("R E A N L E A")
+        grp=VGroup(a,b).arrange(UP, buff=.5)
+
+        self.play(Create(grp), run_time=2)
+        self.wait(2)
+
+
+class ex5(Scene):
+    def construct(self):
+
+        a=Arrow(start=LEFT, end=RIGHT).set_color(REANLEA_BLUE_SKY)
+        b=Tex("R E A N L E A")
+        grp=VGroup(a,b).arrange(UP, buff=.5)
+
+        self.play(
+            Create(grp[0]),
+            Create(grp[1]),
+            run_time=2
+        )
+        self.wait(2)

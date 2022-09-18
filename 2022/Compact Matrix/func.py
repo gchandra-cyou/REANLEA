@@ -25,6 +25,7 @@ from manim.camera.multi_camera import*
 from manim.mobject.geometry.tips import ArrowTriangleFilledTip
 from manim.mobject.geometry.tips import ArrowTip
 
+
 config.background_color= REANLEA_BACKGROUND_COLOR
 
 
@@ -186,3 +187,67 @@ def get_glowing_surround_circle(
     for i, c in enumerate(glowing_circle):
         c.set_stroke(color, width=0.5, opacity=1- i / n)
     return glowing_circle.move_to(circle.get_center())
+
+
+    
+def get_surround_bezier(text):
+
+    rad= max(text.width, text.height, 1.4)
+
+    current_radius=rad
+
+    p1 = ParametricFunction(
+        lambda t: bezier(np.array([
+            [1.68,.67,0],
+            [1.65,.35, 0],
+            [.21,.67, 0],
+            [.3,1.13, 0],  
+        ]))(t),
+        [0, 1],
+        color=REANLEA_CHARM,
+    )
+    p2 = ParametricFunction(
+        lambda t: bezier(np.array([
+            [.3, 1.13, 0],
+            [.47, 1.65, 0],
+            [2.93, .26, 0],
+            [.93, .58, 0],
+        ]))(t),
+        [0, 1],
+        color=REANLEA_CHARM,
+    )
+
+    grp= VGroup(p1,p2).flip(axis=RIGHT).rotate(-15*DEGREES)
+
+    return grp.move_to(text.get_center()).scale(current_radius)
+
+
+
+
+def ArrowCubicBezierUp(text):
+
+        grp=VGroup()
+
+        p1 = ParametricFunction(
+            lambda t: bezier(np.array([
+                [2.21,1.50,0],
+                [2.19, .31, 0],
+                [.33, 1.83, 0],
+                [.40, .58, 0],  
+            ]))(t),
+            [0, 1],
+            #color=REANLEA_CHARM,
+        ).flip(RIGHT)
+
+        grp += p1
+
+
+        ar= Arrow(max_stroke_width_to_length_ratio=0,max_tip_length_to_length_ratio=0.15).move_to(p1.get_end()+.55*DOWN).rotate(PI/2)
+        
+
+        
+        grp += ar
+
+        grp.set_color_by_gradient(REANLEA_CHARM)
+
+        return grp.next_to(text, .2*UP)
