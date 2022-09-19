@@ -1343,16 +1343,20 @@ class ex3(Scene):
             text1.set_color_by_gradient(REANLEA_GREY).set_opacity(0.6)
         
 
-        a=ArrowCubicBezierUp(text1)[0].set_color(REANLEA_BLUE_SKY)
-        b=ArrowCubicBezierUp(text1)[1].set_color(REANLEA_BLUE_SKY)
-        c=ArrowCubicBezierUp(text1).set_color(REANLEA_BLUE_SKY)
+        #a=ArrowCubicBezierUp(text1)[0].set_color(REANLEA_BLUE_SKY)
+        #b=ArrowCubicBezierUp(text1)[1].set_color(REANLEA_CHARM)
+        c=ArrowCubicBezierUp(text1)#.set_color(REANLEA_BLUE_SKY)
+        #arcu=CurvesAsSubmobjects(a)
+
+        #arcu.set_color_by_gradient(REANLEA_GREEN,REANLEA_CHARM)
+
+        #grp=VGroup(b,arcu)
 
 
         self.play(Create(text1), rate_functions=low_frame_rate)
         self.play(
             Create(c),
             lag_ratio=0.2,                                            # to run all the mobjects in a VGroup simultaneously we've to use 'lag_ratio=0'
-            run_time=2
         )
 
          #  manim -pqh test.py ex3

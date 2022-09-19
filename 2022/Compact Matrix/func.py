@@ -239,16 +239,19 @@ def ArrowCubicBezierUp(text):
             #color=REANLEA_CHARM,
         ).flip(RIGHT)
 
-        grp += p1
+        p=CurvesAsSubmobjects(p1)
+        p.set_color_by_gradient(REANLEA_YELLOW,REANLEA_CHARM)
+
+        grp += p
 
 
         ar= Arrow(max_stroke_width_to_length_ratio=0,max_tip_length_to_length_ratio=0.15).move_to(p1.get_end()+.55*DOWN).rotate(PI/2)
-        
+        ar.set_color(REANLEA_CHARM)
 
         
         grp += ar
 
-        grp.set_color_by_gradient(REANLEA_CHARM)
+        #grp.set_color_by_gradient(REANLEA_CHARM)
 
         return grp.next_to(text, .2*UP)
 
