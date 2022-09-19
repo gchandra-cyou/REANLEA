@@ -10,6 +10,7 @@ from numbers import Number
 from tkinter import Y, Label
 from imp import create_dynamic
 from turtle import degrees
+from typing import List
 from manim import*
 from math import*
 from manim_fonts import*
@@ -255,7 +256,67 @@ def ArrowCubicBezierUp(text):
 
         return grp.next_to(text, .2*UP)
 
+def ArrowCubicBezierDown(text):
+
+        grp=VGroup()
+
+        p1 = ParametricFunction(
+            lambda t: bezier(np.array([
+                [2.30,2.21,0],
+                [.9, 2.27, 0],
+                [.76, .1, 0],  
+            ]))(t),
+            [0, 1],
+            #color=REANLEA_CHARM,
+        ).flip(RIGHT)
+
+        p=CurvesAsSubmobjects(p1)
+        p.set_color_by_gradient(REANLEA_BLUE_DARKER,REANLEA_BLUE,REANLEA_CHARM)
+
+        grp += p
+
+
+        ar= Arrow(max_stroke_width_to_length_ratio=0,max_tip_length_to_length_ratio=0.15).move_to(p1.get_end()+.55*DOWN).rotate(PI/2)
+        ar.set_color(REANLEA_CHARM)
+
+        
+        grp += ar
+
+        #grp.set_color_by_gradient(REANLEA_CHARM)
+
+        return grp.next_to(text, .2*DOWN)
+
 
 
 def low_frame_rate(t):
     return np.floor(t*10)/10
+
+
+def bezier_updated(
+    points: np.ndarray
+):
+
+    return lambda t: ((1 - t) ** 6 * points[0]
+            + 6 * t * (1 - t) ** 5 * points[1]
+            + 15 * ((1 - t)**4) * (t**2) * points[2]
+            + 20 * ((1 - t)**3) * (t**3) * points[3]
+            + 15 * ((1 - t)**2) * (t**4) * points[4]
+            + 6 * ((1 - t)**1) * (t**5) * points[5]
+            + t**6 * points[6])
+    
+
+    
+
+
+
+class ExBex:
+    def __init__(
+        self,
+        points: np.ndarray,
+    ):
+        self.points=points
+
+        n=len(points)-1
+
+
+

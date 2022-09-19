@@ -1362,4 +1362,72 @@ class ex3(Scene):
          #  manim -pqh test.py ex3
 
 
+class ex4(Scene):
+    def construct(self):
+
+        with RegisterFont("Montserrat") as fonts:
+            text1=Text("R E A N L E A ", font=fonts[0]).scale(.55)
+            text1.set_color_by_gradient(REANLEA_GREY).set_opacity(0.6)
+        
+
+        
+        c=ArrowCubicBezierDown(text1).shift(.7*RIGHT)
+        
+
+        self.play(
+            Write(text1),
+            Create(c),
+            lag_ratio=0.2, 
+            run_time=2                            
+        )
+        self.wait(2)
+
+         #  manim -pqh test.py ex4
+
+
+
+class BezierEx3(Scene):
+    def construct(self):
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("R E A N L E A ", font=fonts[0]).scale(.55)
+            text_1.set_color_by_gradient(REANLEA_GREY)
+        text_1.save_state()
+
+        grp=VGroup()
+
+        p1 = ParametricFunction(
+            lambda t: bezier_updated(
+                np.array([
+                    [3,10,0],
+                    [6, 4, 0],
+                    [13, 4, 0],
+                    [16, 10, 0],
+                    [13,15,0],
+                    [6,16,0],
+                    [6,20,0]
+                ],
+            ))(t),
+            [0, 1],
+            #color=REANLEA_CHARM,
+        ).flip(DOWN).scale(.3).set_stroke(width=10, opacity=0.35)
+
+        
+
+        grp += p1
+
+        grp.set_color_by_gradient(REANLEA_BLUE_SKY)
+
+        grp.move_to(text_1.get_center())
+
+
+        self.play(
+            Write(text_1)
+        )
+        self.play(Create(grp))
+        self.wait(2)
+
+
+        #  manim -pqh test.py BezierEx3
+
+
 
