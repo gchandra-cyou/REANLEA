@@ -1348,9 +1348,10 @@ class ex3(Scene):
         c=ArrowCubicBezierUp(text1).set_color(REANLEA_BLUE_SKY)
 
 
-        self.add(text1)
+        self.play(Create(text1), rate_functions=low_frame_rate)
         self.play(
             Create(c),
+            lag_ratio=0.2,                                            # to run all the mobjects in a VGroup simultaneously we've to use 'lag_ratio=0'
             run_time=2
         )
 
@@ -1358,27 +1359,3 @@ class ex3(Scene):
 
 
 
-class ex4(Scene):
-    def construct(self):
-
-        a=Arrow(start=LEFT, end=RIGHT).set_color(REANLEA_BLUE_SKY)
-        b=Tex("R E A N L E A")
-        grp=VGroup(a,b).arrange(UP, buff=.5)
-
-        self.play(Create(grp), run_time=2)
-        self.wait(2)
-
-
-class ex5(Scene):
-    def construct(self):
-
-        a=Arrow(start=LEFT, end=RIGHT).set_color(REANLEA_BLUE_SKY)
-        b=Tex("R E A N L E A")
-        grp=VGroup(a,b).arrange(UP, buff=.5)
-
-        self.play(
-            Create(grp[0]),
-            Create(grp[1]),
-            run_time=2
-        )
-        self.wait(2)

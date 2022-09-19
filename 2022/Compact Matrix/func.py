@@ -251,3 +251,8 @@ def ArrowCubicBezierUp(text):
         grp.set_color_by_gradient(REANLEA_CHARM)
 
         return grp.next_to(text, .2*UP)
+
+
+
+def low_frame_rate(t):
+    return np.floor(t*10)/10
