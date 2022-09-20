@@ -1345,7 +1345,7 @@ class ex3(Scene):
 
         #a=ArrowCubicBezierUp(text1)[0].set_color(REANLEA_BLUE_SKY)
         #b=ArrowCubicBezierUp(text1)[1].set_color(REANLEA_CHARM)
-        c=ArrowCubicBezierUp(text1)#.set_color(REANLEA_BLUE_SKY)
+        c=ArrowCubicBezierUp()#.set_color(REANLEA_BLUE_SKY)
         #arcu=CurvesAsSubmobjects(a)
 
         #arcu.set_color_by_gradient(REANLEA_GREEN,REANLEA_CHARM)
@@ -1371,14 +1371,13 @@ class ex4(Scene):
         
 
         
-        c=ArrowCubicBezierDown(text1).shift(.7*RIGHT)
+        c=ArrowQuadricBezierDown(text1).shift(.7*RIGHT)
         
 
         self.play(
             Write(text1),
             Create(c),
-            lag_ratio=0.2, 
-            run_time=2                            
+            lag_ratio=0.2,                            
         )
         self.wait(2)
 
@@ -1430,4 +1429,60 @@ class BezierEx3(Scene):
         #  manim -pqh test.py BezierEx3
 
 
+######## Discord Solution of bezier_updated ###########
 
+
+def bezier_updated1(t,
+    points: np.ndarray,
+    weights: np.ndarray,
+):
+    n = len(points) - 1
+
+
+    '''if n == 3:
+        return (
+             (1 - t) ** 3 * points[0]*weights[0]
+            + 3 * t * (1 - t) ** 2 * points[1]*weights[1]
+            + 3 * (1 - t) * t**2 * points[2]*weights[2]
+            + t**3 * points[3]*weights[3]
+        )
+
+    else:'''
+    return  sum(
+        ((1 - t) ** (n - k)) * (t**k) * choose(n, k) * point * weights[k]  for k, point in enumerate(points) 
+    )
+
+class BezierEx4(Scene):
+    def construct(self):
+        
+        '''for t in np.linspace(0,1,10):
+            print("t={:3.1f} -> {}".format(t,bezier_updated1(t,
+                np.array([
+                    [3,10,0],
+                    [6, 4, 0],
+                    [13, 4, 0],
+                    [16, 10, 0],
+                ]),
+                np.array([8,2,8,2]))))'''
+
+        p1 = ParametricFunction(
+            lambda t: 0.1*bezier_updated1(t,
+                np.array([
+                    [3,10,0],
+                    [6, 4, 0],
+                    [13, 4, 0],
+                    [16, 10, 0],
+
+                ]),
+                np.array([8,2,8,2])),
+            t_range=[0, 1],
+            color=REANLEA_CHARM,
+        )
+        
+        p1.move_to(ORIGIN)
+
+        self.play(Create(p1))
+        self.wait(2)
+
+
+        #  manim -pqh test.py BezierEx4

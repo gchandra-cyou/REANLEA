@@ -33,6 +33,8 @@ from sklearn.datasets import make_blobs
 from reanlea_colors import*
 from func import*
 
+config.max_files_cached=200
+
 config.background_color= REANLEA_BACKGROUND_COLOR
 
 
@@ -64,17 +66,18 @@ class PreIntro(Scene):
 
         self.add(water_mark)
         self.play(
-            AddTextLetterByLetter(text_1)
+            AddTextLetterByLetter(text_1),
         )
         self.play(
-            AddTextLetterByLetter(text_2)
+            AddTextLetterByLetter(text_2),
         )
 
-        self.wait(2)
+        self.wait(5)
 
         self.play(
             *[FadeOut(mobj) for mobj in self.mobjects]
         )
+        self.wait()
 
         # manim -pqh anim.py PreIntro
 
@@ -485,6 +488,7 @@ class Scene2(MovingCameraScene):
         text_1.save_state()
 
 
+
         #glowing circle 
 
         #1
@@ -587,8 +591,8 @@ class Scene2(MovingCameraScene):
 
         #### play region
 
-        self.add(water_mark, text_1)
-        #self.play(Create(text_1))
+        self.add(water_mark)
+        self.play(Write(text_1))
         
         self.wait()
 
@@ -716,7 +720,7 @@ class Scene2(MovingCameraScene):
         self.wait()
 
         scene2=VGroup(line,zero_tick,grp,grp2,d_line)
-        scene2_1=VGroup(eq5, d_line_label, eq4, eq3)
+        scene2_1=VGroup(eq5, eq4, eq3)
 
         sur_text1=get_surround_bezier(text_1)
 
@@ -727,6 +731,87 @@ class Scene2(MovingCameraScene):
         )
         self.wait(3)
         
+        with RegisterFont("Caveat") as fonts:
+            text_2=Text("Let's have a little deeper look ... ", font=fonts[0]).scale(.55)
+            text_2.set_color_by_gradient(REANLEA_GREY).set_opacity(0.6).shift(3*RIGHT)
+
+
+        indicBez=ArrowCubicBezierUp().scale(1.4)
+
+           
+        grp6=VGroup(indicBez,text_2)
+        
+
+        self.play(
+            Create(indicBez),
+            lag_ratio=0.2
+        )
+        self.play(
+            AddTextLetterByLetter(text_2)
+        )
+        self.wait(3)
+
+        self.play(
+            grp6.animate.rotate(30*DEGREES).scale(0.65).move_to(2*UP+3*RIGHT)
+        )
+        self.wait(3)
+
+        with RegisterFont("Cousine") as fonts:
+            text_3 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "Q1. What's the distance between a point from itself ?",
+                " and what can you say if the distance between two points be zero ?"
+            )]).arrange_submobjects(DOWN).to_edge(UP).shift(0.5*DOWN).scale(0.4).set_color(REANLEA_GREY)
+            text_3[1].shift(1.4*RIGHT)
+            text_3.move_to(ORIGIN)
+
+
+        self.play(
+            AddTextWordByWord(text_3)
+        )
+        self.wait(3)
+
+
+
+        #### last scene of Scene2
+
+        line_last =NumberLine(
+            x_range=[-3,3],
+            include_ticks=False,
+            include_tip=False
+        ).set_color(REANLEA_PINK_DARKER).set_opacity(0.6)
+
+        dot1_last=Dot(radius=0.25, color=REANLEA_GREEN).move_to(3*RIGHT).set_sheen(-0.6,DOWN)
+        dot2_last=Dot(radius=0.25, color=REANLEA_VIOLET_LIGHTER).move_to(3*LEFT).set_sheen(-0.4,DOWN)
+
+        p1_last= dot1.get_center()+UP
+        p2_last= dot2.get_center()+UP
+
+        d_line_last=DashedDoubleArrow(
+            start=dot2_last.get_center()+UP, end=dot1_last.get_center()+UP, dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+        v_line1_last=DashedLine(
+            start=dot1_last.get_center(), end=dot1_last.get_center()+UP, stroke_width=1
+        ).set_color(RED_D)
+
+        v_line2_last=DashedLine(
+            start=dot2_last.get_center(), end=dot2_last.get_center()+UP, stroke_width=1
+        ).set_color(RED_D)
+
+        grp_last=VGroup(line_last,dot1_last,dot2_last, d_line_last, v_line1_last, v_line2_last)
+
+
+        grp7=VGroup(grp6,text_1,text_3, sur_text1)
+
+        self.play(
+            ReplacementTransform(scene2,grp_last, run_time=1.5),
+            scene2_1.animate.set_opacity(0),
+            FadeOut(grp7)
+        )
+        self.wait(3)
+
+
 
 
         # manim -pqh anim.py Scene2
@@ -734,3 +819,117 @@ class Scene2(MovingCameraScene):
         # manim -pqk anim.py Scene2
 
         # manim -pql anim.py Scene2
+        
+        # manim -sqk anim.py Scene2
+
+
+
+
+class Scene3(Scene):
+    def construct(self):
+
+        # WATER-MARK
+        with RegisterFont("Montserrat") as fonts:
+            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
+            water_mark.set_color_by_gradient(REANLEA_GREY)
+        water_mark.save_state()
+
+        # Tracker 
+        x=ValueTracker(-3)
+
+        # MOBJECTS
+        line=NumberLine(
+            x_range=[-3,3],
+            include_ticks=False,
+            include_tip=False
+        ).set_color(REANLEA_PINK_DARKER).set_opacity(0.6)
+        
+        dot1=Dot(radius=0.25, color=REANLEA_GREEN).move_to(3*RIGHT).set_sheen(-0.6,DOWN)
+        dot2=Dot(radius=0.25, color=REANLEA_VIOLET_LIGHTER).move_to(3*LEFT).set_sheen(-0.4,DOWN)
+        dot3=dot2.copy().set_opacity(0.4)
+
+
+        # POINTS
+        p1= dot1.get_center()+UP
+        p2= dot2.get_center()+UP
+        p3=dot3.get_center()
+
+
+
+        #dashed lines
+        d_line=DashedDoubleArrow(
+            start=p2, end=p1, dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+
+        v_line1=DashedLine(
+            start=dot1.get_center(), end=dot1.get_center()+UP, stroke_width=1
+        ).set_color(RED_D)
+
+        v_line2=DashedLine(
+            start=dot2.get_center(), end=dot2.get_center()+UP, stroke_width=1
+        ).set_color(RED_D)
+
+
+        # GROUPS
+        grp1=VGroup(line,dot1,dot2, d_line, v_line1, v_line2)
+
+
+        #value updater
+        value=DecimalNumber().set_color_by_gradient(REANLEA_GREEN_LIGHTER).set_sheen(-0.4,DR)
+
+        value.add_updater(
+            lambda x : x.set_value(0-(dot2.get_center()[0]/3))
+        )
+        
+
+        v_line2.add_updater(
+            lambda x : x.move_to(
+                dot2.get_center()+ 0.5*UP
+            )
+        )
+
+        
+
+        dot2.add_updater(lambda z : z.set_x(x.get_value()))
+
+        d_line.add_updater(
+            lambda z: z.become(
+                DashedDoubleArrow(
+                    start=dot2.get_center()+UP, end=dot1.get_center()+UP, dash_length=2.0,stroke_width=2, 
+                    max_tip_length_to_length_ratio=0.015, buff=10
+                ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+            )
+        )
+
+
+        # TEXT
+
+        tex=MathTex("d(x,y)=").set_color(REANLEA_GREEN_LIGHTER).set_sheen(-0.4,DR)
+        grp2=VGroup(tex,value).arrange(RIGHT, buff=0.3).move_to(2*UP)
+        
+
+
+
+        # play region
+
+        self.add(water_mark, grp1)
+        self.wait()
+        self.play(Write(grp2))
+        self.add(dot3)
+        self.wait()
+        '''self.play(
+            MoveAlongPath(dot2, line1, rate_func=rate_functions.ease_in_out_sine),
+            run_time=3
+        )'''
+        self.play(
+            x.animate.set_value(dot1.get_center()[0]),
+            run_time=3
+        )
+        self.wait(2)
+
+
+        # manim -pqk anim.py Scene3
+
+        # manim -pql anim.py Scene3

@@ -225,7 +225,7 @@ def get_surround_bezier(text):
 
 
 
-def ArrowCubicBezierUp(text):
+def ArrowCubicBezierUp():
 
         grp=VGroup()
 
@@ -254,9 +254,9 @@ def ArrowCubicBezierUp(text):
 
         #grp.set_color_by_gradient(REANLEA_CHARM)
 
-        return grp.next_to(text, .2*UP)
+        return grp#.next_to(text, .2*UP)
 
-def ArrowCubicBezierDown(text):
+def ArrowQuadricBezierDown(text):
 
         grp=VGroup()
 
