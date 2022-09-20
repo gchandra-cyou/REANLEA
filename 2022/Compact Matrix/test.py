@@ -1472,17 +1472,60 @@ class BezierEx4(Scene):
                     [6, 4, 0],
                     [13, 4, 0],
                     [16, 10, 0],
-
+                    [13,15,0],
+                    [6,16,0],
+                    [3,10,0]
                 ]),
-                np.array([8,2,8,2])),
+                np.array([1,8,1,8,1,8,1])),
             t_range=[0, 1],
             color=REANLEA_CHARM,
         )
         
-        p1.move_to(ORIGIN)
+        p1.move_to(ORIGIN).flip(UP).rotate(PI/2)
 
         self.play(Create(p1))
         self.wait(2)
 
 
         #  manim -pqh test.py BezierEx4
+
+
+
+class BezierEx5(Scene):
+    def construct(self):
+
+        grp=VGroup()
+        p1 = ParametricFunction(
+            lambda t: bezier_updated1(t,
+                np.array([
+                    [1.91,.29,0],
+                    [.2,1.1, 0],
+                    [1.9, 2.53, 0],
+                ]),
+                np.array([1,1,1])),
+            t_range=[0, 1],
+            color=REANLEA_CHARM,
+        )
+        
+        p1.move_to(ORIGIN).rotate(50*DEGREES)
+
+        p=CurvesAsSubmobjects(p1)
+        p.set_color_by_gradient(REANLEA_GREEN,REANLEA_BLUE,REANLEA_CHARM).set_stroke(width=15)
+
+        grp += p
+
+
+        ar= Arrow(max_stroke_width_to_length_ratio=0,max_tip_length_to_length_ratio=0.65).move_to(p1.get_end()+.55*DOWN).rotate(PI/2)
+        ar.set_color(REANLEA_CHARM)
+
+        
+        grp += ar
+
+        
+        
+
+        self.play(Create(grp))
+        self.wait(2)
+
+
+        #  manim -pqh test.py BezierEx5

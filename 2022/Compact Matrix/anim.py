@@ -40,7 +40,9 @@ config.background_color= REANLEA_BACKGROUND_COLOR
 
 ###################################################################################################################
 
-class PreIntro(Scene):
+# PRE-INTRO
+
+class Scene1(Scene):
     def construct(self):
 
         # WATER-MARK
@@ -50,38 +52,44 @@ class PreIntro(Scene):
         water_mark.save_state()
 
         # HEADING
-        with RegisterFont("Courier Prime") as fonts:
+        with RegisterFont("Cousine") as fonts:
             text_1 = Text("You MAY KNOW almost EVERYTHING if you want.", font=fonts[0]).set_color_by_gradient(REANLEA_GREY).scale(.4)
             text_2 = Text("But without investing ENOUGH TIME you CAN'T LEARN anything ...", font=fonts[0]).set_color_by_gradient(REANLEA_GREY).scale(.4)
             
-
+        with RegisterFont("Courier Prime") as fonts:
+            text_3 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "You MAY KNOW almost EVERYTHING if you want.",
+                "But without investing ENOUGH TIME you CAN'T LEARN anything... "
+            )]).arrange_submobjects(DOWN).to_edge(UP).shift(0.5*DOWN).scale(0.4).set_color(REANLEA_GREY)
+            text_3.move_to(ORIGIN)
             
         grp=VGroup(text_1,text_2).arrange(DOWN)
 
-        s1=AnnularSector(inner_radius=2, outer_radius=2.75, angle=2*PI, color=REANLEA_GREY_DARKER).set_opacity(0.3).move_to(5.5*LEFT)
-        s2=AnnularSector(inner_radius=.2, outer_radius=.4, angle=2*PI, color=REANLEA_GREY).set_opacity(0.3).move_to(UP + 5*RIGHT)
-        s3=AnnularSector(inner_radius=1, outer_radius=1.5, color=REANLEA_SLATE_BLUE).set_opacity(0.6).move_to(3.5*DOWN + 6.5*RIGHT).rotate(PI/2)
-        ann=VGroup(s1,s2,s3)
 
 
         self.add(water_mark)
         self.play(
-            AddTextLetterByLetter(text_1),
-        )
-        self.play(
-            AddTextLetterByLetter(text_2),
+            AddTextWordByWord(text_3),
         )
 
-        self.wait(5)
+
+        self.wait(3)
 
         self.play(
-            *[FadeOut(mobj) for mobj in self.mobjects]
+            FadeOut(text_3),
+            run_time=1.5
         )
         self.wait()
 
-        # manim -pqh anim.py PreIntro
 
-class Scene1(Scene):
+
+        # manim -pqh anim.py Scene1
+
+
+###################################################################################################################
+
+
+class Scene2(Scene):
     def construct(self):
 
         zoom_exp = 1
@@ -286,14 +294,13 @@ class Scene1(Scene):
         
 
 
-
-         # manim -pqh anim.py Scene1
-
+         # manim -pqh anim.py Scene2
 
 
 ###################################################################################################################
 
-class DistanceHeading(Scene):
+
+class Scene3(Scene):
     def construct(self):
          
         # WATER-MARK
@@ -329,13 +336,14 @@ class DistanceHeading(Scene):
         self.wait(3)
 
 
-        # manim -pqk anim.py DistanceHeading
+
+        # manim -pqk anim.py Scene3
 
 
+###################################################################################################################
 
 
-
-class Scene2(MovingCameraScene):
+class Scene4(MovingCameraScene):
     def construct(self):
         self.camera.frame.save_state()
 
@@ -813,19 +821,13 @@ class Scene2(MovingCameraScene):
 
 
 
-
-        # manim -pqh anim.py Scene2
-
-        # manim -pqk anim.py Scene2
-
-        # manim -pql anim.py Scene2
-        
-        # manim -sqk anim.py Scene2
+        # manim -pqh anim.py Scene4
 
 
+###################################################################################################################
 
 
-class Scene3(Scene):
+class Scene5(Scene):
     def construct(self):
 
         # WATER-MARK
@@ -880,7 +882,7 @@ class Scene3(Scene):
         value=DecimalNumber().set_color_by_gradient(REANLEA_GREEN_LIGHTER).set_sheen(-0.4,DR)
 
         value.add_updater(
-            lambda x : x.set_value(0-(dot2.get_center()[0]/3))
+            lambda x : x.set_value((1-(dot2.get_center()[0]/3))/2)
         )
         
 
@@ -930,6 +932,7 @@ class Scene3(Scene):
         self.wait(2)
 
 
-        # manim -pqk anim.py Scene3
+        # manim -pqh anim.py Scene5
 
-        # manim -pql anim.py Scene3
+
+###################################################################################################################

@@ -292,31 +292,14 @@ def low_frame_rate(t):
     return np.floor(t*10)/10
 
 
-def bezier_updated(
-    points: np.ndarray
+def bezier_updated(t,
+    points: np.ndarray,
+    weights: np.ndarray,
 ):
+    n = len(points) - 1
 
-    return lambda t: ((1 - t) ** 6 * points[0]
-            + 6 * t * (1 - t) ** 5 * points[1]
-            + 15 * ((1 - t)**4) * (t**2) * points[2]
-            + 20 * ((1 - t)**3) * (t**3) * points[3]
-            + 15 * ((1 - t)**2) * (t**4) * points[4]
-            + 6 * ((1 - t)**1) * (t**5) * points[5]
-            + t**6 * points[6])
-    
-
-    
-
-
-
-class ExBex:
-    def __init__(
-        self,
-        points: np.ndarray,
-    ):
-        self.points=points
-
-        n=len(points)-1
-
-
+    return  sum(
+        ((1 - t) ** (n - k)) * (t**k) * choose(n, k) * point * weights[k]      
+        for k, point in enumerate(points) 
+    )
 
