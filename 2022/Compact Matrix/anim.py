@@ -791,6 +791,10 @@ class Scene4(MovingCameraScene):
         dot1_last=Dot(radius=0.25, color=REANLEA_GREEN).move_to(3*RIGHT).set_sheen(-0.6,DOWN)
         dot2_last=Dot(radius=0.25, color=REANLEA_VIOLET_LIGHTER).move_to(3*LEFT).set_sheen(-0.4,DOWN)
 
+        dot1_last_lbl=MathTex("y").scale(0.6).next_to(dot1_last, DOWN)
+        dot2_last_lbl=MathTex("x").scale(0.6).next_to(dot2_last, DOWN)
+
+
         p1_last= dot1.get_center()+UP
         p2_last= dot2.get_center()+UP
 
@@ -807,7 +811,7 @@ class Scene4(MovingCameraScene):
             start=dot2_last.get_center(), end=dot2_last.get_center()+UP, stroke_width=1
         ).set_color(RED_D)
 
-        grp_last=VGroup(line_last,dot1_last,dot2_last, d_line_last, v_line1_last, v_line2_last)
+        grp_last=VGroup(line_last,dot1_last,dot2_last, d_line_last, v_line1_last, v_line2_last, dot1_last_lbl,dot2_last_lbl)
 
 
         grp7=VGroup(grp6,text_1,text_3, sur_text1)
@@ -822,6 +826,8 @@ class Scene4(MovingCameraScene):
 
 
         # manim -pqh anim.py Scene4
+
+        # manim -sqk anim.py Scene4
 
 
 ###################################################################################################################
@@ -849,7 +855,11 @@ class Scene5(Scene):
         dot1=Dot(radius=0.25, color=REANLEA_GREEN).move_to(3*RIGHT).set_sheen(-0.6,DOWN)
         dot2=Dot(radius=0.25, color=REANLEA_VIOLET_LIGHTER).move_to(3*LEFT).set_sheen(-0.4,DOWN)
         dot3=dot2.copy().set_opacity(0.4)
+        
+        # DOT LABELS
 
+        dot1_lbl=MathTex("y").scale(0.6).next_to(dot1, DOWN)
+        dot3_lbl=MathTex("x").scale(0.6).next_to(dot3, DOWN)
 
         # POINTS
         p1= dot1.get_center()+UP
@@ -879,7 +889,7 @@ class Scene5(Scene):
 
 
         #value updater
-        value=DecimalNumber().set_color_by_gradient(REANLEA_GREEN_LIGHTER).set_sheen(-0.4,DR)
+        value=DecimalNumber().set_color_by_gradient(REANLEA_MAGENTA).set_sheen(-0.1,LEFT)
 
         value.add_updater(
             lambda x : x.set_value((1-(dot2.get_center()[0]/3))/2)
@@ -905,18 +915,60 @@ class Scene5(Scene):
             )
         )
 
+        # Arrow Zone
+        grp3=VGroup()
+        p1 = ParametricFunction(
+            lambda t: bezier_updated(t,
+                np.array([
+                    [1.91,.29,0],
+                    [.2,1.1, 0],
+                    [1.9, 2.53, 0],
+                ]),
+                np.array([1,1,1])),
+            t_range=[0, 1],
+            color=REANLEA_CHARM,
+        )
+        
+        p1.move_to(ORIGIN).rotate(50*DEGREES)
+
+        p=CurvesAsSubmobjects(p1)
+        p.set_color_by_gradient(REANLEA_YELLOW_CREAM,REANLEA_CHARM).set_stroke(width=3)
+
+        grp3 += p
+
+
+        ar= Arrow(max_stroke_width_to_length_ratio=0,max_tip_length_to_length_ratio=0.15).move_to(p1.get_end()+.55*DOWN).rotate(PI/2)
+        ar.set_color(REANLEA_CHARM)
+
+        
+        grp3 += ar
+        grp3.move_to(1.35*DOWN+RIGHT)
+
+
 
         # TEXT
 
-        tex=MathTex("d(x,y)=").set_color(REANLEA_GREEN_LIGHTER).set_sheen(-0.4,DR)
-        grp2=VGroup(tex,value).arrange(RIGHT, buff=0.3).move_to(2*UP)
+        tex=MathTex("d(x,y)=")#.set_color(REANLEA_GREEN_LIGHTER).set_sheen(-0.4,DR)
+        grp2=VGroup(tex,value).arrange(RIGHT, buff=0.3).move_to(2*UP).set_color_by_gradient(REANLEA_GREEN,REANLEA_MAGENTA)
+
+        with RegisterFont("Caveat") as fonts:
+            text_1=Text("Continuous Motion ... ", font=fonts[0]).scale(.55)
+            text_1.set_color_by_gradient(REANLEA_YELLOW_CREAM,REANLEA_AQUA).set_opacity(0.6).shift(3*RIGHT)
+        
+        text_1.next_to(grp3.get_boundary_point(DOWN),4*RIGHT+UP)
         
 
+        text_2_1=MathTex(r"\rightarrow", "0")
+        text_2_2=Tex("as")
+        text_2_3=MathTex("x",r"\rightarrow", "y")
+
+        text_2=VGroup(text_2_1,text_2_2,text_2_3).arrange(RIGHT, buff=0.4).next_to(value, 1.5*RIGHT)
+        text_2.set_color_by_gradient(REANLEA_MAGENTA,REANLEA_AQUA)
 
 
         # play region
 
-        self.add(water_mark, grp1)
+        self.add(water_mark, grp1, dot1_lbl,dot3_lbl)
         self.wait()
         self.play(Write(grp2))
         self.add(dot3)
@@ -930,9 +982,54 @@ class Scene5(Scene):
             run_time=3
         )
         self.wait(2)
+        
+        self.play(
+            x.animate.set_value(dot3.get_center()[0] + dot1.get_center()[0]/4),
+        )
+        self.play(
+            x.animate.set_value(dot3.get_center()[0]/2 + dot1.get_center()[0]),
+        )
+        self.play(
+            x.animate.set_value(dot3.get_center()[0] + dot1.get_center()[0]/3),
+            Create(grp3)
+        )
+        self.play(
+            x.animate.set_value(dot3.get_center()[0]/4 + dot1.get_center()[0]),
+           AddTextLetterByLetter(text_1)
+        )
+        self.play(
+            x.animate.set_value(dot3.get_center()[0] + dot1.get_center()[0]),
+        )
+        self.play(
+            x.animate.set_value(dot3.get_center()[0]/6 + dot1.get_center()[0]),
+        )
+        self.play(
+            x.animate.set_value(dot3.get_center()[0]),
+            
+        )
+        self.play(
+            Write(text_2),
+            x.animate.set_value(dot3.get_center()[0]/10 + dot1.get_center()[0]),
+            run_time=3
+        )
+        self.wait()
+        
+        self.play(
+            x.animate.set_value(dot1.get_center()[0]),
+            run_time=3
+        )
+
+
+        self.wait(2)
+
+
 
 
         # manim -pqh anim.py Scene5
+
+        # manim -pql anim.py Scene5
+
+        # manim -sqk anim.py Scene5
 
 
 ###################################################################################################################

@@ -11,10 +11,11 @@ from multiprocessing import context
 from multiprocessing.dummy import Value
 from numbers import Number
 from operator import is_not
+from pickle import TRUE
 from tkinter import CENTER, Y, Label, Scale
 from imp import create_dynamic
 from tracemalloc import start
-from turtle import degrees, dot
+from turtle import degrees, dot, width
 from manim import*
 from math import*
 from manim_fonts import*
@@ -1531,8 +1532,104 @@ class BezierEx5(Scene):
         #  manim -pqh test.py BezierEx5
 
 
-
+# ROUND CORNERS   
+# VISIT : https://github.com/GarryBGoode/Manim_CAD_Drawing_utils
 class Test_round(Scene):
+    def construct(self):
+        mob1 = RegularPolygon(n=4,radius=1.5,color=REANLEA_GREY_DARKER).rotate(PI/4)
+        mob1.set_stroke(width=50, opacity=.4).scale(2.5)
+        mob2 = Triangle(radius=1.5,color=REANLEA_BLUE_LAVENDER).scale(2.5)
+        mob2#.set_fill(opacity=0.1).set_z_index(10)
+        crbase = Rectangle(height=0.5,width=3)
+        mob3 = Union(crbase.copy().rotate(PI/4),crbase.copy().rotate(-PI/4),color=BLUE)
+        mob4 = Circle(radius=1.3)
+        mob2#.shift(2.5*UP)
+        mob3.shift(2.5*DOWN)
+        mob1.shift(2.5*LEFT)
+        mob4.shift(2.5*RIGHT)
+
+        mob1 = Round_Corners(mob1, 0.25)
+        #mob2 = Round_Corners(mob2, 0.25)
+        mob2_1=mob2.copy().scale(1.5)
+        mob3 = Round_Corners(mob3, 0.25)
+        mob4 = Round_Corners (mob4, 0.25)
+        #self.add(mob1,mob2,mob3,mob4)
+        grp=VGroup(mob1,mob2,mob3,mob4)
+
+        self.play(
+            Write(grp)
+        )
+        self.wait(2)
+
+
+        # manim -pqh test.py Test_round
+
+
+class  test_dimension_pointer(Scene):
+    def construct(self):
+        mob1 = Round_Corners(Triangle().scale(2),0.3)
+        p = ValueTracker(0)
+        dim1 = Pointer_To_Mob(mob1,p.get_value(),r'triangel')
+        dim1.add_updater(lambda mob: mob.update_mob(mob1,p.get_value()))
+        dim1.update()
+        PM = Path_mapper(mob1)
+        self.play(Create(mob1),rate_func=PM.equalize_rate_func(smooth))
+        self.play(Create(dim1))
+        self.play(p.animate.set_value(1),run_time=10)
+        self.play(Uncreate(mob1,rate_func=PM.equalize_rate_func(smooth)))
+        self.play(Uncreate(dim1))
+        self.wait()
+
+         # manim -pqh test.py test_dimension_pointer
+
+
+class test_dimension_base(Scene):
+    def construct(self):
+        mob1 = Round_Corners(Triangle().scale(2),0.3)
+        dim1 = Linear_Dimension(mob1.get_critical_point(UP),
+                                mob1.get_critical_point(DOWN),
+                                direction=RIGHT,
+                                offset=3,
+                                color=RED)
+        dim2 = Linear_Dimension(mob1.get_critical_point(RIGHT),
+                                mob1.get_critical_point(LEFT),
+                                direction=UP,
+                                offset=-3,
+                                color=RED)
+        #self.add(mob1,dim1,dim2)
+        grp=VGroup(mob1,dim1,dim2)
+
+        self.play(Write(grp))
+        self.wait(2)
+
+
+        # manim -pqh test.py test_dimension_base
+
+
+
+class test_dash(Scene):
+    def construct(self):
+        mob1 = Round_Corners(Square().scale(3),radius=0.8).shift(DOWN*0)
+        vt = ValueTracker(0)
+        dash1 = Dashed_line_mobject(mob1,num_dashes=36,dashed_ratio=0.5,dash_offset=0)
+        def dash_updater(mob):
+            offset = vt.get_value()%1
+            dshgrp = mob.generate_dash_mobjects(
+                **mob.generate_dash_pattern_dash_distributed(36, dash_ratio=0.5, offset=offset)
+            )
+            mob['dashes'].become(dshgrp)
+        dash1.add_updater(dash_updater)
+
+        self.add(dash1)
+        self.play(vt.animate.set_value(2),run_time=6)
+        self.wait(0.5)
+
+
+
+         # manim -pqh test.py test_dash
+
+
+class Test_chamfer(Scene):
     def construct(self):
         mob1 = RegularPolygon(n=4,radius=1.5,color=PINK).rotate(PI/4)
         mob2 = Triangle(radius=1.5,color=TEAL)
@@ -1544,19 +1641,17 @@ class Test_round(Scene):
         mob1.shift(2.5*LEFT)
         mob4.shift(2.5*RIGHT)
 
-        mob1 = Round_Corners(mob1, 0.25)
-        mob2 = Round_Corners(mob2, 0.25)
-        mob3 = Round_Corners(mob3, 0.25)
-        mob4 = Round_Corners (mob4, 0.25)
+        mob1 = Chamfer_Corners(mob1, 0.25)
+        mob2 = Chamfer_Corners(mob2,0.25)
+        mob3 = Chamfer_Corners(mob3, 0.25)
         #self.add(mob1,mob2,mob3,mob4)
 
+        grp=VGroup(mob1,mob2,mob3,mob4)
+
         self.play(
-            Create(mob1),
-            Write(mob2),
-            FadeIn(mob3),
-            Create(mob4)
+            Create(mob2)
         )
         self.wait(2)
 
 
-        # manim -pqh test.py Test_round
+        # manim -pqh test.py Test_chamfer

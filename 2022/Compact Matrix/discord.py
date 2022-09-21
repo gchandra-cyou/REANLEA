@@ -456,4 +456,73 @@ class Test_round(Scene):
 
 
 
+class  test_dimension_pointer(Scene):
+    def construct(self):
+        mob1 = Round_Corners(Triangle().scale(2),0.3)
+        p = ValueTracker(0)
+        dim1 = Pointer_To_Mob(mob1,p.get_value(),r'triangel')
+        dim1.add_updater(lambda mob: mob.update_mob(mob1,p.get_value()))
+        dim1.update()
+        PM = Path_mapper(mob1)
+        self.play(Create(mob1),rate_func=PM.equalize_rate_func(smooth))
+        self.play(Create(dim1))
+        self.play(p.animate.set_value(1),run_time=10)
+        self.play(Uncreate(mob1,rate_func=PM.equalize_rate_func(smooth)))
+        self.play(Uncreate(dim1))
+        self.wait()
+
+         # manim -pqh discord.py test_dimension_pointer
+
+
+class test_dimension_base(Scene):
+    def construct(self):
+        mob1 = Round_Corners(Triangle().scale(2),0.3)
+        dim1 = Linear_Dimension(mob1.get_critical_point(UP),
+                                mob1.get_critical_point(DOWN),
+                                direction=RIGHT,
+                                offset=3,
+                                color=RED)
+        dim2 = Linear_Dimension(mob1.get_critical_point(RIGHT),
+                                mob1.get_critical_point(LEFT),
+                                direction=UP,
+                                offset=-3,
+                                color=RED)
+        #self.add(mob1,dim1,dim2)
+        grp=VGroup(mob1,dim1,dim2)
+
+        self.play(Write(grp))
+        self.wait(2)
+
+
+        # manim -pqh discord.py test_dimension_base
+
+
+
+class test_dash(Scene):
+    def construct(self):
+        mob1 = Round_Corners(Square().scale(3),radius=0.8).shift(DOWN*0)
+        vt = ValueTracker(0)
+        dash1 = Dashed_line_mobject(mob1,num_dashes=36,dashed_ratio=0.5,dash_offset=0)
+        def dash_updater(mob):
+            offset = vt.get_value()%1
+            dshgrp = mob.generate_dash_mobjects(
+                **mob.generate_dash_pattern_dash_distributed(36, dash_ratio=0.5, offset=offset)
+            )
+            mob['dashes'].become(dshgrp)
+        dash1.add_updater(dash_updater)
+
+        self.add(dash1)
+        self.play(vt.animate.set_value(2),run_time=6)
+        self.wait(0.5)
+
+
+
+         # manim -pqh discord.py test_dash
+
+
+
+
+
+
+
 ###################################################################################################################
