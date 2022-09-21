@@ -1,0 +1,2 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1080p60/partial_movie_files/Shrink_sin_func1/1695741621_3607514576_1679032281.mp4'
