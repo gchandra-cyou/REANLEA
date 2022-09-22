@@ -36,6 +36,11 @@ from manim.utils.space_ops import angle_of_vector
 from manim.mobject.geometry.tips import ArrowTriangleFilledTip
 from manim.mobject.geometry.tips import ArrowTip
 from manim.mobject.geometry.tips import ArrowTriangleTip
+from round_corner import*
+from scipy.optimize import fsolve
+from scipy.optimize import root
+from scipy.optimize import root_scalar
+from round_corner import angle_between_vectors_signed
 
 
 config.background_color= REANLEA_BACKGROUND_COLOR
@@ -347,11 +352,7 @@ class Pie(Scene):
 
 ###########################################################################################################
 
-from scipy.optimize import fsolve
-from scipy.optimize import root
-from scipy.optimize import root_scalar
-import numpy as np
-from func import angle_between_vectors_signed
+
 
 
 
@@ -526,3 +527,257 @@ class test_dash(Scene):
 
 
 ###################################################################################################################
+
+
+
+class test17(Scene):
+    def construct(self):
+        baselen = 0.5
+        max_n   = 10
+        origo   = 3*LEFT+3*DOWN
+        sq = Square(side_length=baselen)
+        triangle = VGroup()  # create an empty group
+
+        for x in np.arange(1, max_n+1, 1):
+            for y in np.arange(1, x+1, 1):
+
+                triangle += sq.copy().move_to(x*baselen*RIGHT + y*baselen*UP + origo) 
+
+                self.add(triangle[-1]) # retrieve latest added sq and Create
+
+        # now make a copy of the triangle
+        new_triangle = triangle.copy().set_color(RED) 
+
+        self.play(Create(new_triangle))
+
+        self.play(Rotate(new_triangle, 720*DEGREES), run_time=4)
+
+
+        # manim -pqh discord.py test17
+
+
+
+class multiplication(Scene):
+    def construct(self):
+        for a in [1,2,3]:
+            theTable = []
+            for b in range(10):
+                theTable.append([a, r"\times", b+1, r"=", a*(b+1)])
+            texTable = MathTable(theTable,include_outer_lines=False).scale(0.6).to_edge(UP)
+            texTable.remove(*texTable.get_vertical_lines())
+            texTable.remove(*texTable.get_horizontal_lines())
+
+            self.play(Write(texTable))
+
+            self.wait(5)
+            self.remove(texTable)
+
+
+            # manim -pqh discord.py multiplication
+
+
+
+class square_from_line(Scene):
+    def construct(self):
+        line1 = Line(start=ORIGIN, end=1*RIGHT)
+        line2 = line1.copy().shift(1*RIGHT)        
+        line3 = line2.copy().shift(1*RIGHT)        
+        line4 = line3.copy().shift(1*RIGHT)
+        all = VGroup(line1,line2,line3,line4)
+        grp2 = VGroup(line2,line3,line4)       
+        grp3 = VGroup(line3,line4)
+        self.play(Write(all))
+        self.wait(2)
+        self.play(Rotate(grp2, angle=90*DEGREES, about_point=1*RIGHT))        
+        self.play(Rotate(grp3, angle=90*DEGREES, about_point=1*RIGHT+1*UP))
+        self.play(Rotate(line4, angle=90*DEGREES, about_point=1*UP))        
+        self.wait(2)
+
+
+        # manim -pqh discord.py square_from_line
+
+
+
+class line2square(Scene):
+    def construct(self):
+        line = Line(start=1*RIGHT+3*DOWN, end=3*RIGHT+0*UP)
+
+        self.play(Create(line))
+        self.wait(2)
+        
+        length = line.get_length()
+        angle  = line.get_angle()
+
+        square = Square(side_length=length).move_to(ORIGIN, DL)
+        self.play(Create(square))
+
+        self.play(Rotate(square, angle=angle, about_point=ORIGIN))
+        self.play(square.animate.shift(line.start))
+
+        self.wait(2)
+
+
+        # manim -pqh discord.py line2square
+
+
+
+class MobsInFront(Scene):
+    def construct(self):
+        circ = Circle(radius=1,fill_color=PINK,fill_opacity=1,
+            stroke_color=PINK,stroke_opacity=1).set_z_index(2)
+        edge = Dot(circ.get_right())
+        anim = Flash(edge,color=BLUE,run_time=2,line_length=1)
+        circ.add_updater(
+            lambda l: l.become(
+                Circle(arc_center=[0,0,1],radius=1,fill_color=PINK,
+                fill_opacity=1,stroke_color=PINK,stroke_opacity=1)
+            )
+        )
+
+        self.add(circ)
+        self.play(anim)
+        self.wait()  
+
+
+        # manim -pqh discord.py MobsInFront
+
+
+
+class Combine(Scene):
+    def construct(self):
+        some_text = Tex(
+            r"$P(\hspace{2em}$"
+        )
+        square = Square(0.5, color=RED, fill_color=RED, fill_opacity=0.8)
+        square.next_to(some_text, buff=0.1)
+        some_other_text = Tex (r"$)$")
+        some_other_text.next_to(square,buff=0.1)
+
+        grp=VGroup(some_text, square, some_other_text)
+
+        self.play(Create(grp))
+
+
+        # manim -pqh discord.py Combine
+
+
+
+class tracesquare(MovingCameraScene):
+    def construct(self):
+        grid = NumberPlane()
+        self.add(grid)
+        s = Square(side_length=2, color=RED, fill_opacity=0.2)
+        self.add(grid, s)
+
+
+        for dir in [UP * 2,LEFT * 2,DOWN * 5,RIGHT * 5,LEFT * 6]:
+            a = s.copy()
+            s.set_color(color=GREEN)
+            s.set_fill(color=GREEN)
+            s.set_opacity(0.4)
+            self.play(a.animate.shift(dir))
+            s = a
+
+        self.wait(1)
+
+
+        # manim -pqh discord.py tracesquare
+
+
+
+class MeineSzene(Scene):
+    def construct(self):
+        line1 = Line(3*LEFT, 3*RIGHT).shift(UP).set_color(RED)
+        line2 = Line(3*LEFT, 3*RIGHT).set_color(GREEN)
+
+        d1 = Dot().move_to(line1.get_left())
+        d2 = Dot().move_to(line2.get_left())
+
+        label1 = Tex("smooth").next_to(line1, RIGHT)
+        label2 = Tex("linear").next_to(line2, RIGHT)
+
+
+        tr1=ValueTracker(-3)
+        tr2=ValueTracker(-3)
+
+
+        d1.add_updater(lambda z: z.set_x(tr1.get_value()))
+        d2.add_updater(lambda z: z.set_x(tr2.get_value()))
+        self.add(d1,d2)
+        self.add(line1,line2,d1,d2,label1,label2 )
+
+        self.play(tr1.animate(rate_func=smooth).set_value(3), tr2.animate(rate_func=linear).set_value(3))
+        self.wait()
+
+
+        # manim -pqh discord.py MeineSzene
+
+
+
+class LightArcEx(Scene):
+
+    @staticmethod
+    def colorfunction(s, freq = 50, **kwargs):
+        return interpolate_color(BLUE, RED, (1 + np.cos(freq * PI * s)) / 2)
+
+    def light_arc(self, f, **kwargs):
+        curve = ParametricFunction(f, **kwargs)
+        pieces = CurvesAsSubmobjects(curve)
+
+        length_diffs = [ curve.get_nth_curve_length(n)
+                                    for n in range(curve.get_num_curves()) ]
+        length_parts = np.cumsum(length_diffs)
+        total_length = length_parts[-1]
+        colors = [ self.colorfunction(length_parts[n]/total_length, **kwargs)
+                                    for n in range(curve.get_num_curves()) ]
+
+        pieces.set_color_by_gradient(*colors)
+
+        return pieces
+    
+    def construct(self):
+        
+        arcs = [ self.light_arc(lambda t : [-3 * np.cos(t), (2 + 0.01 *c) * np.sin(t) - 1, 0],
+                          t_range=[0, PI, 0.01]) for c in range(100) ]
+
+        self.play(ShowSubmobjectsOneByOne(arcs))
+
+
+        # manim -pqh discord.py LightArcEx
+
+
+
+class ex2(Scene):
+    def construct(self):
+        def get_slope_from_path(path, alpha, dx=0.001):
+            sign = 1 if alpha < 1-dx else -1
+            return angle_of_vector(sign * path.point_from_proportion(alpha + sign * dx) - sign * path.point_from_proportion(alpha))
+
+        b = VMobject().set_points_smoothly([
+            LEFT*3+UP*2,RIGHT*2+DOWN*1.7,DOWN*2+LEFT*2.5,UP*1.7+RIGHT*2
+            ])
+        arrow = Triangle(fill_opacity=1)\
+                .set(width=0.3)\
+                .move_to(b.get_start())
+        arrow.save_state()
+
+        arrow.rotate(get_slope_from_path(b,0)-PI/2)
+
+        def update_arrow(mob,alpha):
+            mob.restore()
+            mob.move_to(b.point_from_proportion(alpha))
+            mob.rotate(get_slope_from_path(b,alpha)-PI/2)
+
+        self.add(b,arrow)
+        self.play(
+                UpdateFromAlphaFunc(
+                    arrow, update_arrow
+                    ),
+                run_time=4
+                )
+        self.wait()
+
+
+
+
+        # manim -pqh discord.py ex2

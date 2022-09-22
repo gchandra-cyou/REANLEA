@@ -32,6 +32,7 @@ from manim.utils.space_ops import angle_of_vector
 from manim.mobject.geometry.tips import ArrowTriangleFilledTip
 from manim.mobject.geometry.tips import ArrowTip
 from manim.mobject.geometry.tips import ArrowTriangleTip
+from round_corner import*
 
 
 config.background_color= REANLEA_BACKGROUND_COLOR
@@ -1655,3 +1656,134 @@ class Test_chamfer(Scene):
 
 
         # manim -pqh test.py Test_chamfer
+
+
+
+
+class RopeEx(Scene):
+    def construct(self):
+
+        theta_tracker=ValueTracker(0)
+    
+        dot1=Dot(radius=0.15, color=REANLEA_GREEN_LIGHTER).move_to(3*LEFT).set_sheen(-0.6,DOWN)
+        dot2=Dot(radius=0.15, color=REANLEA_BLUE_SKY).move_to(3*RIGHT).set_sheen(-0.6,DOWN)
+
+        dot3=Dot(radius=0.15, color=REANLEA_BLUE_SKY).move_to(4*RIGHT+UP)
+        dot4=Dot(radius=0.15, color=REANLEA_BLUE_SKY).move_to(4*LEFT+DOWN)
+
+
+
+        p1= dot1.get_center()
+        p2= dot2.get_center()
+
+        line=Line(start=p1,end=p2).set_color(REANLEA_PURPLE)
+
+        length = line.get_length()
+        angle1  = line.get_angle()
+
+        line1=line.copy()
+        line1_ref=line1.copy().set_stroke(width=15)
+
+        
+        '''line.add_updater(lambda z : z.become(
+            Line(start=dot1.get_center(), end=dot2.get_center())
+        ))'''
+
+        line=always_redraw(lambda : Line(start=dot1.get_center(), end=dot2.get_center()) )
+
+        line1.rotate(
+            theta_tracker.get_value()*DEGREES, about_point=dot1.get_center()
+        )
+
+        line1.add_updater(
+            lambda x: x.become(line1_ref.copy().rotate(
+                theta_tracker.get_value(), about_point=dot1.get_center()
+            ))
+        )
+
+        
+
+
+        grp=VGroup(line,line1,dot1,dot2)
+
+
+
+
+        self.play(Write(grp))
+        mxg=dot2.animate.move_to(dot3.get_center()[0])
+        self.play(
+           mxg,
+           theta_tracker.animate.set_value(line.get_angle())
+        )
+        self.play(theta_tracker.animate.set_value(line.get_angle()))
+        
+        self.wait(2)
+
+        
+
+
+        # manim -pqh test.py RopeEx
+
+
+
+class TransformPathArc(Scene):
+            def construct(self):
+                def make_arc_path(start, end, arc_angle):
+                    points = []
+                    p_fn = path_along_arc(arc_angle)
+                    # alpha animates between 0.0 and 1.0, where 0.0
+                    # is the beginning of the animation and 1.0 is the end.
+                    for alpha in range(0, 11):
+                        points.append(p_fn(start, end, alpha / 10.0))
+                    path = VMobject(stroke_color=YELLOW)
+                    path.set_points_smoothly(points)
+                    return path
+
+                left = Circle(stroke_color=BLUE_E, fill_opacity=1.0, radius=0.5).move_to(LEFT * 2)
+                colors = [TEAL_A, TEAL_B, TEAL_C, TEAL_D, TEAL_E, GREEN_A]
+                # Positive angles move counter-clockwise, negative angles move clockwise.
+                examples = [-90, 0, 30, 90, 180, 270]
+                anims = []
+                for idx, angle in enumerate(examples):
+                    left_c = left.copy().shift((3 - idx) * UP)
+                    left_c.fill_color = colors[idx]
+                    right_c = left_c.copy().shift(4 * RIGHT)
+                    path_arc = make_arc_path(left_c.get_center(), right_c.get_center(),
+                                             arc_angle=angle * DEGREES)
+                    desc = Text('%d°' % examples[idx]).next_to(left_c, LEFT)
+                    # Make the circles in front of the text in front of the arcs.
+                    self.add(
+                        path_arc.set_z_index(1),
+                        desc.set_z_index(2),
+                        left_c.set_z_index(3),
+                    )
+                    anims.append(Transform(left_c, right_c, path_arc=angle * DEGREES))
+                    anims
+
+                self.play(*anims, run_time=2)
+                self.wait()
+
+
+                 # manim -pqh test.py TransformPathArc  
+
+
+
+class sqEx(Scene):
+    def construct(self):
+        sq= Square(side_length=1)
+
+        def update_sq(mob):
+            mob.scale(1.5)
+            mob.rotate(PI/3)
+            return mob
+
+        self.play(Create(sq))
+
+        self.play(
+                ApplyFunction(update_sq, sq),
+                run_time=4
+                )
+        
+        self.wait()
+
+        # manim -pqh test.py sqEx
