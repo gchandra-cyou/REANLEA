@@ -1660,114 +1660,6 @@ class Test_chamfer(Scene):
 
 
 
-class RopeEx(Scene):
-    def construct(self):
-
-        theta_tracker=ValueTracker(0)
-    
-        dot1=Dot(radius=0.15, color=REANLEA_GREEN_LIGHTER).move_to(3*LEFT).set_sheen(-0.6,DOWN)
-        dot2=Dot(radius=0.15, color=REANLEA_BLUE_SKY).move_to(3*RIGHT).set_sheen(-0.6,DOWN)
-
-        dot3=Dot(radius=0.15, color=REANLEA_BLUE_SKY).move_to(4*RIGHT+UP)
-        dot4=Dot(radius=0.15, color=REANLEA_BLUE_SKY).move_to(4*LEFT+DOWN)
-
-
-
-        p1= dot1.get_center()
-        p2= dot2.get_center()
-
-        line=Line(start=p1,end=p2).set_color(REANLEA_PURPLE)
-
-        length = line.get_length()
-        angle1  = line.get_angle()
-
-        line1=line.copy()
-        line1_ref=line1.copy().set_stroke(width=15)
-
-        
-        '''line.add_updater(lambda z : z.become(
-            Line(start=dot1.get_center(), end=dot2.get_center())
-        ))'''
-
-        line=always_redraw(lambda : Line(start=dot1.get_center(), end=dot2.get_center()) )
-
-        line1.rotate(
-            theta_tracker.get_value()*DEGREES, about_point=dot1.get_center()
-        )
-
-        line1.add_updater(
-            lambda x: x.become(line1_ref.copy().rotate(
-                theta_tracker.get_value(), about_point=dot1.get_center()
-            ))
-        )
-
-        
-
-
-        grp=VGroup(line,line1,dot1,dot2)
-
-
-
-
-        self.play(Write(grp))
-        mxg=dot2.animate.move_to(dot3.get_center()[0])
-        self.play(
-           mxg,
-           theta_tracker.animate.set_value(line.get_angle())
-        )
-        self.play(theta_tracker.animate.set_value(line.get_angle()))
-        
-        self.wait(2)
-
-        
-
-
-        # manim -pqh test.py RopeEx
-
-
-
-class TransformPathArc(Scene):
-            def construct(self):
-                def make_arc_path(start, end, arc_angle):
-                    points = []
-                    p_fn = path_along_arc(arc_angle)
-                    # alpha animates between 0.0 and 1.0, where 0.0
-                    # is the beginning of the animation and 1.0 is the end.
-                    for alpha in range(0, 11):
-                        points.append(p_fn(start, end, alpha / 10.0))
-                    path = VMobject(stroke_color=YELLOW)
-                    path.set_points_smoothly(points)
-                    return path
-
-                left = Circle(stroke_color=BLUE_E, fill_opacity=1.0, radius=0.5).move_to(LEFT * 2)
-                colors = [TEAL_A, TEAL_B, TEAL_C, TEAL_D, TEAL_E, GREEN_A]
-                # Positive angles move counter-clockwise, negative angles move clockwise.
-                examples = [-90, 0, 30, 90, 180, 270]
-                anims = []
-                for idx, angle in enumerate(examples):
-                    left_c = left.copy().shift((3 - idx) * UP)
-                    left_c.fill_color = colors[idx]
-                    right_c = left_c.copy().shift(4 * RIGHT)
-                    path_arc = make_arc_path(left_c.get_center(), right_c.get_center(),
-                                             arc_angle=angle * DEGREES)
-                    desc = Text('%d°' % examples[idx]).next_to(left_c, LEFT)
-                    # Make the circles in front of the text in front of the arcs.
-                    self.add(
-                        path_arc.set_z_index(1),
-                        desc.set_z_index(2),
-                        left_c.set_z_index(3),
-                    )
-                    anims.append(Transform(left_c, right_c, path_arc=angle * DEGREES))
-                    anims
-
-                self.play(*anims, run_time=2)
-                self.wait()
-
-
-                 # manim -pqh test.py TransformPathArc  
-
-
-
 class sqEx(Scene):
     def construct(self):
         sq= Square(side_length=1)
@@ -1787,3 +1679,623 @@ class sqEx(Scene):
         self.wait()
 
         # manim -pqh test.py sqEx
+
+
+
+
+
+class TransformMatchingID(TransformMatchingShapes):
+    @staticmethod
+    def get_mobject_parts(mobject: Mobject) -> list[Mobject]:
+        return mobject
+
+    @staticmethod
+    def get_mobject_key(mobject):
+        return mobject.id
+
+
+class Coin(VMobject):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        p = np.random.rand()
+        if p < 0.5:
+            self.symbol = "P"
+            color = BLUE
+        else:
+            self.symbol = "F"
+            color = RED
+
+        self.id = np.random.rand()
+        self.contour = Circle(
+            radius=0.5, color=color, fill_color=color, fill_opacity=1, stroke_width=1
+        )
+        self.add(self.contour)
+
+    def __str__(self) -> str:
+        return self.symbol
+
+
+class Test2(Scene):
+    def construct(self):
+        v = VGroup(*[Coin() for _ in range(10)])
+        v.arrange()
+        self.play(FadeIn(v))
+        self.wait()
+        for _ in range(5):
+            new_v = v.copy().arrange()
+            new_v.sort(submob_func=lambda m: m.symbol)
+            self.play(
+                TransformMatchingID(
+                    v,
+                    new_v,
+                )
+            )
+            v = new_v
+        self.wait()
+
+
+
+class MovingDotEx2(Scene):
+    def construct(self):
+
+        # WATER-MARK
+        with RegisterFont("Montserrat") as fonts:
+            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
+            water_mark.set_color_by_gradient(REANLEA_GREY)
+        water_mark.save_state()
+
+        # Tracker 
+        x=ValueTracker(-3)
+
+        # MOBJECTS
+        line=NumberLine(
+            x_range=[-3,3],
+            include_ticks=False,
+            include_tip=False
+        ).set_color(REANLEA_PINK_DARKER).set_opacity(0.6)
+        
+        dot1=Dot(radius=0.25, color=REANLEA_VIOLET_LIGHTER).move_to(3*RIGHT).set_sheen(-0.6,DOWN)
+        dot2=Dot(radius=0.25, color=REANLEA_BLUE_LAVENDER).move_to(3*LEFT).set_sheen(-0.6,DOWN)
+        dot3=dot2.copy().set_opacity(0.4)
+
+
+        # POINTS
+        p1= dot1.get_center()+UP
+        p2= dot2.get_center()+UP
+        p3=dot3.get_center()
+
+
+
+        #dashed lines
+        d_line=DashedDoubleArrow(
+            start=p2, end=p1, dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+
+        v_line1=DashedLine(
+            start=dot1.get_center(), end=dot1.get_center()+UP, stroke_width=1
+        ).set_color(RED_D)
+
+        v_line2=DashedLine(
+            start=p2-DOWN, end=p2, stroke_width=1
+        ).set_color(RED_D)
+
+
+        # GROUPS
+        grp1=VGroup(line,dot1,dot2, d_line, v_line1, v_line2)
+
+
+        #value updater
+        value=DecimalNumber().set_color_by_gradient(REANLEA_GREEN_LIGHTER).set_sheen(-0.4,DR)
+
+        value.add_updater(
+            lambda x : x.set_value(1-(dot2.get_center()[0]/3))
+        )
+        
+
+        v_line2.add_updater(
+            lambda x : x.move_to(
+                dot2.get_center()+ 0.5*UP
+            )
+        )
+
+        
+
+        dot2.add_updater(lambda z : z.set_x(x.get_value()))
+
+        d_line.add_updater(
+            lambda z: z.become(
+                DashedDoubleArrow(
+                    start=dot2.get_center()+UP, end=dot1.get_center()+UP, dash_length=2.0,stroke_width=2, 
+                    max_tip_length_to_length_ratio=0.015, buff=10
+                ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+            )
+        )
+
+
+        # TEXT
+
+        tex=MathTex("d(x,y)=").set_color(REANLEA_GREEN_LIGHTER).set_sheen(-0.4,DR)
+        grp2=VGroup(tex,value).arrange(RIGHT, buff=0.3).move_to(2*UP)
+        
+
+
+
+        # play region
+
+        self.add(water_mark)
+        self.play(Create(grp1))
+        self.play(Write(grp2))
+        self.add(dot3)
+        self.wait()
+        '''self.play(
+            MoveAlongPath(dot2, line1, rate_func=rate_functions.ease_in_out_sine),
+            run_time=3
+        )'''
+        self.play(
+            x.animate.set_value(dot1.get_center()[0]),
+            run_time=3
+        )
+        self.wait(2)
+
+
+        #  manim -pqh test.py MovingDotEx2
+
+
+
+
+class RopeEx(Scene):
+    def construct(self):
+
+        theta_tracker=ValueTracker(0)
+        scale_tracker=ValueTracker(1)
+    
+        dot1=Dot(radius=0.1, color=REANLEA_GREEN_LIGHTER).move_to(LEFT).set_sheen(-0.6,DOWN)
+        dot2=Dot(radius=0.1, color=REANLEA_BLUE_SKY).move_to(RIGHT).set_sheen(-0.6,DOWN)
+
+        #dot3=Dot(radius=0.15, color=REANLEA_BLUE_SKY).move_to(4*RIGHT+UP)
+        #dot4=Dot(radius=0.15, color=REANLEA_BLUE_SKY).move_to(4*LEFT+DOWN)
+
+
+
+        p1= dot1.get_center()
+        p2= dot2.get_center()
+
+        line=Line(start=p1,end=p2).set_color(REANLEA_PURPLE)
+        line_ref=line.copy()
+
+
+        length = line.get_length()
+        angle1  = line.get_angle()
+
+        line1=line.copy()
+        line1_ref=line1.copy().set_stroke(color=REANLEA_GREEN,width=15, opacity=.35)
+
+
+        line=always_redraw(lambda : Line(start=dot1.get_center(), end=dot2.get_center()) )
+
+        line.add_updater(
+            lambda x: x.become(line_ref.copy().rotate(
+                theta_tracker.get_value()*DEGREES, about_point=dot1.get_center()
+            ).scale(
+                scale_tracker.get_value(), about_point=dot1.get_center()
+            ))
+        )
+
+
+
+        line1.add_updater(
+            lambda x: x.become(line1_ref.copy().rotate(
+                theta_tracker.get_value()*DEGREES, about_point=dot1.get_center()
+            ))
+        )
+
+        
+        
+
+
+        grp=VGroup(line,line1,dot1,dot2)
+
+
+
+
+        self.play(Write(grp))
+
+        dot2.add_updater(
+            lambda x : x.move_to(line.get_end())
+        )
+        
+        
+        self.play(
+            theta_tracker.animate.set_value(10),
+            scale_tracker.animate.set_value(3)
+        )
+        self.wait(2)
+        self.play(
+            theta_tracker.animate.set_value(45),
+            scale_tracker.animate.set_value(1.5)
+        )
+        self.wait(2)
+        self.play(
+            theta_tracker.animate.set_value(330),
+            scale_tracker.animate.set_value(2.5)
+        )
+        self.wait(2)
+        self.play(
+            theta_tracker.animate.set_value(120),
+            scale_tracker.animate.set_value(1)
+        )
+        self.wait(2)
+
+        
+
+
+        # manim -pqh test.py RopeEx
+
+
+
+class RopeEx2(Scene):
+    def construct(self):
+
+        t=.5
+
+        theta_tracker=ValueTracker(0)
+        scale_tracker=ValueTracker(1)
+
+        dot1=Dot(radius=0.1, color=REANLEA_GREEN_LIGHTER).move_to(1.5*LEFT).set_sheen(-0.6,DOWN)
+        dot2=Dot(radius=0.1, color=REANLEA_BLUE_SKY).move_to(1.5*RIGHT).set_sheen(-0.6,DOWN)
+
+        
+
+        dot3=Dot(radius=0.1, color=REANLEA_BLUE_LAVENDER).move_to((1-t)*(dot1.get_center())+t*(dot2.get_center())).set_sheen(-0.6,DOWN)
+        
+        #line=Line(start=dot1.get_center(), end=dot2.get_center()).set_color(REANLEA_SLATE_BLUE)
+        line=always_redraw(lambda : Line(start=dot1.get_center(), end=dot2.get_center())).set_color(REANLEA_SLATE_BLUE)
+        line_ref=line.copy().set_color(REANLEA_SLATE_BLUE)
+
+
+        line.add_updater(
+            lambda x: x.become(line_ref.copy().rotate(
+                theta_tracker.get_value()*DEGREES, about_point=dot1.get_center()
+            ).scale(
+                scale_tracker.get_value(), about_point=dot1.get_center()
+            ))
+        )
+  
+        line1=always_redraw(lambda : Line(start=dot1.get_center(), end=dot3.get_center())).set_color(GREEN_E)
+
+        line2=Line(start=dot1.get_center(), end=dot3.get_center()).set_color(REANLEA_BLUE_DARKER)
+
+        #circ=Circle(radius=line2.get_length()).move_to(dot1.get_center())
+        circ=DashedVMobject(Circle(radius=line2.get_length()), dashed_ratio=.85).move_to(dot1.get_center()).set_stroke(width=.85)
+        circ.set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_BLUE,REANLEA_CHARM,REANLEA_GREEN)
+        
+
+        
+        grp=VGroup(line2,line,dot1,dot2,dot3)
+
+
+        self.play(
+            Create(grp)
+        )
+        self.play(Create(circ))
+        
+        
+
+        dot2.add_updater(
+            lambda x : x.move_to(line.get_end())
+        )
+
+        dot3.add_updater(
+            lambda x : x.move_to((1-t/scale_tracker.get_value())*(dot1.get_center())+t*(dot2.get_center()/scale_tracker.get_value()))
+        )
+
+        self.wait(2)
+
+        self.play(
+            theta_tracker.animate.set_value(10),
+            scale_tracker.animate.set_value(1.5)
+        )
+
+
+        self.wait(2)
+
+        # manim -pqh test.py RopeEx2
+
+
+
+
+class RopeEx3(Scene):
+    def construct(self):
+
+        t=.5
+
+        theta_tracker=ValueTracker(0)
+        scale_tracker=ValueTracker(1)
+
+        dot1=Dot(radius=0.1, color=REANLEA_GREEN_LIGHTER).move_to(1.5*LEFT).set_sheen(-0.6,DOWN)
+        dot2=Dot(radius=0.1, color=REANLEA_BLUE_SKY).move_to(1.5*RIGHT).set_sheen(-0.6,DOWN)
+
+        
+
+        dot3=Dot(radius=0.1, color=REANLEA_BLUE_LAVENDER).move_to((1-t)*(dot1.get_center())+t*(dot2.get_center())).set_sheen(-0.6,DOWN)
+        
+        #line=Line(start=dot1.get_center(), end=dot2.get_center()).set_color(REANLEA_SLATE_BLUE)
+        line=always_redraw(lambda : Line(start=dot1.get_center(), end=dot2.get_center())).set_color(REANLEA_SLATE_BLUE)
+        line_ref=line.copy().set_color(REANLEA_SLATE_BLUE)
+
+
+        line.add_updater(
+            lambda x: x.become(line_ref.copy().rotate(
+                theta_tracker.get_value()*DEGREES, about_point=dot1.get_center()
+            ).scale(
+                scale_tracker.get_value(), about_point=dot1.get_center()
+            ))
+        )
+  
+        line1=always_redraw(lambda : Line(start=dot1.get_center(), end=dot3.get_center())).set_color(GREEN_E)
+
+        line2=Line(start=dot1.get_center(), end=dot3.get_center()).set_color(REANLEA_BLUE_DARKER)
+
+        #circ=Circle(radius=line2.get_length()).move_to(dot1.get_center())
+        circ=DashedVMobject(Circle(radius=line2.get_length()), dashed_ratio=.85).move_to(dot1.get_center()).set_stroke(width=.85)
+        circ.set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_BLUE,REANLEA_CHARM,REANLEA_GREEN)
+        
+
+        
+        grp=VGroup(line2,line,dot1,dot2,dot3)
+
+
+        self.play(
+            Create(grp)
+        )
+        self.play(Create(circ))
+        
+        
+
+        dot2.add_updater(
+            lambda x : x.move_to(line.get_end())
+        )
+
+        dot3.add_updater(
+            lambda x : x.move_to((1-t/scale_tracker.get_value())*(dot1.get_center())+t*(dot2.get_center()/scale_tracker.get_value()))
+        )
+
+        self.wait(2)
+
+        self.play(
+            theta_tracker.animate.set_value(10),
+            scale_tracker.animate.set_value(1.5)
+        )
+
+
+        self.wait(2)
+
+        # manim -pqh test.py RopeEx3
+
+
+
+
+class RopeEx4(Scene):
+    def construct(self):
+
+
+        t=.5
+
+        theta_tracker=ValueTracker(0)
+        scale_tracker=ValueTracker(1)
+
+        dot1=Dot(radius=0.1, color=REANLEA_GREEN_LIGHTER).move_to(1.5*LEFT).set_sheen(-0.6,DOWN)
+        dot2=Dot(radius=0.1, color=REANLEA_BLUE_SKY).move_to(1.5*RIGHT).set_sheen(-0.6,DOWN)
+        dot3=Dot(radius=0.1, color=REANLEA_YELLOW_CREAM).move_to(LEFT+.5*UP).set_sheen(-0.6,DOWN)
+        
+
+        
+        line=Line(start=dot1.get_center(), end=dot2.get_center()).set_color(REANLEA_YELLOW_DARKER)
+        line1=Line(start=dot1.get_center(), end=dot3.get_center()).set_color(REANLEA_BLUE_DARKER)
+        line2=Line(start=dot2.get_center(), end=dot3.get_center()).set_color(REANLEA_GREEN_DARKER)
+        
+        line_ref=line.copy()
+        line1_ref=line1.copy()
+        line2_ref=line2.copy()
+
+  
+        line1=always_redraw(lambda : Line(start=dot1.get_center(), end=dot3.get_center()).set_color(REANLEA_BLUE_DARKER))
+        line1.add_updater(
+            lambda x: x.become(line1_ref.copy().rotate(
+                theta_tracker.get_value()*DEGREES, about_point=dot1.get_center()
+            ).scale(
+                scale_tracker.get_value(), about_point=dot1.get_center()
+            ))
+        )
+
+        
+        line2=always_redraw(lambda : Line(start=dot3.get_center(), end=dot2.get_center()).set_color(REANLEA_GREEN_DARKER))
+        
+
+
+        grp=VGroup(line,line1,line2,dot1,dot2,dot3)
+
+
+        self.play(
+            Create(grp)
+        )
+
+        
+        
+        self.wait(2)
+        
+        
+        dot3.add_updater(
+            lambda x : x.move_to(line1.get_end())
+        )
+        
+
+        self.play(
+            theta_tracker.animate.set_value(30),
+            scale_tracker.animate.set_value(1.5)
+        )
+
+        self.wait(2)
+
+        self.play(
+            theta_tracker.animate.set_value(130),
+            scale_tracker.animate.set_value(2.5)
+        )
+
+        self.wait(2)
+
+        self.play(
+            theta_tracker.animate.set_value(270),
+            scale_tracker.animate.set_value(1.25)
+        )
+
+        self.wait(2)
+
+        
+
+        # manim -pqh test.py RopeEx4
+
+
+
+
+class RopeEx5(Scene):
+    def construct(self):
+
+
+        
+
+        theta_tracker=ValueTracker(0)
+        scale_tracker=ValueTracker(1)
+
+        dot1=Dot(radius=0.1, color=REANLEA_GREEN_LIGHTER).move_to(1.5*LEFT).set_sheen(-0.6,DOWN)
+        dot2=Dot(radius=0.1, color=REANLEA_BLUE_SKY).move_to(1.5*RIGHT).set_sheen(-0.6,DOWN)
+        dot3=Dot(radius=0.1, color=REANLEA_YELLOW_CREAM).move_to(LEFT+.5*UP).set_sheen(-0.6,DOWN)
+        
+
+        
+        line=Line(start=dot1.get_center(), end=dot2.get_center()).set_color(REANLEA_YELLOW)
+        line1=Line(start=dot1.get_center(), end=dot3.get_center()).set_color(REANLEA_BLUE_DARKER)
+        line2=Line(start=dot2.get_center(), end=dot3.get_center()).set_color(REANLEA_GREEN_DARKER)
+        
+        line_ref=line.copy()
+        line1_ref=line1.copy()
+        line2_ref=line2.copy()
+
+  
+        line1=always_redraw(lambda : Line(start=dot1.get_center(), end=dot3.get_center()).set_color(REANLEA_BLUE_DARKER))
+        line1.add_updater(
+            lambda x: x.become(line1_ref.copy().rotate(
+                theta_tracker.get_value()*DEGREES, about_point=dot1.get_center()
+            ).scale(
+                scale_tracker.get_value(), about_point=dot1.get_center()
+            ))
+        )
+
+        
+        line2=always_redraw(lambda : Line(start=dot3.get_center(), end=dot2.get_center()).set_color(REANLEA_GREEN_DARKER))
+        
+        
+
+        grp=VGroup(line,line1,line2,dot1,dot2,dot3)
+
+        line_ex=Line(start=ORIGIN,end=RIGHT).scale(line.get_length()).set_stroke(color=REANLEA_YELLOW, width=10)
+
+        dot_ex=Dot().move_to(2*DOWN)
+        dot_ex1=Dot().move_to(2*DOWN+RIGHT)
+        dot_ex2=Dot().move_to(dot_ex1.get_center()+RIGHT)
+        
+
+        #line1_ex=Line(start=dot_ex.get_center(), end=dot_ex1.get_center()).set_stroke(color=REANLEA_BLUE, width=10)
+        line1_ex =always_redraw( lambda : Line(start=dot_ex.get_center(), end=dot_ex1.get_center()).set_stroke(color=REANLEA_BLUE, width=10))
+        line2_ex= always_redraw(lambda : Line(start=line1_ex.get_end(), end=dot_ex2.get_center()).set_stroke(color=REANLEA_GREEN_DARKER, width=10))
+        line1_ex_ref=line1_ex.copy()
+        line2_ex_ref=line2_ex.copy()
+
+        line1_ex.add_updater(
+            lambda x: x.become(line1_ex_ref.copy().scale(
+                line1.get_length(), about_point= dot_ex.get_center()
+            ))
+        )
+
+        
+        dot_ex1.add_updater( lambda z : z.move_to(line1_ex.get_end()))
+        
+        
+
+        line2_ex.add_updater(
+            lambda x: x.become(line2_ex_ref.copy().scale(
+                line2.get_length(), about_point=dot_ex1.get_center()
+            ))
+        )
+        dot_ex2.add_updater( lambda z : z.move_to(line2_ex.get_end()))
+
+        line_grp=VGroup(line1_ex,line2_ex)
+
+        line_ex.next_to(line_grp,UP*0.5).shift(RIGHT*0.5)
+
+
+        
+        # PLAY ZONE
+
+        self.play(
+            Create(grp)
+        )
+  
+        self.wait(2)
+
+        self.add(line_ex,line1_ex, dot_ex1, dot_ex2,line2_ex)
+
+        dot3.add_updater(
+            lambda x : x.move_to(line1.get_end())
+        )
+        
+        self.play(
+            theta_tracker.animate.set_value(30),
+            scale_tracker.animate.set_value(3),
+        )
+
+        self.wait(2)
+
+        self.play(
+            theta_tracker.animate.set_value(130),
+            scale_tracker.animate.set_value(2.5),
+        )
+
+        self.wait(2)
+
+        self.play(
+            theta_tracker.animate.set_value(270),
+            scale_tracker.animate.set_value(1.25)
+        )
+
+        self.wait(2)
+
+        
+
+        # manim -pqh test.py RopeEx5
+
+        # manim -sqk test.py RopeEx5
+
+
+class MovingSquareWithUpdaters(Scene):
+            def construct(self):
+                decimal = DecimalNumber(
+                    0,
+                    show_ellipsis=True,             # show_ellipsis=True reflects the three dot (...) effect as it 
+                    num_decimal_places=3,           # number of ecimal places 
+                    include_sign=True,              # include + and - signs as per way
+                )
+                square = Square().to_edge(UP)       # the squares beginss from the UP edge
+
+                decimal.add_updater(lambda d: d.next_to(square, RIGHT))          # add decimal number next_to the right of the square
+                decimal.add_updater(lambda e: e.set_value(square.get_center()[1])) # we can use anything insteed of 'e'. #what is the role o [1] ?
+                self.add(square, decimal)
+                self.play(
+                    square.animate.to_edge(DOWN),
+                    rate_func=there_and_back,                                       #there_and_back implies go and comeback to original spot
+                    run_time=5,
+                )
+                self.wait()
