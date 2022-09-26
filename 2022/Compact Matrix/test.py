@@ -2205,14 +2205,14 @@ class RopeEx5(Scene):
 
         dot_ex=Dot().move_to(2*DOWN)
         dot_ex1=Dot().move_to(2*DOWN+RIGHT)
-        dot_ex2=Dot().move_to(dot_ex1.get_center()+RIGHT)
+        
         
 
         #line1_ex=Line(start=dot_ex.get_center(), end=dot_ex1.get_center()).set_stroke(color=REANLEA_BLUE, width=10)
         line1_ex =always_redraw( lambda : Line(start=dot_ex.get_center(), end=dot_ex1.get_center()).set_stroke(color=REANLEA_BLUE, width=10))
-        line2_ex= always_redraw(lambda : Line(start=line1_ex.get_end(), end=dot_ex2.get_center()).set_stroke(color=REANLEA_GREEN_DARKER, width=10))
+        
         line1_ex_ref=line1_ex.copy()
-        line2_ex_ref=line2_ex.copy()
+        
 
         line1_ex.add_updater(
             lambda x: x.become(line1_ex_ref.copy().scale(
@@ -2222,14 +2222,20 @@ class RopeEx5(Scene):
 
         
         dot_ex1.add_updater( lambda z : z.move_to(line1_ex.get_end()))
+
+
+
+        dot_ex2=Dot().move_to(dot_ex1.get_center()+RIGHT)
         
-        
+        line2_ex= always_redraw(lambda : Line(start=dot_ex1.get_center(), end=dot_ex1.get_center()+RIGHT).set_stroke(color=REANLEA_GREEN_DARKER, width=10))
+        line2_ex_ref=line2_ex.copy()
 
         line2_ex.add_updater(
-            lambda x: x.become(line2_ex_ref.copy().scale(
-                line2.get_length(), about_point=dot_ex1.get_center()
+            lambda x: x.become(line2_ex.copy().scale(
+                line2.get_length(), about_point=line2_ex.get_start()
             ))
         )
+
         dot_ex2.add_updater( lambda z : z.move_to(line2_ex.get_end()))
 
         line_grp=VGroup(line1_ex,line2_ex)
@@ -2246,11 +2252,13 @@ class RopeEx5(Scene):
   
         self.wait(2)
 
-        self.add(line_ex,line1_ex, dot_ex1, dot_ex2,line2_ex)
+        self.add(line_ex,line1_ex, dot_ex1, dot_ex2, line2_ex)
 
         dot3.add_updater(
             lambda x : x.move_to(line1.get_end())
         )
+
+       
         
         self.play(
             theta_tracker.animate.set_value(30),
@@ -2299,3 +2307,215 @@ class MovingSquareWithUpdaters(Scene):
                     run_time=5,
                 )
                 self.wait()
+
+
+
+
+class RopeEx6(Scene):
+    def construct(self):
+
+        # WATER-MARK
+        with RegisterFont("Montserrat") as fonts:
+            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
+            water_mark.set_color_by_gradient(REANLEA_GREY)
+        water_mark.save_state()
+
+        # HEADING
+        with RegisterFont("Montserrat") as fonts:
+            text_1=Text("R E A N L E A ", font=fonts[0]).scale(1.5)#.to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            text_1.set_color_by_gradient(REANLEA_GREY_DARKER,REANLEA_TXT_COL_DARKER)
+
+        text_1.save_state()
+
+        with RegisterFont("Caveat") as fonts:
+            text_2=Text("Presents to you ... ", font=fonts[0]).scale(.55)
+            text_2.set_color_by_gradient(REANLEA_YELLOW_CREAM,REANLEA_AQUA).set_opacity(0.6).shift(3*RIGHT)
+        
+        text_2.next_to(text_1, DOWN)
+
+        with RegisterFont("Caveat") as fonts:
+            text_3=Text("Triangle Inequaliy ", font=fonts[0])
+            text_3.set_color_by_gradient(REANLEA_YELLOW_CREAM,REANLEA_AQUA).set_opacity(1).scale(1.5)
+        
+        
+
+        s1=AnnularSector(inner_radius=2, outer_radius=2.75, angle=2*PI, color=REANLEA_GREY_DARKER).set_opacity(0.3).move_to(5.5*LEFT)
+        s2=AnnularSector(inner_radius=.2, outer_radius=.4, angle=2*PI, color=REANLEA_GREY).set_opacity(0.3).move_to(UP + 5*RIGHT)
+        s3=AnnularSector(inner_radius=1, outer_radius=1.5, color=REANLEA_SLATE_BLUE).set_opacity(0.6).move_to(3.5*DOWN + 6.5*RIGHT).rotate(PI/2)
+        ann=VGroup(s1,s2,s3)
+
+        #############
+
+
+        
+
+        theta_tracker=ValueTracker(0)
+        scale_tracker=ValueTracker(1)
+
+        dot1=Dot(radius=0.1, color=REANLEA_GREEN_LIGHTER).move_to(1.5*LEFT).set_sheen(-0.6,DOWN).set_opacity(0)
+        dot2=Dot(radius=0.1, color=REANLEA_BLUE_SKY).move_to(1.5*RIGHT).set_sheen(-0.6,DOWN).set_opacity(0)
+        dot3=Dot(radius=0.1, color=REANLEA_YELLOW_CREAM).move_to(LEFT+.5*UP).set_sheen(-0.6,DOWN).set_opacity(0)
+        
+
+        
+        line=Line(start=dot1.get_center(), end=dot2.get_center()).set_color(REANLEA_YELLOW)
+        line1=Line(start=dot1.get_center(), end=dot3.get_center()).set_color(REANLEA_BLUE_DARKER)
+        line2=Line(start=dot2.get_center(), end=dot3.get_center()).set_color(REANLEA_GREEN_DARKER)
+        
+        line_ref=line.copy()
+        line1_ref=line1.copy()
+        line2_ref=line2.copy()
+
+  
+        line1=always_redraw(lambda : Line(start=dot1.get_center(), end=dot3.get_center()).set_color(REANLEA_BLUE_DARKER))
+        line1.add_updater(
+            lambda x: x.become(line1_ref.copy().rotate(
+                theta_tracker.get_value()*DEGREES, about_point=dot1.get_center()
+            ).scale(
+                scale_tracker.get_value(), about_point=dot1.get_center()
+            ))
+        )
+
+        
+        line2=always_redraw(lambda : Line(start=dot3.get_center(), end=dot2.get_center()).set_color(REANLEA_GREEN_DARKER))
+        
+        
+
+        grp=VGroup(line,line1,line2,dot1,dot2,dot3)
+
+        line_ex=Line(start=ORIGIN,end=RIGHT).scale(line.get_length()).set_stroke(color=REANLEA_YELLOW, width=10)
+
+        dot_ex=Dot().move_to(2*DOWN+LEFT)
+        dot_ex1=Dot().move_to(2*DOWN).set_opacity(0)
+        
+        
+
+        #line1_ex=Line(start=dot_ex.get_center(), end=dot_ex1.get_center()).set_stroke(color=REANLEA_BLUE, width=10)
+        line1_ex =always_redraw( lambda : Line(start=dot_ex.get_center(), end=dot_ex1.get_center()).set_stroke(color=REANLEA_BLUE, width=10))
+        
+        line1_ex_ref=line1_ex.copy()
+        
+
+        line1_ex.add_updater(
+            lambda x: x.become(line1_ex_ref.copy().scale(
+                line1.get_length(), about_point= dot_ex.get_center()
+            ))
+        )
+
+        
+        dot_ex1.add_updater( lambda z : z.move_to(line1_ex.get_end()))
+
+
+
+        dot_ex2=Dot().move_to(dot_ex1.get_center()+RIGHT).set_opacity(0)
+        
+        line2_ex= always_redraw(lambda : Line(start=dot_ex1.get_center(), end=dot_ex1.get_center()+RIGHT).set_stroke(color=REANLEA_GREEN_DARKER, width=10))
+        line2_ex_ref=line2_ex.copy()
+
+        line2_ex.add_updater(
+            lambda x: x.become(line2_ex.copy().scale(
+                line2.get_length(), about_point=line2_ex.get_start()
+            ))
+        )
+
+        dot_ex2.add_updater( lambda z : z.move_to(line2_ex.get_end()))
+
+        line_grp=VGroup(line1_ex,line2_ex)
+
+        line_ex.next_to(line_grp,UP*0.5).shift(RIGHT*0.5)
+
+    
+
+
+        
+        # PLAY ZONE
+
+
+
+        self.add(s1,s2,s3, water_mark)
+        self.play(
+            Wiggle(s1),
+            Wiggle(s2),
+            Create(text_1),
+        )
+        self.play(Write(text_2))
+        self.wait(3)
+
+        fd_obj1=VGroup(s1,s2,s3,text_3)
+
+        self.play(
+            FadeOut(text_1),
+            FadeOut(text_2)
+        )
+
+        self.play(
+            Write(text_3)
+        )
+
+        self.wait(2)
+        self.play(FadeOut(fd_obj1))
+
+
+
+
+        self.play(
+            Create(grp)
+        )
+  
+        self.wait(2)
+
+
+        self.add(line_ex,line1_ex, dot_ex1, dot_ex2, line2_ex)
+        
+
+        dot3.add_updater(
+            lambda x : x.move_to(line1.get_end())
+        )
+
+       
+        
+        self.play(
+            theta_tracker.animate.set_value(30),
+            scale_tracker.animate.set_value(3),
+        )
+
+        self.wait(2)
+
+        self.play(
+            theta_tracker.animate.set_value(130),
+            scale_tracker.animate.set_value(2.5),
+        )
+
+        self.wait(2)
+
+        self.play(
+            theta_tracker.animate.set_value(270),
+            scale_tracker.animate.set_value(1.25)
+        )
+
+        self.wait(2)
+
+        self.play(
+            theta_tracker.animate.set_value(0),
+            scale_tracker.animate.set_value(0)
+        )
+
+        self.wait(2)
+
+        self.play(
+            theta_tracker.animate.set_value(-30),
+            scale_tracker.animate.set_value(line.get_length())
+        )
+
+        self.wait(4)
+
+        self.play(
+            *[FadeOut(mobj) for mobj in self.mobjects]
+        )
+        self.wait(2)
+
+        
+
+        # manim -pqh test.py RopeEx6
+
+        # manim -sqk test.py RopeEx6

@@ -1008,3 +1008,24 @@ class integral_1(Scene):
 
 
 
+class VMobject(VMobject):
+    def pfp(self, alpha):
+        return self.point_from_proportion(alpha)
+
+
+class TestVm(Scene):
+    def construct(self):
+        #c = Circle()
+        c = VMobject(stroke_color=GREEN).set_points_smoothly([
+                LEFT*2+UP*1.2, LEFT+UP*(-3), RIGHT*2+DOWN*1.7,
+                DOWN*2+LEFT*2.5
+            ])
+        a = Dot(color = YELLOW)
+
+        self.add(c, a)
+
+        self.play(UpdateFromAlphaFunc(a, lambda x, alpha: x.move_to(c.pfp(alpha))), run_time = 3, rate_func= smooth)
+        self.wait()
+
+
+        # manim -pqh discord.py TestVm
