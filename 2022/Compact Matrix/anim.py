@@ -23,7 +23,7 @@ from numbers import Number
 from tkinter import Y, Label, font
 from imp import create_dynamic
 from tracemalloc import start
-from turtle import degrees
+from turtle import degrees, width
 from manim import*
 from math import*
 from manim_fonts import*
@@ -844,18 +844,22 @@ class Scene5(Scene):
 
         # Tracker 
         x=ValueTracker(-3)
+        theta_tracker=ValueTracker(0)
+        scale_tracker=ValueTracker(1)
 
         # MOBJECTS
         line=NumberLine(
             x_range=[-3,3],
             include_ticks=False,
             include_tip=False
-        ).set_color(REANLEA_PINK_DARKER).set_opacity(0.6)
+        ).set_color(REANLEA_YELLOW_DARKER).set_opacity(0.6)
         
         dot1=Dot(radius=0.25, color=REANLEA_GREEN).move_to(3*RIGHT).set_sheen(-0.6,DOWN)
         dot2=Dot(radius=0.25, color=REANLEA_VIOLET_LIGHTER).move_to(3*LEFT).set_sheen(-0.4,DOWN)
         dot3=dot2.copy().set_opacity(0.4)
         
+
+
         # DOT LABELS
 
         dot1_lbl=MathTex("y").scale(0.6).next_to(dot1, DOWN)
@@ -886,6 +890,8 @@ class Scene5(Scene):
 
         # GROUPS
         grp1=VGroup(line,dot1,dot2, d_line, v_line1, v_line2)
+        grp1_2=VGroup(v_line1, v_line2)
+        
 
 
         #value updater
@@ -965,6 +971,11 @@ class Scene5(Scene):
         text_2=VGroup(text_2_1,text_2_2,text_2_3).arrange(RIGHT, buff=0.4).next_to(value, 1.5*RIGHT)
         text_2.set_color_by_gradient(REANLEA_MAGENTA,REANLEA_AQUA)
 
+        with RegisterFont("Cousine") as fonts:
+            text_3=Text("What if we add one more point ... ", font=fonts[0]).scale(.55)
+            text_3.set_color_by_gradient(REANLEA_GREY).set_opacity(0.6).shift(3*RIGHT)
+        text_3.move_to(2*DOWN)
+
 
         # play region
 
@@ -1022,6 +1033,30 @@ class Scene5(Scene):
 
         self.wait(2)
 
+        self.play(
+            Uncreate(grp3),
+            Uncreate(text_1)
+        )
+        self.play(
+            AddTextLetterByLetter(text_3)
+        )
+        self.wait()
+
+        self.play(FadeOut(d_line))
+        self.play(
+            FadeOut(grp2),
+            FadeOut(text_2),
+            FadeOut(text_3),
+            FadeOut(grp1_2),
+            x.animate.set_value(dot3.get_center()[0]),
+            line.animate.set_opacity(1).set_stroke(width=10),
+        )
+        self.play(FadeOut(dot3))
+        
+        
+        self.wait(3)
+
+
 
 
 
@@ -1033,3 +1068,109 @@ class Scene5(Scene):
 
 
 ###################################################################################################################
+
+
+class Scene6(Scene):
+    def construct(self):
+
+        # WATER-MARK
+        with RegisterFont("Montserrat") as fonts:
+            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
+            water_mark.set_color_by_gradient(REANLEA_GREY)
+        water_mark.save_state()
+
+
+        # Tracker 
+        theta_tracker=ValueTracker(0)
+        scale_tracker=ValueTracker(1)
+
+
+        # MOBJECTS
+        dot1=Dot(radius=0.25, color=REANLEA_GREEN).move_to(3*RIGHT).set_sheen(-0.6,DOWN)
+        dot2=Dot(radius=0.25, color=REANLEA_VIOLET_LIGHTER).move_to(3*LEFT).set_sheen(-0.4,DOWN)
+        dot3=Dot(radius=0.125, color=REANLEA_YELLOW).move_to(LEFT+2.5*UP).set_sheen(-0.6,DOWN)
+
+
+        line1=Line(start=dot2.get_center(), end=dot1.get_center()).set_color(REANLEA_YELLOW_DARKER).set_stroke(width=10)
+        line2=Line(start=dot2.get_center(), end=dot3.get_center()).set_color(REANLEA_GREEN_DARKER).set_stroke(width=5).set_z_index(-1)
+        line3=Line(start=dot3.get_center(), end=dot1.get_center()).set_color(REANLEA_VIOLET_DARKER).set_stroke(width=5).set_z_index(-1)
+
+        projec_line=DashedLine(start=dot3.get_center(), end=np.array((dot3.get_center()[0],0,0)), stroke_width=1).set_color(REANLEA_AQUA_GREEN).set_z_index(-2)
+
+
+        # DOT & Line LABELS
+        dot1_lbl=MathTex("y").scale(0.6).next_to(dot1, DOWN)
+        dot2_lbl=MathTex("x").scale(0.6).next_to(dot2, DOWN)
+
+        line1_lbl=MathTex("Z").scale(0.6).next_to(line1, DOWN).set_color(REANLEA_YELLOW)
+        line2_lbl=MathTex("X").scale(0.6).next_to(line2, aligned_edge=RIGHT, direction=LEFT, buff=0.4).rotate(line2.get_angle()).set_color(REANLEA_GREEN)
+        line3_lbl=MathTex("Y").scale(0.6).next_to(line3, aligned_edge=LEFT, direction=RIGHT, buff= 0.6).rotate(line3.get_angle()).set_color(REANLEA_VIOLET_LIGHTER)
+
+        brace_line2=Brace(Line(start=dot2.get_center(), end=np.array((dot3.get_center()[0],0,0)))).set_color(REANLEA_GREEN).set_opacity(0.8).set_z_index(-1)
+        brace_line3=Brace(Line(start=np.array((dot3.get_center()[0],0,0)), end=dot1.get_center())).set_color(REANLEA_VIOLET).set_opacity(0.8).set_z_index(-1)
+        
+        brace_line2_lbl=MathTex(r"Xcos\theta").next_to(brace_line2, .4*DOWN).scale(.5).set_color(REANLEA_GREEN)
+        brace_line3_lbl=MathTex(r"Ycos\theta").next_to(brace_line3, .4*DOWN).scale(.5).set_color(REANLEA_VIOLET_LIGHTER).set_sheen(0.2,DR)
+
+        # GROUP REGION
+        grp=VGroup(line1,dot1,dot2)
+        grp_line23=VGroup(line2,line3).set_z_index(-1)
+
+        line_lbl=VGroup(line1_lbl,line2_lbl,line3_lbl)
+        brace_lbl=VGroup(brace_line2,brace_line3,brace_line2_lbl,brace_line3_lbl)
+
+
+        # ADD UPDATER REGION
+
+        
+
+
+        # PLAY REGION
+        self.add(water_mark)
+
+        self.add(grp,dot1_lbl,dot2_lbl)
+        self.wait(2)
+
+        self.play(
+            dot1.animate.scale(.5),
+            dot2.animate.scale(.5),
+            line1.animate.set_stroke(width=5),
+            FadeOut(dot1_lbl),
+            FadeOut(dot2_lbl),
+            FadeIn(dot3)
+        )
+        self.wait()
+        self.play(
+            Create(grp_line23),
+            run_time=1.5,
+            buff=10
+        )
+        self.wait()
+        self.play(Create(projec_line))
+        self.wait()
+
+        self.play(Write(line_lbl))
+        self.wait()
+        self.play(
+            line1_lbl.animate.shift(.5*DOWN),
+        )
+        self.play(Write(brace_line2),
+            Write(brace_line3),
+            run_time=3
+        )
+        self.play(Write(brace_line2_lbl),
+            Write(brace_line3_lbl),
+            run_time=2
+        )
+        self.wait(3)
+        
+        
+
+
+
+        
+        # manim -pqh anim.py Scene6
+
+        # manim -pql anim.py Scene6
+
+        # manim -sqk anim.py Scene6
