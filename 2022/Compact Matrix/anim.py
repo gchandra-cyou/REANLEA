@@ -1083,6 +1083,7 @@ class Scene6(Scene):
         # Tracker 
         theta_tracker=ValueTracker(0)
         scale_tracker=ValueTracker(1)
+        
 
 
         # MOBJECTS
@@ -1091,11 +1092,31 @@ class Scene6(Scene):
         dot3=Dot(radius=0.125, color=REANLEA_YELLOW).move_to(LEFT+2.5*UP).set_sheen(-0.6,DOWN)
 
 
-        line1=Line(start=dot2.get_center(), end=dot1.get_center()).set_color(REANLEA_YELLOW_DARKER).set_stroke(width=10)
-        line2=Line(start=dot2.get_center(), end=dot3.get_center()).set_color(REANLEA_GREEN_DARKER).set_stroke(width=5).set_z_index(-1)
+        line1=Line(start=dot2.get_center(), end=dot1.get_center()).set_color(REANLEA_YELLOW_DARKER).set_stroke(width=10).set_z_index(-2)
+        line2=Line(start=dot2.get_center(), end=dot3.get_center()).set_color(REANLEA_GREEN_DARKER).set_stroke(width=5).set_z_index(-3)
         line3=Line(start=dot3.get_center(), end=dot1.get_center()).set_color(REANLEA_VIOLET_DARKER).set_stroke(width=5).set_z_index(-1)
+        
+
+        line1_p1_tracker=ValueTracker(line1.get_angle())
+
+        line1_p1=Line(start=dot2.get_center(), end=np.array((dot3.get_center()[0],0,0)))
+        line1_p1.set_color(REANLEA_YELLOW).set_opacity(0.65).set_stroke(width=5).set_z_index(-1)
+        line1_p1_ref=line1_p1.copy()
+        line1_p1.rotate(
+            line1_p1_tracker.get_value(), about_point=dot2.get_center()
+        )
+        line1_p1.save_state()
+
+        
+
 
         projec_line=DashedLine(start=dot3.get_center(), end=np.array((dot3.get_center()[0],0,0)), stroke_width=1).set_color(REANLEA_AQUA_GREEN).set_z_index(-2)
+        
+        angle_12=Angle(line1,line2, radius=.5, other_angle=False).set_color(REANLEA_GREEN).set_z_index(-1)
+        angle_13=Angle(line3,line1, radius=.65, quadrant=(-1,-1),other_angle=False).set_color(REANLEA_VIOLET).set_z_index(-3)
+
+        circ=DashedVMobject(Circle(radius=line1_p1.get_length()), dashed_ratio=0.5, num_dashes=100).move_to(dot2.get_center()).set_stroke(width=0.65)
+        circ.set_color_by_gradient(REANLEA_WHITE,REANLEA_WARM_BLUE,REANLEA_YELLOW_CREAM)
 
 
         # DOT & Line LABELS
@@ -1109,8 +1130,21 @@ class Scene6(Scene):
         brace_line2=Brace(Line(start=dot2.get_center(), end=np.array((dot3.get_center()[0],0,0)))).set_color(REANLEA_GREEN).set_opacity(0.8).set_z_index(-1)
         brace_line3=Brace(Line(start=np.array((dot3.get_center()[0],0,0)), end=dot1.get_center())).set_color(REANLEA_VIOLET).set_opacity(0.8).set_z_index(-1)
         
-        brace_line2_lbl=MathTex(r"Xcos\theta").next_to(brace_line2, .4*DOWN).scale(.5).set_color(REANLEA_GREEN)
-        brace_line3_lbl=MathTex(r"Ycos\theta").next_to(brace_line3, .4*DOWN).scale(.5).set_color(REANLEA_VIOLET_LIGHTER).set_sheen(0.2,DR)
+        brace_line2_lbl=MathTex(r"X.cos\theta_{1}").next_to(brace_line2, .4*DOWN).scale(.5).set_color(REANLEA_GREEN)
+        brace_line3_lbl=MathTex(r"Y.cos\theta_{2}").next_to(brace_line3, .4*DOWN).scale(.5).set_color(REANLEA_VIOLET_LIGHTER).set_sheen(0.2,DR)
+        
+        angle_12_lbl=MathTex(r"\theta_{1}").move_to(
+            Angle(
+                line1, line2, radius=0.7, other_angle=False
+            ).point_from_proportion(0.5)
+        ).scale(0.5).set_color(REANLEA_AQUA_GREEN)
+
+        angle_13_lbl=MathTex(r"\theta_{2}").move_to(
+            Angle(
+                line3, line1, radius=0.85, quadrant=(-1,-1),other_angle=False
+            ).point_from_proportion(0.5)
+        ).scale(0.5).set_color(REANLEA_VIOLET_LIGHTER)
+
 
         # GROUP REGION
         grp=VGroup(line1,dot1,dot2)
@@ -1119,7 +1153,16 @@ class Scene6(Scene):
         line_lbl=VGroup(line1_lbl,line2_lbl,line3_lbl)
         brace_lbl=VGroup(brace_line2,brace_line3,brace_line2_lbl,brace_line3_lbl)
 
+        angle_grp=VGroup(angle_12, angle_13)
+        angle_lbl_grp=VGroup(angle_12_lbl,angle_13_lbl)
 
+        z_lbl=VGroup(line3_lbl,brace_line2_lbl,brace_line3_lbl)
+
+        # TEXT & EQUN REGION 
+
+        eq1 = MathTex("Z", "=", r"X.cos\theta_{1}", "+",r"Y.cos\theta_{2}").move_to(2.5*DOWN).scale(.7).set_color(REANLEA_TXT_COL)
+        eq2 = MathTex("\leq", "X", "+", "Y").scale(.7).set_color_by_gradient(REANLEA_GREY).next_to(eq1)
+        eq3= MathTex("-1","\leq",r"cos\theta","\leq","1").set_color_by_gradient(REANLEA_GREEN_AUQA).move_to(3*UP+4*RIGHT)
         # ADD UPDATER REGION
 
         
@@ -1146,10 +1189,14 @@ class Scene6(Scene):
             buff=10
         )
         self.wait()
-        self.play(Create(projec_line))
-        self.wait()
+        
 
         self.play(Write(line_lbl))
+        self.wait()
+        self.play(Write(angle_grp))
+        self.play(Write(angle_lbl_grp))
+        self.wait(2)
+        self.play(Create(projec_line))
         self.wait()
         self.play(
             line1_lbl.animate.shift(.5*DOWN),
@@ -1162,8 +1209,39 @@ class Scene6(Scene):
             Write(brace_line3_lbl),
             run_time=2
         )
+        self.wait()
+        self.play(
+            TransformMatchingShapes(z_lbl.copy(),eq1)
+        )
+        self.wait()
+        self.play(Write(eq3))
+        self.play(Write(eq2))
+        self.wait()
+
+        self.play(Write(line1_p1))
+        self.wait()
+        self.play(Write(circ))
+        self.wait()
+
+        line1_p1.add_updater(
+            lambda x: x.become(line1_p1_ref.copy()).rotate(
+                line1_p1_tracker.get_value() , about_point=dot2.get_center()
+            )
+        )
+
+
+        self.play(
+            #line1_p1.animate.rotate(line2.get_angle(), about_point=dot2.get_center()),
+            #Rotate(line1_p1, angle=line2.get_angle(), about_point=line1_p1.get_start())
+            line1_p1_tracker.animate.set_value(line2.get_angle())
+        )
         self.wait(3)
-        
+        self.play(line1_p1_tracker.animate.set_value(line1.get_angle()))
+        self.wait()
+        self.play(Uncreate(line1_p1))
+        self.wait(3)
+       
+
         
 
 

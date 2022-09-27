@@ -2519,3 +2519,37 @@ class RopeEx6(Scene):
         # manim -pqh test.py RopeEx6
 
         # manim -sqk test.py RopeEx6
+
+
+class movingAngle(Scene):
+    def construct(self):
+
+        rotation_center = LEFT
+        
+        line1=Line(LEFT,RIGHT)
+        theta_tracker = ValueTracker(line1.get_angle())
+
+        line_moving = Line(LEFT, RIGHT)
+        line_ref = line_moving.copy()
+        line_moving.rotate(
+            theta_tracker.get_value(), about_point=rotation_center
+        )
+
+        self.add(line_moving)
+        self.wait()
+
+        line_moving.add_updater(
+            lambda x: x.become(line_ref.copy()).rotate(
+                theta_tracker.get_value() , about_point=rotation_center
+            )
+        )
+
+
+        self.play(theta_tracker.animate.set_value(140 * DEGREES))
+        self.wait()
+        self.play(theta_tracker.animate.increment_value(40 * DEGREES))
+        self.wait()
+        self.play(theta_tracker.animate.set_value(350* DEGREES))
+        self.wait()
+
+        # manim -pqh test.py movingAngle

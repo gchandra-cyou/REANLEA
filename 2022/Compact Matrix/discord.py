@@ -1029,3 +1029,161 @@ class TestVm(Scene):
 
 
         # manim -pqh discord.py TestVm
+
+
+class test22(Scene):
+    def construct(self):
+        clockface = VGroup()
+        for t in range(12):
+            clockface += Line(start = ORIGIN, end = 2*UP).rotate(-(t+1)/12*360*DEGREES, about_point=ORIGIN)
+            lbl = MathTex(r"{:.0f}".format(t+1))
+            clockface += lbl.move_to(clockface[-1].get_end())
+
+        self.play(Create(clockface))
+        self.wait(2)
+
+        # manim -pqh discord.py test22
+
+
+'''class ClockFaces(Scene):
+    def draw_text_lines(self, line1, line2, offset=np.array([3.5, 0.5, 0])):
+        text_heading = Text(line1)
+        text_heading.shift(offset)
+        text_body = Text(line2)
+        text_body.next_to(text_heading, DOWN)
+
+        return text_heading, text_body
+
+    def construct(self):
+
+        line, _ = self.draw_text_lines("Imagine a clockface", "")
+        self.play(FadeIn(line))
+        self.wait()
+
+        ### DRAW 12HR CLOCK
+        plane = PolarPlane(radius_max=2,
+                           azimuth_step=12,
+                           azimuth_units='degrees',
+                           azimuth_direction='CW',
+                           radius_config={
+                               "stroke_width": 0,
+                               "include_ticks": False
+                           },
+                           azimuth_offset=np.pi / 2).add_coordinates()
+        plane.shift(np.array([-3.5, 0, 0]))
+        self.play(LaggedStart(Write(plane), run_time=3, lag_ratio=0.5))
+        self.wait()
+
+
+        # manim -pqh discord.py ClockFaces
+'''
+
+
+class spinning(Scene):
+    def construct(self):
+
+        self.acc_time = 0
+        self.vect1 = 0*LEFT
+        self.vect2 = 0*LEFT
+        self.vect1_ampl  = 2
+        self.vect2_ampl  = self.vect1_ampl/2
+        self.vect1_freq  = 1
+        self.vect2_freq  = 2
+        def sceneUpdater(dt):
+            self.acc_time += 0.5*dt
+            self.vect1 = self.vect1_ampl*(np.sin(self.acc_time*self.vect1_freq)*UP + np.cos(self.acc_time*self.vect1_freq)*RIGHT)
+            self.vect2 = self.vect2_ampl*(np.sin(self.acc_time*self.vect2_freq)*UP + np.cos(self.acc_time*self.vect2_freq)*RIGHT)
+        self.add_updater(sceneUpdater)
+        
+        dyn_vect1_arrow = VMobject()
+        def vect1_updater(mobj):
+            dyn_vect1_arrow.become(Arrow(start=ORIGIN,end=self.vect1,buff=0).set_color(BLUE))
+        dyn_vect1_arrow.add_updater(vect1_updater)
+
+        dyn_vect2_arrow = VMobject()
+        def vect2_updater(mobj):
+            dyn_vect2_arrow.become(Arrow(start=self.vect1,end=self.vect1+self.vect2,buff=0).set_color(RED))
+        dyn_vect2_arrow.add_updater(vect2_updater)
+
+        self.add(dyn_vect1_arrow, dyn_vect2_arrow)
+
+        self.wait(30)   
+
+
+
+        # manim -pqh discord.py spinning
+
+
+
+class spinning1(Scene):
+    def construct(self):
+
+        self.acc_time = 0
+        self.vect1 = 0*LEFT
+        self.vect2 = 0*LEFT
+        self.vect1_ampl  = 2
+        self.vect2_ampl  = self.vect1_ampl/2
+        self.vect1_freq  = 1
+        self.vect2_freq  = 10
+
+        def sceneUpdater(dt):
+            self.acc_time += dt
+            self.vect1 = self.vect1_ampl*(np.sin(self.acc_time*self.vect1_freq)*UP + np.cos(self.acc_time*self.vect1_freq)*RIGHT)
+            self.vect2 = self.vect2_ampl*(np.sin(self.acc_time*self.vect2_freq)*UP + np.cos(self.acc_time*self.vect2_freq)*RIGHT)
+        self.add_updater(sceneUpdater)
+        
+        dyn_vect1_arrow = VMobject()
+        def vect1_updater(mobj):
+            dyn_vect1_arrow.become(Arrow(start=ORIGIN,end=self.vect1,buff=0).set_color(BLUE))
+        dyn_vect1_arrow.add_updater(vect1_updater)
+
+        dyn_vect2_arrow = VMobject()
+        def vect2_updater(mobj):
+            dyn_vect2_arrow.become(Arrow(start=self.vect1,end=self.vect1+self.vect2,buff=0).set_color(RED))
+        dyn_vect2_arrow.add_updater(vect2_updater)
+
+        self.add(dyn_vect1_arrow, dyn_vect2_arrow)
+
+        self.wait(30) 
+
+
+        # manim -pqh discord.py spinning1
+
+
+class test4(Scene):
+    def construct(self):
+        for i in range(5, -1, -1):
+            Text = MathTex(r"{:d} \over {:d}".format(i, i+1)).move_to(i*LEFT)
+            self.add(Text)
+            self.wait(1)
+
+        self.wait(2)
+
+
+        # manim -pqh discord.py test4
+
+
+class sep14(Scene):
+    def construct(self):
+        text = r"blabla askdjf  askdjfslk asdkfj asdfkj sdflajkd f"
+
+        ques = Tex(text, tex_environment = "flushleft")
+        op1 = Tex("(A) 1",
+        tex_to_color_map={"(A)":YELLOW})
+        op2 = Tex("(C) 2",
+        tex_to_color_map={"(B)":YELLOW})
+        op3 = Tex("(B) 3",
+        tex_to_color_map={"(C)":YELLOW})
+        op4 = Tex("(D) 4",
+        tex_to_color_map={"(D)":YELLOW})
+        ques.to_corner(UP, buff=2)
+        options1 = VGroup(op1, op2, op3, op4).arrange(DOWN)
+        options1.next_to(ques,DOWN, buff=1, aligned_edge = LEFT)
+
+        self.play(FadeIn(ques))
+        self.play(AnimationGroup(*[FadeIn(member) for member in options1], lag_ratio=0.5))
+        
+        self.wait(0)
+
+
+        # manim -pqh discord.py sep14
