@@ -32,7 +32,7 @@ from manim.utils.space_ops import angle_of_vector
 from manim.mobject.geometry.tips import ArrowTriangleFilledTip
 from manim.mobject.geometry.tips import ArrowTip
 from manim.mobject.geometry.tips import ArrowTriangleTip
-from round_corner import*
+#from round_corner import*
 
 
 config.background_color= REANLEA_BACKGROUND_COLOR
@@ -2311,6 +2311,61 @@ class MovingSquareWithUpdaters(Scene):
 
 
 
+
+
+class movingAngle(Scene):
+    def construct(self):
+
+        rotation_center = LEFT
+        
+        line1=Line(LEFT,RIGHT)
+        theta_tracker = ValueTracker(line1.get_angle())
+
+        line_moving = Line(LEFT, RIGHT)
+        line_ref = line_moving.copy()
+        line_moving.rotate(
+            theta_tracker.get_value(), about_point=rotation_center
+        )
+
+        self.add(line_moving)
+        self.wait()
+
+        line_moving.add_updater(
+            lambda x: x.become(line_ref.copy()).rotate(
+                theta_tracker.get_value() , about_point=rotation_center
+            )
+        )
+
+
+        self.play(theta_tracker.animate.set_value(140 * DEGREES))
+        self.wait()
+        self.play(theta_tracker.animate.increment_value(40 * DEGREES))
+        self.wait()
+        self.play(theta_tracker.animate.set_value(350* DEGREES))
+        self.wait()
+
+        # manim -pqh test.py movingAngle
+
+
+class RoundCornersEx(Scene):
+    def construct(self):
+
+        tri1=RegularPolygram(5, density=2, radius=2, start_angle=PI,color=PURE_GREEN).round_corners(radius=0.25)
+        tri2=RegularPolygram(3, radius=2, color=PURE_GREEN).round_corners(radius=0.25).set_stroke(width=50, opacity=0.3)
+
+        grp=VGroup(tri1,tri2).arrange(RIGHT, buff=0.5)
+
+        self.play(
+            Write(grp)
+        )
+        self.wait(2)
+
+        # manim -pqh test.py RoundCornersEx
+
+
+
+
+
 class RopeEx6(Scene):
     def construct(self):
 
@@ -2518,38 +2573,150 @@ class RopeEx6(Scene):
 
         # manim -pqh test.py RopeEx6
 
-        # manim -sqk test.py RopeEx6
 
 
-class movingAngle(Scene):
+class RopeEx7(Scene):
     def construct(self):
 
-        rotation_center = LEFT
+        theta_tracker=ValueTracker(0)
+        scale_tracker=ValueTracker(1)
+
+        dot1=Dot(radius=0.1, color=REANLEA_GREEN_LIGHTER).move_to(1.5*LEFT).set_sheen(-0.6,DOWN).set_opacity(0)
+        dot2=Dot(radius=0.1, color=REANLEA_BLUE_SKY).move_to(1.5*RIGHT).set_sheen(-0.6,DOWN).set_opacity(0)
+        dot3=Dot(radius=0.1, color=REANLEA_YELLOW_CREAM).move_to(LEFT+.5*UP).set_sheen(-0.6,DOWN).set_opacity(0)
         
-        line1=Line(LEFT,RIGHT)
-        theta_tracker = ValueTracker(line1.get_angle())
 
-        line_moving = Line(LEFT, RIGHT)
-        line_ref = line_moving.copy()
-        line_moving.rotate(
-            theta_tracker.get_value(), about_point=rotation_center
+        
+        line=Line(start=dot1.get_center(), end=dot2.get_center()).set_color(REANLEA_YELLOW)
+        line1=Line(start=dot1.get_center(), end=dot3.get_center()).set_color(REANLEA_BLUE_DARKER)
+        line2=Line(start=dot2.get_center(), end=dot3.get_center()).set_color(REANLEA_GREEN_DARKER)
+        
+        line_ref=line.copy()
+        line1_ref=line1.copy()
+        line2_ref=line2.copy()
+
+  
+        line1=always_redraw(lambda : Line(start=dot1.get_center(), end=dot3.get_center()).set_color(REANLEA_BLUE_DARKER))
+        line1.add_updater(
+            lambda x: x.become(line1_ref.copy().rotate(
+                theta_tracker.get_value()*DEGREES, about_point=dot1.get_center()
+            ).scale(
+                scale_tracker.get_value(), about_point=dot1.get_center()
+            ))
         )
 
-        self.add(line_moving)
-        self.wait()
+        
+        line2=always_redraw(lambda : Line(start=dot3.get_center(), end=dot2.get_center()).set_color(REANLEA_GREEN_DARKER))
+        
+        
 
-        line_moving.add_updater(
-            lambda x: x.become(line_ref.copy()).rotate(
-                theta_tracker.get_value() , about_point=rotation_center
-            )
+        grp=VGroup(line,line1,line2,dot1,dot2,dot3)
+
+        line_ex=Line(start=ORIGIN,end=RIGHT).scale(line.get_length()).set_stroke(color=REANLEA_YELLOW, width=10)
+
+        dot_ex=Dot().move_to(2*DOWN+LEFT)
+        dot_ex1=Dot().move_to(2*DOWN).set_opacity(0)
+        
+        
+
+        #line1_ex=Line(start=dot_ex.get_center(), end=dot_ex1.get_center()).set_stroke(color=REANLEA_BLUE, width=10)
+        line1_ex =always_redraw( lambda : Line(start=dot_ex.get_center(), end=dot_ex1.get_center()).set_stroke(color=REANLEA_BLUE, width=10))
+        
+        line1_ex_ref=line1_ex.copy()
+        
+
+        line1_ex.add_updater(
+            lambda x: x.become(line1_ex_ref.copy().scale(
+                line1.get_length(), about_point= dot_ex.get_center()
+            ))
         )
 
+        
+        dot_ex1.add_updater( lambda z : z.move_to(line1_ex.get_end()))
 
-        self.play(theta_tracker.animate.set_value(140 * DEGREES))
-        self.wait()
-        self.play(theta_tracker.animate.increment_value(40 * DEGREES))
-        self.wait()
-        self.play(theta_tracker.animate.set_value(350* DEGREES))
-        self.wait()
 
-        # manim -pqh test.py movingAngle
+
+        dot_ex2=Dot().move_to(dot_ex1.get_center()+RIGHT).set_opacity(0)
+        
+        line2_ex= always_redraw(lambda : Line(start=dot_ex1.get_center(), end=dot_ex1.get_center()+RIGHT).set_stroke(color=REANLEA_GREEN_DARKER, width=10))
+        line2_ex_ref=line2_ex.copy()
+
+        line2_ex.add_updater(
+            lambda x: x.become(line2_ex.copy().scale(
+                line2.get_length(), about_point=line2_ex.get_start()
+            ))
+        )
+
+        dot_ex2.add_updater( lambda z : z.move_to(line2_ex.get_end()))
+
+        line_grp=VGroup(line1_ex,line2_ex)
+
+        line_ex.next_to(line_grp,UP*0.5).shift(RIGHT*0.5)
+
+    
+
+
+        
+        #PLAY ZONE
+
+        self.play(
+            Create(grp)
+        )
+  
+        #self.wait(2)
+
+
+        self.add(line_ex,line1_ex, dot_ex1, dot_ex2, line2_ex)
+        
+
+        dot3.add_updater(
+            lambda x : x.move_to(line1.get_end())
+        )
+
+       
+        
+        self.play(
+            theta_tracker.animate.set_value(30),
+            scale_tracker.animate.set_value(3),
+        )
+
+        self.wait(2)
+
+        self.play(
+            theta_tracker.animate.set_value(130),
+            scale_tracker.animate.set_value(2.5),
+        )
+
+        self.wait(2)
+
+        self.play(
+            theta_tracker.animate.set_value(270),
+            scale_tracker.animate.set_value(1.25)
+        )
+
+        self.wait(2)
+
+        self.play(
+            theta_tracker.animate.set_value(0),
+            scale_tracker.animate.set_value(0)
+        )
+
+        self.wait(2)
+
+        self.play(
+            theta_tracker.animate.set_value(-30),
+            scale_tracker.animate.set_value(line.get_length())
+        )
+
+        self.wait(4)
+
+        self.play(
+            *[FadeOut(mobj) for mobj in self.mobjects]
+        )
+        self.wait(2)
+
+        
+
+        # manim -pqh test.py RopeEx7
+
+        # manim -sqk test.py RopeEx7
