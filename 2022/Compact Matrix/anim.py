@@ -767,7 +767,7 @@ class Scene4(MovingCameraScene):
         with RegisterFont("Cousine") as fonts:
             text_3 = VGroup(*[Text(x, font=fonts[0]) for x in (
                 "Q1. What's the distance between a point from itself ?",
-                " and what can you say if the distance between two points be zero ?"
+                "    and what can you say if the distance between two points be zero ?"
             )]).arrange_submobjects(DOWN).to_edge(UP).shift(0.5*DOWN).scale(0.4).set_color(REANLEA_GREY)
             text_3[1].shift(1.4*RIGHT)
             text_3.move_to(ORIGIN)
@@ -1231,6 +1231,9 @@ class Scene6(MovingCameraScene):
         eq2 = MathTex("\leq", "Y", "+", "X").scale(.7).set_color_by_gradient(REANLEA_GREY).next_to(eq1)
         eq3= MathTex("-1","\leq",r"cos\theta","\leq","1").scale(0.85).set_color_by_gradient(REANLEA_GREEN_AUQA).move_to(3*UP+4*RIGHT)
         eq4= MathTex("d(x,y)","\leq",r"d(x,z)","+","d(z,y)").scale(0.7).set_color_by_gradient(REANLEA_BLUE_LAVENDER).move_to(3*DOWN+ 0.75*RIGHT)
+        eq5=eq4.copy()
+        eq6=MathTex(r", \forall","x,",r"y,","z.").scale(0.7).set_color_by_gradient(REANLEA_GREY).arrange(buff=0.2)
+        
         
         eq_grp1=VGroup(eq1,eq2)
 
@@ -1244,9 +1247,41 @@ class Scene6(MovingCameraScene):
         uncreate_grp=VGroup(eq1,eq2,eq3,eq4,sr_rect,brace_lbl,dot_lbl_grp,line_lbl,circ,projec_line,angle_grp,angle_lbl_grp)
         create_grp=VGroup(eq1,eq2,eq4,sr_rect,brace_lbl,dot_lbl_grp,line_lbl,circ,projec_line,angle_grp,angle_lbl_grp)
         create_grp2=VGroup(eq1,eq2,brace_lbl,dot_lbl_grp,line_lbl,circ,projec_line,angle_grp,angle_lbl_grp)
-        # ADD UPDATER REGION
+
+        # TEXT REGION
+
+        with RegisterFont("Caveat") as fonts:
+            text_prop=Text("Properties of Distance", font=fonts[0]).scale(.55)
+            text_prop.set_color_by_gradient(REANLEA_WHITE,REANLEA_BLUE_LAVENDER).set_opacity(0.6).move_to(3.5*UP)
+
+
+        with RegisterFont("Cousine") as fonts:
+            text_1 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "P1.  If we have three points",
+                "and",
+                "Then,"
+            )]).scale(0.4).set_color(REANLEA_GREY)
+
+        text_2=MathTex("x,","y","z.").scale(0.8)
+
+        dis_prop_3_1=VGroup(text_1[0], text_2[0],text_2[1], text_1[1],text_2[2], text_1[2]).arrange(RIGHT, buff=0.2).move_to(2.25*UP+2.75*LEFT)
+        eq5.next_to(dis_prop_3_1,DOWN)
+        eq6.next_to(eq5, 2*RIGHT)
+            
 
         
+        # BEZIER REGION
+
+        under_line_bezier = ParametricFunction(
+            lambda t: bezier(np.array([
+                [.34,.84,0],
+                [.75, .70, 0],
+                [1.82, 0.52, 0],
+                [2.33, 0.88, 0],  
+            ]))(t),
+            [0, 1],
+            color=PURE_RED,
+        ).flip(RIGHT).next_to(text_prop,.5*DOWN).scale(1.25).rotate(3*DEGREES)
 
 
         # PLAY REGION
@@ -1425,6 +1460,13 @@ class Scene6(MovingCameraScene):
         )'''
 
         self.play(
+            AddTextLetterByLetter(text_prop)
+        )
+        self.play(
+            Write(under_line_bezier)
+        )
+
+        self.play(
             tri_inq_gr.animate.scale(0.4).move_to(4.75*RIGHT+2*UP)
         )
         self.play(
@@ -1432,19 +1474,18 @@ class Scene6(MovingCameraScene):
                 SurroundingRectangle(tri_inq_gr, color=REANLEA_WARM_BLUE_DARKER, buff=.25, corner_radius=.15)
             )
         )
+        self.play(
+            AddTextLetterByLetter(dis_prop_3_1)
+        )
+        self.play(Write(eq5))
+        self.play(AddTextLetterByLetter(eq6))
         self.wait(4)
 
-       
+
         
 
 
-
-
-
-    def focus_on(self, mobject, buff=2):
-        return self.camera.frame.animate.set_width(mobject.width * buff).move_to(
-            mobject
-        )   
+      
 
         
        

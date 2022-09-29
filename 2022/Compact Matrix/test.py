@@ -32,7 +32,7 @@ from manim.utils.space_ops import angle_of_vector
 from manim.mobject.geometry.tips import ArrowTriangleFilledTip
 from manim.mobject.geometry.tips import ArrowTip
 from manim.mobject.geometry.tips import ArrowTriangleTip
-#from round_corner import*
+from round_corner import*
 
 
 config.background_color= REANLEA_BACKGROUND_COLOR
@@ -1230,6 +1230,30 @@ class BezierEx(Scene):
 
 
         #  manim -pqh test.py BezierEx
+
+
+
+class BezierExUnderline(Scene):
+    def construct(self):
+
+        p1 = ParametricFunction(
+            lambda t: bezier(np.array([
+                [.39,1.13,0],
+                [.78, .86, 0],
+                [1.82, 0.52, 0],
+                [2.33, 0.88, 0],  
+            ]))(t),
+            [0, 1],
+            color=REANLEA_CHARM,
+        ).flip(RIGHT)
+        
+
+      
+        self.play(Write(p1))
+        self.wait(2)
+
+
+        #  manim -pqh test.py BezierExUnderline
 
 
 
