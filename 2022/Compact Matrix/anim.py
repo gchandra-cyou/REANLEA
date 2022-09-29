@@ -1264,9 +1264,18 @@ class Scene6(MovingCameraScene):
 
         text_2=MathTex("x,","y","z.").scale(0.8)
 
-        dis_prop_3_1=VGroup(text_1[0], text_2[0],text_2[1], text_1[1],text_2[2], text_1[2]).arrange(RIGHT, buff=0.2).move_to(2.25*UP+2.75*LEFT)
-        eq5.next_to(dis_prop_3_1,DOWN)
+        with RegisterFont("Caveat") as fonts:
+            text_3=Text("Triangle Inequaliy", font=fonts[0])
+            text_3.set_color_by_gradient(REANLEA_BLUE_SKY,PURE_GREEN).set_opacity(1).scale(0.4)
+        text_3.rotate(PI/4)
+
+        dis_prop_3_1=VGroup(text_1[0], text_2[0],text_2[1], text_1[1],text_2[2], text_1[2]).arrange(RIGHT, buff=0.2).move_to(2.5*UP+2.75*LEFT)
+        eq5.next_to(dis_prop_3_1,1.5*DOWN)
         eq6.next_to(eq5, 2*RIGHT)
+
+        text_3.move_to(1.45*UP+ 1.8*RIGHT)
+
+
             
 
         
@@ -1460,15 +1469,16 @@ class Scene6(MovingCameraScene):
         )'''
 
         self.play(
-            AddTextLetterByLetter(text_prop)
+            AddTextLetterByLetter(text_prop),
+            tri_inq_gr.animate.scale(0.4).move_to(4.75*RIGHT+2*UP)
         )
         self.play(
             Write(under_line_bezier)
         )
 
-        self.play(
+        '''self.play(
             tri_inq_gr.animate.scale(0.4).move_to(4.75*RIGHT+2*UP)
-        )
+        )'''
         self.play(
             Create(
                 SurroundingRectangle(tri_inq_gr, color=REANLEA_WARM_BLUE_DARKER, buff=.25, corner_radius=.15)
@@ -1479,7 +1489,84 @@ class Scene6(MovingCameraScene):
         )
         self.play(Write(eq5))
         self.play(AddTextLetterByLetter(eq6))
+        self.play(
+            Write(
+                SurroundingRectangle(eq5, color=REANLEA_AQUA_GREEN, buff=.15, corner_radius=.15)
+            )
+        )
+        self.wait(2)
+        self.play(
+            AddTextLetterByLetter(text_3)
+        )
+        self.play(
+            Create(get_surround_bezier(text_3).rotate(PI/4))
+        )
         self.wait(4)
+
+
+
+
+            # P2-METRIC
+
+        line_p2= NumberLine(
+            x_range=[-1, 5, 1],
+            length=12,
+            include_ticks=False,
+            stroke_width=2.0
+        )
+        line_p2.move_to(line_p2.n2p(-2)).shift(DOWN)
+        
+
+        center=line_p2.n2p(-2)
+
+
+        dot1_p2= VGroup(
+            Dot(radius=.25).move_to(line_p2.n2p(1.75)).scale(0.6).set_color(REANLEA_VIOLET_LIGHTER).set_sheen(-0.4,DOWN),
+            MathTex("x").scale(0.6)
+        )
+        dot1_p2[1].next_to(dot1_p2[0],DOWN)
+        dot2_p2= VGroup(
+            Dot(radius=.25).move_to(line_p2.n2p(4)).scale(0.6).set_color(REANLEA_GREEN).set_sheen(-0.6,DOWN),
+            MathTex("y").scale(0.6)
+        )
+        dot2_p2[1].next_to(dot2_p2[0],DOWN)
+
+        zero_tick = VGroup(
+            Line(0.2 * UP, 0.2 * DOWN, stroke_width=4.0, color=REANLEA_VIOLET_LIGHTER),
+            MathTex("0"),
+        )
+        zero_tick[0].move_to(line_p2.n2p(0))
+        zero_tick[1].next_to(zero_tick[0], DOWN)
+
+        dash_line_p2=DashedDoubleArrow(
+            start=dot1_p2.get_center()+UP, end=dot2_p2.get_center()+UP, dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+        v_line1_p2=DashedLine(
+            start=dot1_p2.get_center()+.2*UP, end=dot1_p2.get_center()+UP, stroke_width=1
+        ).set_color(RED_D)
+
+        v_line2_p2=DashedLine(
+            start=dot2_p2.get_center()+.2*UP, end=dot2_p2.get_center()+UP, stroke_width=1
+        ).set_color(RED_D)
+
+        eq_p2 = MathTex("d(x,y)","=", "|y-x|").set_color(REANLEA_GREEN_LIGHTER).set_sheen(-0.4,DR).next_to(dash_line_p2,UP)
+
+        
+
+
+        grp_p2=VGroup(line_p2,dot1_p2,dot2_p2, zero_tick, dash_line_p2, v_line1_p2,v_line2_p2, eq_p2).scale(0.6).move_to(3*LEFT)
+
+        self.play(
+            Write(grp_p2)
+        )
+        
+        self.play(
+            Create(
+                SurroundingRectangle(grp_p2, color=REANLEA_WARM_BLUE_DARKER, buff=.25, corner_radius=.15)
+            )
+        )
 
 
         
@@ -1488,10 +1575,6 @@ class Scene6(MovingCameraScene):
       
 
         
-       
-
-        
-
 
 
         
