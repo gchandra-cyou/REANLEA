@@ -1119,7 +1119,7 @@ class Scene6(Scene):
         circ.set_color_by_gradient(REANLEA_WHITE,REANLEA_WARM_BLUE,REANLEA_YELLOW_CREAM)
 
 
-
+            # UPDATER SPACE 
         line2_ref=line2.copy()
         line2=always_redraw(lambda : Line(start=dot2.get_center(), end=dot3.get_center()).set_color(REANLEA_GREEN_DARKER).set_stroke(width=5))
 
@@ -1132,6 +1132,46 @@ class Scene6(Scene):
         )
 
         line3=always_redraw(lambda : Line(start=dot3.get_center(), end=dot1.get_center()).set_color(REANLEA_VIOLET_DARKER).set_stroke(width=5))
+        
+
+
+
+
+
+        line1_ex = Line(start=ORIGIN,end=RIGHT).scale(line1.get_length()).set_stroke(color=REANLEA_YELLOW, width=15)
+        
+        dot_ex1=Dot().move_to(2*DOWN+3*LEFT)
+        dot_ex2=Dot().move_to(2*DOWN+2*LEFT).set_opacity(0)
+
+        line2_ex =always_redraw( lambda : Line(start=dot_ex1.get_center(), end=dot_ex2.get_center()).set_stroke(color=REANLEA_GREEN, width=15))
+        line2_ex_ref=line2_ex.copy()
+        line2_ex.add_updater(
+            lambda x: x.become(line2_ex_ref.copy().scale(
+                line2.get_length(), about_point= dot_ex1.get_center()
+            ))
+        )
+
+        dot_ex2.add_updater( lambda z : z.move_to(line2_ex.get_end()))
+
+
+
+        dot_ex3=Dot().move_to(dot_ex2.get_center()+RIGHT).set_opacity(0)
+
+        line3_ex= always_redraw(lambda : Line(start=dot_ex2.get_center(), end=dot_ex2.get_center()+RIGHT).set_stroke(color=REANLEA_VIOLET, width=15))
+        line3_ex_ref=line3_ex.copy()
+
+        line3_ex.add_updater(
+            lambda x: x.become(line3_ex.copy().scale(
+                line3.get_length(), about_point=line3_ex.get_start()
+            ))
+        )
+
+        dot_ex3.add_updater( lambda z : z.move_to(line3_ex.get_end()))
+
+        line_ex_grp=VGroup(line2_ex,line3_ex)
+        line1_ex.next_to(line_ex_grp,UP*0.65).shift(2*RIGHT)
+
+
 
 
         # DOT & Line LABELS
@@ -1296,6 +1336,7 @@ class Scene6(Scene):
 
         # length tracker updaters
 
+        self.add(line1_ex,line2_ex, dot_ex2, dot_ex3, line3_ex)
 
         dot3.add_updater(
             lambda x : x.move_to(line2.get_end())
@@ -1317,7 +1358,7 @@ class Scene6(Scene):
 
         self.play(
             theta_tracker.animate.set_value(270),
-            scale_tracker.animate.set_value(1.25)
+            scale_tracker.animate.set_value(1)
         )
 
         self.wait(2)
