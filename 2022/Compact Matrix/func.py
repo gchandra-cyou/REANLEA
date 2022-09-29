@@ -311,3 +311,7 @@ def bezier_updated(t,
     )
 
 
+def focus_on(self, mobject, buff=2):
+        return self.camera.frame.animate.set_width(mobject.width * buff).move_to(
+            mobject
+        )

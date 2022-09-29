@@ -1070,7 +1070,7 @@ class Scene5(Scene):
 ###################################################################################################################
 
 
-class Scene6(Scene):
+class Scene6(MovingCameraScene):
     def construct(self):
 
         # WATER-MARK
@@ -1090,11 +1090,15 @@ class Scene6(Scene):
         dot1=Dot(radius=0.25, color=REANLEA_GREEN).move_to(3*RIGHT).set_sheen(-0.6,DOWN)
         dot2=Dot(radius=0.25, color=REANLEA_VIOLET_LIGHTER).move_to(3*LEFT).set_sheen(-0.4,DOWN)
         dot3=Dot(radius=0.125, color=REANLEA_YELLOW).move_to(LEFT+2.5*UP).set_sheen(-0.6,DOWN)
+        dot3_1=Dot(radius=0.125, color=REANLEA_YELLOW).move_to(LEFT+2.5*UP).set_sheen(-0.6,DOWN)
 
 
         line1=Line(start=dot2.get_center(), end=dot1.get_center()).set_color(REANLEA_YELLOW_DARKER).set_stroke(width=10).set_z_index(-2)
         line2=Line(start=dot2.get_center(), end=dot3.get_center()).set_color(REANLEA_GREEN_DARKER).set_stroke(width=5).set_z_index(-3)
         line3=Line(start=dot3.get_center(), end=dot1.get_center()).set_color(REANLEA_VIOLET_DARKER).set_stroke(width=5).set_z_index(-1)
+        
+        line2_1=Line(start=dot2.get_center(), end=dot3.get_center()).set_color(REANLEA_GREEN_DARKER).set_stroke(width=5).set_z_index(-3)
+        line3_1=Line(start=dot3.get_center(), end=dot1.get_center()).set_color(REANLEA_VIOLET_DARKER).set_stroke(width=5).set_z_index(-1)
         
 
         line1_p1_tracker=ValueTracker(line1.get_angle())
@@ -1207,6 +1211,7 @@ class Scene6(Scene):
         # GROUP REGION
         grp=VGroup(line1,dot1,dot2)
         grp2=VGroup(line1,line2,line3, dot1,dot2,dot3)
+        grp2.save_state()
         dot_lbl_grp=VGroup(dot1_lbl2,dot2_lbl2,dot3_lbl)
         grp_line23=VGroup(line2,line3).set_z_index(-1)
 
@@ -1237,8 +1242,8 @@ class Scene6(Scene):
         eq_grp1=VGroup(eq1,eq2)
 
         uncreate_grp=VGroup(eq1,eq2,eq3,eq4,sr_rect,brace_lbl,dot_lbl_grp,line_lbl,circ,projec_line,angle_grp,angle_lbl_grp)
-
-
+        create_grp=VGroup(eq1,eq2,eq4,sr_rect,brace_lbl,dot_lbl_grp,line_lbl,circ,projec_line,angle_grp,angle_lbl_grp)
+        create_grp2=VGroup(eq1,eq2,brace_lbl,dot_lbl_grp,line_lbl,circ,projec_line,angle_grp,angle_lbl_grp)
         # ADD UPDATER REGION
 
         
@@ -1329,9 +1334,11 @@ class Scene6(Scene):
         )
         self.wait(3)
         self.play(
-            Uncreate(uncreate_grp)
+            FadeOut(uncreate_grp)
         )
         self.wait(2)
+        #self.play(Write(create_grp))
+        
 
 
         # length tracker updaters
@@ -1375,7 +1382,69 @@ class Scene6(Scene):
             scale_tracker.animate.set_value(1)
         )
 
+        self.wait(2)
+
+        self.play(
+            theta_tracker.animate.set_value(line2.get_angle()/180),
+            scale_tracker.animate.set_value(1)
+        )
+        self.wait(2)
+
+        self.play(
+            Uncreate(line1_ex),
+            Uncreate(line2_ex),
+            Uncreate(line3_ex),
+        )
+        self.add(dot3_1,line1,line2_1,line3_1)
+
+        
+
+
+
+        # scale & focus 
+
+        tri_inq_gr=VGroup(dot1,dot2,dot3_1,line1,line2_1,line3_1, create_grp)
+
+        self.play(
+            Write(create_grp),
+            lag_ratio=0
+        )
+        self.play(
+            FadeOut(line2),
+            FadeOut(line3),
+            FadeOut(dot3)
+        )
+
+        '''self.play(
+            self.focus_on(tri_inq_gr, buff=5).shift(10*LEFT+4*DOWN)
+        )
+
+        self.wait()
+        self.play(
+            Create(SurroundingRectangle(tri_inq_gr,color=REANLEA_WARM_BLUE, buff=0.25, corner_radius=0.25))
+        )'''
+
+        self.play(
+            tri_inq_gr.animate.scale(0.4).move_to(4.75*RIGHT+2*UP)
+        )
+        self.play(
+            Create(
+                SurroundingRectangle(tri_inq_gr, color=REANLEA_WARM_BLUE_DARKER, buff=.25, corner_radius=.15)
+            )
+        )
         self.wait(4)
+
+       
+        
+
+
+
+
+
+    def focus_on(self, mobject, buff=2):
+        return self.camera.frame.animate.set_width(mobject.width * buff).move_to(
+            mobject
+        )   
 
         
        
