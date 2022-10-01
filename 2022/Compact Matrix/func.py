@@ -315,3 +315,13 @@ def focus_on(self, mobject, buff=2):
         return self.camera.frame.animate.set_width(mobject.width * buff).move_to(
             mobject
         )
+
+
+def create_glow(vmobject, rad=1, col=YELLOW):
+    glow_group = VGroup()
+    for idx in range(60):
+        new_circle = Circle(radius=rad*(1.002**(idx**2))/400, stroke_opacity=0, fill_color=col,fill_opacity=0.2-idx/300).move_to(vmobject)
+        glow_group.add(new_circle)
+    return glow_group
+
+

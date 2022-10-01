@@ -1229,11 +1229,16 @@ class Scene6(MovingCameraScene):
 
         eq1 = MathTex("Z", "=", r"Y.cos\theta_{1}", "+",r"X.cos\theta_{2}").move_to(2.5*DOWN).scale(.7).set_color(REANLEA_TXT_COL)
         eq2 = MathTex("\leq", "Y", "+", "X").scale(.7).set_color_by_gradient(REANLEA_GREY).next_to(eq1)
-        eq3= MathTex("-1","\leq",r"cos\theta","\leq","1").scale(0.85).set_color_by_gradient(REANLEA_GREEN_AUQA).move_to(3*UP+4*RIGHT)
-        eq4= MathTex("d(x,y)","\leq",r"d(x,z)","+","d(z,y)").scale(0.7).set_color_by_gradient(REANLEA_BLUE_LAVENDER).move_to(3*DOWN+ 0.75*RIGHT)
-        eq5=eq4.copy()
-        eq6=MathTex(r", \forall","x,",r"y,","z.").scale(0.7).set_color_by_gradient(REANLEA_GREY).arrange(buff=0.2)
-        
+        eq3 = MathTex("-1","\leq",r"cos\theta","\leq","1").scale(0.85).set_color_by_gradient(REANLEA_GREEN_AUQA).move_to(3*UP+4*RIGHT)
+        eq4 = MathTex("d(x,y)","\leq",r"d(x,z)","+","d(z,y)").scale(0.7).set_color_by_gradient(REANLEA_BLUE_LAVENDER).move_to(3*DOWN+ 0.75*RIGHT)
+        eq5 = eq4.copy()
+        eq6 = MathTex(r"\forall","x,",r"y,","z.").scale(0.6).set_color_by_gradient(REANLEA_GREY).arrange(buff=0.2)
+        eq7 = MathTex("d(x,y)","=","d(y,x)").scale(0.7).set_color_by_gradient(REANLEA_BLUE_LAVENDER).move_to(3*DOWN+ 0.75*RIGHT)
+        eq8 = MathTex(r"\forall","x,","y.").scale(0.6).set_color_by_gradient(REANLEA_GREY).arrange(buff=0.2)
+
+        eq9 = MathTex("  d(x,y)",r"\geq","0  ").scale(0.7).set_color_by_gradient(REANLEA_BLUE_LAVENDER)
+        eq10 = MathTex("x",r"=","y").scale(0.7).set_color_by_gradient(REANLEA_BLUE_LAVENDER)
+        eq11 = MathTex(r"\forall","x,","y.").scale(0.6).set_color_by_gradient(REANLEA_GREY).arrange(buff=0.2)
         
         eq_grp1=VGroup(eq1,eq2)
 
@@ -1274,6 +1279,25 @@ class Scene6(MovingCameraScene):
         eq6.next_to(eq5, 2*RIGHT)
 
         text_3.move_to(1.45*UP+ 1.8*RIGHT)
+
+        with RegisterFont("Cousine") as fonts:
+            text_4 = Text("P2.", font=fonts[0]).scale(0.4).set_color(REANLEA_GREY)
+
+
+
+        dis_prop_3_2=VGroup(text_4, eq7,eq8).arrange(RIGHT, buff=0.4).move_to(4.5*RIGHT+.5*DOWN)
+
+
+        with RegisterFont("Cousine") as fonts:
+            text_5 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "P3. ",
+                "and equality holds iff",
+            )]).scale(0.4).set_color(REANLEA_GREY)
+
+        dis_prop_3_3_1=VGroup(text_5[0], eq9, text_5[1]).arrange(RIGHT, buff=0.4).move_to(2.25*LEFT+2.45*DOWN)
+        dis_prop_3_3_2=VGroup(eq10, eq11).arrange(RIGHT, buff=0.4).move_to(dis_prop_3_3_1.get_center()+0.5*DOWN+ 1.5*RIGHT)
+        dis_prop_3_3=VGroup(dis_prop_3_3_1,dis_prop_3_3_2)
+
 
 
             
@@ -1556,7 +1580,7 @@ class Scene6(MovingCameraScene):
         
 
 
-        grp_p2=VGroup(line_p2,dot1_p2,dot2_p2, zero_tick, dash_line_p2, v_line1_p2,v_line2_p2, eq_p2).scale(0.6).move_to(3*LEFT)
+        grp_p2=VGroup(line_p2,dot1_p2,dot2_p2, zero_tick, dash_line_p2, v_line1_p2,v_line2_p2, eq_p2).scale(0.6).move_to(3*LEFT+0.5*DOWN)
 
         self.play(
             Write(grp_p2)
@@ -1565,8 +1589,80 @@ class Scene6(MovingCameraScene):
         self.play(
             Create(
                 SurroundingRectangle(grp_p2, color=REANLEA_WARM_BLUE_DARKER, buff=.25, corner_radius=.15)
+            ),
+            AddTextLetterByLetter(dis_prop_3_2)
+        )
+        self.play(
+            Write(
+                SurroundingRectangle(eq7, color=REANLEA_MAGENTA, buff=.15, corner_radius=.15)
             )
         )
+        self.wait(2)
+
+
+
+        # P3-METRIC
+
+        line_p3=NumberLine(
+            x_range=[-3,3],
+            include_ticks=False,
+            include_tip=False
+        ).set_color(REANLEA_YELLOW_DARKER).set_opacity(0.6)
+        
+        dot1_p3=Dot(radius=0.25, color=REANLEA_GREEN).move_to(3*RIGHT).set_sheen(-0.6,DOWN)
+        dot2_p3=Dot(radius=0.25, color=REANLEA_VIOLET_LIGHTER).move_to(LEFT).set_sheen(-0.4,DOWN)
+        dot3_p3=Dot(radius=0.25, color=REANLEA_VIOLET_LIGHTER).move_to(3*LEFT).set_sheen(-0.4,DOWN).set_opacity(0.4)
+        #dot3_p3=dot2.copy().set_opacity(0.4)
+        
+
+
+        # DOT LABELS
+
+        dot1_p3_lbl=MathTex("y").scale(0.6).next_to(dot1_p3, DOWN)
+        dot3_p3_lbl=MathTex("x").scale(0.6).next_to(dot3_p3, DOWN)
+
+        # POINTS
+        p1_p3= dot1_p3.get_center()+UP
+        p2_p3= dot2_p3.get_center()+UP
+        p3_p3=dot3_p3.get_center()
+
+
+
+        #dashed lines
+        d_line_p3=DashedDoubleArrow(
+            start=p2_p3, end=p1_p3, dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+        d_line_p3_lbl=MathTex("d(x,y)","=","0.67").set_color_by_gradient(PURE_GREEN,REANLEA_PINK_LIGHTER).next_to(d_line_p3,0.5*UP)
+
+
+        v_line1_p3=DashedLine(
+            start=dot1_p3.get_center(), end=dot1_p3.get_center()+UP, stroke_width=1
+        ).set_color(RED_D)
+
+        v_line2_p3=DashedLine(
+            start=dot2_p3.get_center(), end=dot2_p3.get_center()+UP, stroke_width=1
+        ).set_color(RED_D)
+
+
+        # GROUPS
+        grp_p3=VGroup(line_p3,dot1_p3,dot2_p3,dot3_p3,dot1_p3_lbl,dot3_p3_lbl, d_line_p3,d_line_p3_lbl, v_line1_p3, v_line2_p3).scale(0.6).move_to(4.5*RIGHT+2.45*DOWN)
+
+        self.play(Write(grp_p3))
+        self.play(
+            Create(
+                SurroundingRectangle(grp_p3, color=REANLEA_WARM_BLUE_DARKER, buff=.25, corner_radius=.15)
+            ),
+            AddTextLetterByLetter(dis_prop_3_3)
+        )
+        self.play(
+            Write(
+                SurroundingRectangle(eq9, color=REANLEA_SLATE_BLUE, buff=.15, corner_radius=.15)
+            )
+        )
+        self.wait(2)
+
 
 
         

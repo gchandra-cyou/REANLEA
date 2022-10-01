@@ -2744,3 +2744,39 @@ class RopeEx7(Scene):
         # manim -pqh test.py RopeEx7
 
         # manim -sqk test.py RopeEx7
+
+
+
+
+class GraphEx2(Scene):
+    def construct(self):
+        graph = ImplicitFunction(
+            lambda x, y:  np.cos(20*(np.arctan((x-1)/y)+np.arctan(y/(x+1)))),
+            color=PURE_RED,
+            min_depth=8
+        )
+        
+        self.play(    
+            Create(graph),
+        )
+        self.wait(2)
+        self.play(
+            graph.animate.scale(0.6)
+        )
+        self.wait(2)
+
+        # manim -pqh test.py GraphEx2
+
+
+class glowex(Scene):
+    def construct(self):
+        d=Dot(radius=.21)
+        g=create_glow(d, col=PURE_RED, rad=7)
+
+        grp=VGroup(d,g)
+        self.play(
+            Create(grp)
+        )
+        self.wait(2)
+
+        # manim -pqh test.py glowex

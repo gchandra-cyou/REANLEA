@@ -1187,3 +1187,59 @@ class sep14(Scene):
 
 
         # manim -pqh discord.py sep14
+
+
+class riemannint(Scene):
+    def construct(self):
+        ax1 = NumberPlane(background_line_style={"stroke_color": WHITE,"stroke_width": 0.1,"stroke_opacity": 0.6})
+
+        k=ValueTracker(-6)
+        graph1 = ax1.plot(lambda x: 1/(x**k.get_value()), x_range=[0.5, 6.2]).set_color_by_gradient(YELLOW, ORANGE, RED)
+        ts = MathTex(r"\alpha = ").set_color_by_gradient(YELLOW, ORANGE, RED).move_to(UP*3+RIGHT*3,aligned_edge=LEFT)
+        number = DecimalNumber(0, color = RED if k.get_value() >=0 else ORANGE).next_to(ts,RIGHT)
+        number.add_updater(lambda d: d.next_to(ts).set_value(k.get_value()))
+
+        tt = MathTex(r"t\longmapsto \frac{1}{t^\alpha}").set_color_by_gradient(YELLOW, ORANGE, RED).to_edge(UP*3+RIGHT*2)
+        doto = Dot(point=[1,0,0], radius=0.01)
+        labelo = Tex("1", color=RED).next_to(doto, DOWN)
+        area =  ax1.get_area(graph1, x_range = (1,6), color = ORANGE, opacity = 0.3)
+
+        def sceneUpdater(dt):
+            graph1.become(ax1.plot(lambda x: 1/(x**k.get_value()), x_range=[0.5, 6.2]).set_color_by_gradient(YELLOW, ORANGE, RED))
+            area.become(ax1.get_area(graph1, x_range = (1,6), color = ORANGE, opacity = 0.3))
+        self.add_updater(sceneUpdater)     
+
+        self.play(Create(ax1))
+        self.play(Write(labelo)) 
+        self.play(Write(tt))
+        self.play(Write(ts),Write(number))
+        self.play(Create(graph1))
+        self.play(Create(area))
+        self.wait(0.25)
+        self.add(Circle().shift(2*RIGHT+2*DOWN)) #mark the start
+        self.play(k.animate.set_value(6), run_time=8,  rate_func= rate_functions.smooth)
+
+
+        # manim -pqh discord.py riemannint
+
+
+
+class GraphEx2(Scene):
+    def construct(self):
+        graph = ImplicitFunction(
+            lambda x, y:  np.cos(20*(np.arctan((x-1)/y)+np.arctan(y/(x+1)))),
+            color=PURE_GREEN,
+            min_depth=8, # <- Change this
+        )
+
+        #self.add(graph)
+
+
+        self.play(
+            Create(graph),
+            run_time=5
+        )
+        self.wait(2)
+
+
+        # manim -pqh discord.py GraphEx2
