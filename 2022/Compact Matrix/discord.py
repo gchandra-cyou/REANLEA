@@ -71,7 +71,7 @@ class UpdateValueRange:
         )
         apply_transforms(mobject, self.transforms)
 
-class Scene(ThreeDScene):
+class Scenex(ThreeDScene):
     def construct(self):
 
         self.set_camera_orientation(phi=75 * DEGREES, theta=45 * DEGREES)#, distance=8)
@@ -111,7 +111,7 @@ if __name__ == "__main__":
     os.system(command_A + command_B)
 
 
-    # manim -pqh discord.py Scene
+    # manim -pqh discord.py Scenex
 
 
 
@@ -127,18 +127,7 @@ class Mouche(Dot):
 
 
 class ExoMouches(MovingCameraScene):
-    # def __init__(self, **kwargs):
-    #     ZoomedScene.__init__(
-    #         self,
-    #         zoom_factor=0.4,
-    #         zoomed_display_height=1.5,
-    #         zoomed_display_width=9,
-    #         image_frame_stroke_width=20,
-    #         zoomed_camera_config={
-    #             "default_frame_stroke_width": 3,
-    #         },
-    #         **kwargs
-    #     )
+    
     def construct(self):
         
         self.create_mouches(num)
@@ -219,6 +208,21 @@ class ExoMouches(MovingCameraScene):
             self.velocity_vectors_list.append(vector)
         self.play(*[GrowArrow(vector) for vector in self.velocity_vectors_list])
         self.wait(0.5)
+
+
+
+    """def __init__(self, **kwargs):
+        ZoomedScene.__init__(
+            self,
+            zoom_factor=0.4,
+            zoomed_display_height=1.5,
+            zoomed_display_width=9,
+            image_frame_stroke_width=20,
+            zoomed_camera_config={
+                "default_frame_stroke_width": 3,
+            },
+            **kwargs
+        )"""
 
 
 
@@ -1243,3 +1247,124 @@ class GraphEx2(Scene):
 
 
         # manim -pqh discord.py GraphEx2
+
+
+
+
+
+
+from dataclasses import dataclass
+from manim import *
+import numpy as np
+
+L_SYSTEM = {
+    "axiom": "F",
+    "rules": {"F": "F[-F][+F]", "+": "+", "-": "-", "[": "[", "]": "]"},
+    "iterations": 5,
+    "length": 0.5,
+    "degrees": 25,
+    "inital_degrees": 90,
+    "start": np.array([0, -1, 0]),
+}
+
+
+class Tree(Scene):
+    def construct(self):
+        (
+            axiom,
+            rules,
+            iterations,
+            length,
+            degrees,
+            initial_degrees,
+            start,
+        ) = L_SYSTEM.values()
+        system = LSystem(axiom, rules, iterations)
+        artist = LSystemArtist(system, length, degrees, initial_degrees, start)
+        self.play(Create(artist.tree.set_color_by_gradient(PURE_RED,REANLEA_SLATE_BLUE)))
+        self.wait(2)
+
+
+class LSystemArtist:
+    def __init__(self, system, length, degrees, initial_degrees, start):
+        self.system = system
+        self.commands = {
+            "F": self.forward,
+            "+": self.rotate_left,
+            "-": self.rotate_right,
+            "[": self.save,
+            "]": self.restore,
+        }
+        self.theta = initial_degrees * PI / 180
+        self.rotation = degrees * PI / 180
+        self.length = length
+        self.start = start
+        self.positions = []
+        self.rotations = []
+        self.tree = VGroup()
+        self.draw_system()
+
+    def draw_system(self):
+        for instruction in self.system.instructions:
+            if instruction in self.commands.keys():
+                self.commands[instruction]()
+
+    def forward(self):
+        end = (
+            self.start
+            + (self.length * np.cos(self.theta) * RIGHT)
+            + (self.length * np.sin(self.theta) * UP)
+        )
+        new_line = Line(start=self.start, end=end)
+        self.start = end
+        self.tree.add(new_line)
+
+    def rotate_left(self):
+        self.theta += self.rotation
+
+    def rotate_right(self):
+        self.theta -= self.rotation
+
+    def save(self):
+        self.positions.append(self.start)
+        self.rotations.append(self.theta)
+
+    def restore(self):
+        self.start = self.positions.pop()
+        self.theta = self.rotations.pop()
+
+
+class LSystem:
+    def __init__(self, axiom, rules, iterations):
+        self.rules = rules
+        self.iterations = iterations
+        self.instructions = axiom
+        self.create_instructions()
+
+    def create_instructions(self):
+        new_string = ""
+        for _ in range(self.iterations):
+            new_string = ""
+            for character in self.instructions:
+                new_string += self.rules[character]
+            self.instructions = new_string
+
+
+
+        # manim -pqh discord.py Tree
+
+
+
+class Vortices(MovingCameraScene):
+    def construct(self):
+        rigid = lambda pos: pos[0] * DOWN + pos[1] * RIGHT
+        stream_rigid = StreamLines(rigid, x_range=[-2, 2, 0.2], y_range=[-2, 2, 0.2])
+        stream_rigid.start_animation(warm_up=False)
+
+        self.add(stream_rigid)
+        self.wait()
+        self.play(self.camera.frame.animate.shift(2*RIGHT))
+        self.wait()
+
+
+        # manim -pqh discord.py Vortices

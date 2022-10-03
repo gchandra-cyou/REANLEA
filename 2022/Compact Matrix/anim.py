@@ -1251,7 +1251,7 @@ class Scene6(MovingCameraScene):
 
         uncreate_grp=VGroup(eq1,eq2,eq3,eq4,sr_rect,brace_lbl,dot_lbl_grp,line_lbl,circ,projec_line,angle_grp,angle_lbl_grp)
         create_grp=VGroup(eq1,eq2,eq4,sr_rect,brace_lbl,dot_lbl_grp,line_lbl,circ,projec_line,angle_grp,angle_lbl_grp)
-        create_grp2=VGroup(eq1,eq2,brace_lbl,dot_lbl_grp,line_lbl,circ,projec_line,angle_grp,angle_lbl_grp)
+        create_grp2=VGroup(eq1,eq2,eq4,brace_lbl,dot_lbl_grp,line_lbl,circ,projec_line,angle_grp,angle_lbl_grp)
 
         # TEXT REGION
 
@@ -1464,6 +1464,7 @@ class Scene6(MovingCameraScene):
             Uncreate(line3_ex),
         )
         self.add(dot3_1,line1,line2_1,line3_1)
+        self.wait()
 
         
 
@@ -1472,10 +1473,11 @@ class Scene6(MovingCameraScene):
         # scale & focus 
 
         tri_inq_gr=VGroup(dot1,dot2,dot3_1,line1,line2_1,line3_1, create_grp)
-
+        
         self.play(
             Write(create_grp),
-            lag_ratio=0
+            lag_ratio=0,
+            run_time=1.75
         )
         self.play(
             FadeOut(line2),
@@ -1492,40 +1494,53 @@ class Scene6(MovingCameraScene):
             Create(SurroundingRectangle(tri_inq_gr,color=REANLEA_WARM_BLUE, buff=0.25, corner_radius=0.25))
         )'''
 
+        
         self.play(
-            AddTextLetterByLetter(text_prop),
             tri_inq_gr.animate.scale(0.4).move_to(4.75*RIGHT+2*UP)
         )
+        sr_tri_inq_grp=SurroundingRectangle(tri_inq_gr, color=REANLEA_WARM_BLUE_DARKER, buff=.25, corner_radius=.15)
+
         self.play(
-            Write(under_line_bezier)
+            Create(sr_tri_inq_grp)
         )
+        self.play(
+            AddTextLetterByLetter(text_prop)
+        )
+        self.play(Write(under_line_bezier))
 
         '''self.play(
             tri_inq_gr.animate.scale(0.4).move_to(4.75*RIGHT+2*UP)
         )'''
-        self.play(
-            Create(
-                SurroundingRectangle(tri_inq_gr, color=REANLEA_WARM_BLUE_DARKER, buff=.25, corner_radius=.15)
-            )
-        )
+    
         self.play(
             AddTextLetterByLetter(dis_prop_3_1)
         )
         self.play(Write(eq5))
         self.play(AddTextLetterByLetter(eq6))
+        self.wait()
+        
+        sr_eq5=SurroundingRectangle(eq5, color=REANLEA_AQUA_GREEN, buff=.15, corner_radius=.15)
         self.play(
-            Write(
-                SurroundingRectangle(eq5, color=REANLEA_AQUA_GREEN, buff=.15, corner_radius=.15)
-            )
+            Write(sr_eq5)
         )
         self.wait(2)
+
         self.play(
-            AddTextLetterByLetter(text_3)
+            Write(text_3)
         )
+        sr_text3=get_surround_bezier(text_3).rotate(PI/4)
         self.play(
-            Create(get_surround_bezier(text_3).rotate(PI/4))
+            Create(sr_text3)
         )
         self.wait(4)
+
+
+        p1_grp_op=VGroup(create_grp2,text_prop, dis_prop_3_1,eq5,eq6,text_3,dot1,dot2,dot3_1,line1,line2_1,line3_1)
+        p1_grp_st=VGroup(sr_tri_inq_grp,under_line_bezier,sr_eq5,sr_text3,sr_rect)
+        #tri_inq_gr,sr_tri_inq_grp,text_prop,under_line_bezier,dis_prop_3_1,eq5,eq6,sr_eq5,text_3,sr_text3
+        #dot1,dot2,dot3_1,line1,line2_1,line3_1, create_grp
+
+        
 
 
 
@@ -1580,24 +1595,31 @@ class Scene6(MovingCameraScene):
         
 
 
-        grp_p2=VGroup(line_p2,dot1_p2,dot2_p2, zero_tick, dash_line_p2, v_line1_p2,v_line2_p2, eq_p2).scale(0.6).move_to(3*LEFT+0.5*DOWN)
+        grp_p2=VGroup(line_p2,zero_tick,dot1_p2,dot2_p2,v_line1_p2,v_line2_p2,dash_line_p2,eq_p2).scale(0.6).move_to(3*LEFT+0.5*DOWN)
+
 
         self.play(
             Write(grp_p2)
         )
+
+        sr_grp_p2=SurroundingRectangle(grp_p2, color=REANLEA_WARM_BLUE_DARKER, buff=.25, corner_radius=.15)
         
         self.play(
-            Create(
-                SurroundingRectangle(grp_p2, color=REANLEA_WARM_BLUE_DARKER, buff=.25, corner_radius=.15)
-            ),
-            AddTextLetterByLetter(dis_prop_3_2)
+            Create(sr_grp_p2)
         )
         self.play(
-            Write(
-                SurroundingRectangle(eq7, color=REANLEA_MAGENTA, buff=.15, corner_radius=.15)
-            )
+            Write(dis_prop_3_2),
+            run_time=2
         )
-        self.wait(2)
+        sr_eq7=SurroundingRectangle(eq7, color=REANLEA_MAGENTA, buff=.15, corner_radius=.15)
+        self.play(
+            Write(sr_eq7)
+        )
+        self.wait(4)
+
+
+        p2_grp_op=VGroup(grp_p2,dis_prop_3_2)
+        p2_grp_st=VGroup(sr_grp_p2,sr_eq7)
 
 
 
@@ -1619,7 +1641,8 @@ class Scene6(MovingCameraScene):
         # DOT LABELS
 
         dot1_p3_lbl=MathTex("y").scale(0.6).next_to(dot1_p3, DOWN)
-        dot3_p3_lbl=MathTex("x").scale(0.6).next_to(dot3_p3, DOWN)
+        dot2_p3_lbl=MathTex("x").scale(0.6).next_to(dot2_p3, DOWN)
+        dot3_p3_lbl=MathTex("x").scale(0.6).next_to(dot3_p3, DOWN).set_opacity(0.4)
 
         # POINTS
         p1_p3= dot1_p3.get_center()+UP
@@ -1647,35 +1670,262 @@ class Scene6(MovingCameraScene):
 
 
         # GROUPS
-        grp_p3=VGroup(line_p3,dot1_p3,dot2_p3,dot3_p3,dot1_p3_lbl,dot3_p3_lbl, d_line_p3,d_line_p3_lbl, v_line1_p3, v_line2_p3).scale(0.6).move_to(4.5*RIGHT+2.45*DOWN)
+        grp_p3=VGroup(line_p3, dot1_p3,dot2_p3,dot3_p3, dot1_p3_lbl,dot2_p3_lbl,dot3_p3_lbl, v_line1_p3,v_line2_p3, d_line_p3,d_line_p3_lbl).scale(0.6).move_to(4.5*RIGHT+2.45*DOWN)
 
         self.play(Write(grp_p3))
+
+        sr_grp_p3=SurroundingRectangle(grp_p3, color=REANLEA_WARM_BLUE_DARKER, buff=.25, corner_radius=.15)
         self.play(
-            Create(
-                SurroundingRectangle(grp_p3, color=REANLEA_WARM_BLUE_DARKER, buff=.25, corner_radius=.15)
-            ),
-            AddTextLetterByLetter(dis_prop_3_3)
+            Create(sr_grp_p3)
+        )
+
+        self.play(
+            Write(dis_prop_3_3)
+        )
+        sr_eq9=SurroundingRectangle(eq9, color=REANLEA_SLATE_BLUE, buff=.15, corner_radius=.15)
+        self.play(
+            Write(sr_eq9)
+        )
+        self.wait(4)
+
+
+        p3_grp_op=VGroup(grp_p3,dis_prop_3_3)
+        p3_grp_st=VGroup(sr_grp_p3,sr_eq9)
+
+
+
+        # DEFINE METRIC
+
+        eq12 = MathTex("d(x,y)").scale(1.35).set_color_by_gradient(REANLEA_MAGENTA_LIGHTER,REANLEA_PURPLE_LIGHTER)
+
+        
+
+        self.play(
+            p1_grp_op.animate.set_opacity(0.125),
+            p1_grp_st.animate.set_stroke(opacity=0.125),
+            p2_grp_op.animate.set_opacity(0.125),
+            p2_grp_st.animate.set_stroke(opacity=0.125),
+            p3_grp_op.animate.set_opacity(0.125),
+            p3_grp_st.animate.set_stroke(opacity=0.125),
+            TransformMatchingShapes(eq_p2,eq12)
+        )
+
+        self.wait(2)
+
+        ulba1=under_line_bezier_arrow().next_to(eq12[0][1])
+
+        self.play(
+            Indicate(eq12[0][2], color=REANLEA_PINK, rate_func=there_and_back_with_pause),
+            Create(ulba1)
+        )
+
+        
+        self.wait(2)
+
+        eq13 = MathTex(r"\in","X").set_color_by_gradient(REANLEA_MAGENTA_LIGHTER,REANLEA_PURPLE_LIGHTER).arrange(RIGHT,buff=.1).move_to(2.2*RIGHT+0.45*UP)
+        eq13[0][0].scale(0.6)
+
+        self.play(Write(eq13))
+
+        ulba2=under_line_bezier_arrow().next_to(eq12[0][3]).flip(LEFT).scale(.9).rotate(30*DEGREES).shift(0.4*UP+0.2*LEFT).set_color_by_gradient(REANLEA_SLATE_BLUE, PURE_GREEN)
+
+        self.play(
+            Indicate(eq12[0][4], color=REANLEA_GREEN_AUQA, rate_func=there_and_back_with_pause),
+            Create(ulba2)
+        )
+
+        self.wait(4)
+
+        eq14=MathTex(r"d|",r"_{X \times X}","(x,y)").scale(1.35).set_color_by_gradient(REANLEA_MAGENTA_LIGHTER,REANLEA_PURPLE_LIGHTER)
+        eq14[1].next_to(eq14[0].get_center(),0.01*RIGHT+0.1*DOWN)
+        eq14[2].next_to(eq14[0],3.5*RIGHT)
+        #eq14.move_to(2*DOWN)
+        eq14[1].scale(0.5)
+
+        eq1213=VGroup(eq12,eq13)
+
+        self.play(
+            FadeOut(ulba1,ulba2),
+            TransformMatchingShapes(eq1213,eq14)      
+        )
+
+        self.wait(2)
+
+        eq15=MathTex(r"\in \mathbb{R}^{+} \cup \{0\}").scale(1.3).next_to(eq14,RIGHT).set_color_by_tex("",color=(REANLEA_PURPLE,REANLEA_PURPLE_LIGHTER,))
+        
+        eq145=VGroup(eq14,eq15)
+
+        self.play(
+            Write(eq15),
+            eq145.animate.move_to(ORIGIN)
+        )
+        self.wait(4)
+
+        eq16_1=MathTex(r"d : X \times X ").scale(1.3).set_color_by_gradient(REANLEA_MAGENTA_LIGHTER,REANLEA_PURPLE_LIGHTER)
+        eq16_2=MathTex(r"\longrightarrow \mathbb{R}").scale(1.3).set_color_by_tex("",color=(REANLEA_PURPLE,REANLEA_PURPLE_LIGHTER))
+        eq16=VGroup(eq16_1,eq16_2).arrange(RIGHT, buff=0.2)
+
+        self.play(
+            eq145.animate.scale(0.5).move_to(UP).set_color(REANLEA_WHITE).set_opacity(0.7),
+            Write(eq16)
+        )
+
+
+        eq17=MathTex(r"(X,d)").scale(1.3).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_CHARM).move_to(1.5*DOWN)
+        eq18=eq17.copy()
+        eq16_sub_grp=VGroup(eq16[0][0][2],eq16[0][0][4])
+
+        with RegisterFont("Caveat") as fonts:
+            text_17=Text("Metric Space", font=fonts[0]).scale(.55)
+            text_17.set_color_by_gradient(REANLEA_CHARM,REANLEA_PINK_LIGHTER).shift(3*RIGHT)
+
+        text_17.move_to(3*RIGHT+2*DOWN)
+
+        S17_grp=VGroup(eq145,text_17,eq17)
+
+        b_ar=bend_bezier_arrow()
+
+        self.play(
+            Indicate(eq16[0][0][2], color=REANLEA_CHARM, rate_func=there_and_back_with_pause),
+            Indicate(eq16[0][0][4], color=REANLEA_CHARM, rate_func=there_and_back_with_pause),
+            TransformFromCopy(eq16_sub_grp,eq18[0][1])
         )
         self.play(
-            Write(
-                SurroundingRectangle(eq9, color=REANLEA_SLATE_BLUE, buff=.15, corner_radius=.15)
-            )
+            Indicate(eq16[0][0][0], color=REANLEA_CHARM, rate_func=there_and_back_with_pause),
+            TransformFromCopy(eq16[0][0][0],eq18[0][3])
+        )
+        self.play(
+            Write(eq17)
+        )
+        self.wait(2)
+        
+        sr_eq17=get_surround_bezier(eq17).set_color(REANLEA_SLATE_BLUE).scale(1.3)
+
+        bez_ar_grp1=VGroup(sr_eq17,b_ar)
+
+        self.play(
+            Create(sr_eq17),
+        )
+        self.play(
+            Create(b_ar)
+        )
+        self.play(
+            Write(text_17)
+        )
+        self.play(FadeOut(eq18))
+
+        self.wait(3)
+
+
+
+        self.play(
+            p1_grp_op.animate.set_opacity(1),
+            p1_grp_st.animate.set_stroke(opacity=1),
+            p2_grp_op.animate.set_opacity(1),
+            p2_grp_st.animate.set_stroke(opacity=1),
+            p3_grp_op.animate.set_opacity(1),
+            p3_grp_st.animate.set_stroke(opacity=1),
+            FadeOut(S17_grp),
+            FadeOut(bez_ar_grp1),
+            eq16.animate.scale(0.5).move_to(5.3*LEFT+3*UP),
+        )
+
+
+        with RegisterFont("Cousine") as fonts:
+            text_18=Text(", which satisfies ...", font=fonts[0]).scale(.25)
+            text_18.set_color_by_gradient(REANLEA_TXT_COL).shift(3*RIGHT)
+
+        text_18.move_to(3*LEFT+2.95*UP)
+
+        self.play(
+            AddTextLetterByLetter(text_18)
+        )
+
+        self.wait(4)
+
+        with RegisterFont("Cousine") as fonts:
+            text_19=Text("For example,", font=fonts[0]).scale(.45)
+            text_19.set_color_by_gradient(REANLEA_TXT_COL).shift(3*RIGHT)
+
+        text_19.move_to(4.5*LEFT+3*UP)
+
+        self.play(
+            FadeOut(p1_grp_op),
+            FadeOut(p1_grp_st),
+            FadeOut(p2_grp_st),
+            FadeOut(dis_prop_3_2),
+            FadeOut(p3_grp_op),
+            FadeOut(p3_grp_st),
+            FadeOut(S17_grp),
+            FadeOut(bez_ar_grp1),
+            FadeOut(eq16),
+            FadeOut(text_18),
+            grp_p2.animate.move_to(ORIGIN).scale(1.5),
+            AddTextLetterByLetter(text_19),
         )
         self.wait(2)
 
+        self.play(
+            grp_p2.animate.shift(0.5*DOWN).scale(1.3),
+            eq_p2.animate.shift(.5*UP)
+        )
+        eq_p2_bez=get_surround_bezier(eq_p2).set_color(PURE_RED)
+        self.play(
+            Create(eq_p2_bez)
+        )
+
+        b_ar_2=bend_bezier_arrow().flip(DOWN).shift(4.75*UP+LEFT).flip(RIGHT)
+        self.play(
+            Create(b_ar_2)
+        )
+
+        with RegisterFont("Caveat") as fonts:
+            text_20=Text("defines a metric", font=fonts[0]).scale(0.6)
+            text_20.set_color_by_gradient(REANLEA_CHARM,REANLEA_YELLOW_GREEN,PURE_GREEN).shift(3*RIGHT)
+        text_20.move_to(1.8*UP+1.5*LEFT).rotate(-60*DEGREES)
+
+        self.play(
+            Write(text_20)
+        )
+        self.wait(2)
+
+        with RegisterFont("Cousine") as fonts:
+            text_21=Text("What if we Upgrade the dimension ...", font=fonts[0]).scale(.55)
+            text_21.set_color_by_gradient(REANLEA_WHITE,REANLEA_BLUE_LAVENDER).shift(3*RIGHT)
+        text_21.move_to(2.65*DOWN)
+
+        self.play(
+            AddTextLetterByLetter(text_21)
+        )
+        self.wait()
+
+        self.play(
+            text_19.animate.scale(0).move_to(ORIGIN),
+            text_20.animate.scale(0).move_to(ORIGIN),
+            text_21.animate.move_to(ORIGIN),
+            eq_p2_bez.animate.scale(0).move_to(ORIGIN),
+            b_ar_2.animate.scale(0).move_to(ORIGIN),
+            grp_p2.animate.scale(0).move_to(ORIGIN),
+        )
+
+        self.wait(2)
+        self.play(
+            FadeOut(text_21)
+        )
+        self.wait(7)
 
 
-        
 
 
-      
-
-        
-
-
-        
         # manim -pqh anim.py Scene6
 
         # manim -pql anim.py Scene6
 
         # manim -sqk anim.py Scene6
+
+
+
+                       #### completed on 3rd Oct,2022 | 04:15pm  ####
+
+
+###################################################################################################################

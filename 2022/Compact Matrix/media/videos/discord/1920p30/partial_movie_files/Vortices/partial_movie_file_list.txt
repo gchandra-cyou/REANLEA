@@ -1,0 +1,4 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1920p30/partial_movie_files/Vortices/4178428530_653165941_2994909487.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1920p30/partial_movie_files/Vortices/1597695130_2018174339_2390086929.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1920p30/partial_movie_files/Vortices/830965445_3604166955_1393137112.mp4'

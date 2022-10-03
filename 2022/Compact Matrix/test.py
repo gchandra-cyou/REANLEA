@@ -2780,3 +2780,178 @@ class glowex(Scene):
         self.wait(2)
 
         # manim -pqh test.py glowex
+
+
+class SurOpa(Scene):
+    def construct(self):
+        
+        tex1=Text("REANLEA", font="Roboto").scale(2)
+        sr_text1=SurroundingRectangle(tex1, color=PURE_RED, buff=0.25, corner_radius=0.25)
+
+        grp=VGroup(tex1,sr_text1)
+
+        self.play(Create(tex1))
+        self.play(Write(sr_text1))
+        self.wait(2)
+        self.play(grp.animate.set_stroke(opacity=0.2))               # not grp.animate.set_opacity(0.2)
+        self.wait(2)
+
+        # manim -pqh test.py SurOpa
+
+
+
+
+# cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"
+
+class TexHigh(Scene):
+    def construct(self):
+        
+        tex1=MathTex("d(x,y)").scale(1.35).set_color_by_gradient(REANLEA_MAGENTA_LIGHTER,REANLEA_PURPLE_LIGHTER)
+
+        self.play(Write(tex1))
+        self.play(
+            Indicate(tex1[0][2], color=REANLEA_PINK, rate_func=there_and_back_with_pause),
+            Create(under_line_bezier_arrow().next_to(tex1[0][1]).flip(LEFT))
+        )
+
+        eq14=MathTex(r"d|",r"_{X \times X}","(x,y)").scale(1.35).set_color_by_gradient(REANLEA_MAGENTA_LIGHTER,REANLEA_PURPLE_LIGHTER)
+        eq14[1].next_to(eq14[0].get_center(),0.01*RIGHT+0.1*DOWN)
+        eq14[2].next_to(eq14[0],3.5*RIGHT)
+        #eq14.move_to(2*DOWN)
+        eq14[1].scale(0.5)
+
+        self.play(
+            TransformMatchingShapes(tex1,eq14)
+        )
+
+        
+        self.wait(2)
+
+        # manim -pqh test.py TexHigh
+
+        # manim -sqk test.py TexHigh
+
+        # glowing_circle=get_glowing_surround_circle(dot[0], color=REANLEA_YELLOW)
+
+
+class GradCol(Scene):
+    def construct(self):
+        eq14=MathTex(r"d|",r"_{X \times X}","(x,y)").scale(1.35).set_color_by_gradient(REANLEA_MAGENTA_LIGHTER,REANLEA_PURPLE_LIGHTER)
+        eq14[1].next_to(eq14[0].get_center(),0.01*RIGHT+0.1*DOWN)
+        eq14[2].next_to(eq14[0],3.5*RIGHT)
+        #eq14.move_to(2*DOWN)
+        eq14[1].scale(0.5)
+
+        
+
+        self.play(
+            Write(eq14)      
+        )
+
+        self.wait(2)
+
+        eq15=MathTex(r"\in \mathbb{R}^{+} \cup \{0\}").scale(1.3).next_to(eq14,RIGHT).set_color_by_tex("",color=(REANLEA_PURPLE,REANLEA_PURPLE_LIGHTER,))
+        
+        eq145=VGroup(eq14,eq15)
+
+        self.play(
+            Write(eq15),
+            eq145.animate.move_to(ORIGIN)
+        )
+        self.wait()
+
+        eq16_1=MathTex(r"d : X \times X ").scale(1.3).set_color_by_gradient(REANLEA_MAGENTA_LIGHTER,REANLEA_PURPLE_LIGHTER)
+        eq16_2=MathTex(r"\longrightarrow \mathbb{R}").scale(1.3).set_color_by_tex("",color=(REANLEA_PURPLE,REANLEA_PURPLE_LIGHTER))
+        eq16=VGroup(eq16_1,eq16_2).arrange(RIGHT, buff=0.2)
+
+
+
+        with RegisterFont("Caveat") as fonts:
+            text_1=Text("Metric Space", font=fonts[0]).scale(.55)
+            text_1.set_color_by_gradient(REANLEA_CHARM,REANLEA_PINK_LIGHTER).shift(3*RIGHT)
+
+        text_1.move_to(3*RIGHT+2*DOWN)
+
+        b_ar=bend_bezier_arrow()
+
+
+        
+
+
+        self.play(
+            eq145.animate.scale(0.5).move_to(UP).set_color(REANLEA_WHITE).set_opacity(0.7),
+            Write(eq16)
+        )
+        
+    
+        self.wait(2)
+
+        eq17=MathTex(r"(X,d)").scale(1.3).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_CHARM).move_to(1.5*DOWN)
+
+        eq16_sub_grp=VGroup(eq16[0][0][2],eq16[0][0][4])
+
+        self.play(
+            Indicate(eq16[0][0][2], color=REANLEA_CHARM, rate_func=there_and_back_with_pause),
+            Indicate(eq16[0][0][4], color=REANLEA_CHARM, rate_func=there_and_back_with_pause),
+            TransformFromCopy(eq16_sub_grp,eq17.copy()[0][1])
+        )
+        self.play(
+            Indicate(eq16[0][0][0], color=REANLEA_CHARM, rate_func=there_and_back_with_pause),
+            TransformFromCopy(eq16[0][0][0],eq17.copy()[0][3])
+        )
+        self.play(
+            Write(eq17)
+        )
+        self.wait(2)
+        
+        sr_eq17=get_surround_bezier(eq17).set_color(REANLEA_SLATE_BLUE).scale(1.3)
+
+        self.play(
+            Create(sr_eq17),
+        )
+        self.play(
+            Create(b_ar)
+        )
+        self.play(
+            Write(text_1)
+        )
+
+        self.wait(3)
+
+        b_ar_2=bend_bezier_arrow().flip(DOWN).shift(4.75*UP+LEFT).flip(RIGHT)
+        self.play(
+            Create(b_ar_2)
+        )
+
+        with RegisterFont("Caveat") as fonts:
+            text_20=Text("defines a metric", font=fonts[0]).scale(0.6)
+            text_20.set_color_by_gradient(REANLEA_TXT_COL).shift(3*RIGHT)
+        text_20.move_to(2*UP+1.5*LEFT).rotate(-60*DEGREES)
+
+        self.play(
+            AddTextLetterByLetter(text_20)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            text_21=Text("What if we Upgrade the dimension ...", font=fonts[0]).scale(.55)
+            text_21.set_color_by_gradient(REANLEA_WHITE,REANLEA_BLUE_LAVENDER).shift(3*RIGHT)
+        text_21.move_to(2.65*DOWN)
+
+        self.play(
+            AddTextLetterByLetter(text_21)
+        )
+        self.wait(2)
+        self.play(
+            text_20.animate.scale(0).move_to(ORIGIN)
+        )
+
+        
+        
+        
+
+        # manim -pqh test.py GradCol
+
+        # manim -sqk test.py GradCol
+
+
+

@@ -295,6 +295,72 @@ def ArrowQuadricBezierDown(text):
 
 
 
+def under_line_bezier_arrow():
+
+        grp=VGroup()
+
+        p1 = ParametricFunction(
+            lambda t: bezier(np.array([
+                [.42,1.69,0],
+                [.20, 1.04, 0],
+                [1.30, 0.97, 0],
+                [2.21, 1.36, 0],  
+            ]))(t),
+            [0, 1],
+            #color=PURE_RED,
+        ).flip(RIGHT)
+
+        p=CurvesAsSubmobjects(p1)
+        p.set_color_by_gradient(PURE_RED, REANLEA_BLUE_LAVENDER)
+
+        grp += p
+
+
+        ar= Arrow(max_stroke_width_to_length_ratio=0,max_tip_length_to_length_ratio=0.1).move_to(p1.get_end()+.65*DOWN).rotate(PI/2)
+        ar.set_color(REANLEA_SLATE_BLUE_LIGHTEST)
+
+        
+        grp += ar
+
+        #grp.set_color_by_gradient(REANLEA_CHARM)
+
+        return grp
+
+
+def bend_bezier_arrow():
+
+        grp3=VGroup()
+        p1 = ParametricFunction(
+            lambda t: bezier_updated(t,
+                np.array([
+                    [1.91,.29,0],
+                    [.2,1.1, 0],
+                    [1.9, 2.53, 0],
+                ]),
+                np.array([1,1,1])),
+            t_range=[0, 1],
+            color=REANLEA_CHARM,
+        )
+        
+        p1.move_to(ORIGIN).rotate(50*DEGREES)
+
+        p=CurvesAsSubmobjects(p1)
+        p.set_color_by_gradient(REANLEA_YELLOW_CREAM,REANLEA_CHARM).set_stroke(width=3)
+
+        grp3 += p
+
+
+        ar= Arrow(max_stroke_width_to_length_ratio=0,max_tip_length_to_length_ratio=0.15).move_to(p1.get_end()+.55*DOWN).rotate(PI/2)
+        ar.set_color(REANLEA_CHARM)
+
+        
+        grp3 += ar
+        grp3.move_to(2.15*DOWN+RIGHT).flip(RIGHT).rotate(130*DEGREES)
+
+
+        return grp3
+
+
 def low_frame_rate(t):
     return np.floor(t*10)/10
 
