@@ -197,6 +197,28 @@ def get_glowing_surround_circle(
     return glowing_circle.move_to(circle.get_center())
 
 
+
+
+def get_stripe(
+    factor=0.25, buff_min=0, buff_max=5, color=REANLEA_TXT_COL_DARKER, n=500
+):  
+    line=Line(ORIGIN,RIGHT).scale(factor).set_opacity(0.2)
+
+    k=(buff_max-buff_min)/(n-1)*50
+    stripe=VGroup(
+        *[
+            line.copy().shift(DOWN*interpolate(buff_min,buff_max,b))
+            for b in np.linspace(0,1,n)
+        ]
+    )
+
+    for i,c in enumerate(stripe):
+        c.set_stroke(color,width=k*line.get_stroke_width(),opacity=1-(1*i)/n)     # line.stroke_width=0.04 , default
+#opacity=1-i/n
+    return stripe.rotate(PI/2).move_to(ORIGIN).set_z_index(-10)
+
+
+
     
 def get_surround_bezier(text):
 
@@ -231,7 +253,6 @@ def get_surround_bezier(text):
 
 
 
-
 def ArrowCubicBezierUp():
 
         grp=VGroup()
@@ -262,6 +283,8 @@ def ArrowCubicBezierUp():
         #grp.set_color_by_gradient(REANLEA_CHARM)
 
         return grp#.next_to(text, .2*UP)
+
+
 
 def ArrowQuadricBezierDown(text):
 
@@ -327,6 +350,7 @@ def under_line_bezier_arrow():
         return grp
 
 
+
 def bend_bezier_arrow():
 
         grp3=VGroup()
@@ -361,8 +385,10 @@ def bend_bezier_arrow():
         return grp3
 
 
+
 def low_frame_rate(t):
     return np.floor(t*10)/10
+
 
 
 def bezier_updated(t,
@@ -377,10 +403,12 @@ def bezier_updated(t,
     )
 
 
+
 def focus_on(self, mobject, buff=2):
         return self.camera.frame.animate.set_width(mobject.width * buff).move_to(
             mobject
         )
+
 
 
 def create_glow(vmobject, rad=1, col=YELLOW):

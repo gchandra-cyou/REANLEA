@@ -33,7 +33,7 @@ from sklearn.datasets import make_blobs
 from reanlea_colors import*
 from func import*
 
-config.max_files_cached=200
+config.max_files_cached=500
 
 config.background_color= REANLEA_BACKGROUND_COLOR
 
@@ -46,10 +46,8 @@ class Scene1(Scene):
     def construct(self):
 
         # WATER-MARK
-        with RegisterFont("Montserrat") as fonts:
-            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
-            water_mark.set_color_by_gradient(REANLEA_GREY)
-        water_mark.save_state()
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+
 
         # HEADING
         with RegisterFont("Cousine") as fonts:
@@ -85,6 +83,10 @@ class Scene1(Scene):
 
         # manim -pqh anim.py Scene1
 
+        # manim -pqk anim.py Scene1
+
+        # manim -sqk anim.py Scene1
+
 
 ###################################################################################################################
 
@@ -98,10 +100,7 @@ class Scene2(Scene):
 
         # WATER MARK 
 
-        with RegisterFont("Montserrat") as fonts:
-            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
-            water_mark.set_color_by_gradient(REANLEA_GREY)
-        water_mark.save_state()
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
 
         #object region
 
@@ -296,6 +295,10 @@ class Scene2(Scene):
 
          # manim -pqh anim.py Scene2
 
+         # manim -pqk anim.py Scene2
+
+         # manim -sqk anim.py Scene2
+
 
 ###################################################################################################################
 
@@ -304,10 +307,7 @@ class Scene3(Scene):
     def construct(self):
          
         # WATER-MARK
-        with RegisterFont("Montserrat") as fonts:
-            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
-            water_mark.set_color_by_gradient(REANLEA_GREY)
-        water_mark.save_state()
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
 
         # HEADING
         with RegisterFont("Montserrat") as fonts:
@@ -336,8 +336,11 @@ class Scene3(Scene):
         self.wait(3)
 
 
+        # manim -pqh anim.py Scene3
 
         # manim -pqk anim.py Scene3
+
+        # manim -sqk anim.py Scene3
 
 
 ###################################################################################################################
@@ -349,11 +352,8 @@ class Scene4(MovingCameraScene):
 
         # WATER MARK 
 
-        with RegisterFont("Montserrat") as fonts:
-            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
-            water_mark.set_color_by_gradient(REANLEA_GREY)
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
         water_mark.save_state()
-
         
 
         scene = VGroup()
@@ -827,6 +827,8 @@ class Scene4(MovingCameraScene):
 
         # manim -pqh anim.py Scene4
 
+        # manim -pqk anim.py Scene4
+
         # manim -sqk anim.py Scene4
 
 
@@ -837,10 +839,7 @@ class Scene5(Scene):
     def construct(self):
 
         # WATER-MARK
-        with RegisterFont("Montserrat") as fonts:
-            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
-            water_mark.set_color_by_gradient(REANLEA_GREY)
-        water_mark.save_state()
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
 
         # Tracker 
         x=ValueTracker(-3)
@@ -1062,7 +1061,7 @@ class Scene5(Scene):
 
         # manim -pqh anim.py Scene5
 
-        # manim -pql anim.py Scene5
+        # manim -pqk anim.py Scene5
 
         # manim -sqk anim.py Scene5
 
@@ -1074,10 +1073,7 @@ class Scene6(MovingCameraScene):
     def construct(self):
 
         # WATER-MARK
-        with RegisterFont("Montserrat") as fonts:
-            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
-            water_mark.set_color_by_gradient(REANLEA_GREY)
-        water_mark.save_state()
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
 
 
         # Tracker 
@@ -1594,8 +1590,8 @@ class Scene6(MovingCameraScene):
 
         
 
-
-        grp_p2=VGroup(line_p2,zero_tick,dot1_p2,dot2_p2,v_line1_p2,v_line2_p2,dash_line_p2,eq_p2).scale(0.6).move_to(3*LEFT+0.5*DOWN)
+        grp_p2_1=VGroup(line_p2,zero_tick,dot1_p2,dot2_p2,v_line1_p2,v_line2_p2,dash_line_p2)
+        grp_p2=VGroup(grp_p2_1,eq_p2).scale(0.6).move_to(3*LEFT+0.5*DOWN)
 
 
         self.play(
@@ -1618,7 +1614,7 @@ class Scene6(MovingCameraScene):
         self.wait(4)
 
 
-        p2_grp_op=VGroup(grp_p2,dis_prop_3_2)
+        p2_grp_op=VGroup(dis_prop_3_2,grp_p2)
         p2_grp_st=VGroup(sr_grp_p2,sr_eq7)
 
 
@@ -1817,23 +1813,29 @@ class Scene6(MovingCameraScene):
         self.wait(3)
 
 
-
+        self.play(
+            FadeOut(S17_grp),
+            FadeOut(bez_ar_grp1),
+            eq16.animate.scale(0.45).move_to(5.3*LEFT+3*UP).set_color(REANLEA_BLUE_LAVENDER),
+        )
+        stripe1=get_stripe(factor=.4).move_to(5*LEFT+3*UP)
         self.play(
             p1_grp_op.animate.set_opacity(1),
             p1_grp_st.animate.set_stroke(opacity=1),
-            p2_grp_op.animate.set_opacity(1),
             p2_grp_st.animate.set_stroke(opacity=1),
+            grp_p2_1.animate.set_opacity(1),
+            dis_prop_3_2.animate.set_opacity(1),
+            FadeIn(eq_p2),
             p3_grp_op.animate.set_opacity(1),
             p3_grp_st.animate.set_stroke(opacity=1),
-            FadeOut(S17_grp),
-            FadeOut(bez_ar_grp1),
-            eq16.animate.scale(0.5).move_to(5.3*LEFT+3*UP),
         )
+        
+        
 
-
+        self.play(Create(stripe1))
         with RegisterFont("Cousine") as fonts:
             text_18=Text(", which satisfies ...", font=fonts[0]).scale(.25)
-            text_18.set_color_by_gradient(REANLEA_TXT_COL).shift(3*RIGHT)
+            text_18.set_color_by_gradient(REANLEA_BLUE_LAVENDER).shift(3*RIGHT)
 
         text_18.move_to(3*LEFT+2.95*UP)
 
@@ -1844,10 +1846,10 @@ class Scene6(MovingCameraScene):
         self.wait(4)
 
         with RegisterFont("Cousine") as fonts:
-            text_19=Text("For example,", font=fonts[0]).scale(.45)
-            text_19.set_color_by_gradient(REANLEA_TXT_COL).shift(3*RIGHT)
+            text_19=Text("For example,", font=fonts[0]).scale(.35)
+            text_19.set_color_by_gradient(REANLEA_BLUE_LAVENDER).shift(3*RIGHT)
 
-        text_19.move_to(4.5*LEFT+3*UP)
+        text_19.move_to(5*LEFT+3*UP)
 
         self.play(
             FadeOut(p1_grp_op),
@@ -1856,13 +1858,11 @@ class Scene6(MovingCameraScene):
             FadeOut(dis_prop_3_2),
             FadeOut(p3_grp_op),
             FadeOut(p3_grp_st),
-            FadeOut(S17_grp),
-            FadeOut(bez_ar_grp1),
             FadeOut(eq16),
             FadeOut(text_18),
             grp_p2.animate.move_to(ORIGIN).scale(1.5),
-            AddTextLetterByLetter(text_19),
         )
+        self.play(Write(text_19))
         self.wait(2)
 
         self.play(
@@ -1900,12 +1900,13 @@ class Scene6(MovingCameraScene):
         self.wait()
 
         self.play(
-            text_19.animate.scale(0).move_to(ORIGIN),
-            text_20.animate.scale(0).move_to(ORIGIN),
+            text_19.animate.scale(0).move_to(ORIGIN).set_opacity(0),
+            text_20.animate.scale(0).move_to(ORIGIN).set_opacity(0),
+            eq_p2_bez.animate.scale(0).move_to(ORIGIN).set_opacity(0),
+            b_ar_2.animate.scale(0).move_to(ORIGIN).set_opacity(0),
+            grp_p2.animate.scale(0).move_to(ORIGIN).set_opacity(0),
+            stripe1.animate.scale(0).move_to(ORIGIN),
             text_21.animate.move_to(ORIGIN),
-            eq_p2_bez.animate.scale(0).move_to(ORIGIN),
-            b_ar_2.animate.scale(0).move_to(ORIGIN),
-            grp_p2.animate.scale(0).move_to(ORIGIN),
         )
 
         self.wait(2)
@@ -1919,13 +1920,33 @@ class Scene6(MovingCameraScene):
 
         # manim -pqh anim.py Scene6
 
-        # manim -pql anim.py Scene6
+        # manim -pqk anim.py Scene6
 
         # manim -sqk anim.py Scene6
 
 
 
-                       #### completed on 3rd Oct,2022 | 04:15pm  ####
+                        #### completed on 3rd Oct,2022 | 04:15pm  ####
 
 
 ###################################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###################################################################################################################
+
+# cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"

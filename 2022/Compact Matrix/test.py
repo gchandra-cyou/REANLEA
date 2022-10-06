@@ -1,4 +1,5 @@
 from __future__ import annotations
+from ast import Constant
 from asyncore import poll2
 from audioop import add
 from cProfile import label
@@ -33,6 +34,10 @@ from manim.mobject.geometry.tips import ArrowTriangleFilledTip
 from manim.mobject.geometry.tips import ArrowTip
 from manim.mobject.geometry.tips import ArrowTriangleTip
 from round_corner import*
+from manim.mobject.opengl.opengl_surface import*
+from manim.mobject.opengl.opengl_mobject import OpenGLMobject
+from manim.opengl import*
+
 
 
 config.background_color= REANLEA_BACKGROUND_COLOR
@@ -2801,12 +2806,23 @@ class SurOpa(Scene):
 
 
 
-# cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"
+
 
 class TexHigh(Scene):
     def construct(self):
+
+        water_mark1=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+
+        with RegisterFont("Montserrat") as fonts:
+            water_mark=Text("R E A N L E A ", font=fonts[0]).scale(0.3).to_edge(UP).shift(.5*DOWN + 5*LEFT).set_opacity(.15)            # to_edge(UP) == move_to(3.35*UP)
+            water_mark.set_color_by_gradient(REANLEA_GREY)
+        water_mark.save_state()
         
         tex1=MathTex("d(x,y)").scale(1.35).set_color_by_gradient(REANLEA_MAGENTA_LIGHTER,REANLEA_PURPLE_LIGHTER)
+        
+
+
+        self.add(water_mark)
 
         self.play(Write(tex1))
         self.play(
@@ -2819,6 +2835,8 @@ class TexHigh(Scene):
         eq14[2].next_to(eq14[0],3.5*RIGHT)
         #eq14.move_to(2*DOWN)
         eq14[1].scale(0.5)
+
+        
 
         self.play(
             TransformMatchingShapes(tex1,eq14)
@@ -2955,3 +2973,232 @@ class GradCol(Scene):
 
 
 
+def get_glowing_surround_circle(
+    circle, buff_min=0, buff_max=0.15, color=REANLEA_YELLOW, n=40, opacity_multiplier=1
+):
+    current_radius = circle.width / 2
+    glowing_circle = VGroup(
+        *[
+            Circle(radius=current_radius+interpolate(buff_min, buff_max, b))
+            for b in np.linspace(0, 1, n)
+        ]
+    )
+    for i, c in enumerate(glowing_circle):
+        c.set_stroke(color, width=0.5, opacity=1- i / n)
+    return glowing_circle.move_to(circle.get_center())
+
+
+
+class get_stripe_scene(Scene):
+    def construct(self):
+        
+        factor=0.25
+        buff_min=0
+        buff_max=5
+        color=REANLEA_BLUE_LAVENDER
+        n=(buff_max-buff_min)*55
+
+        line=Line(ORIGIN,RIGHT).scale(factor)
+
+        stripe=VGroup(
+            *[
+                line.copy().shift(DOWN*interpolate(buff_min,buff_max,b))
+                for b in np.linspace(0,1,n)
+            ]
+        )
+
+        for i,c in enumerate(stripe):
+            c.set_stroke(color,opacity=1-(1.25*i)/n)
+
+
+        stripe.rotate(PI/2).shift(2*UP)
+
+        self.play(
+            Create(stripe)
+        )
+
+        self.wait(2)
+
+
+        # manim -pqh test.py get_stripe_scene
+
+        # manim -sqk test.py get_stripe_scene
+
+
+
+
+class st_ex(Scene):
+    def construct(self):
+
+        #line3=Line().shift(UP).set_z_index(2)
+        #line4=Line().set_color(BLUE).rotate(PI/2).shift(UP).set_stroke(width=line3.get_stroke_width()*50).scale(.25)
+        #y=DecimalNumber(line4.get_stroke_width()).shift(2*UP)
+        #self.add(line3,line4,y)
+        # 1 unit on real axis is equal to 200 width.
+        
+        x=get_stripe(factor=.15,n=300,color=PURE_RED)
+
+        
+        
+
+        self.play(
+            Create(x)
+        )
+        self.wait(2)
+
+
+        # manim -pqh test.py st_ex
+
+        # manim -sqk test.py st_ex
+  
+
+
+
+class st_ex_2(Scene):
+    def construct(self):
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(.15).set_z_index(-100)
+        
+
+        eq16_1=MathTex(r"d : X \times X ").scale(1.3).set_color_by_gradient(REANLEA_MAGENTA_LIGHTER,REANLEA_PURPLE_LIGHTER)
+        eq16_2=MathTex(r"\longrightarrow \mathbb{R}").scale(1.3).set_color_by_tex("",color=(REANLEA_PURPLE,REANLEA_PURPLE_LIGHTER))
+        eq16=VGroup(eq16_1,eq16_2).arrange(RIGHT, buff=0.2)
+
+        with RegisterFont("Cousine") as fonts:
+            text_18=Text(", which satisfies ...", font=fonts[0]).scale(.25)
+            text_18.set_color_by_gradient(REANLEA_BLUE_LAVENDER).shift(3*RIGHT)
+
+        text_18.move_to(3.3*LEFT+2.95*UP)
+
+        stripe=get_stripe(factor=.4).move_to(5*LEFT+3*UP)
+
+
+
+        self.add(water_mark)
+
+        self.play(Write(eq16))
+        self.wait()
+        self.play(
+            eq16.animate.scale(0.4).move_to(5.3*LEFT+3*UP).set_color(REANLEA_BLUE_LAVENDER),
+            Create(stripe)
+        )
+        
+        self.play(Write(text_18))
+
+
+
+
+        # manim -pqh test.py st_ex_2
+
+        # manim -sqk test.py st_ex_2
+
+
+
+
+from manim import *
+from manim.opengl import *
+
+config.renderer = "opengl"
+
+class Testy(Scene):
+    def construct(self):
+        self.camera.set_euler_angles(theta = 10*DEGREES, phi = 50*DEGREES)
+
+        axes = ThreeDAxes(x_range=(-7, 7, 1),
+            y_range=(-7, 7, 1),
+            z_range=(-8, 8, 1),
+            z_length = 5.5)
+
+        def param_surface(u, v):
+            x = u
+            y = v
+            z = x*x + y*y
+            return z
+
+        def param_tangent_plane(u, v):
+            x = u
+            y = v
+            z = 2+2*(x-1)+2*(y-1)
+            return z
+
+        surface_plane = OpenGLSurface(
+            lambda u, v: axes.c2p(u, v, param_surface(u, v)),
+            v_range=[-4, 4],
+            u_range=[-4, 4],
+            fill_color = GREEN,
+            stroke_color = GREEN,
+            fill_opacity=0.9,
+            )
+
+        surface_tangent_plane = OpenGLSurface(
+            lambda u, v: axes.c2p(u, v, param_tangent_plane(u, v)),
+            v_range=[0.5, 1.5],
+            u_range=[0.5, 1.5],
+            fill_color = BLUE,
+            stroke_color = BLUE,
+            fill_opacity=0.5,
+            )
+
+
+        surface_plane_mesh = OpenGLSurfaceMesh(surface_plane)
+        surface_tangent_plane_mesh = OpenGLSurfaceMesh(surface_tangent_plane)
+
+        self.add(axes, surface_plane_mesh)
+        self.wait()
+        self.play(Create(surface_tangent_plane_mesh))
+        self.wait()
+        self.play(FadeTransform(surface_plane_mesh, surface_plane))
+        self.wait()
+        self.play(FadeTransform(surface_tangent_plane_mesh, surface_tangent_plane))
+
+
+
+        # manim -pqh test.py Testy
+
+
+
+
+#config.renderer = "opengl"
+
+class Testy2(Scene):
+    def construct(self):
+        self.camera.set_euler_angles(theta = 10*DEGREES, phi = 50*DEGREES)
+        surface = OpenGLSurface(
+            lambda u, v: (
+                u,
+                v,
+                u*np.sin(v) + v*np.cos(u)
+            ),
+            u_range = (-TAU, TAU),
+            v_range = (-TAU, TAU),
+            resolution = (301, 301)
+        ).set_color(REANLEA_BLUE_LAVENDER)
+        
+        surface_mesh = OpenGLSurfaceMesh(surface)
+
+        day_texture = "iiser.jpg"
+        night_texture = "iiser.jpg"
+
+
+        sur1=OpenGLTexturedSurface(
+            surface,
+            image_file=day_texture,
+            dark_image_file=night_texture
+        )
+
+
+        self.play(Create(surface_mesh))
+        self.play(FadeTransform(surface_mesh,surface))
+        
+        self.wait(2)
+
+
+        # manim -pqh test.py Testy2
+
+
+
+
+
+
+
+# cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"

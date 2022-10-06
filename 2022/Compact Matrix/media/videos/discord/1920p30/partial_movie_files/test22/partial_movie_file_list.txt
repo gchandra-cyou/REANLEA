@@ -1,3 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1920p30/partial_movie_files/test22/1228373772_430463142_223132457.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1920p30/partial_movie_files/test22/2178574743_190800790_3069022846.mp4'

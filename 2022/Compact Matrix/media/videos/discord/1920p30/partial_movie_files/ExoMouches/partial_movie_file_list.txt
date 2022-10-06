@@ -1,9 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1920p30/partial_movie_files/ExoMouches/4178428530_4108147999_223132457.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1920p30/partial_movie_files/ExoMouches/3018875533_2754631583_984264784.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1920p30/partial_movie_files/ExoMouches/3018875533_1362633096_2663932446.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1920p30/partial_movie_files/ExoMouches/3018875533_2754631583_2546551889.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1920p30/partial_movie_files/ExoMouches/3018875533_2281818166_2392441670.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1920p30/partial_movie_files/ExoMouches/3018875533_2754631583_1460595185.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1920p30/partial_movie_files/ExoMouches/2110523491_3721202171_672067256.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1920p30/partial_movie_files/ExoMouches/600226951_1396529938_3044574324.mp4'

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   id="d:/xc/20221004_mosfet" width="100%" height="100%"  viewBox="-6 -6 134 422">
+<desc>
+XCircuit Version 3.8
+File "d:/xc/20221004_mosfet.eps" Page 1
+</desc>
+<g stroke="black">
+<path d="M80,176 L80,192 " fill="none" stroke-width="4" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M80,200 L80,216 " fill="none" stroke-width="4" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M80,224 L80,240 " fill="none" stroke-width="4" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M104,208 L104,200 88,208 104,216 104,208 " fill="#000000" stroke-width="0.2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M80,208 L112,208 112,240 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M80,232 L112,232 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M80,184 L112,184 112,176 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M68,188 L68,228 " fill="none" stroke-width="3" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M68,208 L48,208 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M88,208 L104,200 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M88,208 L104,216 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M104,216 L104,200 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<ellipse cx="8" cy="208" rx="8" ry="8" fill="none" stroke-width="3" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M16,208 L24,208 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M112,176 L112,144 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M112,240 L112,272 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M16,208 L48,208 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<ellipse cx="112" cy="8" rx="8" ry="8" fill="none" stroke-width="3" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M112,16 L112,24 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<ellipse cx="112" cy="408" rx="8" ry="8" fill="none" stroke-width="3" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M112,400 L112,392 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M112,56 L112,48 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M112,136 L112,144 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M128,56 L96,56 " fill="none" stroke-width="3" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M128,56 L128,136 " fill="none" stroke-width="3" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M96,56 L96,136 " fill="none" stroke-width="3" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M128,136 L96,136 " fill="none" stroke-width="3" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M112,16 L112,48 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M112,280 L112,272 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M112,360 L112,368 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M128,280 L96,280 " fill="none" stroke-width="3" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M128,280 L128,360 " fill="none" stroke-width="3" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M96,280 L96,360 " fill="none" stroke-width="3" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M128,360 L96,360 " fill="none" stroke-width="3" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+<path d="M112,368 L112,400 " fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000000" />
+</g>
+</svg>
