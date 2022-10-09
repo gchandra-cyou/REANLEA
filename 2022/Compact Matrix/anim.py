@@ -615,7 +615,7 @@ class Scene4(MovingCameraScene):
         self.play(
             self.camera.frame.animate.scale(0.5).move_to(DOWN + 1.5*RIGHT),
             text_1.animate.scale(0.5).move_to(0.425*UP + 1.5 *RIGHT),
-            water_mark.animate.scale(0.5).move_to(0.465*UP + LEFT),
+            water_mark.animate.scale(0.5).move_to(0.5*UP + LEFT),
         )
         
         self.wait()

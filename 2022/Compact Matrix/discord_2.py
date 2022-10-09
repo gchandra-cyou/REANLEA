@@ -43,6 +43,9 @@ from scipy.optimize import fsolve
 from scipy.optimize import root
 from scipy.optimize import root_scalar
 from round_corner import angle_between_vectors_signed
+import requests
+import io
+from PIL import Image
 
 
 config.background_color= REANLEA_BACKGROUND_COLOR
@@ -605,3 +608,56 @@ class riemannint(Scene):
         # manim -pqh discord_2.py riemannint
 
 
+
+class emoji2(Scene):
+    def construct(self):
+        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+
+        response = requests.get("https://cdn-0.emojis.wiki/emoji-pics/apple/person-surfing-apple.png", headers=headers)
+        image_bytes = io.BytesIO(response.content)
+        image = Image.open(image_bytes)
+        
+        emoji = ImageMobject(image)
+        emoji_1=Text("🏄")
+        self.add(emoji_1)
+        self.add(emoji.move_to(4*RIGHT+2*UP))
+        self.play(emoji.animate.move_to(4*LEFT+2*DOWN))
+
+
+        # manim -pqh discord_2.py emoji2
+
+
+class Sxe(MovingCameraScene):
+    def construct(self):
+        self.camera.frame.save_state()
+        
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        water_mark.save_state()
+        
+        scene=VGroup()
+
+        line= NumberLine(
+            x_range=[-8, 8, 1],
+            length=32,
+            include_ticks=False,
+            stroke_width=2.0
+        )
+        line.move_to(line.n2p(-2)).shift(DOWN)
+        scene.add(line)
+        
+
+
+        self.add(water_mark)
+        self.play(Create(line))
+
+        self.play(
+            self.camera.frame.animate.scale(0.5).move_to(DOWN + 1.5*RIGHT),
+            water_mark.animate.scale(0.5).move_to(0.5*UP + LEFT),
+        )
+        self.wait(2)
+
+        
+        # manim -pql discord_2.py Sxe
