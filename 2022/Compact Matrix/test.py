@@ -3176,16 +3176,9 @@ class Testy2(Scene):
         
         surface_mesh = OpenGLSurfaceMesh(surface)
 
-        day_texture = "iiser.jpg"
-        night_texture = "iiser.jpg"
 
 
-        sur1=OpenGLTexturedSurface(
-            surface,
-            image_file=day_texture,
-            dark_image_file=night_texture
-        )
-
+        
 
         self.play(Create(surface_mesh))
         self.play(FadeTransform(surface_mesh,surface))
