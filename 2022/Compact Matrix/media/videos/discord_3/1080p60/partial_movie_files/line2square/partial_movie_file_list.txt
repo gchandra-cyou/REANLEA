@@ -1,7 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord_3/1080p60/partial_movie_files/line2square/1750066339_2963471303_4283782519.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord_3/1080p60/partial_movie_files/line2square/1017483939_125286499_3142447936.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord_3/1080p60/partial_movie_files/line2square/1017483939_4213729039_3512911405.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord_3/1080p60/partial_movie_files/line2square/1017483939_3446655325_198194185.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord_3/1080p60/partial_movie_files/line2square/1017483939_1750322408_2554537279.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord_3/1080p60/partial_movie_files/line2square/1017483939_125286499_3631202515.mp4'
