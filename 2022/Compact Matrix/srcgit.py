@@ -687,3 +687,9 @@ class Main(MovingCameraScene):
 
 
         # manim -pqh srcgit.py Main
+
+
+
+###################################################################################################################
+
+# cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"
