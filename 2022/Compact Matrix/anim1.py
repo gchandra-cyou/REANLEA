@@ -148,7 +148,7 @@ class Scene1(Scene):
         line_3_4=Line(start=line_1.n2p(-2), end=line_1.n2p(0))
 
         brace_line_3_4=Brace(line_3_4, stroke_width=.01).set_color(REANLEA_GREY).set_opacity(0.5).shift(0.75*DOWN)
-        brace_line_3_4_label=brace_line_3_4.get_tex("2.1").scale(0.65).set_color(REANLEA_TXT_COL_LIGHTER)#.next_to(brace_line_3_4,0.5*DOWN)
+        brace_line_3_4_label=MathTex("2",r"\times","1").scale(0.65).set_color(REANLEA_TXT_COL_LIGHTER).next_to(brace_line_3_4,0.5*DOWN)
 
         # TEXT REGION 
 
@@ -156,9 +156,9 @@ class Scene1(Scene):
 
         # EQUATION REGION
 
-        eq_1_1=MathTex("1","+","1","=","?").scale(1.3).set_color_by_gradient(REANLEA_GREEN_AUQA,REANLEA_PURPLE)
-        eq_1_2=MathTex("1","+","1","=","2").scale(1.3).set_color_by_gradient(REANLEA_GREEN_AUQA,REANLEA_PURPLE)
-        eq_1_3=MathTex("=","2.1").scale(1.3).next_to(eq_1_2).set_color_by_gradient(REANLEA_PURPLE,REANLEA_PINK_DARKER)
+        eq_1_1=MathTex("1","+","1","=","?").scale(1.3).set_color(REANLEA_PURPLE_LIGHTER)#.set_color_by_gradient(REANLEA_GREEN_AUQA,REANLEA_PURPLE)
+        eq_1_2=MathTex("1","+","1","=","2").scale(1.3).set_color(REANLEA_PURPLE_LIGHTER)#.set_color_by_gradient(REANLEA_GREEN_AUQA,REANLEA_PURPLE)
+        eq_1_3=MathTex("=","2",r"\times","1").scale(1.3).next_to(eq_1_2).set_color(REANLEA_PURPLE_LIGHTER)#.set_color_by_gradient(REANLEA_PURPLE,REANLEA_PINK_DARKER)
 
         # UPDATER REGION
 
