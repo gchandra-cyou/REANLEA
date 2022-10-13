@@ -1453,14 +1453,720 @@ class MCQ_question(Scene):
 
 
 
+class FrequencyShiftKying(Scene):
+    def construct(self):
+        
+        bit_sequence = [1,0,1,1,0,1,1,1]
+        self.bit_sequence = bit_sequence
+        self.current_bit = 2
+        self.stream_started = False
+
+        self.establish_clock()
+        self.show_debug_clock()
+        self.enter_bit_stream(bit_sequence)
+        self.setup_dot()
+        self.setup_modulator_box()
+        self.animate_bit_stream()
+        self.setup_curve()
+
+        dot = self.dot
+        sine_curve_line = self.sine_curve_line
+        sq = self.sq
+        label = self.label
+        arrow = self.arrow
+        channel = self.channel
+        bits = self.bits
+        clock = self.clock
+        time_group = self.time_group
+        
+        brace = Brace(sq, UP)
+        brace_label = VGroup()
+        info = Text("current bit:", font='/usr/share/fonts/truetype/baekmuk/dotum.ttf')
+        current_bit_tag = Integer(self.current_bit).scale(2).set_color(BLACK)
+        current_bit_tag.add_updater(lambda x : x.set_value(self.current_bit))
+        brace_label.add(info)
+        brace_label.add(current_bit_tag)
+        brace_label.scale(0.5)
+        brace_label.arrange(RIGHT)
+        brace_label.add_updater(lambda x : x.next_to(brace, UP))
+        colour_group = VGroup(brace, brace_label).add_updater(self.colour_control)
+
+        title = Text("FSK - Frequency Shift Keying", font='/usr/share/fonts/truetype/baekmuk/dotum.ttf').scale(0.8)
+        title.to_corner(UP+LEFT)
+
+        bits.add_updater(self.align_bit_stream_top)
+        self.play(Write(title))
+        self.wait(0.5)
+        enter = VGroup()
+        enter.add(arrow, channel, label)
+        self.play(Write(enter), FadeIn(sq), Write(time_group))
+        self.add(dot, sine_curve_line, colour_group)
+        self.wait(2)
+
+        for j in range(len(bits)):
+            self.stream_started = True
+            the_bit = bits[0]
+            the_bit.generate_target()
+            the_bit.target.set_opacity(0)
+            the_bit.target.shift(RIGHT*2)
+            self.play(MoveToTarget(the_bit), run_time = 1.4)
+            bits.remove(the_bit)
+            self.wait(1.6)
+
+        self.wait(1)
+
+    def establish_clock(self):
+        self.clock = 0
+        self.increment = 0
+
+    def enter_bit_stream(self, bit_sequence):
+        self.bit_stream = bit_sequence
+        self.bits = VGroup()
+        for i in range(len(bit_sequence)):
+            self.bits.add(Text(str(bit_sequence[i])))
+        self.current_index = 0
+        
+
+    def align_bit_stream_top(self, bits):
+        top = bits.get_top()
+        sq = self.sq
+        bits.shift(UP*(sq.get_center()[1] - top[1]))
+
+    def animate_bit_stream(self):
+        self.bits.arrange(RIGHT)
+        self.play(Write(self.bits))
+        self.wait(1)
+        self.bits.generate_target()
+        self.bits.target.scale(0.5)
+        self.bits.target.arrange(DOWN)
+        self.bits.target.to_edge(LEFT)
+        for i in range(len(self.bits)):
+            if self.bit_sequence[i] == 0:
+                self.bits.target[i].set_color(BLUE_D)
+            else:
+                self.bits.target[i].set_color(RED_D)
+        top = self.bits.target.get_top()
+        sq = self.sq
+        self.bits.target.shift(UP*(sq.get_center()[1] - top[1]))
+        self.play(MoveToTarget(self.bits), run_time = 3)
+
+    def oscillate_dot(self, the_dot, dt):
+            self.clock += dt
+            y_shift = 0.7*np.sin(self.clock*(1.5 + 2.5*self.current_amp(self.clock))*np.pi)
+            the_dot.move_to(self.dot_origin + [0,y_shift,0])
+
+    def current_amp(self, t):
+        if(t < 2):
+            return 0
+        else:
+            bit_index = int((t-2)/3)
+            if(bit_index in range(len(self.bit_sequence))):
+                self.current_bit = self.bit_sequence[bit_index]
+            else:
+                return 0
+
+            if(self.current_bit):
+                return 1
+            else:
+                return 0
+
+    def setup_dot(self):
+        self.dot = Dot()
+        self.dot.shift(UP*0+LEFT*4)
+        self.dot_origin = self.dot.get_center()
+        self.dot.add_updater(self.oscillate_dot)
+
+    def setup_modulator_box(self):
+        self.sq = Square()
+        self.sq.move_to(self.dot.get_center())
+        self.label = Text("Modulator",font='/usr/share/fonts/truetype/baekmuk/dotum.ttf').scale(0.5)
+        self.label.move_to(self.sq.get_bottom()).shift(DOWN*0.35)
+        self.arrow = Arrow(self.sq.get_right()-[0.25,0,0], self.sq.get_right() + [8,0,0])
+        self.channel = Text("to channel", font='/usr/share/fonts/truetype/baekmuk/dotum.ttf')
+        self.channel.scale(0.5).move_to(self.arrow.get_right() + [0,-1.1,0])
+    
+    def move_signal(self, path):
+        path.move_to(self.dot_origin + [self.clock/4, 0, 0])
+
+    def get_curve(self):
+        
+        last_line = self.curve[-1]
+        x = self.dot.get_center()[0]
+        y = self.dot.get_center()[1]
+        new_line = Line(last_line.get_end(),np.array([x,y,0]), color=YELLOW_D)
+        if(self.stream_started):
+            self.curve.add(new_line)
+
+        return self.curve
+
+    def setup_curve(self):
+        self.curve = VGroup()
+        self.curve.add(Line(self.dot.get_center(),self.dot.get_center()))
+        self.sine_curve_line = always_redraw(self.get_curve)
+        self.sine_curve_line.add_updater(self.move_signal)
+
+    def show_debug_clock(self):
+        box = Square().to_corner(corner = UP + RIGHT)
+        label = Text("time (s)", font='/usr/share/fonts/truetype/baekmuk/dotum.ttf')
+        label.move_to(box.get_bottom() - [0,0.4,0]).scale(0.5)
+        watch = DecimalNumber(0, show_ellipsis=False, num_decimal_places=2, include_sign=False)
+        watch.move_to(box)
+        watch.add_updater(lambda x : x.set_value(self.clock))
+        self.time_group = VGroup(box, watch, label).scale(0.8)
+
+    def colour_control(self, thing):
+        if self.current_bit == 1:
+            thing.set_color(RED_D)
+        elif self.current_bit == 0:
+            thing.set_color(BLUE_D)
+    
+
+
+        # manim -pqh discord.py FrequencyShiftKying
+
+
+
+
+class Dragon(MovingCameraScene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(6).set_opacity(0.15).set_z_index(-1)
+        
+
+        dragon_curve = VMobject(stroke_color=[REANLEA_PURPLE,REANLEA_SLATE_BLUE,REANLEA_WELDON_BLUE])
+        dragon_curve_points = [LEFT, RIGHT]
+        dragon_curve.set_points_as_corners(dragon_curve_points)
+        dragon_curve.corners = dragon_curve_points
+        self.add(dragon_curve)
+        dragon_curve.add_updater(
+            lambda mobject: mobject.set_style(stroke_width=self.camera.frame.width / 5),              #stroke_width=self.camera.frame.width / 10
+        )
+        dragon_curve.update()
+        self.wait()
+
+        def rotate_half_points(points, alpha):
+            static_part = points[:len(points)//2]
+            about_point = points[len(points)//2]
+            mat = rotation_matrix(-PI/2 * alpha, OUT)
+            rotated_part = [
+                np.dot((point - about_point), mat.T) + about_point
+                for point in reversed(static_part)
+            ]
+            return static_part + [about_point] + rotated_part
+
+        def rotate_half_curve(mobject, alpha):
+            corners = mobject.corners
+            new_corners = rotate_half_points(corners, alpha)
+            mobject.set_points_as_corners(new_corners)
+            return mobject
+
+        for it in range(15):
+            rotated_curve = VMobject().set_points_as_corners(rotate_half_points(dragon_curve.corners, 1))
+            self.play(
+                UpdateFromAlphaFunc(dragon_curve, rotate_half_curve),
+                self.camera.auto_zoom(rotated_curve, margin=1),
+            )
+            current_corners = rotate_half_points(dragon_curve.corners, 1)
+            current_corners = current_corners + current_corners[-1::-1]
+            dragon_curve.set_points_as_corners(current_corners)
+            dragon_curve.corners = current_corners
+
+        self.add(water_mark.shift(350*RIGHT+35*UP))
+        self.wait()
+
+
+
+        # manim -pqh discord.py Dragon
+
+        # manim -sqk discord.py Dragon
 
 
 
 
 
+class KochCurveEx(Scene):
+    def construct(self):
+        def KochCurve(
+            n, length=12, stroke_width=8, color=("#0A68EF", "#4AF1F2", "#0A68EF")
+        ):
+
+            l = length / (3 ** n)
+
+            LineGroup = Line().set_length(l)
+
+            def NextLevel(LineGroup):
+                return VGroup(
+                    *[LineGroup.copy().rotate(i) for i in [0, PI / 3, -PI / 3, 0]]
+                ).arrange(RIGHT, buff=0, aligned_edge=DOWN)
+
+            for _ in range(n):
+                LineGroup = NextLevel(LineGroup)
+
+            KC = (
+                VMobject(stroke_width=stroke_width)
+                .set_points(LineGroup.get_all_points())
+                .set_color(color)
+            )
+            return KC
+
+        level = Variable(0, Tex("level"), var_type=Integer).set_color("#4AF1F2")
+        txt = (
+            VGroup(Tex("Koch Curve", font_size=60), level)
+            .arrange(DOWN, aligned_edge=LEFT)
+            .to_corner(UL)
+        )
+        kc = KochCurve(0, stroke_width=12).to_edge(DOWN, buff=2.5)
+
+        self.add(txt, kc)
+        self.wait()
+
+        for i in range(1, 6):
+            self.play(
+                level.tracker.animate.set_value(i),
+                kc.animate.become(
+                    KochCurve(i, stroke_width=12 - (2 * i)).to_edge(DOWN, buff=2.5)
+                ),
+            )
+            self.wait()
+
+        for i in range(4, -1, -1):
+            self.play(
+                level.tracker.animate.set_value(i),
+                kc.animate.become(
+                    KochCurve(i, stroke_width=12 - (2 * i)).to_edge(DOWN, buff=2.5)
+                ),
+            )
+            self.wait()
+
+
+            #  manim -pqh discord.py KochCurveEx
 
 
 
+
+class Cycloid(Scene):
+
+    def construct(self):
+
+        CycloidTxt = Text("Cycloid", font="TeX Gyre Termes").scale(1.5).to_edge(UP)
+
+        r = 3 / PI
+        corr = 1 / config.frame_rate  # missed frame correction
+
+        BL = NumberLine().shift(DOWN * r * 2)  # Base Line
+
+        C = Circle(r, color="#F72119").next_to(BL.n2p(-6), UP, buff=0)
+        DL = DashedLine(C.get_center(), C.get_top(), color="#A5ADAD")
+        CP = Dot(DL.get_start(), color="#ff3503")  # Center Point
+        TP = Dot(DL.get_end(), color="#00EAFF").scale(1.2)  # Tracing Point
+
+        RC = VGroup(C, DL, CP, TP)  # Rolling Circle
+
+        self.dir = 1  # direction of motion
+
+        def Rolling(m, dt):  # update_function
+            theta = self.dir * -PI
+            m.rotate(dt * theta, about_point=m[0].get_center()).shift(dt * LEFT * theta * r)
+
+        Cycloid = TracedPath(TP.get_center, stroke_width=6.5, stroke_color="#4AF1F2")
+
+        self.add(CycloidTxt, BL, Cycloid, RC)
+
+        RC.add_updater(Rolling)
+        self.wait(4 + corr)
+
+        RC.suspend_updating(Rolling)
+        Cycloid.clear_updaters()
+
+        self.wait()
+        self.dir = -1  # direction change, rolling back
+
+        RC.resume_updating(Rolling)
+        self.play(Uncreate(Cycloid, reverse_rate_func=lambda t: linear(1 - t), run_time=4.5 + corr))
+            
+        RC.clear_updaters()
+        self.wait()
+
+
+        # manim -pqh discord.py Cycloid
+
+
+
+
+class VonKoch(VMobject):
+    def __init__(self, number_of_iterations: int = 1, **kwargs):
+        super().__init__(**kwargs)
+        self.lines = Line(5*RIGHT, 5*LEFT, **kwargs)
+        self.add(self.lines)
+        for _ in range(number_of_iterations):
+            for line in self:
+                self.add(*self.get_iteration(line, **kwargs))
+                self.remove(line)
+
+
+    def get_iteration(self, side: VMobject, **kwargs) -> tuple:
+        start, end = side.get_start(), side.get_end()
+        first_point, second_point = 2/3 * start + 1/3 * end, 1/3 * start + 2/3 * end
+        new_line_1 = Line(start, first_point, **kwargs)
+        new_line_2 = Line(first_point, second_point, **kwargs).rotate(-PI/3, about_point=first_point)
+        new_line_3 = Line(first_point, second_point, **kwargs).rotate(PI/3, about_point=second_point)
+        new_line_4 = Line(second_point, end, **kwargs)
+        return VMobject().add(new_line_1, new_line_2, new_line_3, new_line_4)
+
+
+
+class VonKochFractal(Scene):
+    def construct(self):
+        vonkoch = VonKoch(0, stroke_width=6.5).shift(DOWN).set_color_by_gradient(REANLEA_AQUA,REANLEA_PURPLE)
+        self.add(vonkoch)
+        for k in range(8):
+            self.play(Transform(vonkoch, VonKoch(k, stroke_width=0.5).shift(DOWN)))
+
+
+    # manim -pqh discord.py VonKochFractal
+
+
+
+class testingSine(Scene):
+    def construct(self):
+        
+        bit_sequence = [1,0,1,1,0,1,1,1]
+        self.bit_sequence = bit_sequence
+        self.current_bit = 2
+        self.stream_started = False
+
+        self.establish_clock()
+        self.show_debug_clock()
+        self.enter_bit_stream(bit_sequence)
+        self.setup_dot()
+        self.setup_modulator_box()
+        self.animate_bit_stream()
+        self.setup_curve()
+
+        dot = self.dot
+        sine_curve_line = self.sine_curve_line
+        sq = self.sq
+        label = self.label
+        arrow = self.arrow
+        channel = self.channel
+        bits = self.bits
+        clock = self.clock
+        time_group = self.time_group
+        
+        brace = Brace(sq, UP)
+        brace_label = VGroup()
+        info = Text("current bit:", font='/usr/share/fonts/truetype/baekmuk/dotum.ttf')
+        current_bit_tag = Integer(self.current_bit).scale(2).set_color(BLACK)
+        current_bit_tag.add_updater(lambda x : x.set_value(self.current_bit))
+        brace_label.add(info)
+        brace_label.add(current_bit_tag)
+        brace_label.scale(0.5)
+        brace_label.arrange(RIGHT)
+        brace_label.add_updater(lambda x : x.next_to(brace, UP))
+        colour_group = VGroup(brace, brace_label).add_updater(self.colour_control)
+
+        title = Text("FSK - Frequency Shift Keying", font='/usr/share/fonts/truetype/baekmuk/dotum.ttf').scale(0.8)
+        title.to_corner(UP+LEFT)
+
+        bits.add_updater(self.align_bit_stream_top)
+        self.play(Write(title))
+        self.wait(0.5)
+        enter = VGroup()
+        enter.add(arrow, channel, label)
+        self.play(Write(enter), FadeIn(sq), Write(time_group))
+        self.add(dot, sine_curve_line, colour_group)
+        self.wait(2)
+
+        for j in range(len(bits)):
+            self.stream_started = True
+            the_bit = bits[0]
+            the_bit.generate_target()
+            the_bit.target.set_opacity(0)
+            the_bit.target.shift(RIGHT*2)
+            self.play(MoveToTarget(the_bit), run_time = 1.4)
+            bits.remove(the_bit)
+            self.wait(1.6)
+
+        self.wait(1)
+
+    def establish_clock(self):
+        self.clock = 0
+        self.increment = 0
+
+    def enter_bit_stream(self, bit_sequence):
+        self.bit_stream = bit_sequence
+        self.bits = VGroup()
+        for i in range(len(bit_sequence)):
+            self.bits.add(Text(str(bit_sequence[i])))
+        self.current_index = 0
+        
+
+    def align_bit_stream_top(self, bits):
+        top = bits.get_top()
+        sq = self.sq
+        bits.shift(UP*(sq.get_center()[1] - top[1]))
+
+    def animate_bit_stream(self):
+        self.bits.arrange(RIGHT)
+        self.play(Write(self.bits))
+        self.wait(1)
+        self.bits.generate_target()
+        self.bits.target.scale(0.5)
+        self.bits.target.arrange(DOWN)
+        self.bits.target.to_edge(LEFT)
+        for i in range(len(self.bits)):
+            if self.bit_sequence[i] == 0:
+                self.bits.target[i].set_color(BLUE_D)
+            else:
+                self.bits.target[i].set_color(RED_D)
+        top = self.bits.target.get_top()
+        sq = self.sq
+        self.bits.target.shift(UP*(sq.get_center()[1] - top[1]))
+        self.play(MoveToTarget(self.bits), run_time = 3)
+
+    def oscillate_dot(self, the_dot, dt):
+            self.clock += dt
+            y_shift = 0.7*np.sin(self.clock*(1.5 + 2.5*self.current_amp(self.clock))*np.pi)
+            the_dot.move_to(self.dot_origin + [0,y_shift,0])
+
+    def current_amp(self, t):
+        if(t < 2):
+            return 0
+        else:
+            bit_index = int((t-2)/3)
+            if(bit_index in range(len(self.bit_sequence))):
+                self.current_bit = self.bit_sequence[bit_index]
+            else:
+                return 0
+
+            if(self.current_bit):
+                return 1
+            else:
+                return 0
+
+    def setup_dot(self):
+        self.dot = Dot()
+        self.dot.shift(UP*0+LEFT*4)
+        self.dot_origin = self.dot.get_center()
+        self.dot.add_updater(self.oscillate_dot)
+
+    def setup_modulator_box(self):
+        self.sq = Square()
+        self.sq.move_to(self.dot.get_center())
+        self.label = Text("Modulator",font='/usr/share/fonts/truetype/baekmuk/dotum.ttf').scale(0.5)
+        self.label.move_to(self.sq.get_bottom()).shift(DOWN*0.35)
+        self.arrow = Arrow(self.sq.get_right()-[0.25,0,0], self.sq.get_right() + [8,0,0])
+        self.channel = Text("to channel", font='/usr/share/fonts/truetype/baekmuk/dotum.ttf')
+        self.channel.scale(0.5).move_to(self.arrow.get_right() + [0,-1.1,0])
+    
+    def move_signal(self, path):
+        path.move_to(self.dot_origin + [self.clock/4, 0, 0])
+
+    def get_curve(self):
+        
+        last_line = self.curve[-1]
+        x = self.dot.get_center()[0]
+        y = self.dot.get_center()[1]
+        new_line = Line(last_line.get_end(),np.array([x,y,0]), color=YELLOW_D)
+        if(self.stream_started):
+            self.curve.add(new_line)
+
+        return self.curve
+
+    def setup_curve(self):
+        self.curve = VGroup()
+        self.curve.add(Line(self.dot.get_center(),self.dot.get_center()))
+        self.sine_curve_line = always_redraw(self.get_curve)
+        self.sine_curve_line.add_updater(self.move_signal)
+
+    def show_debug_clock(self):
+        box = Square().to_corner(corner = UP + RIGHT)
+        label = Text("time (s)", font='/usr/share/fonts/truetype/baekmuk/dotum.ttf')
+        label.move_to(box.get_bottom() - [0,0.4,0]).scale(0.5)
+        watch = DecimalNumber(0, show_ellipsis=False, num_decimal_places=2, include_sign=False)
+        watch.move_to(box)
+        watch.add_updater(lambda x : x.set_value(self.clock))
+        self.time_group = VGroup(box, watch, label).scale(0.8)
+
+    def colour_control(self, thing):
+        if self.current_bit == 1:
+            thing.set_color(RED_D)
+        elif self.current_bit == 0:
+            thing.set_color(BLUE_D)
+    
+
+
+        # manim -pqh discord.py testingSine
+
+
+
+config.disable_caching=True
+
+from numba import jit
+from numba import njit
+
+class MandelbrotAndJuliaScene(Scene):
+    def construct(self):
+        jited_MandelbrotSet = njit()(MandelbrotSet)
+        jited_JuliaSet = njit()(JuliatSet)
+        mandelbrot_set = ImageMobject(jited_MandelbrotSet(
+            max_steps=50,
+            resolution=1080,
+        )).set_z_index(4)
+        mandelbrot_set_complex_plane = ComplexPlane(
+            x_range = np.array([-2, 0.5]),
+            y_range = np.array([-1.15, 1.15]),
+            x_length = mandelbrot_set.height,
+            y_length = mandelbrot_set.width 
+        )
+        old_height = mandelbrot_set.height
+        mandelbrot_set.height = 3.5
+        rectangle = BackgroundRectangle(mandelbrot_set, color=WHITE, stroke_width=2, stroke_opacity=1, fill_opacity=0, buff=0).set_z_index(5)
+        Group(mandelbrot_set, rectangle).to_corner(UR, buff=0.2)
+
+        mandelbrot_set_complex_plane.move_to(mandelbrot_set).scale(3.5/old_height)
+
+
+        c = ComplexValueTracker(array_of_complex_constants[0][0])
+        max_steps = ValueTracker(20)
+
+        dot = always_redraw(lambda: Dot(mandelbrot_set_complex_plane.c2p(c.get_value().real, c.get_value().imag), radius=DEFAULT_SMALL_DOT_RADIUS, color=PURE_BLUE).set_z_index(6))
+        label = always_redraw(lambda: MathTex('c', stroke_color=BLACK, stroke_width=0.75).scale(1.25).next_to(dot, UL, buff=0.1).set_z_index(6))
+
+        eq = MathTex('z \\mapsto z^2 + c').to_corner(UL, buff=0.27).set_z_index(4)
+        rectangle_eq = SurroundingRectangle(eq, color=WHITE, buff=0.25).set_z_index(5)
+
+        constant = MathTex('c =').to_edge(buff=0.22).to_edge(DOWN, buff=0.65).set_z_index(10)
+        for complex_constant in array_of_complex_constants:
+            complex_constant[1].next_to(constant, RIGHT)
+        constant_value = array_of_complex_constants[0][1].set_z_index(10)
+        background = always_redraw(lambda: BackgroundRectangle(Group(constant, constant_value), color=BLACK))
+        surrounding = always_redraw(lambda: SurroundingRectangle(Group(constant, constant_value), color=WHITE, buff=0.2)).set_z_index(11)
+
+
+        julia_set = ImageMobject(jited_JuliaSet(
+            c.get_value(),
+            max_steps=int(max_steps.get_value()),
+            resolution=1440,
+            x_range=np.array([-1.75, 1.75]),
+            y_range=np.array([-1.5, 1.5])
+        )).set_z_index(3)
+        julia_set.height = config.frame_height
+
+        self.play(FadeIn(Group(mandelbrot_set, rectangle, eq, rectangle_eq, julia_set, dot, label, constant, constant_value, background, surrounding)))
+        self.wait(1.75)
+
+        def update_julia_set(julia_set):
+            julia_set.become(ImageMobject(jited_JuliaSet(
+                c.get_value(),
+                max_steps=int(max_steps.get_value()),
+                resolution=1440,
+                x_range=np.array([-1.75, 1.75]),
+                y_range=np.array([-1.5, 1.5])
+            )).set_z_index(3))
+            julia_set.height = config.frame_height
+
+        julia_set.add_updater(update_julia_set)
+
+        for k in range(1, len(array_of_complex_constants)):
+            if k == 4:
+                self.play(
+                    c.animate.set_value(array_of_complex_constants[4][0]),
+                    max_steps.animate.set_value(35),
+                    Transform(array_of_complex_constants[0][1], array_of_complex_constants[4][1]),
+                    run_time=3
+                    )
+                self.wait(1.75)
+            if k == 6:
+                self.play(
+                    c.animate.set_value(array_of_complex_constants[6][0]),
+                    max_steps.animate.set_value(500),
+                    Transform(array_of_complex_constants[0][1], array_of_complex_constants[6][1]),
+                    run_time=3
+                    )
+                self.wait(1.75)
+            if k == 11:
+                self.play(
+                    c.animate.set_value(array_of_complex_constants[11][0]),
+                    max_steps.animate.set_value(70),
+                    Transform(array_of_complex_constants[0][1], array_of_complex_constants[11][1]),
+                    run_time=3
+                    )
+                self.wait(1.75)
+            else:
+                self.play(
+                    c.animate.set_value(array_of_complex_constants[k][0]),
+                    max_steps.animate.set_value(20),
+                    Transform(array_of_complex_constants[k-1][1], array_of_complex_constants[k][1]),
+                    run_time=3
+                    )
+                self.wait(1.75)
+
+
+
+
+array_of_complex_constants = [
+    [complex(np.pi/17, np.pi/17), MathTex('-\\frac{\\pi}{17} + \\frac{\\pi}{17}i')],
+    [complex(np.pi/17, 42/1975), MathTex("-\\frac{\\pi}{17} + \\frac{42}{1975}i")],
+    [complex(-1.975, 0.42), MathTex("-1.975 + 0.42i")],
+    [complex(np.pi/17, np.exp(-42)), MathTex("\\frac{\\pi}{17} + e^{-42}i")],
+    [complex(0.3, 0.03), MathTex("0.3 + 0.03i")],
+    [complex(0.42, 1), MathTex("0.42 + i")],
+    [complex(-1/15, 2/3), MathTex("-\\frac{1}{15} + \\frac{2}{3}i")],
+    [complex(-1.877, 0.115), MathTex("-\\frac{\\pi}{17} + \\frac{\\pi}{17}i")],
+    [complex(0, 0), MathTex("0")],
+    [complex(1/42, np.pi/17), MathTex("\\frac{1}{42} + \\frac{\\pi}{17}i")],
+    [complex(-1.683, 0.6977), MathTex("-1.683 + 0.6977i")],
+    [complex(0.07, 0.7), MathTex("0.07 + 0.7i")]
+]
+
+
+
+
+def MandelbrotSet(max_steps: int = 50, resolution: int = 1080, x_range: np.ndarray = np.array([-2, 0.5]), y_range: np.ndarray = np.array([-1.15, 1.15])) -> np.ndarray:
+        x_m, x_M, y_m, y_M = x_range[0], x_range[1], y_range[0], y_range[1]
+        resolution_tuple = resolution, int(np.abs(x_M - x_m)/np.abs(y_M - y_m)*resolution)
+        dx, dy = np.abs(x_M - x_m)/resolution_tuple[1], np.abs(y_M - y_m)/resolution_tuple[0]
+        array = np.zeros(resolution_tuple, dtype='uint8')
+        for n in range(len(array)):
+            for p in range(len(array[0])):
+                c = complex(x_m + p*dx, y_M - n*dy)
+                z = c
+                i = 0
+                while i < max_steps and np.abs(z) <= 2:
+                    z = z**2 + c
+                    i += 1
+                if i == max_steps:
+                    array[n, p] = 0
+                else:
+                    array[n, p] = i*(255/max_steps)
+        return array
+
+
+
+def JuliatSet(complex_constant: complex = complex(0, 0), max_steps: int = 50, resolution: int = 1080, x_range: np.ndarray = np.array([-2, 0.5]), y_range: np.ndarray = np.array([-1.15, 1.15])) -> np.ndarray:
+    x_m, x_M, y_m, y_M = x_range[0], x_range[1], y_range[0], y_range[1]
+    resolution_tuple = resolution, int(np.abs(x_M - x_m)/np.abs(y_M - y_m)*resolution)
+    dx, dy = np.abs(x_M - x_m)/resolution_tuple[1], np.abs(y_M - y_m)/resolution_tuple[0]
+    array = np.zeros(resolution_tuple, dtype='uint8')
+    for n in range(len(array)):
+        for p in range(len(array[0])):
+            c = complex(x_m + p*dx, y_M - n*dy)
+            z = c
+            i = 0
+            while i < max_steps and np.abs(z) <= 2:
+                z = z**2 + complex_constant
+                i += 1
+            if i == max_steps:
+                array[n, p] = 0
+            else:
+                array[n, p] = i*(255/max_steps)
+    return array
+
+
+    # manim -pqh test2.py MandelbrotAndJuliaScene
 
 
 
