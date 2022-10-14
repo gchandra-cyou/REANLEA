@@ -686,7 +686,7 @@ class GraphNetworks(Scene):
 
 
 
-config.disable_caching=True
+#config.disable_caching=True
 
 from numba import jit
 from numba import njit
@@ -930,8 +930,8 @@ class Col_Field(Scene):
                 arr = arr.T[::-1, :]
                 field = np.zeros((*arr.shape, 4), "uint8")
 
-                for i, j in enumerate(arr):
-                    field[i] = interpolate_color_array(RED, GREEN, j)
+        for i, j in enumerate(arr):
+                field[i] = interpolate_color_array(RED, GREEN, j)
 
 
 
@@ -1258,7 +1258,19 @@ class Mandel2(Scene):
 
 class ImageFromArray(Scene):
     def construct(self):
-        image = ImageMobject(np.uint8([[0,240,50]])).fade(darkness=0.7).set_color(color=RED,alpha=.25, family=False)
+
+        def interpolate_color_array(color1: Color, color2: Color, alpha: np.ndarray):
+            arr = []
+            for i,j in enumerate(alpha):
+                arr += [color_to_int_rgba(interpolate_color(color1, color2, j))]
+            return np.array(arr)
+
+        arr = np.zeros((10,10))
+        field = np.zeros((*arr.shape,4), "uint8")
+        for i, j in enumerate(arr):
+            field[i] = interpolate_color_array(BLUE, GREEN, j)
+
+        image = ImageMobject(field)
         
         
         image.height = 7
@@ -1269,6 +1281,70 @@ class ImageFromArray(Scene):
 
         # manim -sqk test2.py ImageFromArray
 
+
+
+
+class EmojiImageMobject(ImageMobject):
+    def __init__(self, emoji, **kwargs):
+        emoji_code = "-".join(f"{ord(c):x}" for c in emoji)
+        emoji_code = emoji_code.upper()  # <-  needed for openmojis
+        url = f"https://raw.githubusercontent.com/hfg-gmuend/openmoji/master/color/618x618/{emoji_code}.png"
+        im = Image.open(requests.get(url, stream=True).raw)
+        emoji_img = np.array(im.convert("RGBA"))
+        ImageMobject.__init__(self, emoji_img, **kwargs)
+
+
+class imoji(Scene):
+    def construct(self):
+        self.camera.background_color = YELLOW_A
+        em = EmojiImageMobject("🐶").scale(1.1)
+        self.add(em)
+
+
+        # manim -pqh test2.py imoji
+
+
+
+
+class test_x(Scene):
+    def construct(self):
+
+        vect_1=Arrow(start=LEFT,end=RIGHT,max_tip_length_to_length_ratio=0.125).set_color(PURE_RED).set_opacity(0.85)
+        vect_1_lbl=MathTex("u").scale(1).next_to(vect_1,0.5*DOWN).set_color(PURE_RED)
+
+        bez_arr_1=bend_bezier_arrow().flip(DOWN).move_to(2.5*LEFT + 0.1*UP).flip(LEFT).rotate(45*DEGREES)
+
+        with RegisterFont("Fuzzy Bubbles") as fonts:
+            text_20=Text("unit vector", font=fonts[0]).scale(0.45)
+            text_20.set_color_by_gradient(REANLEA_TXT_COL).shift(3*RIGHT)
+        text_20.move_to(.75*LEFT+ 0.2*UP).rotate(20*DEGREES)
+
+        sgn_pos_1=MathTex("+").scale(.75).set_color(PURE_GREEN).move_to(6.5*RIGHT)
+        sgn_pos_2=Circle(radius=0.2, color=PURE_GREEN).move_to(sgn_pos_1.get_center()).set_stroke(width= 1)
+        sgn_pos=VGroup(sgn_pos_1,sgn_pos_2)
+
+
+
+        self.add(bez_arr_1)
+        self.add(text_20)
+        self.add(sgn_pos)
+        self.wait()
+        self.play(
+            Write(vect_1),
+            lag_ratio=0.5
+        )
+        self.play(Write(vect_1_lbl))
+        self.wait(2)
+        '''self.play(
+            Unwrite(vect_1.reverse_direction()),
+            Uncreate(bez_arr_1)
+        )'''
+        self.wait(2)
+        
+
+        # manim -pqh test2.py test_x
+
+        # manim -sqk test2.py test_x
 
 ###################################################################################################################
 

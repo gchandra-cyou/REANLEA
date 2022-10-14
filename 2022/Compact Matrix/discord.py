@@ -550,20 +550,16 @@ class Vortices(MovingCameraScene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        #water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        #self.add(water_mark)
 
         rigid = lambda pos: pos[0] * DOWN + pos[1] * RIGHT
-        stream_rigid = StreamLines(rigid, x_range=[-2, 2, 0.2], y_range=[-2, 2, 0.2])
+        stream_rigid = StreamLines(rigid, x_range=[-1.5, 1.5, 0.2], y_range=[-1.5, 1.5, 0.2], colors=[REANLEA_WARM_BLUE, REANLEA_BLUE,PURE_RED,REANLEA_PURPLE,REANLEA_SLATE_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_BLUE_LAVENDER])
         stream_rigid.start_animation(warm_up=False)
 
         self.add(stream_rigid)
         self.wait()
-        self.play(
-            self.camera.frame.animate.shift(2*RIGHT),
-            water_mark.animate.shift(2*RIGHT)
-        )
-        self.wait(2)
+        
 
 
         # manim -pqh discord.py Vortices
@@ -2002,7 +1998,7 @@ class testingSine(Scene):
 
 
 
-config.disable_caching=True
+#config.disable_caching=True
 
 from numba import jit
 from numba import njit

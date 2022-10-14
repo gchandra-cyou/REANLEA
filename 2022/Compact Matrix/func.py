@@ -374,7 +374,7 @@ def bend_bezier_arrow():
         grp3 += p
 
 
-        ar= Arrow(max_stroke_width_to_length_ratio=0,max_tip_length_to_length_ratio=0.15).move_to(p1.get_end()+.55*DOWN).rotate(PI/2)
+        ar= Arrow(max_stroke_width_to_length_ratio=0,max_tip_length_to_length_ratio=0.05).move_to(p1.get_end()+.7*DOWN).rotate(PI/2)
         ar.set_color(REANLEA_CHARM)
 
         
