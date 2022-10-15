@@ -1455,7 +1455,7 @@ class test_y(Scene):
     def construct(self):
 
         theta_tracker = ValueTracker(.01)
-        theta_1=0.01
+        start = .01
         
 
         vect_1=Arrow(start=LEFT,end=RIGHT,max_tip_length_to_length_ratio=0.125, buff=0).set_color(PURE_RED)
@@ -1469,7 +1469,7 @@ class test_y(Scene):
 
         ang_theta=DecimalNumber(unit="^o").scale(.5).move_to(RIGHT+UP)
 
-        ang_theta_cos=Variable(np.cos(theta_1*DEGREES),MathTex(r"cos (\theta)")).move_to(RIGHT+2*UP).scale(0.75)
+        
 
 
 
@@ -1486,25 +1486,30 @@ class test_y(Scene):
 
 
         ang_theta.add_updater( lambda x: x.set_value(theta_tracker.get_value()).move_to(RIGHT+UP))
-        ang_theta_cos.add_updater(
-            lambda x: x.tracker.set_value(
-                np.cos(theta_1.tracker.get_value())
-            )
-        )
         
 
+                              
 
+        x_var = Variable(start, MathTex(r"\theta"), num_decimal_places=2)
+        sqr_var = Variable(np.cos(start*DEGREES), '', num_decimal_places=2).move_to(DOWN+RIGHT)           #MathTex("u","\cdot",r"cos(\theta)")
+        sqr_var_lbl_right=MathTex("\cdot","u").arrange(RIGHT, buff=0.2).move_to(2.4*RIGHT+DOWN).set_color(PURE_RED)
+        sqr_var_lbl_left=MathTex("u","\cdot",r"cos(\theta)").arrange(RIGHT,buff=0.2).move_to(LEFT+DOWN)
+        sqr_var_lbl_left[0:2].set_color(PURE_RED)
+        sqr_var_lbl_left[2][0:3].set_color(PURE_GREEN)
+        sqr_var_grp=VGroup(sqr_var_lbl_left,sqr_var, sqr_var_lbl_right).scale(0.65)
+        #Group(x_var, sqr_var).arrange(DOWN)
 
-
+        sqr_var.add_updater(lambda v: v.tracker.set_value(np.cos(x_var.tracker.get_value()*DEGREES)))  #very important !!! step
+        
 
 
         self.play(
             Create(vect_1),
             Write(vect_1_moving),
+            
         )
         self.play(
             theta_tracker.animate.set_value(40),
-            theta_1.tracker.animate.set_value(40)
         )
         self.wait()
         self.play(
@@ -1512,15 +1517,16 @@ class test_y(Scene):
         )
         self.play(
             Write(ang_theta),
-            Write(ang_theta_cos)
+            Create(sqr_var_grp)
         )
         self.wait(2)
     
         self.play(
             theta_tracker.animate.increment_value(80),
             ang_theta.animate.set_color(RED),
+            sqr_var_lbl_left[2][4].animate.set_color(RED),
             ang.animate.set_stroke(color=RED, width=3),
-            theta_1.tracker.animate.set_value(120),
+            x_var.tracker.animate.set_value(80), rate_func=linear,
             run_time=2
         )
         
@@ -1538,7 +1544,7 @@ class VariableExample(Scene):
 
                 x_var = Variable(start, MathTex(r"\theta"), num_decimal_places=2)
                 sqr_var = Variable(np.cos(start*DEGREES), '', num_decimal_places=2)           #MathTex("u","\cdot",r"cos(\theta)")
-                sqr_var_lbl_right=MathTex("\cdot","u").arrange(RIGHT, buff=0.2).move_to(2.35*RIGHT+.2*DOWN)
+                sqr_var_lbl_right=MathTex("\cdot","u").arrange(RIGHT, buff=0.2).move_to(2.4*RIGHT).set_color(PURE_RED)
                 sqr_var_lbl_left=MathTex("u","\cdot",r"cos(\theta)").arrange(RIGHT,buff=0.2).move_to(LEFT)
                 sqr_var_grp=Group(sqr_var_lbl_left,sqr_var, sqr_var_lbl_right)
                 #Group(x_var, sqr_var).arrange(DOWN)

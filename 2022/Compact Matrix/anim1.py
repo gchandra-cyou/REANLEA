@@ -157,6 +157,13 @@ class Scene1(Scene):
             max_tip_length_to_length_ratio=0.015, buff=10
         ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA).shift(0.5*UP)
 
+        d_line_3=DashedDoubleArrow(
+            start=line_1.n2p(-1.5)+0.4*DOWN, end=0.95*UP+RIGHT, dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).set_color_by_gradient(REANLEA_SLATE_BLUE,PURE_RED).shift(0.3*LEFT)
+
+
+
         
 
 
@@ -189,7 +196,7 @@ class Scene1(Scene):
             theta_tracker_1.get_value() * DEGREES, about_point=vect_1_moving.get_start()
         )
 
-        ang=Angle(vect_1, vect_1_moving, radius=0.5, other_angle=False).set_stroke(color=PURE_GREEN, width=3).set_z_index(-1)
+        ang=Angle(vect_1, vect_1_moving, radius=0.5, other_angle=False).set_stroke(color=REANLEA_WARM_BLUE, width=3).set_z_index(-1)
         ang_lbl = MathTex(r"\theta =").move_to(
             Angle(
                 vect_1, vect_1_moving, radius=.85 + 3 * SMALL_BUFF, other_angle=False
@@ -198,11 +205,18 @@ class Scene1(Scene):
 
         ang_theta=DecimalNumber(unit="^o").scale(.5).set_color(PURE_GREEN)
 
-        ang_theta_cos_demo=Variable(theta_tracker_2, MathTex(r"\theta"), num_decimal_places=2)
-        ang_theta_cos=Variable(np.cos(theta_tracker_2*DEGREES), MathTex(r"cos(\theta)"), num_decimal_places=3).set_color(REANLEA_BLUE)
 
-        ang_theta_cos_lbl=MathTex("\cdot","u").arrange(RIGHT, buff=0.2).arrange(RIGHT, buff=0.2).set_color(PURE_RED)
-        ang_theta_cos_grp=VGroup(ang_theta_cos,ang_theta_cos_lbl).arrange(1.9*RIGHT+.25*DOWN, buff=0.75)
+
+        ang_theta_cos_demo=Variable(theta_tracker_2, MathTex(r"\theta"), num_decimal_places=2)
+        ang_theta_cos=Variable(np.cos(theta_tracker_2*DEGREES), '', num_decimal_places=3).set_color(REANLEA_SLATE_BLUE).move_to(UP+3*RIGHT)
+        
+        ang_theta_cos_lbl_left=MathTex("u","\cdot",r"cos(\theta)").arrange(RIGHT,buff=0.2).move_to(UP +RIGHT)
+        ang_theta_cos_lbl_right=MathTex("\cdot","u").arrange(RIGHT, buff=0.2).set_color(PURE_RED).move_to(UP +4.55*RIGHT)
+        ang_theta_cos_lbl_left[0:2].set_color(PURE_RED)
+        ang_theta_cos_lbl_left[2][0:3].set_color(REANLEA_WARM_BLUE)
+        ang_theta_cos_lbl_left[2][4].set_color(PURE_GREEN)
+        ang_theta_cos_grp=VGroup(ang_theta_cos_lbl_left,ang_theta_cos,ang_theta_cos_lbl_right).scale(.65)
+        sur_ang_theta_cos_grp=SurroundingRectangle(ang_theta_cos_grp, color=REANLEA_TXT_COL,corner_radius=0.125, buff=0.2)
 
 
 
@@ -256,7 +270,7 @@ class Scene1(Scene):
         
 
         ang.add_updater(
-            lambda x: x.become(Angle(vect_1, vect_1_moving, radius=0.5, other_angle=False).set_stroke(color=PURE_GREEN, width=3).set_z_index(-1))
+            lambda x: x.become(Angle(vect_1, vect_1_moving, radius=0.5, other_angle=False).set_stroke(color=REANLEA_WARM_BLUE, width=3).set_z_index(-1))
         )
 
 
@@ -547,7 +561,15 @@ class Scene1(Scene):
         )
         self.wait(2)
         self.play(
-            Write(ang_theta_cos_grp)
+            Write(d_line_3),
+            run_time=0.35
+        )
+        self.play(
+            TransformMatchingShapes(vect_1_lbl.copy(),ang_theta_cos_grp)
+        )
+        self.play(
+            Uncreate(d_line_3.reverse_direction()),
+            Create(sur_ang_theta_cos_grp)
         )
         self.play(
             theta_tracker_1.animate.increment_value(90),
@@ -555,6 +577,7 @@ class Scene1(Scene):
             ang_lbl.animate(run_time=5/3).set_color(REANLEA_YELLOW),
             ang_theta.animate(run_time=5/3).set_color(REANLEA_YELLOW),
             ang_theta_cos_demo.tracker.animate.set_value(130),
+            ang_theta_cos_lbl_left[2][4].animate().set_color(REANLEA_YELLOW),
             run_time=3
         )
         self.wait()
