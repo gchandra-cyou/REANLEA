@@ -52,7 +52,8 @@ class Scene1(Scene):
         # TRACKER
 
         x=ValueTracker(-2)
-        theta_tracker_1=40
+        theta_tracker_1=ValueTracker(0.01)
+        theta_tracker_2=40
 
         # OBJECT REGION
 
@@ -197,8 +198,15 @@ class Scene1(Scene):
 
         ang_theta=DecimalNumber(unit="^o").scale(.5).set_color(PURE_GREEN)
 
-        ang_theta_cos_demo=Variable(theta_tracker_1, MathTex(r"\theta"), num_decimal_places=2)
-        ang_theta_cos=Variable(np.cos(theta_tracker_1*DEGREES), MathTex(r"cos(\theta)"), num_decimal_places=3)
+        ang_theta_cos_demo=Variable(theta_tracker_2, MathTex(r"\theta"), num_decimal_places=2)
+        ang_theta_cos=Variable(np.cos(theta_tracker_2*DEGREES), MathTex(r"cos(\theta)"), num_decimal_places=3).set_color(REANLEA_BLUE)
+
+        ang_theta_cos_lbl=MathTex("\cdot","u").arrange(RIGHT, buff=0.2).arrange(RIGHT, buff=0.2).set_color(PURE_RED)
+        ang_theta_cos_grp=VGroup(ang_theta_cos,ang_theta_cos_lbl).arrange(1.9*RIGHT+.25*DOWN, buff=0.75)
+
+
+
+
 
         projec_line=always_redraw(
             lambda : DashedLine(start=vect_1_moving.get_end(), end=np.array((vect_1_moving.get_end()[0],line_1.n2p(0)[1],0))).set_stroke(color=REANLEA_AQUA_GREEN, width=1)
@@ -539,7 +547,7 @@ class Scene1(Scene):
         )
         self.wait(2)
         self.play(
-            Write(ang_theta_cos)
+            Write(ang_theta_cos_grp)
         )
         self.play(
             theta_tracker_1.animate.increment_value(90),

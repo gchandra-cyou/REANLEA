@@ -1537,19 +1537,22 @@ class VariableExample(Scene):
                 start = .01                      
 
                 x_var = Variable(start, MathTex(r"\theta"), num_decimal_places=2)
-                sqr_var = Variable(np.cos(start*DEGREES), MathTex("u","\cdot",r"cos(\theta)"), num_decimal_places=2)
-                sqr_var_lbl=MathTex("\cdot","u").arrange(RIGHT, buff=0.2)
-                sqr_var_grp=VGroup(sqr_var,sqr_var_lbl).arrange(1.9*RIGHT+.25*DOWN, buff=0.75)
-                Group(x_var, sqr_var).arrange(DOWN)
+                sqr_var = Variable(np.cos(start*DEGREES), '', num_decimal_places=2)           #MathTex("u","\cdot",r"cos(\theta)")
+                sqr_var_lbl_right=MathTex("\cdot","u").arrange(RIGHT, buff=0.2).move_to(2.35*RIGHT+.2*DOWN)
+                sqr_var_lbl_left=MathTex("u","\cdot",r"cos(\theta)").arrange(RIGHT,buff=0.2).move_to(LEFT)
+                sqr_var_grp=Group(sqr_var_lbl_left,sqr_var, sqr_var_lbl_right)
+                #Group(x_var, sqr_var).arrange(DOWN)
 
                 sqr_var.add_updater(lambda v: v.tracker.set_value(np.cos(x_var.tracker.get_value()*DEGREES)))  #very important !!! step
 
-                self.add(x_var, sqr_var_grp)
-                self.play(x_var.tracker.animate.set_value(180), run_time=6, rate_func=linear)
+                self.add(sqr_var_grp)
+                self.play(x_var.tracker.animate.set_value(180), run_time=2, rate_func=linear)
                 self.wait(0.1)
 
 
                 # manim -pqh test2.py VariableExample
+
+                # manim -sqk test2.py VariableExample
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"
