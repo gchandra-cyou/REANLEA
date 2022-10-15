@@ -1313,6 +1313,11 @@ class Scene6(MovingCameraScene):
         ).flip(RIGHT).next_to(text_prop,.5*DOWN).scale(1.25).rotate(3*DEGREES)
 
 
+
+
+        
+
+
         # PLAY REGION
         self.add(water_mark)
 

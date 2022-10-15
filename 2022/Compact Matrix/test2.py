@@ -56,6 +56,7 @@ import itertools as it
 
 
 config.background_color= REANLEA_BACKGROUND_COLOR
+config.max_files_cached=500
 
 
 ###################################################################################################################
@@ -1309,15 +1310,83 @@ class imoji(Scene):
 class test_x(Scene):
     def construct(self):
 
-        vect_1=Arrow(start=LEFT,end=RIGHT,max_tip_length_to_length_ratio=0.125).set_color(PURE_RED).set_opacity(0.85)
-        vect_1_lbl=MathTex("u").scale(1).next_to(vect_1,0.5*DOWN).set_color(PURE_RED)
+        theta_tracker = ValueTracker(.01)
 
-        bez_arr_1=bend_bezier_arrow().flip(DOWN).move_to(2.5*LEFT + 0.1*UP).flip(LEFT).rotate(45*DEGREES)
+        vect_1=Arrow(start=LEFT,end=RIGHT,max_tip_length_to_length_ratio=0.125, buff=0).set_color(PURE_RED).set_opacity(0.85)
+        vect_1_lbl=MathTex("u").scale(1).next_to(vect_1,0.5*DOWN).set_color(PURE_RED)
+        vect_1_moving=Arrow(start=LEFT,end=RIGHT,max_tip_length_to_length_ratio=0.125, buff=0).set_color(PURE_RED).set_opacity(0.85)
+        vect_1_ref=vect_1_moving.copy()
+        vect_1_moving.rotate(
+            theta_tracker.get_value() * DEGREES, about_point=vect_1_moving.get_start()
+        )
+
+        ang=Angle(vect_1, vect_1_moving, radius=1, other_angle=False).set_stroke(color=PURE_GREEN, width=3).set_z_index(-1)
+        ang_lbl = MathTex(r"\theta =").move_to(
+            Angle(
+                vect_1, vect_1_moving, radius=.85 + 3 * SMALL_BUFF, other_angle=False
+            ).point_from_proportion(.5)                 # Gets the point at a proportion along the path of the VMobject.
+        ).scale(.5)
+
+        ang_theta=DecimalNumber(unit="^o").scale(.5)
+
+        #projec_line=DashedLine(start=dot3.get_center(), end=np.array((dot3.get_center()[0],0,0)), stroke_width=1).set_color(REANLEA_AQUA_GREEN).set_z_index(-2)
+        #d_line_1=DashedLine(start=vect_1_moving.get_end(), end=np.array((vect_1_moving.get_end()[0],0,0))).set_stroke(color=REANLEA_AQUA_GREEN, width=1)
+        projec_line=always_redraw(
+            lambda : DashedLine(start=vect_1_moving.get_end(), end=np.array((vect_1_moving.get_end()[0],0,0))).set_stroke(color=REANLEA_AQUA_GREEN, width=1)
+        )
+
+
+        vect_1_moving.add_updater(
+            lambda x: x.become(vect_1_ref.copy()).rotate(
+                theta_tracker.get_value() * DEGREES, about_point=vect_1_moving.get_start()
+            )
+        )
+        
+
+        ang.add_updater(
+            lambda x: x.become(Angle(vect_1, vect_1_moving, radius=1, other_angle=False).set_stroke(color=PURE_GREEN, width=3).set_z_index(-1))
+        )
+
+
+        ang_lbl.add_updater(
+            lambda x: x.move_to(
+                Angle(
+                    vect_1, vect_1_moving, radius=.85 + 13*SMALL_BUFF, other_angle=False
+                ).point_from_proportion(0.5),
+                aligned_edge=RIGHT
+            )
+        )
+        #ang_theta.add_updater(lambda x: x.next_to(ang_lbl, RIGHT))
+
+        ang_theta.add_updater( lambda x: x.set_value(theta_tracker.get_value()).next_to(ang_lbl, RIGHT))
+        
+
+
+
+
+
+
+        self.play(Create(vect_1))
+        self.wait()
+        self.play(
+            Write(vect_1_moving),
+        )
+        
+
+        
+
+        
+
+
+
+
+
+        '''bez_arr_1=bend_bezier_arrow().flip(DOWN).move_to(2.5*LEFT + 0.1*UP).flip(LEFT).rotate(45*DEGREES)
 
         with RegisterFont("Fuzzy Bubbles") as fonts:
             text_20=Text("unit vector", font=fonts[0]).scale(0.45)
             text_20.set_color_by_gradient(REANLEA_TXT_COL).shift(3*RIGHT)
-        text_20.move_to(.75*LEFT+ 0.2*UP).rotate(20*DEGREES)
+        text_20.move_to(.75*LEFT+ 0.2*UP).rotate(20*DEGREES)'''
 
         sgn_pos_1=MathTex("+").scale(.75).set_color(PURE_GREEN).move_to(6.5*RIGHT)
         sgn_pos_2=Circle(radius=0.2, color=PURE_GREEN).move_to(sgn_pos_1.get_center()).set_stroke(width= 1)
@@ -1325,20 +1394,54 @@ class test_x(Scene):
 
 
 
-        self.add(bez_arr_1)
-        self.add(text_20)
+        #self.add(bez_arr_1)
+        #self.add(text_20)
         self.add(sgn_pos)
         self.wait()
-        self.play(
+        '''self.play(
             Write(vect_1),
             lag_ratio=0.5
-        )
+        )'''
         self.play(Write(vect_1_lbl))
         self.wait(2)
         '''self.play(
             Unwrite(vect_1.reverse_direction()),
             Uncreate(bez_arr_1)
         )'''
+        
+        self.play(theta_tracker.animate.set_value(40))
+        self.wait()
+        #self.add(ang_lbl, ang_theta)
+        self.play(
+            Create(ang)
+        )
+        self.play(
+            Write(ang_lbl),
+            Write(ang_theta),
+            lag_ratio=0.5
+        )
+        self.wait(1.25)
+        bra_1=always_redraw(
+            lambda : BraceBetweenPoints(
+                point_1=vect_1.get_start(),
+                point_2=np.array((vect_1_moving.get_end()[0],0,0)),
+                direction=DOWN,
+                color=REANLEA_SLATE_BLUE_LIGHTER
+            ).set_stroke(width=.1)
+        )
+        self.play(
+            Write(projec_line),
+            Create(bra_1)
+        )
+        self.wait(2)
+        self.play(
+            theta_tracker.animate.increment_value(80),
+            ang_lbl.animate.set_color(RED), 
+            ang_theta.animate.set_color(RED),
+            ang.animate.set_stroke(color=RED, width=3),
+            run_time=2
+        )
+        
         self.wait(2)
         
 
@@ -1346,6 +1449,107 @@ class test_x(Scene):
 
         # manim -sqk test2.py test_x
 
+
+
+class test_y(Scene):
+    def construct(self):
+
+        theta_tracker = ValueTracker(.01)
+        theta_1=0.01
+        
+
+        vect_1=Arrow(start=LEFT,end=RIGHT,max_tip_length_to_length_ratio=0.125, buff=0).set_color(PURE_RED)
+        vect_1_moving=Arrow(start=LEFT,end=RIGHT,max_tip_length_to_length_ratio=0.125, buff=0).set_color(PURE_RED).set_opacity(0.85)
+        vect_1_ref=vect_1_moving.copy()
+        vect_1_moving.rotate(
+            theta_tracker.get_value() * DEGREES, about_point=vect_1_moving.get_start()
+        )
+
+        ang=Angle(vect_1, vect_1_moving, radius=1, other_angle=False).set_stroke(color=PURE_GREEN, width=3).set_z_index(-1)
+
+        ang_theta=DecimalNumber(unit="^o").scale(.5).move_to(RIGHT+UP)
+
+        ang_theta_cos=Variable(np.cos(theta_1*DEGREES),MathTex(r"cos (\theta)")).move_to(RIGHT+2*UP).scale(0.75)
+
+
+
+        vect_1_moving.add_updater(
+            lambda x: x.become(vect_1_ref.copy()).rotate(
+                theta_tracker.get_value() * DEGREES, about_point=vect_1_moving.get_start()
+            )
+        )
+        
+
+        ang.add_updater(
+            lambda x: x.become(Angle(vect_1, vect_1_moving, radius=1, other_angle=False).set_stroke(color=PURE_GREEN, width=3).set_z_index(-1))
+        )
+
+
+        ang_theta.add_updater( lambda x: x.set_value(theta_tracker.get_value()).move_to(RIGHT+UP))
+        ang_theta_cos.add_updater(
+            lambda x: x.tracker.set_value(
+                np.cos(theta_1.tracker.get_value())
+            )
+        )
+        
+
+
+
+
+
+
+        self.play(
+            Create(vect_1),
+            Write(vect_1_moving),
+        )
+        self.play(
+            theta_tracker.animate.set_value(40),
+            theta_1.tracker.animate.set_value(40)
+        )
+        self.wait()
+        self.play(
+            Create(ang)
+        )
+        self.play(
+            Write(ang_theta),
+            Write(ang_theta_cos)
+        )
+        self.wait(2)
+    
+        self.play(
+            theta_tracker.animate.increment_value(80),
+            ang_theta.animate.set_color(RED),
+            ang.animate.set_stroke(color=RED, width=3),
+            theta_1.tracker.animate.set_value(120),
+            run_time=2
+        )
+        
+        self.wait(2)
+        
+
+        # manim -pqh test2.py test_y
+
+        # manim -sqk test2.py test_y
+
+
+class VariableExample(Scene):
+            def construct(self):
+                start = .01                      
+
+                x_var = Variable(start, MathTex(r"\theta"), num_decimal_places=2)
+                sqr_var = Variable(np.cos(start*DEGREES), MathTex("u","\cdot",r"cos(\theta)"), num_decimal_places=2)
+                sqr_var_lbl=MathTex("\cdot","u").arrange(RIGHT, buff=0.2)
+                sqr_var_grp=VGroup(sqr_var,sqr_var_lbl).arrange(1.9*RIGHT+.25*DOWN, buff=0.75)
+                Group(x_var, sqr_var).arrange(DOWN)
+
+                sqr_var.add_updater(lambda v: v.tracker.set_value(np.cos(x_var.tracker.get_value()*DEGREES)))  #very important !!! step
+
+                self.add(x_var, sqr_var_grp)
+                self.play(x_var.tracker.animate.set_value(180), run_time=6, rate_func=linear)
+                self.wait(0.1)
+
+
+                # manim -pqh test2.py VariableExample
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"

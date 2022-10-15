@@ -52,6 +52,7 @@ class Scene1(Scene):
         # TRACKER
 
         x=ValueTracker(-2)
+        theta_tracker_1=40
 
         # OBJECT REGION
 
@@ -174,9 +175,36 @@ class Scene1(Scene):
         vect_1.set_z_index(4)
         vect_1_lbl=MathTex("u").scale(.85).next_to(vect_1,0.5*DOWN).set_color(PURE_RED)
 
-
+        
         vect_2=Arrow(start=line_1.n2p(-2),end=line_1.n2p(-1),max_tip_length_to_length_ratio=0.125, buff=0).set_color(REANLEA_MAGENTA).set_opacity(0.85)
         vect_2.set_z_index(3)
+
+
+
+
+        vect_1_moving=Arrow(start=line_1.n2p(-2),end=line_1.n2p(-1),max_tip_length_to_length_ratio=0.125, buff=0).set_color(REANLEA_SLATE_BLUE)
+        vect_1_ref=vect_1_moving.copy()
+        vect_1_moving.rotate(
+            theta_tracker_1.get_value() * DEGREES, about_point=vect_1_moving.get_start()
+        )
+
+        ang=Angle(vect_1, vect_1_moving, radius=0.5, other_angle=False).set_stroke(color=PURE_GREEN, width=3).set_z_index(-1)
+        ang_lbl = MathTex(r"\theta =").move_to(
+            Angle(
+                vect_1, vect_1_moving, radius=.85 + 3 * SMALL_BUFF, other_angle=False
+            ).point_from_proportion(.5)                         # Gets the point at a proportion along the path of the VMobject.
+        ).scale(.5).set_color(PURE_GREEN)
+
+        ang_theta=DecimalNumber(unit="^o").scale(.5).set_color(PURE_GREEN)
+
+        ang_theta_cos_demo=Variable(theta_tracker_1, MathTex(r"\theta"), num_decimal_places=2)
+        ang_theta_cos=Variable(np.cos(theta_tracker_1*DEGREES), MathTex(r"cos(\theta)"), num_decimal_places=3)
+
+        projec_line=always_redraw(
+            lambda : DashedLine(start=vect_1_moving.get_end(), end=np.array((vect_1_moving.get_end()[0],line_1.n2p(0)[1],0))).set_stroke(color=REANLEA_AQUA_GREEN, width=1)
+        )
+
+
 
 
 
@@ -210,6 +238,34 @@ class Scene1(Scene):
         # UPDATER REGION
 
         dot_1.add_updater(lambda z : z.move_to(line_1.n2p(x.get_value())))
+
+
+        vect_1_moving.add_updater(
+            lambda x: x.become(vect_1_ref.copy()).rotate(
+                theta_tracker_1.get_value() * DEGREES, about_point=vect_1_moving.get_start()
+            )
+        )
+        
+
+        ang.add_updater(
+            lambda x: x.become(Angle(vect_1, vect_1_moving, radius=0.5, other_angle=False).set_stroke(color=PURE_GREEN, width=3).set_z_index(-1))
+        )
+
+
+        ang_lbl.add_updater(
+            lambda x: x.move_to(
+                Angle(
+                    vect_1, vect_1_moving, radius=0.85 + 13*SMALL_BUFF, other_angle=False
+                ).point_from_proportion(0.5),
+                aligned_edge=RIGHT
+            )
+        )
+
+        ang_theta.add_updater( lambda x: x.set_value(theta_tracker_1.get_value()).next_to(ang_lbl, RIGHT))
+
+        ang_theta_cos.add_updater(lambda v: v.tracker.set_value(np.cos(ang_theta_cos_demo.tracker.get_value()*DEGREES)))
+
+
 
         # GROUP REGION
 
@@ -453,7 +509,59 @@ class Scene1(Scene):
         )
         self.wait()
         self.play(Write(vect_1_lbl))
-        self.wait(4)
+        self.wait()
+
+
+        self.play(Write(vect_1_moving))
+        self.play(theta_tracker_1.animate.set_value(40))
+        self.wait()
+        self.play(
+            Create(ang)
+        )
+        self.play(
+            Write(ang_lbl),
+            Write(ang_theta),
+            lag_ratio=0.5
+        )
+        self.wait(1.25)
+        bra_1=always_redraw(
+            lambda : BraceBetweenPoints(
+                point_1=vect_1.get_start(),
+                point_2=np.array((vect_1_moving.get_end()[0],0,0)),
+                direction=DOWN,
+                color=REANLEA_SLATE_BLUE
+            ).set_stroke(width=0.1).set_z_index(5)
+        )
+        self.play(
+            Write(projec_line),
+            Create(bra_1),
+            vect_1_lbl.animate(run_time=.5).shift(.5*DOWN)
+        )
+        self.wait(2)
+        self.play(
+            Write(ang_theta_cos)
+        )
+        self.play(
+            theta_tracker_1.animate.increment_value(90),
+            ang.animate(run_time=5/3).set_stroke(color=REANLEA_YELLOW, width=3),
+            ang_lbl.animate(run_time=5/3).set_color(REANLEA_YELLOW),
+            ang_theta.animate(run_time=5/3).set_color(REANLEA_YELLOW),
+            ang_theta_cos_demo.tracker.animate.set_value(130),
+            run_time=3
+        )
+        self.wait()
+        self.play(
+            theta_tracker_1.animate(rate_functions=smooth).increment_value(50),
+            ang_theta_cos_demo.tracker.animate.set_value(180),
+            run_time=3
+        )
+        self.wait()
+        
+        '''self.play(
+            Uncreate(projec_line),
+            Uncreate(bra_1)
+        )'''
+        self.wait(2)
 
         
 

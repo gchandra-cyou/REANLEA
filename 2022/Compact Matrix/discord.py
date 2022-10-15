@@ -2376,7 +2376,90 @@ class BinomialDistributionSimulation(Scene):
 
 
 
+class Plot_Stat(Scene):
+    def construct(self):
+        text = Tex(r"number of throws until all in [1,2,3] appeared once").to_edge(UP)
+        self.add(text)
+        stats = [.001 for i in range(3,31)]
+        names = ["${}$".format(i) for i in range(3,30)]+["$30+$"]
 
+        stats = [0 for i in range(3,31)]      
+        
+        num = DecimalNumber(0, unit=r"\text{~throws}", num_decimal_places=0).to_edge(DOWN)
+        self.add(num)
+
+        throws=[np.random.randint(low=1,high=4) for i in range(30)]
+        try:
+            first = max(throws.index(1),throws.index(2),throws.index(3))+1
+        except:
+            first = 30
+        stats[first-3] += 1
+
+        barchart = BarChart(stats, bar_names=names)
+        self.add(barchart)
+
+        num.increment_value(1)
+
+        self.wait(1)
+
+        for k in range(99):
+            throws=[np.random.randint(low=1,high=4) for i in range(30)]
+            try:
+                first = max(throws.index(1),throws.index(2),throws.index(3))+1
+            except:
+                first = 30
+            stats[first-3] += 1
+
+            self.remove(barchart)
+            barchart = BarChart(stats, bar_names=names)
+            self.add(barchart)
+
+            num.increment_value(1)
+
+            self.wait(1/10)
+
+        barlabels = barchart.get_bar_labels(font_size=24)
+        self.play(Create(barlabels),run_time=4)
+ 
+        self.wait(10)
+
+
+        # manim -pqh discord.py Plot_Stat
+
+
+
+class Tikz_Node_Coloring(Scene):
+    def construct(self):
+        template = TexTemplate()
+        template.add_to_preamble(r"\usepackage{tikz}")
+        template.add_to_preamble(r"\usetikzlibrary{arrows}")
+        
+        
+        tex = Tex(
+            r"""[->,>=stealth',node distance=3cm]
+            \node[circle,draw=black,font=\sffamily\Large\bfseries] (1) {\textcolor{black}{a}};
+            \node[circle,draw=black,text=black,font=\sffamily\Large\bfseries] (2) [right of=1] {b};
+            \path[every node/.style={color=green,font=\sffamily\small}] (2) edge[bend left=90] node [left] {} (1);""",
+            tex_template=template,
+            tex_environment="tikzpicture",
+            fill_opacity=0,
+            stroke_width=2,
+            stroke_opacity=1,
+            font_size=30,
+        )
+        
+        self.play(Create(tex), run_time = 5)
+        
+        for i, obj in enumerate(tex):
+            for j, mobj in enumerate(obj):
+                color = random_color()
+                
+                self.add(MathTex(r"{}".format(j)).next_to(mobj,UP).set_color(color))
+                mobj.set_color(color)
+                self.wait()
+        self.wait()  
+
+        # manim -pqh discord.py Tikz_Node_Coloring
 
 ###################################################################################################################
 
