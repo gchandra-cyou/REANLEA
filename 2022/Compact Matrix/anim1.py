@@ -241,6 +241,17 @@ class Scene1(Scene):
         bez_arr_1=bend_bezier_arrow().flip(DOWN).move_to(2.5*LEFT + 0.1*UP).flip(LEFT).rotate(45*DEGREES).set_z_index(-1)
 
 
+        sgn_pos_1=MathTex("+").scale(.75).set_color(PURE_GREEN).move_to(6.5*RIGHT)
+        sgn_pos_2=Circle(radius=0.2, color=PURE_GREEN).move_to(sgn_pos_1.get_center()).set_stroke(width= 1)
+        sgn_pos=VGroup(sgn_pos_1,sgn_pos_2)
+
+        sgn_neg_1=MathTex("-").scale(.75).set_color(REANLEA_YELLOW).move_to(6.5*LEFT)
+        sgn_neg_2=Circle(radius=0.2, color=REANLEA_YELLOW).move_to(sgn_neg_1.get_center()).set_stroke(width= 1)
+        sgn_neg=VGroup(sgn_neg_1,sgn_neg_2)
+
+        sgn_grp=VGroup(sgn_pos,sgn_neg)
+
+
 
         # TEXT REGION 
 
@@ -509,18 +520,6 @@ class Scene1(Scene):
             Wiggle(zero_tick)
         )
 
-        sgn_pos_1=MathTex("+").scale(.75).set_color(PURE_GREEN).move_to(6.5*RIGHT)
-        sgn_pos_2=Circle(radius=0.2, color=PURE_GREEN).move_to(sgn_pos_1.get_center()).set_stroke(width= 1)
-        sgn_pos=VGroup(sgn_pos_1,sgn_pos_2)
-
-        sgn_neg_1=MathTex("-").scale(.75).set_color(REANLEA_YELLOW).move_to(6.5*LEFT)
-        sgn_neg_2=Circle(radius=0.2, color=REANLEA_YELLOW).move_to(sgn_neg_1.get_center()).set_stroke(width= 1)
-        sgn_neg=VGroup(sgn_neg_1,sgn_neg_2)
-
-        self.play(
-            Write(sgn_pos),
-            Write(sgn_neg)
-        )
         self.wait()
         self.play(
             vect_1.animate.move_to(line_1.n2p(-2.5))
@@ -571,6 +570,7 @@ class Scene1(Scene):
             Uncreate(d_line_3.reverse_direction()),
             Create(sur_ang_theta_cos_grp)
         )
+        self.wait(2)
         self.play(
             theta_tracker_1.animate.increment_value(90),
             ang.animate(run_time=5/3).set_stroke(color=REANLEA_YELLOW, width=3),
@@ -593,6 +593,9 @@ class Scene1(Scene):
             Uncreate(bra_1)
         )'''
         self.wait(2)
+        self.play(
+            Uncreate(projec_line)
+        )
 
         
 
@@ -602,6 +605,8 @@ class Scene1(Scene):
         # manim -pql anim1.py Scene1
 
         # manim -sqk anim1.py Scene1
+
+        # manim -sql anim1.py Scene1
 
 
 

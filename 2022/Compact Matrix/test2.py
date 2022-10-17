@@ -1559,6 +1559,33 @@ class VariableExample(Scene):
                 # manim -pqh test2.py VariableExample
 
                 # manim -sqk test2.py VariableExample
+
+
+class bezier_test(Scene):
+    def construct(self):
+        glowing_circle=get_glowing_surround_circle(circle=Circle(radius=0.2))
+        stripe=get_stripe()
+        surround_bezier=get_surround_bezier(text=Text("qwerty"))
+        arrow_cubic_bezier_up=ArrowCubicBezierUp()
+        arrow_quadric_bezier_down=ArrowQuadricBezierDown(text=Text("qwerty"))
+        under_line_bez_arrow=under_line_bezier_arrow()
+        bend_bez_arrow=bend_bezier_arrow()
+        
+        grp=VGroup(glowing_circle,stripe,surround_bezier,arrow_cubic_bezier_up,arrow_quadric_bezier_down,under_line_bez_arrow,bend_bez_arrow)
+        grp.arrange(RIGHT, buff=0.25).scale(0.5)
+
+        self.play(
+            Create(grp)
+        )
+        self.wait(2)
+
+        # manim -pqh test2.py bezier_test
+
+        # manim -sqk test2.py bezier_test
+
+
+
+
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"
