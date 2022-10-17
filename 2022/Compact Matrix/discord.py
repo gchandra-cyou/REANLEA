@@ -2461,6 +2461,179 @@ class Tikz_Node_Coloring(Scene):
 
         # manim -pqh discord.py Tikz_Node_Coloring
 
+
+
+
+
+
+class ArbitraryShape(Scene):
+    def construct(self):
+        grid = NumberPlane(axis_config={"include_tip":True},
+            background_line_style={
+                "stroke_color": BLUE,
+                "stroke_width": 0,
+                "stroke_opacity": 0
+            }
+        ).set_opacity(0)
+        graph1 = grid.plot_polar_graph(lambda theta: 1, [0, 2 * PI], color=YELLOW)
+        r = lambda theta: 1 + 0.2 * np.sin(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
+        graph2 = grid.plot_polar_graph(r, [0, 2 * PI], color=YELLOW)
+        self.add(graph1)
+
+        dots = VGroup(*[
+            Dot(grid.polar_to_point(1, i*PI/5))
+            for i in range(1,11)
+        ])
+
+        self.play(*map(GrowFromCenter,dots))
+
+        self.play(
+            Transform(graph1, graph2),
+            *[
+                dot.animate.move_to(grid.polar_to_point(r(i*PI/5), i*PI/5))
+                for i,dot in zip(range(1,11), dots)
+            ],
+            run_time=6
+        )
+        self.wait()
+
+
+        # manim -pqh discord.py ArbitraryShape
+
+
+
+class Fibonacci(Scene):
+    def construct(self):
+        fibos = [1,1] 
+        for i in range(20):
+            num1 = DecimalNumber(fibos[-2], num_decimal_places=0)
+            num2 = DecimalNumber(fibos[-1], num_decimal_places=0)
+            result = DecimalNumber(fibos[-2]+fibos[-1], num_decimal_places=0)
+            result.to_edge(RIGHT)
+            num2.next_to(result,LEFT)
+            num1.next_to(num2,LEFT)
+            question = MathTex(r"?").move_to(result)
+            resSq = SurroundingRectangle(result).set_color(BLUE)
+            num1Sq = SurroundingRectangle(num1).set_color(YELLOW)                 
+            num2Sq = SurroundingRectangle(num2).set_color(YELLOW)
+            self.add(num1,num1Sq,num2,num2Sq,question,resSq)
+
+            older = VGroup()
+            if len(fibos)>2:
+                for j in range(len(fibos)-2):
+                    older.add(
+                        MathTex(r"{}".format(fibos[-3-j]))
+                    )
+                older.arrange(direction=LEFT)
+                older.next_to(num1Sq,LEFT)
+            self.add(older)
+            fibos.append(result.get_value())
+            self.wait(1)
+            self.play(ReplacementTransform(question,result))
+            self.wait(1)
+            self.remove(older,num1,num1Sq,num2,num2Sq,result,resSq)
+
+
+            # manim -pqh discord.py Fibonacci
+
+
+
+class Rounded_Corner_Animation(Scene):
+    def construct(self):
+        radius = ValueTracker(0)
+        plane = NumberPlane()
+        self.add(plane)
+        polygram1 = Polygram([[0, 0, 0], [3, 2, 0], [0, 3, 0], [2, -1, 0]]
+                             ).set_fill(WHITE, opacity=0.8) 
+        origpoly = polygram1.copy()
+
+        self.play(Create(polygram1))
+                   
+        def polyUpdater(obj):
+            obj.become(origpoly.copy().round_corners(radius=radius.get_value()))           
+        polygram1.add_updater(polyUpdater)    
+
+        self.play(radius.animate.set_value(0.5), runtime=3)
+
+
+
+        # manim -pqh discord.py Rounded_Corner_Animation
+
+
+
+
+class test_y(Scene):
+    def construct(self):
+
+        theta_tracker = ValueTracker(.01)
+
+        vect_1=Arrow(start=LEFT,end=RIGHT,max_tip_length_to_length_ratio=0.125, buff=0).set_color(PURE_RED)
+        vect_1_moving=Arrow(start=LEFT,end=RIGHT,max_tip_length_to_length_ratio=0.125, buff=0).set_color(PURE_RED).set_opacity(0.85)
+        vect_1_ref=vect_1_moving.copy()
+        vect_1_moving.rotate(
+            theta_tracker.get_value() * DEGREES, about_point=vect_1_moving.get_start()
+        )
+
+        ang=Angle(vect_1, vect_1_moving, radius=1, other_angle=False).set_stroke(color=PURE_GREEN, width=3).set_z_index(-1)
+
+        ang_theta=DecimalNumber(unit="^o").scale(.5).move_to(RIGHT+UP)
+
+
+
+        vect_1_moving.add_updater(
+            lambda x: x.become(vect_1_ref.copy()).rotate(
+                theta_tracker.get_value() * DEGREES, about_point=vect_1_moving.get_start()
+            )
+        )
+        
+
+        ang.add_updater(
+            lambda x: x.become(Angle(vect_1, vect_1_moving, radius=1, other_angle=False).set_stroke(color=PURE_GREEN, width=3).set_z_index(-1))
+        )
+
+
+        ang_theta.add_updater( lambda x: x.set_value(theta_tracker.get_value()).move_to(RIGHT+UP))
+        
+
+
+
+
+
+
+        self.play(
+            Create(vect_1),
+            Write(vect_1_moving),
+        )
+        self.play(theta_tracker.animate.set_value(40))
+        self.wait()
+        self.play(
+            Create(ang)
+        )
+        self.play(
+            Write(ang_theta)
+        )
+        self.wait(2)
+    
+        self.play(
+            theta_tracker.animate.increment_value(80),
+            ang_theta.animate.set_color(RED),
+            ang.animate.set_stroke(color=RED, width=3),
+            run_time=2
+        )
+        
+        self.wait(2)
+
+
+        # manim -pqh discord.py test_y
+
+
+###################################################################################################################
+
+# NOTE :-
+'''
+Q1. How can I configure the output video format to be square or vertical? Can it be done directly with manim?
+Ans: python3 -m manim -pql -r 1080,1920 my_file.py
+'''
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"
