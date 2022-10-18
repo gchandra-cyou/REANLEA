@@ -419,3 +419,26 @@ def create_glow(vmobject, rad=1, col=YELLOW):
     return glow_group
 
 
+def get_mirror(
+    factor=0.25, buff_min=0, buff_max=5, color=REANLEA_AQUA, n=25
+):   
+    scale_by=(buff_max-buff_min)
+
+    line=Line(ORIGIN,RIGHT).scale(factor).rotate(PI/4).set_stroke(width=1).shift(LEFT)
+    
+    d_line=DashedLine(start=ORIGIN, end=RIGHT, stroke_width=1.5, dashed_ratio=0.75, dash_length=0.05).scale(scale_by*1.025)
+    d_line.set_color_by_gradient(REANLEA_AQUA_GREEN,REANLEA_SLATE_BLUE_LIGHTER,REANLEA_VIOLET_LIGHTER)
+    
+    stripe=VGroup(
+        *[
+            line.copy().shift(DOWN*interpolate(buff_min,buff_max,b))
+            for b in np.linspace(0,1,n)
+        ]
+    ).rotate(PI/2).move_to(0.575*RIGHT+0.15*DOWN)
+    stripe.set_color_by_gradient(REANLEA_AQUA_GREEN,REANLEA_SLATE_BLUE_LIGHTER,REANLEA_VIOLET_LIGHTER)
+    
+
+    mirror=VGroup(d_line,stripe)
+
+    
+    return mirror.rotate(-PI/2)

@@ -1589,7 +1589,19 @@ class bezier_test(Scene):
         # manim -sqk test2.py bezier_test
 
 
+class test_mirror(Scene):
+    def construct(self):
+        mirror=get_mirror()
 
+        self.play(
+            Write(mirror)
+        )
+
+        self.wait(2)
+
+        # manim -pqh test2.py test_mirror
+
+        # manim -sqk test2.py test_mirror
 
 ###################################################################################################################
 

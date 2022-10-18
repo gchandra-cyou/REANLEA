@@ -761,11 +761,21 @@ class Scene2(Scene):
         d_line_1=DashedLine(start=2*LEFT, end=2*RIGHT, stroke_width=2).shift(line_1.n2p(-2)).rotate(PI/2)
         d_line_1.set_color_by_gradient(REANLEA_AQUA_GREEN,REANLEA_MAGENTA_LIGHTER,REANLEA_SLATE_BLUE_LIGHTER,REANLEA_TXT_COL_LIGHTER,REANLEA_VIOLET_LIGHTER).set_z_index(-5)
 
+        mirror_1=get_mirror().move_to(DOWN + 4.12*LEFT)#.shift(line_1.n2p(-2.335))
+
+        bend_bez_arrow=bend_bezier_arrow().rotate(-10*DEGREES).scale(0.75).set_color(REANLEA_BLUE_SKY).move_to(UP + 2.75*LEFT).flip(UP)
+
         
+        # LABEL REGION
 
-
+        vect_1_mir_lbl=MathTex("=",r"-(-\vec{1})").scale(.85).set_color(PURE_RED).move_to(line_1.n2p(-1.15)+ 1.3*DOWN)
         
         # TEXT REGION 
+
+        with RegisterFont("Fuzzy Bubbles") as fonts:
+            txt_mir=Text("MIRROR", font=fonts[0]).scale(0.4)
+            txt_mir.set_color_by_gradient(REANLEA_YELLOW_LIGHTER).shift(3*RIGHT)
+        txt_mir.move_to(1.75*UP + 1.9*LEFT)
 
 
         # EQUATION REGION
@@ -784,16 +794,31 @@ class Scene2(Scene):
 
 
         # PLAY REGION
+        self.wait(1.5)
 
         self.play(
-            Write(d_line_1)
+            Write(mirror_1)
+        )
+        self.wait()
+        self.play(
+            Create(bend_bez_arrow)
+        )
+        self.play(
+            Write(txt_mir)
+        )
+        self.wait(2)
+        self.play(
+            mirror_1.animate.flip(DOWN).move_to(DOWN + 3.88*LEFT),
+        )
+        self.play(
+            Write(vect_1_mir_lbl)
         )
 
 
 
 
 
-        self.wait(4)
+        self.wait(2)
 
 
 
