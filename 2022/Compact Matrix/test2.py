@@ -1550,10 +1550,15 @@ class VariableExample(Scene):
                 #Group(x_var, sqr_var).arrange(DOWN)
 
                 sqr_var.add_updater(lambda v: v.tracker.set_value(np.cos(x_var.tracker.get_value()*DEGREES)))  #very important !!! step
-
+            
                 self.add(sqr_var_grp)
                 self.play(x_var.tracker.animate.set_value(180), run_time=2, rate_func=linear)
                 self.wait(0.1)
+
+
+                txt_2_vect=MathTex(r"\vec{1}").move_to(2*LEFT+2*UP)
+
+                self.play(Write(txt_2_vect))
 
 
                 # manim -pqh test2.py VariableExample
@@ -1569,7 +1574,7 @@ class bezier_test(Scene):
         arrow_cubic_bezier_up=ArrowCubicBezierUp()
         arrow_quadric_bezier_down=ArrowQuadricBezierDown(text=Text("qwerty"))
         under_line_bez_arrow=under_line_bezier_arrow()
-        bend_bez_arrow=bend_bezier_arrow()
+        bend_bez_arrow=bend_bezier_arrow().rotate(-30*DEGREES).scale(0.75).set_color(REANLEA_TXT_COL)
         
         grp=VGroup(glowing_circle,stripe,surround_bezier,arrow_cubic_bezier_up,arrow_quadric_bezier_down,under_line_bez_arrow,bend_bez_arrow)
         grp.arrange(RIGHT, buff=0.25).scale(0.5)
@@ -1589,3 +1594,6 @@ class bezier_test(Scene):
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"
+
+
+

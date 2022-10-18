@@ -182,6 +182,7 @@ class Scene1(Scene):
         vect_1=Arrow(start=line_1.n2p(-2),end=line_1.n2p(-1),max_tip_length_to_length_ratio=0.125, buff=0).set_color(PURE_RED).set_opacity(1)
         vect_1.set_z_index(4)
         vect_1_lbl=MathTex("u").scale(.85).next_to(vect_1,0.5*DOWN).set_color(PURE_RED)
+        vect_1_lbl_vec=MathTex(r"\vec{1}").scale(.85).set_color(PURE_RED).move_to(line_1.n2p(-1.5)+ 0.85*DOWN)
 
         
         vect_2=Arrow(start=line_1.n2p(-2),end=line_1.n2p(-1),max_tip_length_to_length_ratio=0.125, buff=0).set_color(REANLEA_MAGENTA).set_opacity(0.85)
@@ -190,7 +191,7 @@ class Scene1(Scene):
 
 
 
-        vect_1_moving=Arrow(start=line_1.n2p(-2),end=line_1.n2p(-1),max_tip_length_to_length_ratio=0.125, buff=0).set_color(REANLEA_SLATE_BLUE)
+        vect_1_moving=Arrow(start=line_1.n2p(-2),end=line_1.n2p(-1),max_tip_length_to_length_ratio=0.125, buff=0).set_color(REANLEA_SLATE_BLUE).set_z_index(3)
         vect_1_ref=vect_1_moving.copy()
         vect_1_moving.rotate(
             theta_tracker_1.get_value() * DEGREES, about_point=vect_1_moving.get_start()
@@ -251,6 +252,8 @@ class Scene1(Scene):
 
         sgn_grp=VGroup(sgn_pos,sgn_neg)
 
+        bez_arr_2=bend_bezier_arrow().rotate(-30*DEGREES).scale(0.45).set_color(REANLEA_TXT_COL).move_to(4*RIGHT+0.425*UP)
+
 
 
         # TEXT REGION 
@@ -261,6 +264,13 @@ class Scene1(Scene):
             txt_1=Text("unit vector", font=fonts[0]).scale(0.4)
             txt_1.set_color_by_gradient(REANLEA_TXT_COL).shift(3*RIGHT)
         txt_1.move_to(.75*LEFT+ 0.2*UP).rotate(20*DEGREES)
+
+        txt_2=MathTex("-u").set_color(REANLEA_SLATE_BLUE).move_to(4.7*RIGHT + 0.15*UP).scale(0.85)
+
+        txt_2_vect=MathTex(r"- \vec{1}").scale(0.85).set_color(REANLEA_SLATE_BLUE).move_to(line_1.n2p(-2.55)+ 0.85*DOWN) 
+
+
+
 
         # EQUATION REGION
 
@@ -545,6 +555,8 @@ class Scene1(Scene):
             lag_ratio=0.5
         )
         self.wait(1.25)
+
+
         bra_1=always_redraw(
             lambda : BraceBetweenPoints(
                 point_1=vect_1.get_start(),
@@ -553,6 +565,8 @@ class Scene1(Scene):
                 color=REANLEA_SLATE_BLUE
             ).set_stroke(width=0.1).set_z_index(5)
         )
+
+
         self.play(
             Write(projec_line),
             Create(bra_1),
@@ -573,7 +587,6 @@ class Scene1(Scene):
         self.wait(2)
         self.play(
             theta_tracker_1.animate.increment_value(90),
-            ang.animate(run_time=5/3).set_stroke(color=REANLEA_YELLOW, width=3),
             ang_lbl.animate(run_time=5/3).set_color(REANLEA_YELLOW),
             ang_theta.animate(run_time=5/3).set_color(REANLEA_YELLOW),
             ang_theta_cos_demo.tracker.animate.set_value(130),
@@ -586,16 +599,45 @@ class Scene1(Scene):
             ang_theta_cos_demo.tracker.animate.set_value(180),
             run_time=3
         )
-        self.wait()
-        
-        '''self.play(
-            Uncreate(projec_line),
-            Uncreate(bra_1)
-        )'''
         self.wait(2)
         self.play(
             Uncreate(projec_line)
         )
+        self.play(
+            Create(bez_arr_2),
+        )
+        self.play(
+            Create(txt_2),
+        )
+        self.wait()
+        self.play(
+            Uncreate(bez_arr_2.reverse_direction())
+        )
+        self.play(
+            txt_2.animate.move_to(line_1.n2p(-2.55)+ 0.85*DOWN)
+        )
+        self.wait(2.75)
+
+        self.play(
+            Uncreate(bra_1),
+            Uncreate(ang_theta_cos_grp),
+            Uncreate(sur_ang_theta_cos_grp),
+            Uncreate(ang),
+            Uncreate(ang_lbl),
+            Uncreate(ang_theta),
+            Uncreate(eq_1_grp)
+        )
+        self.wait(2)
+
+        self.play(
+            Transform(vect_1_lbl,vect_1_lbl_vec),
+            Transform(txt_2,txt_2_vect)
+        )
+
+
+
+
+        self.wait(4)
 
         
 
@@ -607,6 +649,164 @@ class Scene1(Scene):
         # manim -sqk anim1.py Scene1
 
         # manim -sql anim1.py Scene1
+
+
+
+###################################################################################################################
+
+
+class Scene2(Scene):
+    def construct(self):
+        
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+
+
+
+
+
+        # PREVIOUS SCENE REGION
+
+        line_1= NumberLine(
+            x_range=[-8, 8, 1],
+            length=32,
+            include_ticks=False,
+        ).set_color(REANLEA_BLUE_LAVENDER).set_stroke(width=4).move_to(DOWN)
+
+        line_1_center=line_1.n2p(-2)
+
+        zero_tick = VGroup(
+            Line(0.3 * UP, 0.3 * DOWN, stroke_width=2.0, color=REANLEA_VIOLET_LIGHTER),
+            MathTex("0"),
+        )
+        zero_tick[0].move_to(line_1.n2p(-2))
+        zero_tick[1].next_to(zero_tick[0], DOWN)
+        zero_tick.set_z_index(3)
+
+        one_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("1").scale(.5),
+        )
+        one_tick[0].move_to(line_1.n2p(-1))
+        one_tick[1].next_to(one_tick[0], DOWN)
+        one_tick.set_z_index(3)
+
+        minus_one_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_YELLOW),
+            MathTex("-1").scale(.5),
+        )
+        minus_one_tick[0].move_to(line_1.n2p(-3))
+        minus_one_tick[1].next_to(minus_one_tick[0], DOWN)
+        minus_one_tick.set_z_index(3)
+
+
+        two_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("2").scale(.5),
+        )
+        two_tick[0].move_to(line_1.n2p(0))
+        two_tick[1].next_to(two_tick[0], DOWN)
+        two_tick.set_z_index(3)
+
+        three_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("3").scale(.5),
+        )
+        three_tick[0].move_to(line_1.n2p(1))
+        three_tick[1].next_to(three_tick[0], DOWN)
+        three_tick.set_z_index(3)
+
+        four_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("4").scale(.5),
+        )
+        four_tick[0].move_to(line_1.n2p(2))
+        four_tick[1].next_to(four_tick[0], DOWN)
+        four_tick.set_z_index(3)
+
+        five_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("5").scale(.5),
+        )
+        five_tick[0].move_to(line_1.n2p(3))
+        five_tick[1].next_to(five_tick[0], DOWN)
+        five_tick.set_z_index(3)
+
+        so_on_txt_symbol=Text("...").move_to(0.9*DOWN+6.9*RIGHT).scale(0.5).set_color(REANLEA_GREEN)
+
+        line_grp=VGroup(line_1, minus_one_tick, zero_tick,one_tick,two_tick,three_tick,four_tick,five_tick,so_on_txt_symbol)
+    
+
+
+
+        vect_1=Arrow(start=line_1.n2p(-2),end=line_1.n2p(-1),max_tip_length_to_length_ratio=0.125, buff=0).set_color(PURE_RED).set_opacity(1).set_z_index(4)
+        vect_1_lbl=MathTex(r"\vec{1}").scale(.85).set_color(PURE_RED).move_to(line_1.n2p(-1.5)+ 0.85*DOWN)
+        vect_1_moving=Arrow(start=line_1.n2p(-2),end=line_1.n2p(-1),max_tip_length_to_length_ratio=0.125, buff=0).set_color(REANLEA_SLATE_BLUE).set_z_index(3).rotate(180* DEGREES, about_point=line_1.n2p(-2))
+        vect_1_moving_lbl=MathTex(r"- \vec{1}").scale(.85).set_color(REANLEA_SLATE_BLUE).move_to(line_1.n2p(-2.55)+ 0.85*DOWN)
+
+        
+
+        vect_grp=VGroup(vect_1,vect_1_lbl,vect_1_moving,vect_1_moving_lbl)
+
+        self.add(line_grp, vect_grp)
+
+
+
+
+
+        # MOBJECT REGION
+        
+        d_line_1=DashedLine(start=2*LEFT, end=2*RIGHT, stroke_width=2).shift(line_1.n2p(-2)).rotate(PI/2)
+        d_line_1.set_color_by_gradient(REANLEA_AQUA_GREEN,REANLEA_MAGENTA_LIGHTER,REANLEA_SLATE_BLUE_LIGHTER,REANLEA_TXT_COL_LIGHTER,REANLEA_VIOLET_LIGHTER).set_z_index(-5)
+
+        
+
+
+        
+        # TEXT REGION 
+
+
+        # EQUATION REGION
+
+        
+        
+
+
+
+
+
+        # GROUP REGION
+
+        
+        
+
+
+        # PLAY REGION
+
+        self.play(
+            Write(d_line_1)
+        )
+
+
+
+
+
+        self.wait(4)
+
+
+
+
+        # manim -pqh anim1.py Scene2
+
+        # manim -pql anim1.py Scene2
+
+        # manim -sqk anim1.py Scene2
+
+        # manim -sql anim1.py Scene2
+
+
 
 
 
