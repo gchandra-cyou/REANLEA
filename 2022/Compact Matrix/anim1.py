@@ -769,8 +769,13 @@ class Scene2(Scene):
         bend_bez_arrow=bend_bezier_arrow().rotate(-10*DEGREES).scale(0.75).set_color(REANLEA_BLUE_SKY).move_to(UP + 2.75*LEFT).flip(UP)
         
         indicate_line_1=Line(line_1.n2p(-2),line_1.get_end()).set_color(REANLEA_YELLOW_CREAM)
-        indicate_line_1_hlgt=line_highlight(buff_max=indicate_line_1.get_length(), factor=.15, opacity_factor=.35, color=PURE_GREEN).move_to(indicate_line_1.get_center())
+        indicate_line_1_hlgt=line_highlight(buff_max=indicate_line_1.get_length(), factor=.15, opacity_factor=.25, color=PURE_GREEN).move_to(indicate_line_1.get_center())
         
+
+        dot_1=Dot(radius=0.1, color=REANLEA_MAGENTA).move_to(line_1.n2p(-2)).set_sheen(-0.4,DOWN).set_z_index(6)
+
+        
+
         # LABEL REGION
 
         vect_1_mir_lbl=MathTex(r"-(-\vec{1})").scale(.85).set_color(PURE_RED).move_to(line_1.n2p(-1.5)+ 1.3*DOWN)
@@ -828,19 +833,10 @@ class Scene2(Scene):
         self.wait(2)
 
         self.play(
-            FadeIn(indicate_line_1_hlgt)
+            FadeIn(indicate_line_1_hlgt),
+            Create(dot_1)
         )
-        self.wait(1.5)
-        self.play(
-            FadeOut(indicate_line_1_hlgt)
-        )
-        
-
-
-
-
-
-        self.wait(4)
+        self.wait(2.5)
 
 
 
