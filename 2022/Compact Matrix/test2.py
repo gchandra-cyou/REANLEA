@@ -1603,6 +1603,22 @@ class test_mirror(Scene):
 
         # manim -sqk test2.py test_mirror
 
+
+class glow_rect(Scene):
+    def construct(self):
+        cir=Line().scale(5)
+        x=line_highlight(buff_max=cir.get_length(), factor=.15, opacity_factor=.35).move_to(cir.get_center())
+        
+        self.play(Create(x))
+        self.add(cir)
+        
+        
+        self.wait(2)
+
+        # manim -pqh test2.py glow_rect
+
+        # manim -sqk test2.py glow_rect
+
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"

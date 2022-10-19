@@ -751,9 +751,12 @@ class Scene2(Scene):
         vect_grp=VGroup(vect_1,vect_1_lbl,vect_1_moving,vect_1_moving_lbl)
 
         self.add(line_grp, vect_grp)
+        
 
 
-
+        #
+        #
+        #
 
 
         # MOBJECT REGION
@@ -764,11 +767,14 @@ class Scene2(Scene):
         mirror_1=get_mirror().move_to(DOWN + 4.12*LEFT)#.shift(line_1.n2p(-2.335))
 
         bend_bez_arrow=bend_bezier_arrow().rotate(-10*DEGREES).scale(0.75).set_color(REANLEA_BLUE_SKY).move_to(UP + 2.75*LEFT).flip(UP)
-
+        
+        indicate_line_1=Line(line_1.n2p(-2),line_1.get_end()).set_color(REANLEA_YELLOW_CREAM)
+        indicate_line_1_hlgt=line_highlight(buff_max=indicate_line_1.get_length(), factor=.15, opacity_factor=.35, color=PURE_GREEN).move_to(indicate_line_1.get_center())
         
         # LABEL REGION
 
-        vect_1_mir_lbl=MathTex("=",r"-(-\vec{1})").scale(.85).set_color(PURE_RED).move_to(line_1.n2p(-1.15)+ 1.3*DOWN)
+        vect_1_mir_lbl=MathTex(r"-(-\vec{1})").scale(.85).set_color(PURE_RED).move_to(line_1.n2p(-1.5)+ 1.3*DOWN)
+        vect_2_mir_lbl=MathTex("=",r"-(-\vec{1})").scale(.85).set_color(PURE_RED).move_to(line_1.n2p(-1.15)+ 1.3*DOWN)
         
         # TEXT REGION 
 
@@ -795,7 +801,9 @@ class Scene2(Scene):
 
         # PLAY REGION
         self.wait(1.5)
-
+        self.play(
+            Wiggle(zero_tick)
+        )
         self.play(
             Write(mirror_1)
         )
@@ -813,12 +821,26 @@ class Scene2(Scene):
         self.play(
             Write(vect_1_mir_lbl)
         )
-
-
-
-
-
+        self.wait()
+        self.play(
+            TransformMatchingShapes(vect_1_mir_lbl,vect_2_mir_lbl)
+        )
         self.wait(2)
+
+        self.play(
+            FadeIn(indicate_line_1_hlgt)
+        )
+        self.wait(1.5)
+        self.play(
+            FadeOut(indicate_line_1_hlgt)
+        )
+        
+
+
+
+
+
+        self.wait(4)
 
 
 

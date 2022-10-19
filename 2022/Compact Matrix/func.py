@@ -442,3 +442,24 @@ def get_mirror(
 
     
     return mirror.rotate(-PI/2)
+
+
+
+def line_highlight(
+    factor=0.1, length_factor=1, opacity_factor=0.2, buff_min=0, buff_max=1, color=REANLEA_YELLOW, n=500
+):  
+    line=Line(ORIGIN,RIGHT).scale(factor).set_opacity(opacity_factor)
+
+    k=(buff_max-buff_min)/(n-1)*50
+    stripe=VGroup(
+        *[
+            line.copy().shift(DOWN*interpolate(buff_min,buff_max,b))
+            for b in np.linspace(0,1,n)
+        ]
+    )
+
+    for i,c in enumerate(stripe):
+        c.set_stroke(color,width=k*line.get_stroke_width())     # line.stroke_width=0.04 , default
+#opacity=1-i/n
+    return stripe.rotate(PI/2).move_to(ORIGIN).set_z_index(-10).scale(length_factor)
+
