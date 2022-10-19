@@ -870,7 +870,8 @@ class Scene2(Scene):
 
 
         self.play(
-            Write(vect_mov_1)
+            Write(vect_mov_1),
+            vect_1.animate.set_opacity(0.3)
         )
         self.play(
             FadeIn(vect_mov),
@@ -909,7 +910,8 @@ class Scene2(Scene):
         )
         self.wait()
         self.play(
-            Write(vect_mov_1_mir)
+            Write(vect_mov_1_mir),
+            vect_1_moving.animate.set_opacity(0.3)
         )
         self.wait()
 
@@ -938,16 +940,17 @@ class Scene2(Scene):
 
         self.play(
             Uncreate(uncrt_grp_1),
-            run_time=3
+            lag_ratio=.1,
+        )
+        self.play(
+            vect_1.animate.set_opacity(1),
+            vect_1_moving.animate.set_opacity(1),
         )
 
         self.wait(4)
 
 
-        #
-        #
-        ### PART - II ###
-
+        
 
 
 
