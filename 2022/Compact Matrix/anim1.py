@@ -774,7 +774,34 @@ class Scene2(Scene):
 
         dot_1=Dot(radius=0.1, color=REANLEA_MAGENTA).move_to(line_1.n2p(-2)).set_sheen(-0.4,DOWN).set_z_index(6)
 
+        vect_mov_1=Arrow(start=line_1.n2p(-2),end=line_1.n2p(-0.15),buff=0, tip_length=0.25).set_color(REANLEA_RED_LIGHTER).set_opacity(1).set_z_index(7)
         
+        vect_mov=always_redraw(
+            lambda : Arrow(start=line_1.n2p(-2),end=dot_1.get_center(),buff=0, tip_length=0.25).set_color(REANLEA_RED_LIGHTER).set_opacity(1).set_z_index(7)
+        )
+
+        d_d_arr_1=DashedDoubleArrow(
+            start=line_1.n2p(-2), end=line_1.n2p(-0.5),dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).shift(.2*UP).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+        dot_1_mir=Dot(radius=0.1, color=REANLEA_SLATE_BLUE_LIGHTEST).move_to(line_1.n2p(-3.5)).set_sheen(-0.4,DOWN).set_z_index(6)
+
+        vect_mov_1_mir=Arrow(start=line_1.n2p(-2),end=line_1.n2p(-3.5),buff=0, tip_length=0.25).set_color(REANLEA_TXT_COL_DARKER).set_opacity(1).set_z_index(7)
+
+
+        sgn_pos_1=MathTex("+").scale(.75).set_color(PURE_GREEN).move_to(6.5*RIGHT)
+        sgn_pos_2=Circle(radius=0.2, color=PURE_GREEN).move_to(sgn_pos_1.get_center()).set_stroke(width= 1)
+        sgn_pos=VGroup(sgn_pos_1,sgn_pos_2)
+
+        sgn_neg_1=MathTex("-").scale(.75).set_color(REANLEA_YELLOW).move_to(6.5*LEFT)
+        sgn_neg_2=Circle(radius=0.2, color=REANLEA_YELLOW).move_to(sgn_neg_1.get_center()).set_stroke(width= 1)
+        sgn_neg=VGroup(sgn_neg_1,sgn_neg_2)
+
+        sgn_grp=VGroup(sgn_pos,sgn_neg)
+        
+        
+
 
         # LABEL REGION
 
@@ -837,6 +864,83 @@ class Scene2(Scene):
             Create(dot_1)
         )
         self.wait(2.5)
+        self.play(
+            dot_1.animate.move_to(line_1.n2p(-0.15))
+        )
+
+
+        self.play(
+            Write(vect_mov_1)
+        )
+        self.play(
+            FadeIn(vect_mov),
+        )
+        self.play(
+            FadeOut(vect_mov_1)
+        )
+
+
+        self.play(
+            dot_1.animate.move_to(line_1.n2p(2.5))
+        )
+        self.play(
+            dot_1.animate.move_to(line_1.n2p(0.5))
+        )
+        self.play(
+            dot_1.animate.move_to(line_1.n2p(3))
+        )
+        self.play(
+            dot_1.animate.move_to(line_1.n2p(0))
+        )
+        self.play(
+            dot_1.animate.move_to(line_1.n2p(-0.5))
+        )
+        self.wait(1.5)
+        self.play(
+            Write(d_d_arr_1)
+        )
+        self.wait(2)
+        self.play(
+            d_d_arr_1.animate.shift(3*LEFT)
+        )
+        self.wait()
+        self.play(
+            Write(dot_1_mir)
+        )
+        self.wait()
+        self.play(
+            Write(vect_mov_1_mir)
+        )
+        self.wait()
+
+        self.play(
+            Write(sgn_grp)
+        )
+        self.play(
+            Wiggle(sgn_pos)
+        )
+        self.play(
+            Wiggle(sgn_neg)
+        )
+        self.wait(2)
+
+        self.play(
+            Indicate(mirror_1)
+        )
+        self.wait()
+        self.play(
+            Wiggle(vect_mov, color=REANLEA_RED_LIGHTER),
+            Wiggle(vect_mov_1_mir, color=REANLEA_TXT_COL_DARKER)
+        )
+        self.wait()
+        
+    
+
+
+
+
+
+        self.wait(4)
 
 
 
@@ -854,5 +958,6 @@ class Scene2(Scene):
 
 
 ###################################################################################################################
+
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"
