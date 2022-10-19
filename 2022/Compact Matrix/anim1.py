@@ -932,15 +932,21 @@ class Scene2(Scene):
             Wiggle(vect_mov, color=REANLEA_RED_LIGHTER),
             Wiggle(vect_mov_1_mir, color=REANLEA_TXT_COL_DARKER)
         )
-        self.wait()
-        
-    
+        self.wait(2)
 
+        uncrt_grp_1=VGroup(mirror_1,bend_bez_arrow,txt_mir,indicate_line_1_hlgt,d_d_arr_1,vect_mov,vect_mov_1_mir, dot_1,dot_1_mir, vect_2_mir_lbl)
 
-
-
+        self.play(
+            Uncreate(uncrt_grp_1),
+            run_time=3
+        )
 
         self.wait(4)
+
+
+        #
+        #
+        ### PART - II ###
 
 
 
