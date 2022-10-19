@@ -33,6 +33,8 @@ import random
 from sklearn.datasets import make_blobs
 from reanlea_colors import*
 from func import*
+from PIL import Image
+from func import EmojiImageMobject
 
 config.max_files_cached=500
 
@@ -761,8 +763,7 @@ class Scene2(Scene):
 
         # MOBJECT REGION
         
-        d_line_1=DashedLine(start=2*LEFT, end=2*RIGHT, stroke_width=2).shift(line_1.n2p(-2)).rotate(PI/2)
-        d_line_1.set_color_by_gradient(REANLEA_AQUA_GREEN,REANLEA_MAGENTA_LIGHTER,REANLEA_SLATE_BLUE_LIGHTER,REANLEA_TXT_COL_LIGHTER,REANLEA_VIOLET_LIGHTER).set_z_index(-5)
+        
 
         mirror_1=get_mirror().move_to(DOWN + 4.12*LEFT)#.shift(line_1.n2p(-2.335))
 
@@ -799,9 +800,50 @@ class Scene2(Scene):
         sgn_neg=VGroup(sgn_neg_1,sgn_neg_2)
 
         sgn_grp=VGroup(sgn_pos,sgn_neg)
-        
-        
 
+
+
+
+        vect_2=Arrow(start=line_1.n2p(-2),end=line_1.n2p(-1),max_tip_length_to_length_ratio=0.125, buff=0).set_color(REANLEA_CHARM).set_opacity(1).set_z_index(3)
+        
+        
+        dot_2=Dot(radius=0.2, color=REANLEA_PURPLE).move_to(line_1.n2p(-2)).set_sheen(-0.4,DOWN).set_z_index(6)
+        push_arr=Arrow(start=line_1.n2p(-2.5),end=line_1.n2p(-2.3),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6)
+
+        vect_3=Arrow(start=line_1.n2p(-2),end=line_1.n2p(0),tip_length=0.25, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(.5).set_z_index(7)
+
+        
+        d_line_1=DashedLine(line_1.n2p(-2), end=line_1.n2p(-2)+1.3*UP, stroke_width=1).set_color(PURE_RED)
+        d_line_2=DashedLine(line_1.n2p(0), end=line_1.n2p(0)+1.3*UP, stroke_width=1).set_color(PURE_RED)
+        
+        d_d_arr_2=DashedDoubleArrow(
+            start=line_1.n2p(-2), end=line_1.n2p(0),dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).shift(.8*UP).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+
+        zo=ValueTracker(0)
+
+        d_d_arr_3=DashedDoubleArrow(
+            start=line_1.n2p(-2), end=line_1.n2p(-1),dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).shift(UP).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+        d_d_arr_3_ref=d_d_arr_3.copy()
+
+        
+        d_d_arr_3.add_updater(
+            lambda x: x.become(d_d_arr_3_ref.copy()).rotate(
+                zo.get_value()*DEGREES , about_point=line_1.n2p(-1)+UP
+            )
+        )
+
+
+        d_d_arr_3_dumy=DashedDoubleArrow(
+            start=line_1.n2p(-2), end=line_1.n2p(-1),dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).shift(0.3*UP).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+        
 
         # LABEL REGION
 
@@ -946,8 +988,106 @@ class Scene2(Scene):
             vect_1.animate.set_opacity(1),
             vect_1_moving.animate.set_opacity(1),
         )
+        self.wait(2)
+
+
+
+        ### PART-II ###
+
+        self.add(vect_2)
+        self.play(
+            vect_2.animate.shift(2*1.75*RIGHT)
+        )
+        self.wait()
+        self.play(
+            ShowPassingFlash(Underline(vect_1, color=PURE_RED)),
+            ShowPassingFlash(Underline(vect_2, color=REANLEA_CHARM))
+        )
+        self.wait(2)
+        self.play(
+            vect_2.animate.shift(2*0.75*LEFT)
+        )
+        self.wait(2)
+
+        self.play(
+            Create(dot_2)
+        )
+        self.wait()
+        self.play(
+            push_arr.animate.move_to(line_1.n2p(-2.2))
+        )
+        self.play(
+            dot_2.animate.move_to(line_1.n2p(-1))
+        )
+        self.play(
+            FadeOut(push_arr)
+        )
+        self.wait()
+
+        push_arr.move_to(line_1.n2p(-1.4))
+        self.play(
+            push_arr.animate.move_to(line_1.n2p(-1.2))
+        )
+        self.play(
+            dot_2.animate.move_to(line_1.n2p(0))
+        )
+        self.play(
+            FadeOut(push_arr)
+        )
+        self.wait()
+
+
+        self.play(
+            dot_2.animate.set_z_index(2),
+        )
+        self.play(
+            Write(vect_3)
+        )
+        self.play(
+            vect_3.animate.shift(2*0.25*UP).set_opacity(1)
+        )
+        self.wait()
+
+        self.play(
+            Write(d_line_1),
+            Write(d_line_2)
+        )
+        self.play(
+            Write(d_d_arr_2)
+        )
+        self.wait()
+
+        self.play(
+            Write(d_d_arr_3_dumy)
+        )
+        self.wait()
+        self.play(
+            d_d_arr_3_dumy.animate.shift(0.7*UP)
+        )
+        self.wait()
+        self.add(d_d_arr_3)
+        self.play(
+            d_d_arr_3_dumy.animate.set_opacity(0)
+        )
+
+        self.play(
+            zo.animate.set_value(-180)
+        )
+        
+
+
+
+
+
+
+
+
+
 
         self.wait(4)
+
+
+
 
 
         

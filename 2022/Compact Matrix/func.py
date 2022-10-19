@@ -29,6 +29,7 @@ import numpy as np
 from scipy.optimize import fsolve
 from scipy.optimize import root
 from scipy.optimize import root_scalar
+from PIL import Image
 from manim import *
 
 
@@ -463,3 +464,13 @@ def line_highlight(
 #opacity=1-i/n
     return stripe.rotate(PI/2).move_to(ORIGIN).set_z_index(-10).scale(length_factor)
 
+
+
+class EmojiImageMobject(ImageMobject):
+    def __init__(self, emoji, **kwargs):
+        emoji_code = "-".join(f"{ord(c):x}" for c in emoji)
+        emoji_code = emoji_code.upper()  # <-  needed for openmojis
+        url = f"https://raw.githubusercontent.com/hfg-gmuend/openmoji/master/color/618x618/{emoji_code}.png"
+        im = Image.open(requests.get(url, stream=True).raw)
+        emoji_img = np.array(im.convert("RGBA"))
+        ImageMobject.__init__(self, emoji_img, **kwargs)

@@ -1619,6 +1619,54 @@ class glow_rect(Scene):
 
         # manim -sqk test2.py glow_rect
 
+
+
+class imoji2(Scene):
+    def construct(self):
+        zo=ValueTracker(0)
+        d_d_arr_3=DashedDoubleArrow(
+            start=LEFT, end=RIGHT,dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).shift(.3*UP).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+        d_d_arr_3_ref=d_d_arr_3.copy()
+
+        d_d_arr_3.add_updater(
+            lambda x: x.become(d_d_arr_3_ref.copy()).rotate(
+                zo.get_value()*DEGREES , about_point=RIGHT+0.3*UP
+            )
+        )
+
+        d_d_arr_4=DashedDoubleArrow(
+            start=LEFT, end=RIGHT,dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+
+
+        self.wait()
+        
+        self.add(d_d_arr_4)
+
+        self.play(
+            d_d_arr_4.animate.shift(0.3*UP)
+        )
+        self.add(d_d_arr_3)
+        self.play(
+            d_d_arr_4.animate.set_opacity(0)
+        )
+
+        self.wait()
+        self.play(
+            zo.animate.set_value(-180)
+        )
+        self.wait(2)
+        
+        
+
+
+        # manim -pqh test2.py imoji2
+
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"
