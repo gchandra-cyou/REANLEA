@@ -813,13 +813,13 @@ class Scene2(Scene):
         vect_3=Arrow(start=line_1.n2p(-2),end=line_1.n2p(0),tip_length=0.25, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(.5).set_z_index(7)
 
         
-        d_line_1=DashedLine(line_1.n2p(-2), end=line_1.n2p(-2)+1.3*UP, stroke_width=1).set_color(PURE_RED)
-        d_line_2=DashedLine(line_1.n2p(0), end=line_1.n2p(0)+1.3*UP, stroke_width=1).set_color(PURE_RED)
+        d_line_1=DashedLine(line_1.n2p(-2), end=line_1.n2p(-2)+1.5*UP, stroke_width=1).set_color(PURE_RED)
+        d_line_2=DashedLine(line_1.n2p(0), end=line_1.n2p(0)+1.5*UP, stroke_width=1).set_color(PURE_RED)
         
         d_d_arr_2=DashedDoubleArrow(
             start=line_1.n2p(-2), end=line_1.n2p(0),dash_length=2.0,stroke_width=2, 
             max_tip_length_to_length_ratio=0.015, buff=10
-        ).shift(.8*UP).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+        ).shift(UP).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
 
 
         zo=ValueTracker(0)
@@ -827,14 +827,14 @@ class Scene2(Scene):
         d_d_arr_3=DashedDoubleArrow(
             start=line_1.n2p(-2), end=line_1.n2p(-1),dash_length=2.0,stroke_width=2, 
             max_tip_length_to_length_ratio=0.015, buff=10
-        ).shift(UP).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+        ).shift(1.3*UP).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
 
         d_d_arr_3_ref=d_d_arr_3.copy()
 
         
         d_d_arr_3.add_updater(
             lambda x: x.become(d_d_arr_3_ref.copy()).rotate(
-                zo.get_value()*DEGREES , about_point=line_1.n2p(-1)+UP
+                zo.get_value()*DEGREES , about_point=line_1.n2p(-1)+1.3*UP
             )
         )
 
@@ -849,6 +849,8 @@ class Scene2(Scene):
 
         vect_1_mir_lbl=MathTex(r"-(-\vec{1})").scale(.85).set_color(PURE_RED).move_to(line_1.n2p(-1.5)+ 1.3*DOWN)
         vect_2_mir_lbl=MathTex("=",r"-(-\vec{1})").scale(.85).set_color(PURE_RED).move_to(line_1.n2p(-1.15)+ 1.3*DOWN)
+        vect_2_lbl=MathTex(r"\vec{1}").scale(.85).set_color(REANLEA_CHARM).move_to(line_1.n2p(-0.5)+ 0.85*DOWN)
+        vect_3_lbl=MathTex(r"\vec{2}").scale(.85).set_color(REANLEA_YELLOW_GREEN).move_to(line_1.n2p(-1)+ 0.9*UP)
         
         # TEXT REGION 
 
@@ -860,7 +862,9 @@ class Scene2(Scene):
 
         # EQUATION REGION
 
-        
+        vect_3_lbl_eqn_dumy=MathTex(r"\vec{2}","=",r"2 \cdot \vec{1}").scale(.85).set_color(REANLEA_YELLOW_GREEN).move_to(line_1.n2p(-1)+ 2.9*UP)
+        vect_3_lbl_eqn=MathTex(r"\vec{2}","=",r"2 \cdot \vec{1}").scale(.85).set_color(REANLEA_YELLOW_GREEN).move_to(line_1.n2p(-1)+ 2.9*UP)
+        vect_3_lbl_eqn.shift(vect_3_lbl.get_center()+UP - vect_3_lbl_eqn_dumy[0].get_center())
         
 
 
@@ -1007,6 +1011,10 @@ class Scene2(Scene):
         self.play(
             vect_2.animate.shift(2*0.75*LEFT)
         )
+        self.wait()
+        self.play(
+            Write(vect_2_lbl)
+        )
         self.wait(2)
 
         self.play(
@@ -1043,16 +1051,23 @@ class Scene2(Scene):
         self.play(
             Write(vect_3)
         )
+        self.wait()
         self.play(
             vect_3.animate.shift(2*0.25*UP).set_opacity(1)
         )
+
+        self.play(
+            Write(vect_3_lbl)
+        )
         self.wait()
+
 
         self.play(
             Write(d_line_1),
             Write(d_line_2)
         )
         self.play(
+            vect_3_lbl.animate.shift(UP),
             Write(d_d_arr_2)
         )
         self.wait()
@@ -1062,7 +1077,7 @@ class Scene2(Scene):
         )
         self.wait()
         self.play(
-            d_d_arr_3_dumy.animate.shift(0.7*UP)
+            d_d_arr_3_dumy.animate.shift(UP)
         )
         self.wait()
         self.add(d_d_arr_3)
@@ -1072,6 +1087,21 @@ class Scene2(Scene):
 
         self.play(
             zo.animate.set_value(-180)
+        )
+        self.wait(2)
+
+        self.play(
+            TransformMatchingShapes(vect_3_lbl, vect_3_lbl_eqn)
+        )
+        self.wait()
+
+        self.play(
+            Indicate(vect_3_lbl_eqn[2], color=REANLEA_AQUA_GREEN)
+        )
+        self.wait()
+
+        self.play(
+            Indicate(vect_3_lbl_eqn[2][0], color=REANLEA_BLUE_SKY)
         )
         
 

@@ -2627,6 +2627,77 @@ class test_y(Scene):
         # manim -pqh discord.py test_y
 
 
+
+
+class doppler2(Scene):
+    def construct(self):
+        d = Dot()
+        self.time = 0
+        circle_group = VGroup()
+        def update_time(dt):
+            self.time += dt
+        self.add_updater(update_time)
+        direction = [1, 2]
+        def make_circle(d,dt):
+
+            if self.time > 0.15:
+                self.time = 0
+                c= Circle().scale(0.5)
+                c.move_to(d.get_center())
+                circle_group.add(c)
+            d.shift((direction[0]*RIGHT+direction[1]*UP)*dt)
+        # #dt = 1/self.camera.frame_rate
+        d.add_updater(make_circle)
+        
+        def expand_circle(mob, dt):
+            for i in range(len(mob)):
+                mob[i].add_updater(lambda x: x.scale_to_fit_width(x.width+0.002, about_point = x.get_center()).set_stroke(opacity = 1-x.width/14))
+        self.add(circle_group)
+        circle_group.add_updater(expand_circle)
+        
+        self.add(d)
+       # self.play(d.animate.move_to(2*RIGHT))
+        self.wait(5)
+
+
+
+        # manim -pqh discord.py doppler2
+
+
+
+class doppler1(Scene):
+    def construct(self):
+        d = Dot()
+        self.time = 0
+        circle_group = VGroup()
+        def update_time(dt):
+            self.time += dt
+        self.add_updater(update_time)
+        direction = [RIGHT, 2*UP]
+        def make_circle(d,dt):
+
+            if self.time > 0.15:
+                self.time = 0
+                c= Circle().scale(0.5)
+                c.move_to(d.get_center())
+                circle_group.add(c)
+            d.shift(direction[0]*dt)
+        # #dt = 1/self.camera.frame_rate
+        d.add_updater(make_circle)
+        
+        def expand_circle(mob, dt):
+            for i in range(len(mob)):
+                mob[i].add_updater(lambda x: x.scale_to_fit_width(x.width+0.002, about_point = x.get_center()).set_stroke(opacity = 1-x.width/14))
+        self.add(circle_group)
+        circle_group.add_updater(expand_circle)
+        
+        self.add(d)
+       # self.play(d.animate.move_to(2*RIGHT))
+        self.wait(5)
+
+
+        # manim -pqh discord.py doppler1
+
 ###################################################################################################################
 
 # NOTE :-
@@ -2634,6 +2705,8 @@ class test_y(Scene):
 Q1. How can I configure the output video format to be square or vertical? Can it be done directly with manim?
 Ans: python3 -m manim -pql -r 1080,1920 my_file.py
 '''
+
+
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"

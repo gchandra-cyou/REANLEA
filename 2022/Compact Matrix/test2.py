@@ -1667,6 +1667,35 @@ class imoji2(Scene):
 
         # manim -pqh test2.py imoji2
 
+
+
+class lbl_test(Scene):
+    def construct(self):
+        
+        vect_3_lbl=MathTex(r"\vec{2}").scale(.85).set_color(REANLEA_YELLOW_GREEN)
+        vect_3_lbl_eqn_dumy=MathTex(r"\vec{2}","=",r"2 \cdot \vec{1}").scale(.85).set_color(REANLEA_YELLOW_GREEN)#.shift(vect_3_lbl_eqn[0].get_center()-vect_3_lbl.get_center())#.shift(.645*RIGHT)
+        vect_3_lbl_eqn=MathTex(r"\vec{2}","=",r"2 \cdot \vec{1}").scale(.85).set_color(REANLEA_YELLOW_GREEN).shift(-vect_3_lbl_eqn_dumy[0].get_center()+vect_3_lbl.get_center())#.shift(.645*RIGHT)
+        
+        self.play(Write(vect_3_lbl))
+        self.wait()
+        self.play(
+            TransformMatchingShapes(vect_3_lbl,vect_3_lbl_eqn)
+        )
+        self.wait(2)
+        self.play(
+            Indicate(vect_3_lbl_eqn[2])
+        )
+        self.wait()
+        self.play(
+            Indicate(vect_3_lbl_eqn[2][0])
+        )
+        self.wait(2)
+
+        # manim -pqh test2.py lbl_test
+
+
+        
+
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"
