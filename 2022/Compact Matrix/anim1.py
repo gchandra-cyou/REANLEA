@@ -823,6 +823,7 @@ class Scene2(Scene):
 
 
         zo=ValueTracker(0)
+        
 
         d_d_arr_3=DashedDoubleArrow(
             start=line_1.n2p(-2), end=line_1.n2p(-1),dash_length=2.0,stroke_width=2, 
@@ -843,6 +844,33 @@ class Scene2(Scene):
             start=line_1.n2p(-2), end=line_1.n2p(-1),dash_length=2.0,stroke_width=2, 
             max_tip_length_to_length_ratio=0.015, buff=10
         ).shift(0.3*UP).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA)
+
+
+        bez=bend_bezier_arrow_indicate().flip(RIGHT).move_to(1.4*UP+ 0.5*LEFT).scale(.75).rotate(-20*DEGREES).set_color(REANLEA_TXT_COL)
+
+
+        vect_1_scale_fact=ValueTracker(0)
+
+        d_d_arr_4=DashedDoubleArrow(
+            start=line_1.n2p(-1.2)+ DOWN, end=line_1.n2p(2) +  UP ,dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).shift(1.3*UP).set_color_by_gradient(REANLEA_RED_LIGHTER,REANLEA_GREEN_AUQA).rotate(5*DEGREES).set_z_index(10)
+
+
+        value=DecimalNumber().set_color_by_gradient(REANLEA_WARM_BLUE).set_sheen(-0.1,LEFT).move_to(line_1.n2p(2) + 2.9* UP ).scale(0.85)
+
+        value.add_updater(
+            lambda x : x.set_value(1+vect_1_scale_fact.get_value())
+        )
+
+        txt_vec_1_val=MathTex(r"\cdot",r"\vec{1}").scale(.95).set_color(PURE_RED).move_to(line_1.n2p(2.3) + 2.975* UP)
+
+        vect_1_scale=VGroup(value,txt_vec_1_val)
+
+        sr_rec_vec_1_scale=SurroundingRectangle(vect_1_scale, color=REANLEA_BLUE_DARKER, corner_radius=0.15, buff=.25)
+
+        
+
         
 
         # LABEL REGION
@@ -851,6 +879,9 @@ class Scene2(Scene):
         vect_2_mir_lbl=MathTex("=",r"-(-\vec{1})").scale(.85).set_color(PURE_RED).move_to(line_1.n2p(-1.15)+ 1.3*DOWN)
         vect_2_lbl=MathTex(r"\vec{1}").scale(.85).set_color(REANLEA_CHARM).move_to(line_1.n2p(-0.5)+ 0.85*DOWN)
         vect_3_lbl=MathTex(r"\vec{2}").scale(.85).set_color(REANLEA_YELLOW_GREEN).move_to(line_1.n2p(-1)+ 0.9*UP)
+
+
+        
         
         # TEXT REGION 
 
@@ -860,13 +891,32 @@ class Scene2(Scene):
         txt_mir.move_to(1.75*UP + 1.9*LEFT)
 
 
+
+        with RegisterFont("Cousine") as fonts:
+            text_1 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "Scaling Factor",
+            )]).scale(0.24).set_color(REANLEA_GREY)
+
+        text_1.move_to(1.7*UP+RIGHT)
+
+        txt_blg_1=MathTex(r"\in", r"\mathbb{R}").set_color(REANLEA_TXT_COL).scale(0.7).move_to(1.35*UP+1.1*RIGHT)
+        txt_blg_1[0].scale(0.65)
+        txt_blg_1[1].set_color(REANLEA_BLUE_SKY)
+
+
         # EQUATION REGION
 
         vect_3_lbl_eqn_dumy=MathTex(r"\vec{2}","=",r"2 \cdot \vec{1}").scale(.85).set_color(REANLEA_YELLOW_GREEN).move_to(line_1.n2p(-1)+ 2.9*UP)
         vect_3_lbl_eqn=MathTex(r"\vec{2}","=",r"2 \cdot \vec{1}").scale(.85).set_color(REANLEA_YELLOW_GREEN).move_to(line_1.n2p(-1)+ 2.9*UP)
         vect_3_lbl_eqn.shift(vect_3_lbl.get_center()+UP - vect_3_lbl_eqn_dumy[0].get_center())
-        
 
+
+        vec_1_2_eqn_grp=VGroup(vect_1_lbl,vect_2_lbl,vect_3_lbl_eqn)
+
+        eq_1=MathTex(r"\vec{1}","+",r"\vec{1}","=",r"\vec{2}","=",r"2 \cdot \vec{1}").scale(.85).set_color(REANLEA_PURPLE_LIGHTER).move_to(3.25*UP)
+        eq_2=MathTex(r"\vec{1}","+",r"\vec{1}","=",r"2 \cdot \vec{1}").scale(.85).set_color(REANLEA_PURPLE_LIGHTER).move_to(3.25*UP)
+        
+        stripe_1=get_stripe(factor=0.05).move_to(3.05*UP)
 
 
 
@@ -1103,8 +1153,64 @@ class Scene2(Scene):
         self.play(
             Indicate(vect_3_lbl_eqn[2][0], color=REANLEA_BLUE_SKY)
         )
-        
+        self.wait()
 
+        self.play(
+            Create(bez)
+        )
+        self.play(
+            Write(text_1)
+        )
+        self.wait()
+        self.play(
+            Write(txt_blg_1)
+        )
+        self.wait(2)
+
+        self.play(
+            Write(d_d_arr_4)
+        )
+        self.play(
+            Write(vect_1_scale)
+        )
+        self.play(
+            Write(sr_rec_vec_1_scale)
+        )
+        self.wait(2)
+
+
+        vect_1.add_updater(
+            lambda z : z.become(
+                Arrow(start=line_1.n2p(-2),end=np.array((line_1.n2p(-1)[0]*(1-vect_1_scale_fact.get_value()),line_1.n2p(-1)[1],line_1.n2p(-1)[2])),max_tip_length_to_length_ratio=0.125, buff=0).set_color(PURE_RED).set_opacity(1).set_z_index(4)
+            )
+        )
+        self.play(
+            vect_1_scale_fact.animate.set_value(.865),  
+        )
+        self.wait()
+
+        self.play(
+            TransformMatchingShapes(vec_1_2_eqn_grp.copy(),eq_1)
+        )
+        self.play(
+            Write(stripe_1)
+        )
+        self.play(
+            ReplacementTransform(eq_1,eq_2)
+        )
+
+
+
+        '''self.play(
+            vect_1_scale_fact.animate.set_value(0),  
+        )
+        self.wait()
+        self.play(
+            Uncreate(sr_rec_vec_1_scale),
+            Uncreate(vect_1_scale),
+            Uncreate(d_d_arr_4)
+        )'''
+       
 
 
 

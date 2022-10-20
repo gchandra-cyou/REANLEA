@@ -385,6 +385,39 @@ def bend_bezier_arrow():
 
         return grp3
 
+def bend_bezier_arrow_indicate():
+
+        grp3=VGroup()
+        p1 = ParametricFunction(
+            lambda t: bezier_updated(t,
+                np.array([
+                    [.32,2.28,0],
+                    [.2,1.1, 0],
+                    [1.72, .77, 0],
+                ]),
+                np.array([1,1,1])),
+            t_range=[0, 1],
+            color=REANLEA_CHARM,
+        )
+        
+        p1.move_to(ORIGIN)
+
+        p=CurvesAsSubmobjects(p1)
+        p.set_color_by_gradient(REANLEA_YELLOW_CREAM,REANLEA_CHARM).set_stroke(width=3)
+
+        grp3 += p
+
+
+        ar= Arrow(max_stroke_width_to_length_ratio=0,max_tip_length_to_length_ratio=0.07).move_to(0.64*DOWN + .05*RIGHT).rotate(-10*DEGREES)
+        ar.set_color(REANLEA_CHARM)
+
+        
+        grp3 += ar
+        #grp3.move_to(2.15*DOWN+RIGHT).flip(RIGHT).rotate(130*DEGREES)
+
+
+        return grp3
+
 
 
 def low_frame_rate(t):

@@ -1671,27 +1671,36 @@ class imoji2(Scene):
 
 class lbl_test(Scene):
     def construct(self):
-        
-        vect_3_lbl=MathTex(r"\vec{2}").scale(.85).set_color(REANLEA_YELLOW_GREEN)
-        vect_3_lbl_eqn_dumy=MathTex(r"\vec{2}","=",r"2 \cdot \vec{1}").scale(.85).set_color(REANLEA_YELLOW_GREEN)#.shift(vect_3_lbl_eqn[0].get_center()-vect_3_lbl.get_center())#.shift(.645*RIGHT)
-        vect_3_lbl_eqn=MathTex(r"\vec{2}","=",r"2 \cdot \vec{1}").scale(.85).set_color(REANLEA_YELLOW_GREEN).shift(-vect_3_lbl_eqn_dumy[0].get_center()+vect_3_lbl.get_center())#.shift(.645*RIGHT)
-        
-        self.play(Write(vect_3_lbl))
+
+        fact=ValueTracker(0)
+
+        vect=Arrow(start=LEFT,end=RIGHT)
+
+        vect.add_updater(
+            lambda z : z.become(
+                Arrow(start=LEFT,end=np.array((1,0,0))*(1+fact.get_value()))
+            )
+        )
+        value=DecimalNumber().set_color_by_gradient(REANLEA_MAGENTA).set_sheen(-0.1,LEFT).move_to(2*UP)
+
+        value.add_updater(
+            lambda x : x.set_value(1+fact.get_value())
+        )
+
+        self.play(
+            Write(vect),
+            Write(value)
+        )
         self.wait()
         self.play(
-            TransformMatchingShapes(vect_3_lbl,vect_3_lbl_eqn)
+            fact.animate.set_value(2)
         )
-        self.wait(2)
-        self.play(
-            Indicate(vect_3_lbl_eqn[2])
-        )
-        self.wait()
-        self.play(
-            Indicate(vect_3_lbl_eqn[2][0])
-        )
+
         self.wait(2)
 
         # manim -pqh test2.py lbl_test
+
+        # manim -sqk test2.py lbl_test
 
 
         
