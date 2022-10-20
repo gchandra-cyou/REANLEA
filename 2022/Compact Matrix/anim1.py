@@ -916,7 +916,7 @@ class Scene2(Scene):
         eq_1=MathTex(r"\vec{1}","+",r"\vec{1}","=",r"\vec{2}","=",r"2 \cdot \vec{1}").scale(.85).set_color(REANLEA_PURPLE_LIGHTER).move_to(3.25*UP)
         eq_2=MathTex(r"\vec{1}","+",r"\vec{1}","=",r"2 \cdot \vec{1}").scale(.85).set_color(REANLEA_PURPLE_LIGHTER).move_to(3.25*UP)
         
-        stripe_1=get_stripe(factor=0.05).move_to(3.05*UP)
+        stripe_1=get_stripe(factor=0.05,buff_max=2.4).move_to(2.925*UP)
 
 
 
@@ -1185,31 +1185,43 @@ class Scene2(Scene):
             )
         )
         self.play(
-            vect_1_scale_fact.animate.set_value(.865),  
+            vect_1_scale_fact.animate.set_value(1),  
         )
         self.wait()
 
         self.play(
-            TransformMatchingShapes(vec_1_2_eqn_grp.copy(),eq_1)
-        )
-        self.play(
+            TransformMatchingShapes(vec_1_2_eqn_grp.copy(),eq_1),
             Write(stripe_1)
         )
         self.play(
             ReplacementTransform(eq_1,eq_2)
         )
+        self.wait()
 
-
-
-        '''self.play(
+        self.play(
             vect_1_scale_fact.animate.set_value(0),  
         )
         self.wait()
+
+        
         self.play(
             Uncreate(sr_rec_vec_1_scale),
             Uncreate(vect_1_scale),
             Uncreate(d_d_arr_4)
-        )'''
+        )
+        self.wait()
+
+        self.play(
+            Uncreate(vect_2),
+            Uncreate(vect_2_lbl),
+            Uncreate(d_line_1),
+            Uncreate(d_line_2),
+            Uncreate(d_d_arr_2),
+            Uncreate(d_d_arr_3),
+            vect_3.animate.shift(0.75*UP),
+            dot_2.animate.shift(1.77*RIGHT).scale(0.5).set_z_index(7)
+        )
+
        
 
 
