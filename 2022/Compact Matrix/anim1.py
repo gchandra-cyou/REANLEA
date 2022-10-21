@@ -868,8 +868,38 @@ class Scene2(Scene):
         vect_1_scale=VGroup(value,txt_vec_1_val)
 
         sr_rec_vec_1_scale=SurroundingRectangle(vect_1_scale, color=REANLEA_BLUE_DARKER, corner_radius=0.15, buff=.25)
-
         
+        d_line_3=DashedLine(line_1.n2p(1.77), end=line_1.n2p(1.77)+.3*UP, stroke_width=1).set_color(PURE_RED)
+
+        d_d_arr_5=DashedDoubleArrow(
+            start=line_1.n2p(-2), end=line_1.n2p(1.77), dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).shift(0.3*UP).set_color_by_gradient(REANLEA_YELLOW_GREEN)
+
+        d_d_arr_6=DashedDoubleArrow(
+            start=line_1.n2p(-2), end=line_1.n2p(-1), dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).shift(0.6*UP).set_color_by_gradient(REANLEA_PURPLE_LIGHTER)
+
+        d_d_arr_5_lbl=MathTex("x").set_color(REANLEA_YELLOW_GREEN).scale(0.5).next_to(d_d_arr_5, 0.35*UP)
+
+        x_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("x").scale(.5),
+        )
+        x_tick[0].move_to(line_1.n2p(1.77))
+        x_tick[1].next_to(x_tick[0], DOWN).set_color(REANLEA_YELLOW_GREEN)
+        x_tick.set_z_index(3)
+
+
+        vect_4=Arrow(start=line_1.n2p(-2),end=line_1.n2p(1.77),tip_length=0.25, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(.5).set_z_index(7)
+
+        vect_5=Arrow(start=line_1.n2p(-2),end=line_1.n2p(0),tip_length=0.25, buff=0).set_color(REANLEA_WARM_BLUE).set_z_index(7)
+
+        vect_6=Arrow(start=line_1.n2p(-2),end=line_1.n2p(1),tip_length=0.25, buff=0).set_color(REANLEA_SAFRON).set_z_index(7)
+
+
+
 
         
 
@@ -879,6 +909,9 @@ class Scene2(Scene):
         vect_2_mir_lbl=MathTex("=",r"-(-\vec{1})").scale(.85).set_color(PURE_RED).move_to(line_1.n2p(-1.15)+ 1.3*DOWN)
         vect_2_lbl=MathTex(r"\vec{1}").scale(.85).set_color(REANLEA_CHARM).move_to(line_1.n2p(-0.5)+ 0.85*DOWN)
         vect_3_lbl=MathTex(r"\vec{2}").scale(.85).set_color(REANLEA_YELLOW_GREEN).move_to(line_1.n2p(-1)+ 0.9*UP)
+
+
+        
 
 
         
@@ -911,12 +944,30 @@ class Scene2(Scene):
         vect_3_lbl_eqn.shift(vect_3_lbl.get_center()+UP - vect_3_lbl_eqn_dumy[0].get_center())
 
 
+
         vec_1_2_eqn_grp=VGroup(vect_1_lbl,vect_2_lbl,vect_3_lbl_eqn)
 
         eq_1=MathTex(r"\vec{1}","+",r"\vec{1}","=",r"\vec{2}","=",r"2 \cdot \vec{1}").scale(.85).set_color(REANLEA_PURPLE_LIGHTER).move_to(3.25*UP)
         eq_2=MathTex(r"\vec{1}","+",r"\vec{1}","=",r"2 \cdot \vec{1}").scale(.85).set_color(REANLEA_PURPLE_LIGHTER).move_to(3.25*UP)
         
         stripe_1=get_stripe(factor=0.05,buff_max=2.4).move_to(2.925*UP)
+
+
+        vect_4_lbl_eqn=MathTex(r"\vec{x}","=",r"x \cdot \vec{1}").scale(0.85).move_to(line_1.n2p(-1)+ 2.9*UP).set_color(PURE_RED)
+        vect_4_lbl_eqn.shift(vect_3_lbl.get_center()+UP - vect_3_lbl_eqn_dumy[0].get_center())
+        vect_4_lbl_eqn[0].set_color(PURE_GREEN)
+        vect_4_lbl_eqn[2][0].set_color(PURE_GREEN)
+
+
+        vect_5_lbl_eqn=MathTex(r"\vec{2}","=",r"2 \cdot \vec{1}").scale(0.85).move_to(line_1.n2p(-1)+ 2.9*UP).set_color(PURE_RED)
+        vect_5_lbl_eqn[0].set_color(REANLEA_WARM_BLUE)
+        vect_5_lbl_eqn[2][0].set_color(REANLEA_WARM_BLUE)
+
+        vect_6_lbl_eqn=MathTex(r"\vec{3}","=",r"3 \cdot \vec{1}").scale(0.85).move_to(line_1.n2p(-1)+ 2.9*UP).set_color(PURE_RED)
+        
+        vect_6_lbl_eqn[0].set_color(REANLEA_SAFRON)
+        vect_6_lbl_eqn[2][0].set_color(REANLEA_SAFRON)
+
 
 
 
@@ -1219,8 +1270,61 @@ class Scene2(Scene):
             Uncreate(d_d_arr_2),
             Uncreate(d_d_arr_3),
             vect_3.animate.shift(0.75*UP),
-            dot_2.animate.shift(1.77*RIGHT).scale(0.5).set_z_index(7)
+            dot_2.animate.shift(2*1.77*RIGHT).scale(0.5).set_z_index(7)
         )
+        self.wait()
+        
+        self.play(
+            Create(d_line_3)
+        )
+        self.play(
+            Write(d_d_arr_5)
+        )
+        self.play(
+            Write(d_d_arr_6)
+        )
+        self.wait()
+
+        self.play(
+            Create(d_d_arr_5_lbl)
+        )
+        self.wait()
+
+        self.play(
+            TransformMatchingShapes(d_d_arr_5_lbl.copy(), x_tick)
+        )
+        self.wait()
+
+        self.play(
+            ReplacementTransform(vect_3,vect_4),
+            ReplacementTransform(vect_3_lbl_eqn,vect_4_lbl_eqn),
+            vect_1.animate.set_opacity(0.25)
+        )
+        self.wait()
+
+        self.play(
+            Indicate(vect_4_lbl_eqn[0], color=REANLEA_PINK_LIGHTER),
+            Indicate(vect_4_lbl_eqn[2][0], color=REANLEA_PINK_LIGHTER)
+        )
+        self.wait(2)
+
+        self.play(
+            vect_1.animate.set_opacity(1),
+            Uncreate(vect_4),
+            Uncreate(d_d_arr_5_lbl),
+            Uncreate(d_d_arr_5),
+            d_d_arr_6.animate.shift(0.9*DOWN)
+        )
+        self.wait(1.5)
+
+        self.play(
+            Uncreate(vect_1),
+            Create(vect_5),
+            Write(vect_5_lbl_eqn),
+            FadeOut(vect_1_lbl)
+        )
+
+
 
        
 
