@@ -1703,7 +1703,49 @@ class lbl_test(Scene):
         # manim -sqk test2.py lbl_test
 
 
+class lbl_test_1(Scene):
+    def construct(self):
+
+        vect_4_lbl_eqn=MathTex(r"\vec{x}","=",r"x \cdot \vec{1}").scale(0.85).move_to(1.35*LEFT+ UP).set_color(PURE_RED)
         
+        vect_4_lbl_eqn[0].set_color(PURE_GREEN)
+        vect_4_lbl_eqn[2][0].set_color(PURE_GREEN)
+
+
+        with RegisterFont("Cousine") as fonts:
+            text_1 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "Scaling Factor",
+            )]).scale(0.24).set_color(REANLEA_GREY)
+
+        text_1.move_to(1.7*UP+RIGHT)
+
+        txt_blg_1=MathTex(r"\in", r"\mathbb{R}").set_color(REANLEA_TXT_COL).scale(0.7).move_to(1.35*UP+1.1*RIGHT)
+        txt_blg_1[0].scale(0.65)
+        txt_blg_1[1].set_color(REANLEA_BLUE_SKY)
+
+        bez=bend_bezier_arrow_indicate().flip(RIGHT).move_to(1.4*UP+ 0.5*LEFT).scale(.75).rotate(-20*DEGREES).set_color(REANLEA_TXT_COL)
+
+        grp=VGroup(vect_4_lbl_eqn, text_1, txt_blg_1, bez)
+
+        self.play(
+            Write(vect_4_lbl_eqn),
+            Write(text_1),
+            Write(txt_blg_1),
+            Create(bez)
+        )
+        self.wait()
+
+        self.play(
+            grp.animate.shift(3*LEFT)
+        )
+        self.wait(2)
+
+        # manim -pqh test2.py lbl_test_1
+
+        # manim -sqk test2.py lbl_test_1
+
+
+      
 
 ###################################################################################################################
 
