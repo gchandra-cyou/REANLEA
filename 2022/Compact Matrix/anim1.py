@@ -21,6 +21,7 @@ from multiprocessing import context
 from multiprocessing import dummy
 from multiprocessing.dummy import Value
 from numbers import Number
+import sre_compile
 from tkinter import Y, Label, font
 from imp import create_dynamic
 from tracemalloc import start
@@ -1040,7 +1041,7 @@ class Scene2(Scene):
         eq_10=MathTex(r"\vec{-1}","=",r"(-1) \cdot \vec{1}").scale(0.85).set_color(PURE_RED)
         eq_10[2][0].set_color(REANLEA_VIOLET_LIGHTER)
         eq_10[0].set_color(REANLEA_VIOLET_LIGHTER)
-        eq_10.move_to(1.25*UP+5*RIGHT)
+        eq_10.move_to(1.25*UP+5.175*RIGHT)
 
 
 
@@ -1492,7 +1493,40 @@ class Scene2(Scene):
             dot_2.animate.move_to(line_1.n2p(-3)),
             ReplacementTransform(grp_4,eq_8),
             ReplacementTransform(eq_7,eq_10),
-            ReplacementTransform(grp_4,eq_8)
+            ReplacementTransform(grp_4,eq_8),
+            ReplacementTransform(sr_grp_4,sr_eq_8)
+        )
+        self.wait()
+
+        self.play(
+            dot_2.animate.move_to(line_1.n2p(-2)).set_z_index(10)
+        )
+        self.wait(2)
+
+        z2=ValueTracker(0)
+        value2=DecimalNumber().set_color_by_gradient(REANLEA_PINK_LIGHTER).move_to(line_1.n2p(-1) + .5* UP ).scale(0.65)
+
+        value2.add_updater(
+            lambda x : x.set_value(z2.get_value())
+        )
+
+        self.play(
+            Write(value2)
+        )
+
+        dot_2.set_z_index(10)
+
+        self.play(
+            dot_2.animate.move_to(line_1.n2p(0)),
+            z2.animate.set_value(2)
+        )
+        self.wait()
+        z2.set_value(0)
+        self.wait()
+
+        self.play(
+            dot_2.animate.move_to(line_1.n2p(-3)),
+            z2.animate.set_value(-3)
         )
 
 
