@@ -1024,22 +1024,22 @@ class Scene2(Scene):
         eq_7.move_to(1.5*UP+5*RIGHT)
 
 
-        eq_8=MathTex(r"\vec{2}","+",r"\vec{-3}","=",r"2 \cdot \vec{1}","+",r"(-3) \cdot \vec{1}","=",r"\vec{-1}").scale(0.85).set_color(PURE_RED).move_to(0.5*UP)
+        eq_8=MathTex(r"\vec{2}","-",r"\vec{3}","=",r"2 \cdot \vec{1}","+",r"(-3) \cdot \vec{1}","=",r"\vec{-1}").scale(0.85).set_color(PURE_RED).move_to(0.5*UP)
         eq_8[0].set_color(REANLEA_WARM_BLUE)
         eq_8[2].set_color(REANLEA_AQUA_GREEN)
         eq_8[4][0].set_color(REANLEA_WARM_BLUE)
-        eq_8[6][0].set_color(REANLEA_AQUA_GREEN)
+        eq_8[6][1:3].set_color(REANLEA_AQUA_GREEN)
         eq_8[8].set_color(REANLEA_VIOLET_LIGHTER)
         eq_8.shift(eq_5[0].get_center() - eq_6[0].get_center())
 
 
-        eq_9=MathTex(r"\vec{-3}","=",r"(-3) \cdot \vec{1}").scale(0.85).move_to(2*UP+5*RIGHT).set_color(PURE_RED)
+        eq_9=MathTex(r"\vec{-3}","=",r"(-3) \cdot \vec{1}").scale(0.85).move_to(2*UP+5.175*RIGHT).set_color(PURE_RED)
         eq_9[0].set_color(REANLEA_AQUA_GREEN)
-        eq_9[2][0].set_color(REANLEA_AQUA_GREEN)
+        eq_9[2][1:3].set_color(REANLEA_AQUA_GREEN)
 
 
         eq_10=MathTex(r"\vec{-1}","=",r"(-1) \cdot \vec{1}").scale(0.85).set_color(PURE_RED)
-        eq_10[2][0].set_color(REANLEA_VIOLET_LIGHTER)
+        eq_10[2][1:3].set_color(REANLEA_VIOLET_LIGHTER)
         eq_10[0].set_color(REANLEA_VIOLET_LIGHTER)
         eq_10.move_to(1.25*UP+5.175*RIGHT)
 
@@ -1493,8 +1493,8 @@ class Scene2(Scene):
             dot_2.animate.move_to(line_1.n2p(-3)),
             ReplacementTransform(grp_4,eq_8),
             ReplacementTransform(eq_7,eq_10),
-            ReplacementTransform(grp_4,eq_8),
-            ReplacementTransform(sr_grp_4,sr_eq_8)
+            ReplacementTransform(sr_grp_4,sr_eq_8),
+            ReplacementTransform(vect_6_lbl_eqn,eq_9)
         )
         self.wait()
 
@@ -1528,6 +1528,29 @@ class Scene2(Scene):
             dot_2.animate.move_to(line_1.n2p(-3)),
             z2.animate.set_value(-3)
         )
+        self.wait(2)
+
+        self.play(
+            Uncreate(dot_2),
+            Unwrite(value2),
+            Unwrite(eq_9),
+            Uncreate(eq_8),
+            Uncreate(sr_eq_8),
+            Uncreate(eq_10),
+            Uncreate(vect_7),
+            Uncreate(d_line_4),
+            Uncreate(vect_5),
+            Uncreate(vect_5_lbl_eqn),
+            Uncreate(vect_1_moving),
+            Uncreate(vect_1_moving_lbl),
+            Unwrite(d_d_arr_6),
+            FadeOut(eq_2),
+            FadeOut(stripe_1),
+            run_time=2.5
+        )
+        self.wait()
+
+
 
 
 
@@ -1551,6 +1574,183 @@ class Scene2(Scene):
         # manim -sql anim1.py Scene2
 
 
+
+
+
+###################################################################################################################
+
+
+class Scene3(Scene):
+    def construct(self):
+        
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+
+
+
+
+
+        # PREVIOUS SCENE REGION
+
+        line_1= NumberLine(
+            x_range=[-8, 8, 1],
+            length=32,
+            include_ticks=False,
+        ).set_color(REANLEA_BLUE_LAVENDER).set_stroke(width=4).move_to(DOWN)
+
+        line_1_center=line_1.n2p(-2)
+
+        zero_tick = VGroup(
+            Line(0.3 * UP, 0.3 * DOWN, stroke_width=2.0, color=REANLEA_VIOLET_LIGHTER),
+            MathTex("0"),
+        )
+        zero_tick[0].move_to(line_1.n2p(-2))
+        zero_tick[1].next_to(zero_tick[0], DOWN)
+        zero_tick.set_z_index(3)
+
+        one_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("1").scale(.5),
+        )
+        one_tick[0].move_to(line_1.n2p(-1))
+        one_tick[1].next_to(one_tick[0], DOWN)
+        one_tick.set_z_index(3)
+
+        minus_one_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_YELLOW),
+            MathTex("-1").scale(.5),
+        )
+        minus_one_tick[0].move_to(line_1.n2p(-3))
+        minus_one_tick[1].next_to(minus_one_tick[0], DOWN)
+        minus_one_tick.set_z_index(3)
+
+
+        two_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("2").scale(.5),
+        )
+        two_tick[0].move_to(line_1.n2p(0))
+        two_tick[1].next_to(two_tick[0], DOWN)
+        two_tick.set_z_index(3)
+
+        three_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("3").scale(.5),
+        )
+        three_tick[0].move_to(line_1.n2p(1))
+        three_tick[1].next_to(three_tick[0], DOWN)
+        three_tick.set_z_index(3)
+
+        four_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("4").scale(.5),
+        )
+        four_tick[0].move_to(line_1.n2p(2))
+        four_tick[1].next_to(four_tick[0], DOWN)
+        four_tick.set_z_index(3)
+
+        five_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("5").scale(.5),
+        )
+        five_tick[0].move_to(line_1.n2p(3))
+        five_tick[1].next_to(five_tick[0], DOWN)
+        five_tick.set_z_index(3)
+
+        x_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("x").scale(.5),
+        )
+        x_tick[0].move_to(line_1.n2p(1.77))
+        x_tick[1].next_to(x_tick[0], DOWN).set_color(REANLEA_YELLOW_GREEN)
+        x_tick.set_z_index(3)
+
+        so_on_txt_symbol=Text("...").move_to(0.9*DOWN+6.9*RIGHT).scale(0.5).set_color(REANLEA_GREEN)
+
+        line_grp=VGroup(line_1, minus_one_tick, zero_tick,one_tick,two_tick,three_tick,four_tick,five_tick,x_tick,so_on_txt_symbol)
+
+
+
+        sgn_pos_1=MathTex("+").scale(.75).set_color(PURE_GREEN).move_to(6.5*RIGHT)
+        sgn_pos_2=Circle(radius=0.2, color=PURE_GREEN).move_to(sgn_pos_1.get_center()).set_stroke(width= 1)
+        sgn_pos=VGroup(sgn_pos_1,sgn_pos_2)
+
+        sgn_neg_1=MathTex("-").scale(.75).set_color(REANLEA_YELLOW).move_to(6.5*LEFT)
+        sgn_neg_2=Circle(radius=0.2, color=REANLEA_YELLOW).move_to(sgn_neg_1.get_center()).set_stroke(width= 1)
+        sgn_neg=VGroup(sgn_neg_1,sgn_neg_2)
+
+        sgn_grp=VGroup(sgn_pos,sgn_neg)
+
+
+
+        vect_4_lbl_eqn=MathTex(r"\vec{x}","=",r"x \cdot \vec{1}").scale(0.85).move_to(line_1.n2p(-1)+ 2.9*UP).set_color(PURE_RED)
+        vect_3_lbl=MathTex(r"\vec{2}").scale(.85).set_color(REANLEA_YELLOW_GREEN).move_to(line_1.n2p(-1)+ 0.9*UP)
+        vect_3_lbl_eqn_dumy=MathTex(r"\vec{2}","=",r"2 \cdot \vec{1}").scale(.85).set_color(REANLEA_YELLOW_GREEN).move_to(line_1.n2p(-1)+ 2.9*UP)
+        vect_4_lbl_eqn.shift(vect_3_lbl.get_center()+UP - vect_3_lbl_eqn_dumy[0].get_center())
+        vect_4_lbl_eqn[0].set_color(PURE_GREEN)
+        vect_4_lbl_eqn[2][0].set_color(PURE_GREEN)
+
+        with RegisterFont("Cousine") as fonts:
+            text_1 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "Scaling Factor",
+            )]).scale(0.24).set_color(REANLEA_GREY)
+
+        text_1.move_to(1.7*UP+RIGHT)
+
+        txt_blg_1=MathTex(r"\in", r"\mathbb{R}").set_color(REANLEA_TXT_COL).scale(0.7).move_to(1.35*UP+1.1*RIGHT)
+        txt_blg_1[0].scale(0.65)
+        txt_blg_1[1].set_color(REANLEA_BLUE_SKY)
+
+
+        bez=bend_bezier_arrow_indicate().flip(RIGHT).move_to(1.4*UP+ 0.5*LEFT).scale(.75).rotate(-20*DEGREES).set_color(REANLEA_TXT_COL)
+
+        grp_1=VGroup(vect_4_lbl_eqn, text_1,txt_blg_1,bez).shift(3*LEFT+.5*UP)
+
+        self.add(line_grp,sgn_grp, grp_1)
+
+
+        #
+        #
+        #
+
+
+
+
+
+
+        # PLAY REGION 
+
+        self.wait(2)
+
+        self.play(
+            Indicate(line_1),
+            color=PURE_RED,
+            run_time=2
+        )
+
+        self.wait(2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+        # manim -pqh anim1.py Scene3
+
+        # manim -pql anim1.py Scene3
+
+        # manim -sqk anim1.py Scene3
+
+        # manim -sql anim1.py Scene3
 
 
 

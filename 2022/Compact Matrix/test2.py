@@ -1740,6 +1740,31 @@ class lbl_test_1(Scene):
         )
         self.wait(2)
 
+
+
+        vect_4_lbl_eqn=MathTex(r"\vec{x}","=",r"x \cdot \vec{1}").scale(0.85).move_to(line_1.n2p(-1)+ 2.9*UP).set_color(PURE_RED)
+        vect_3_lbl=MathTex(r"\vec{2}").scale(.85).set_color(REANLEA_YELLOW_GREEN).move_to(line_1.n2p(-1)+ 0.9*UP)
+        vect_3_lbl_eqn_dumy=MathTex(r"\vec{2}","=",r"2 \cdot \vec{1}").scale(.85).set_color(REANLEA_YELLOW_GREEN).move_to(line_1.n2p(-1)+ 2.9*UP)
+
+        vect_4_lbl_eqn.shift(vect_3_lbl.get_center()+UP - vect_3_lbl_eqn_dumy[0].get_center())
+        vect_4_lbl_eqn[0].set_color(PURE_GREEN)
+        vect_4_lbl_eqn[2][0].set_color(PURE_GREEN)
+
+        with RegisterFont("Cousine") as fonts:
+            text_1 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "Scaling Factor",
+            )]).scale(0.24).set_color(REANLEA_GREY)
+
+        text_1.move_to(1.7*UP+RIGHT)
+
+        txt_blg_1=MathTex(r"\in", r"\mathbb{R}").set_color(REANLEA_TXT_COL).scale(0.7).move_to(1.35*UP+1.1*RIGHT)
+        txt_blg_1[0].scale(0.65)
+        txt_blg_1[1].set_color(REANLEA_BLUE_SKY)
+
+
+        bez=bend_bezier_arrow_indicate().flip(RIGHT).move_to(1.4*UP+ 0.5*LEFT).scale(.75).rotate(-20*DEGREES).set_color(REANLEA_TXT_COL)
+
+
         # manim -pqh test2.py lbl_test_1
 
         # manim -sqk test2.py lbl_test_1
@@ -1750,6 +1775,9 @@ class lbl_test_1(Scene):
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"
+
+
+
 
 
 
