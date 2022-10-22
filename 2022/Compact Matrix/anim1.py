@@ -879,7 +879,7 @@ class Scene2(Scene):
         d_d_arr_6=DashedDoubleArrow(
             start=line_1.n2p(-2), end=line_1.n2p(-1), dash_length=2.0,stroke_width=2, 
             max_tip_length_to_length_ratio=0.015, buff=10
-        ).shift(0.6*UP).set_color_by_gradient(REANLEA_PURPLE_LIGHTER)
+        ).shift(0.6*UP).set_color_by_gradient(PURE_RED)
 
         d_d_arr_5_lbl=MathTex("x").set_color(REANLEA_YELLOW_GREEN).scale(0.5).next_to(d_d_arr_5, 0.35*UP)
 
@@ -896,10 +896,23 @@ class Scene2(Scene):
 
         vect_5=Arrow(start=line_1.n2p(-2),end=line_1.n2p(0),tip_length=0.25, buff=0).set_color(REANLEA_WARM_BLUE).set_z_index(7)
 
-        vect_6=Arrow(start=line_1.n2p(-2),end=line_1.n2p(1),tip_length=0.25, buff=0).set_color(REANLEA_SAFRON).set_z_index(7)
+        vect_6=Arrow(start=line_1.n2p(-2),end=line_1.n2p(1),tip_length=0.25, buff=0).set_color(REANLEA_AQUA_GREEN).set_z_index(8)
+
+        
+        d_line_4=Line(LEFT, RIGHT, stroke_width=2).set_color(REANLEA_BLUE_LAVENDER).move_to(1.65*UP + 5*RIGHT)
+
+        z1=ValueTracker(0)
+
+        vect_7=Arrow(start=line_1.n2p(0),end=line_1.n2p(3),tip_length=0.25, buff=0).set_color(REANLEA_AQUA_GREEN).set_z_index(8)
 
 
+        vect_7_ref=vect_7.copy()
 
+        vect_7.add_updater(
+            lambda x : x.become(vect_7_ref.copy()).rotate(
+                z1.get_value()*DEGREES, about_point=line_1.n2p(0)
+            )
+        )
 
         
 
@@ -958,21 +971,95 @@ class Scene2(Scene):
         vect_4_lbl_eqn[0].set_color(PURE_GREEN)
         vect_4_lbl_eqn[2][0].set_color(PURE_GREEN)
 
-
-        vect_5_lbl_eqn=MathTex(r"\vec{2}","=",r"2 \cdot \vec{1}").scale(0.85).move_to(line_1.n2p(-1)+ 2.9*UP).set_color(PURE_RED)
+        vect_5_lbl_eqn=MathTex(r"\vec{2}","=",r"2 \cdot \vec{1}").scale(0.85).move_to(UP).set_color(PURE_RED)
         vect_5_lbl_eqn[0].set_color(REANLEA_WARM_BLUE)
         vect_5_lbl_eqn[2][0].set_color(REANLEA_WARM_BLUE)
 
-        vect_6_lbl_eqn=MathTex(r"\vec{3}","=",r"3 \cdot \vec{1}").scale(0.85).move_to(line_1.n2p(-1)+ 2.9*UP).set_color(PURE_RED)
-        
-        vect_6_lbl_eqn[0].set_color(REANLEA_SAFRON)
-        vect_6_lbl_eqn[2][0].set_color(REANLEA_SAFRON)
+        vect_6_lbl_eqn=MathTex(r"\vec{3}","=",r"3 \cdot \vec{1}").scale(0.85).move_to(UP).set_color(PURE_RED)
+        vect_6_lbl_eqn[0].set_color(REANLEA_AQUA_GREEN)
+        vect_6_lbl_eqn[2][0].set_color(REANLEA_AQUA_GREEN)
+
+        eq_3=MathTex(r"\vec{2}","+",r"\vec{3}","=",r"2 \cdot \vec{1}","+",r"3 \cdot \vec{1}").scale(0.85).move_to(.5*UP).set_color(PURE_RED)
+        eq_3[0].set_color(REANLEA_WARM_BLUE)
+        eq_3[2].set_color(REANLEA_AQUA_GREEN)
+        eq_3[4][0].set_color(REANLEA_WARM_BLUE)
+        eq_3[6][0].set_color(REANLEA_AQUA_GREEN)
+
+
+        eq_4=MathTex(r"\vec{2}","+",r"\vec{3}","=",r"2 \cdot \vec{1}","+",r"3 \cdot \vec{1}","=",r"(2+3) \cdot \vec{1}").scale(0.85).set_color(PURE_RED)
+        eq_4[0].set_color(REANLEA_WARM_BLUE)
+        eq_4[2].set_color(REANLEA_AQUA_GREEN)
+        eq_4[4][0].set_color(REANLEA_WARM_BLUE)
+        eq_4[6][0].set_color(REANLEA_AQUA_GREEN)
+        eq_4[8][0].set_color(REANLEA_GREY_DARKER)
+        eq_4[8][4].set_color(REANLEA_GREY_DARKER)
+        eq_4[8][1].set_color(REANLEA_WARM_BLUE)
+        eq_4[8][3].set_color(REANLEA_AQUA_GREEN)
+        eq_4.shift(eq_3[0].get_center() - eq_4[0].get_center())
+
+
+        eq_5=MathTex(r"\vec{2}","+",r"\vec{3}","=",r"2 \cdot \vec{1}","+",r"3 \cdot \vec{1}","=",r"5 \cdot \vec{1}").scale(0.85).set_color(PURE_RED)
+        eq_5[0].set_color(REANLEA_WARM_BLUE)
+        eq_5[2].set_color(REANLEA_AQUA_GREEN)
+        eq_5[4][0].set_color(REANLEA_WARM_BLUE)
+        eq_5[6][0].set_color(REANLEA_AQUA_GREEN)
+        eq_5[8][0].set_color(REANLEA_VIOLET_LIGHTER)
+        eq_5.shift(eq_4[0].get_center() - eq_5[0].get_center())
+
+
+        eq_6=MathTex(r"\vec{2}","+",r"\vec{3}","=",r"2 \cdot \vec{1}","+",r"3 \cdot \vec{1}","=",r"\vec{5}").scale(0.85).set_color(PURE_RED)
+        eq_6[0].set_color(REANLEA_WARM_BLUE)
+        eq_6[2].set_color(REANLEA_AQUA_GREEN)
+        eq_6[4][0].set_color(REANLEA_WARM_BLUE)
+        eq_6[6][0].set_color(REANLEA_AQUA_GREEN)
+        eq_6[8].set_color(REANLEA_VIOLET_LIGHTER)
+        eq_6.shift(eq_5[0].get_center() - eq_6[0].get_center())
+
+
+
+        eq_7=MathTex(r"\vec{5}","=",r"5 \cdot \vec{1}").scale(0.85).set_color(PURE_RED)
+        eq_7[2][0].set_color(REANLEA_VIOLET_LIGHTER)
+        eq_7[0].set_color(REANLEA_VIOLET_LIGHTER)
+        eq_7.move_to(1.5*UP+5*RIGHT)
+
+
+        eq_8=MathTex(r"\vec{2}","+",r"\vec{-3}","=",r"2 \cdot \vec{1}","+",r"(-3) \cdot \vec{1}","=",r"\vec{-1}").scale(0.85).set_color(PURE_RED).move_to(0.5*UP)
+        eq_8[0].set_color(REANLEA_WARM_BLUE)
+        eq_8[2].set_color(REANLEA_AQUA_GREEN)
+        eq_8[4][0].set_color(REANLEA_WARM_BLUE)
+        eq_8[6][0].set_color(REANLEA_AQUA_GREEN)
+        eq_8[8].set_color(REANLEA_VIOLET_LIGHTER)
+        eq_8.shift(eq_5[0].get_center() - eq_6[0].get_center())
+
+
+        eq_9=MathTex(r"\vec{-3}","=",r"(-3) \cdot \vec{1}").scale(0.85).move_to(2*UP+5*RIGHT).set_color(PURE_RED)
+        eq_9[0].set_color(REANLEA_AQUA_GREEN)
+        eq_9[2][0].set_color(REANLEA_AQUA_GREEN)
+
+
+        eq_10=MathTex(r"\vec{-1}","=",r"(-1) \cdot \vec{1}").scale(0.85).set_color(PURE_RED)
+        eq_10[2][0].set_color(REANLEA_VIOLET_LIGHTER)
+        eq_10[0].set_color(REANLEA_VIOLET_LIGHTER)
+        eq_10.move_to(1.25*UP+5*RIGHT)
+
 
 
 
 
 
         # GROUP REGION
+
+        grp_1=VGroup(vect_4_lbl_eqn, text_1,txt_blg_1, bez)
+        grp_2=VGroup(vect_5_lbl_eqn,vect_6_lbl_eqn)
+        grp_3=VGroup(eq_4, vect_4_lbl_eqn)
+        grp_4=VGroup(eq_3,eq_6)
+
+        # EXTRAS
+
+        sr_grp_4=SurroundingRectangle(grp_4, color=REANLEA_WELDON_BLUE, buff=0.25, corner_radius=.125).move_to(0.5*UP)
+
+        sr_eq_8=SurroundingRectangle(eq_8, color=REANLEA_WELDON_BLUE, buff=0.25, corner_radius=.125).move_to(0.5*UP)
+
 
         
         
@@ -1309,29 +1396,104 @@ class Scene2(Scene):
         self.wait(2)
 
         self.play(
-            vect_1.animate.set_opacity(1),
-            Uncreate(vect_4),
-            Uncreate(d_d_arr_5_lbl),
             Uncreate(d_d_arr_5),
+            Unwrite(d_d_arr_5_lbl),
+            Uncreate(d_line_3),
+            Uncreate(vect_4),
             d_d_arr_6.animate.shift(0.9*DOWN)
+        )
+
+        self.play(
+            Uncreate(vect_1),
+            Uncreate(vect_1_lbl),
+            grp_1.animate.shift(3*LEFT+.5*UP)
+        )
+        self.wait()
+        self.play(
+            ReplacementTransform(vect_4_lbl_eqn.copy(), vect_5_lbl_eqn),
+            dot_2.animate.move_to(line_1.n2p(0))
         )
         self.wait(1.5)
 
         self.play(
-            Uncreate(vect_1),
-            Create(vect_5),
-            Write(vect_5_lbl_eqn),
-            FadeOut(vect_1_lbl)
+            Create(vect_5)
+        )
+        self.wait(1.5)
+
+        self.play(
+            vect_5_lbl_eqn.animate.move_to(2.5*UP+5*RIGHT)
+        )
+        self.wait(2)
+
+        self.play(
+            ReplacementTransform(vect_4_lbl_eqn.copy(), vect_6_lbl_eqn),
+            dot_2.animate.move_to(line_1.n2p(1))
+        )
+        self.wait(1.5)
+
+        self.play(
+            Create(vect_6)
+        )
+        self.wait(1.5)
+
+        self.play(
+            vect_6_lbl_eqn.animate.move_to(2*UP+5*RIGHT)
+        )
+        self.wait(2)
+
+        self.play(
+            TransformMatchingShapes(grp_2.copy(), eq_3),
+            vect_6.animate.shift(4*RIGHT),
+            dot_2.animate.move_to(line_1.n2p(3))
+        )
+        self.wait(2)
+
+        self.play(
+            Write(eq_4)
+        )
+        self.wait()
+
+        self.play(
+            ReplacementTransform(eq_4,eq_5)
+        )
+        self.wait()
+
+        self.play(
+            Indicate(vect_4_lbl_eqn),
+            Indicate(eq_5[8])
+        )
+        self.wait()
+        self.play(
+            ReplacementTransform(grp_3.copy(), eq_7)
+        )
+        self.wait()
+        self.play(
+            ReplacementTransform(eq_5,eq_6)
+        )
+        self.play(
+            grp_4.animate.move_to(0.5*UP)
+        )
+        self.play(
+            Create(sr_grp_4)
+        )
+        self.wait()
+
+        self.play(
+            eq_7.animate.shift(0.1*DOWN),
+            Create(d_line_4)
+        )
+        self.add(vect_7)
+        self.play(
+            FadeOut(vect_6)
         )
 
-
-
-       
-
-
-
-
-
+        self.play(
+            z1.animate.set_value(180),
+            dot_2.animate.move_to(line_1.n2p(-3)),
+            ReplacementTransform(grp_4,eq_8),
+            ReplacementTransform(eq_7,eq_10),
+            ReplacementTransform(grp_4,eq_8)
+        )
 
 
 
