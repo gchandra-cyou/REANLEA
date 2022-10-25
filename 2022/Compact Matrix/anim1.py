@@ -1741,9 +1741,10 @@ class Scene3(Scene):
         with RegisterFont("Cousine") as fonts:
             txt_1 = VGroup(*[Text(x, font=fonts[0]) for x in (
                 "Space of Vectors",
-            )]).scale(0.3).set_color(REANLEA_GREY)
+            )]).scale(0.3).set_color(REANLEA_GREY).move_to(1.05*UP+2.55*RIGHT).rotate(-35*DEGREES)
+            
+            
 
-        txt_1.move_to(1.25*UP+2.75*RIGHT).rotate(-35*DEGREES)
 
 
         with RegisterFont("Kalam") as fonts:
@@ -1757,21 +1758,33 @@ class Scene3(Scene):
 
         r_1=MathTex("\mathbb{R}").set_color(PURE_GREEN).scale(0.7).move_to(5.25*RIGHT+0.5*DOWN)
 
-        r_1_copy=MathTex("\mathbb{R}").set_color(PURE_GREEN).scale(0.7).move_to(5.25*RIGHT+0.5*DOWN)
+        r_1_copy=MathTex("\mathbb{R}").set_color(PURE_GREEN).scale(0.7).shift(0.5*RIGHT+ 1.25*UP)
 
-        txt_blg_1_copy=MathTex("\mathbb{R}").set_color(REANLEA_BLUE_SKY).scale(0.7).move_to(5.25*RIGHT+0.5*DOWN)
-
-
+        txt_blg_1_copy=MathTex("\mathbb{R}").set_color(REANLEA_BLUE_SKY).scale(0.7).shift(0.5*RIGHT+.25*DOWN)
 
 
-        # GROUP REGION
+        with RegisterFont("Cousine") as fonts:
+            txt_vs = Text(" - Vector Space", font=fonts[0]).scale(0.3).set_color(PURE_GREEN).next_to(r_1_copy,RIGHT).shift(LEFT)
+            txt_fld= Text("- Scalar Field", font=fonts[0]).scale(0.3).set_color(REANLEA_BLUE_SKY).next_to(txt_blg_1_copy, RIGHT).shift(LEFT)
 
-        grp_1=VGroup(vec_1,txt_1)
+            txt_3 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "each of its points",
+                "represents a vector"
+            )]).scale(0.2).set_color(REANLEA_GREY).arrange_submobjects(.25*DOWN).move_to(1.75*UP+3.75*RIGHT)
 
 
         # INDICATE REGION
 
         sr_txt_2=SurroundingRectangle(txt_2, color=REANLEA_WELDON_BLUE, buff=0.25, corner_radius=0.15).scale(0.75).shift(2.5*UP+RIGHT)
+        sr_bez_1=get_surround_bezier(txt_3).set_color(REANLEA_GREY_DARKER)
+
+        # GROUP REGION
+
+        grp_1=VGroup(vec_1,txt_1, txt_3,sr_bez_1)
+        r_grp=VGroup(r_1_copy,txt_blg_1_copy,l_1)
+
+
+        
 
 
 
@@ -1792,16 +1805,31 @@ class Scene3(Scene):
         self.play(
             Write(txt_1)
         )
-        self.wait()
+        
         self.play(
-            Create(dts),
             Write(r_1),
-            run_time=3
         )
+        
+        self.play(
+            Write(txt_3),
+            Create(dts),
+            run_time=3,
+            lag_ratio=.1
+        )
+        
+        
+        self.play(
+            Create(sr_bez_1),
+            lag_ratio=.95
+        )
+        self.wait()
+
+        
         self.play(
             grp_1.animate.shift(2*RIGHT),
             AddTextLetterByLetter(txt_2[0])
         )
+        
         self.wait(1.35)
         self.play(
             AddTextLetterByLetter(txt_2[1])
@@ -1816,7 +1844,24 @@ class Scene3(Scene):
             Write(sr_txt_2)
         )
         self.play(
-            Write(l_1)
+            TransformMatchingShapes(r_1.copy(),r_1_copy)
+        )
+        self.play(
+            Create(l_1.reverse_direction())
+        )
+        self.play(
+            TransformMatchingShapes(txt_blg_1[1].copy(),txt_blg_1_copy)
+        )
+        self.wait()
+        self.play(
+            r_grp.animate.shift(LEFT)
+        )
+
+        self.play(
+            Write(txt_vs)
+        )
+        self.play(
+            Write(txt_fld)
         )
 
 
