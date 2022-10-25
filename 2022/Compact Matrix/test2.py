@@ -1575,8 +1575,9 @@ class bezier_test(Scene):
         arrow_quadric_bezier_down=ArrowQuadricBezierDown(text=Text("qwerty"))
         under_line_bez_arrow=under_line_bezier_arrow()
         bend_bez_arrow=bend_bezier_arrow().rotate(-30*DEGREES).scale(0.75).set_color(REANLEA_TXT_COL)
+        bend_bezier_arrow_indi=bend_bezier_arrow_indicate().flip(RIGHT).scale(.75).rotate(-20*DEGREES).set_color(REANLEA_TXT_COL)
         
-        grp=VGroup(glowing_circle,stripe,surround_bezier,arrow_cubic_bezier_up,arrow_quadric_bezier_down,under_line_bez_arrow,bend_bez_arrow)
+        grp=VGroup(glowing_circle,stripe,surround_bezier,arrow_cubic_bezier_up,arrow_quadric_bezier_down,under_line_bez_arrow,bend_bez_arrow, bend_bezier_arrow_indi)
         grp.arrange(RIGHT, buff=0.25).scale(0.5)
 
         self.play(
@@ -1769,6 +1770,40 @@ class lbl_test_1(Scene):
 
         # manim -sqk test2.py lbl_test_1
 
+
+
+class ArrangeSumobjectsExample(Scene):
+                def construct(self):
+                    s= VGroup(*[Dot().shift(i*0.1*RIGHT*np.random.uniform(-1,1)+UP*np.random.uniform(-1,1)) for i in range(-15,15)])
+                    s.shift(UP).set_color_by_gradient(REANLEA_BLUE, REANLEA_GREEN_LIGHTER)
+                    s2= s.copy().set_color_by_gradient(REANLEA_ORANGE_DARKER,REANLEA_VIOLET,REANLEA_PURPLE)
+                    s2.arrange_submobjects()
+                    s2.shift(DOWN)
+                    s3= VGroup(*[Dot().shift(i*0.1*RIGHT*np.random.uniform(-6,6)) for i in range(-15,15)])
+                    s3.shift(2*DOWN).set_color_by_gradient(REANLEA_BLUE, PURE_GREEN, REANLEA_GREY_DARKER,REANLEA_VIOLET,REANLEA_AQUA_GREEN)
+                    #self.add(s,s2)
+                    g=VGroup(s,s2, s3)
+                    self.play(Create(g, run_time=4))
+                    self.wait()
+
+
+                    # manim -pqh test2.py ArrangeSumobjectsExample
+
+
+
+class tex_fill(Scene):
+    def construct(self):
+        txt_1=MathTex("\mathbb{R}").set_stroke(color=PURE_RED, width=5)
+        l_1=Line().set_stroke(width=5, color=(REANLEA_AQUA, PURE_RED))
+
+
+        self.play(
+            Write(l_1)
+        )
+
+        self.wait(2)
+
+        # manim -pqh test2.py tex_fill
 
       
 

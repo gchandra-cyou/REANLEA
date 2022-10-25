@@ -1708,13 +1708,70 @@ class Scene3(Scene):
 
         grp_1=VGroup(vect_4_lbl_eqn, text_1,txt_blg_1,bez).shift(3*LEFT+.5*UP)
 
-        self.add(line_grp,sgn_grp, grp_1)
+        prv_grp=VGroup(line_grp,sgn_grp, grp_1)
+
+        self.add(prv_grp)
 
 
         #
         #
         #
 
+
+
+
+
+
+        # MOBJECT REGION
+
+        vec_1= Arrow(start=LEFT,end=RIGHT,tip_length=0.125, max_stroke_width_to_length_ratio=2, buff=0)
+        vec_1.set_color(REANLEA_WARM_BLUE).rotate(55*DEGREES).shift(1.7347*RIGHT)
+
+
+        dts= VGroup(*[Dot().shift(i*0.15*RIGHT*np.random.uniform(-6,6)) for i in range(-15,15)])
+        dts.shift(DOWN).set_color_by_gradient(REANLEA_BLUE, PURE_GREEN, REANLEA_GREY_DARKER,REANLEA_VIOLET,REANLEA_AQUA_GREEN).set_z_index(5)
+
+
+        l_1=Line().rotate(PI/2).set_stroke(width=5, color=(PURE_GREEN,REANLEA_BLUE_SKY)).scale(0.5).shift(0.5*RIGHT+ 0.5*UP)
+        
+
+
+        # TEXT REGION
+
+        with RegisterFont("Cousine") as fonts:
+            txt_1 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "Space of Vectors",
+            )]).scale(0.3).set_color(REANLEA_GREY)
+
+        txt_1.move_to(1.25*UP+2.75*RIGHT).rotate(-35*DEGREES)
+
+
+        with RegisterFont("Kalam") as fonts:
+            txt_2 = VGroup(*[Text(x, font=fonts[0], weight=BOLD) for x in (
+                "I. Vector Addition",
+                "II. Scalar Multiplication"
+            )]).scale(0.5).set_color(REANLEA_GREY).arrange_submobjects(1.5*DOWN).shift(0.5*UP)
+
+            txt_2[1].shift(0.3*RIGHT)#.shift(txt_2[0][0].get_center()-txt_2[1][0].get_center())
+
+
+        r_1=MathTex("\mathbb{R}").set_color(PURE_GREEN).scale(0.7).move_to(5.25*RIGHT+0.5*DOWN)
+
+        r_1_copy=MathTex("\mathbb{R}").set_color(PURE_GREEN).scale(0.7).move_to(5.25*RIGHT+0.5*DOWN)
+
+        txt_blg_1_copy=MathTex("\mathbb{R}").set_color(REANLEA_BLUE_SKY).scale(0.7).move_to(5.25*RIGHT+0.5*DOWN)
+
+
+
+
+        # GROUP REGION
+
+        grp_1=VGroup(vec_1,txt_1)
+
+
+        # INDICATE REGION
+
+        sr_txt_2=SurroundingRectangle(txt_2, color=REANLEA_WELDON_BLUE, buff=0.25, corner_radius=0.15).scale(0.75).shift(2.5*UP+RIGHT)
 
 
 
@@ -1729,8 +1786,43 @@ class Scene3(Scene):
             color=PURE_RED,
             run_time=2
         )
-
+        self.play(
+            Write(vec_1)
+        )
+        self.play(
+            Write(txt_1)
+        )
+        self.wait()
+        self.play(
+            Create(dts),
+            Write(r_1),
+            run_time=3
+        )
+        self.play(
+            grp_1.animate.shift(2*RIGHT),
+            AddTextLetterByLetter(txt_2[0])
+        )
+        self.wait(1.35)
+        self.play(
+            AddTextLetterByLetter(txt_2[1])
+        )
         self.wait(2)
+
+        self.play(
+            txt_2.animate.scale(0.75).shift(2.5*UP+RIGHT)
+        )
+
+        self.play(
+            Write(sr_txt_2)
+        )
+        self.play(
+            Write(l_1)
+        )
+
+
+
+
+        self.wait(4)
 
 
 
