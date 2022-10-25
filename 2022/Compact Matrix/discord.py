@@ -2698,6 +2698,269 @@ class doppler1(Scene):
 
         # manim -pqh discord.py doppler1
 
+
+
+class unfold2(Scene):
+    def construct(self):
+        t = ValueTracker(1)
+
+        def getAnnularSector():
+            newInnerRad = 1.8 * t.get_value()**3
+            arcLength = 2*np.pi*(1.8/newInnerRad) 
+            start = (2*np.pi - arcLength)/2 + 90*DEGREES
+            return AnnularSector(inner_radius=newInnerRad, outer_radius=newInnerRad+0.2, start_angle=start, angle=arcLength).move_to(2*DOWN, aligned_edge=DOWN).set_color(REANLEA_BLUE_LAVENDER)
+        donuts = always_redraw(getAnnularSector)
+
+        self.add(donuts)
+
+        self.wait()
+
+        self.play(t.animate.set_value(10), run_time=5)
+
+
+
+        # manim -pqh discord.py unfold2
+
+
+
+
+
+class PythagoreanIdentity(Scene):
+    def construct(self):
+        title = Text("The Pythagorean Identity").shift(UP)
+        #name = Text("By R E A N L E A")
+        with RegisterFont("Montserrat") as fonts:
+            name=Text("by    R E A N L E A", font=fonts[0])
+            name.set_color_by_gradient(REANLEA_TXT_COL)
+        #name.move_to(.75*LEFT+ 0.2*UP).rotate(20*DEGREES)
+        credit = Text("Inspired by Burkard's (aka Mathologer) Twisted Squares video", font_size=26).next_to(name, DOWN)
+        banner = ManimBanner().next_to(credit, DOWN).scale(0.3)
+        self.play(Write(title), run_time=0.8)
+        self.play(Write(name), run_time=0.8)
+        self.play(Write(credit), banner.create(), runt_time=0.8)
+        self.play(banner.expand())
+        self.play(Unwrite(title), Unwrite(credit, reverse=False), Unwrite(banner), Unwrite(name[0:2]), run_time=0.8)
+        self.play(name[2:].animate.scale(0.5).move_to(5 * RIGHT + 3.5 * DOWN))
+
+        triangle = Polygon(2 * LEFT, 2 * RIGHT, 2 * LEFT + 3 * UP, stroke_color=WHITE, fill_color=REANLEA_BLUE, fill_opacity=1
+        , stroke_width=DEFAULT_STROKE_WIDTH/2).scale(0.5).move_to(ORIGIN)
+        self.play(DrawBorderThenFill(triangle), run_time=0.8)
+        a = MathTex("a").next_to(triangle, direction=LEFT, buff=0.1)
+        b = MathTex("b").next_to(triangle, direction=DOWN, buff=0.08)
+        c = MathTex("c").next_to(Line(triangle.get_corner(DR), triangle.get_corner(UL)).get_center(), direction=UR, buff=0.05)
+        labels = VGroup(a, b, c)
+        self.play(Write(labels))
+
+        square = Square(side_length=0.2, stroke_width=DEFAULT_STROKE_WIDTH/2).next_to(triangle.get_corner(DL), UR, buff=0)
+        self.play(FadeIn(square), run_time=0.6)
+        self.play(FadeOut(square), run_time=0.4)
+
+        square = Square(side_length=3+4, fill_color=REANLEA_BLUE_LAVENDER, fill_opacity=1).scale(0.5)
+        self.play(FadeOut(triangle), Unwrite(labels))
+        self.play(Write(square))
+        self.play(square.animate.move_to(2.5*RIGHT))
+
+        triangles = [triangle.copy() for i in range(0, 8)]
+        time = 0.3
+        self.play(Write(triangles[0].next_to(square.get_corner(DL), UR, buff=0)), run_time=time)
+        self.play(Write(triangles[1].rotate(-PI/2).next_to(square.get_corner(UL), DR, buff=0)), run_time=time)
+        self.play(Write(triangles[2].rotate(PI).next_to(square.get_corner(UR), DL, buff=0)), run_time=time)
+        self.play(Write(triangles[3].rotate(PI/2).next_to(square.get_corner(DR), UL, buff=0)), run_time=time)
+
+        c_1 = MathTex("c").next_to(Line(triangles[0].get_corner(DR), triangles[0].get_corner(UL)).get_center(), direction=UR, buff=0.05)
+        c_2 = MathTex("c").next_to(Line(triangles[1].get_corner(DL), triangles[1].get_corner(UR)).get_center(), direction=DR, buff=0.05)
+        labels = VGroup(c_1, c_2)
+        self.play(Write(labels))
+        c2 = MathTex(r"c^2").move_to(square.get_center())
+        self.play(ReplacementTransform(labels, c2))
+        self.add_foreground_mobject(c2)
+
+        square2 = square.copy()
+        dupelicate = VGroup(square2, triangles[4].become(triangles[0]), triangles[5].become(triangles[1]), triangles[6].become(triangles[2])
+        , triangles[7].become(triangles[3]))
+        self.play(dupelicate.animate.move_to(2.5*LEFT))
+        equal = MathTex("=")
+        self.play(Write(equal))
+
+        self.play(triangles[7].animate.move_to(Line(triangles[5].get_corner(DL), triangles[5].get_corner(UR)).get_center()))
+        self.play(triangles[4].animate.next_to(square2.get_corner(DR), UL, buff=0))
+        self.play(triangles[6].animate.next_to(square2.get_corner(DR), UL, buff=0))
+        self.wait(0.5)
+
+        a_1 = MathTex("a").next_to(triangles[7], direction=DOWN, buff=0.1)
+        a_2 = MathTex("a").next_to(triangles[4], direction=LEFT, buff=0.1)
+        b_1 = MathTex("b").next_to(triangles[7], direction=RIGHT, buff=0.1)
+        b_2 = MathTex("b").next_to(triangles[6], direction=UP, buff=0.1)
+        labels = VGroup(a_1, a_2, b_1, b_2)
+        self.play(Write(labels))
+        self.wait(0.5)
+
+        c_square = Difference(square, Union(triangles[0], triangles[1], triangles[2], triangles[3]), fill_color=REANLEA_BLUE_LAVENDER, fill_opacity=1)
+        a_square = Square(side_length=3, fill_color=REANLEA_BLUE_LAVENDER, fill_opacity=1).scale(0.5).next_to(square2.get_corner(DL), UR, buff=0)
+        b_square = Square(side_length=4, fill_color=REANLEA_BLUE_LAVENDER, fill_opacity=1).scale(0.5).next_to(square2.get_corner(UR), DL, buff=0)
+        c_square.set_stroke(width=DEFAULT_STROKE_WIDTH / 2)
+        a_square.set_stroke(width=DEFAULT_STROKE_WIDTH / 2)
+        b_square.set_stroke(width=DEFAULT_STROKE_WIDTH / 2)
+
+        a2 = MathTex(r"a^2").move_to(a_square.get_center())
+        b2 = MathTex(r"b^2").move_to(b_square.get_center())
+        new_labels = VGroup(a2, b2)
+        self.play(ReplacementTransform(labels, new_labels))
+        self.add_foreground_mobject(a2)
+        self.add_foreground_mobject(b2)
+        self.wait(0.5)
+
+        square.set_fill(opacity=0)
+        self.add(c_square)
+        square2.set_fill(opacity=0)
+        left_over = VGroup(a_square, b_square)
+        self.add(left_over)
+        
+        triangles_group = VGroup(triangles[0])
+        for i in range(1, 8):
+            triangles_group.add(triangles[i])
+        self.play(Unwrite(triangles_group), Unwrite(square), Unwrite(square2))
+        self.play(c_square.animate.set_stroke(width=DEFAULT_STROKE_WIDTH), a_square.animate.set_stroke(width=DEFAULT_STROKE_WIDTH), 
+        b_square.animate.set_stroke(width=DEFAULT_STROKE_WIDTH))
+
+        identity = MathTex("a^2", "+", "b^2", "=", "c^2").move_to(3.5 * DOWN)
+        self.play(GrowFromCenter(triangle),
+        c_square.animate.move_to(ORIGIN).shift(0.75 * RIGHT + 1 * UP),
+        a_square.animate.next_to(triangle, LEFT, buff=0),
+        b_square.animate.next_to(triangle, DOWN, buff=0),
+        ReplacementTransform(a2, identity[0]),
+        ReplacementTransform(b2, identity[2]),
+        ReplacementTransform(equal, identity[3]),
+        ReplacementTransform(c2, identity[4]),
+        GrowFromCenter(identity[1]))
+
+        a = MathTex("a").next_to(triangle, direction=LEFT, buff=0.1)
+        b = MathTex("b").next_to(triangle, direction=DOWN, buff=0.08)
+        c = MathTex("c").next_to(Line(triangle.get_corner(DR), triangle.get_corner(UL)).get_center(), direction=UR, buff=0.05)
+        labels = VGroup(a, b, c)
+        self.play(Write(labels))
+        square = Square(side_length=0.2, stroke_width=DEFAULT_STROKE_WIDTH/2).next_to(triangle.get_corner(DL), UR, buff=0)
+        self.play(FadeIn(square), run_time=0.6)
+        
+        self.wait()
+
+
+
+        # manim -pqh discord.py PythagoreanIdentity
+
+
+
+
+
+class TwistedSquares(Scene):
+    def construct(self):
+        title = Text("TWISTGONS").shift(UP)
+        #name = Text("By R E A N L E A")
+        with RegisterFont("Montserrat") as fonts:
+            name=Text("by    R E A N L E A", font=fonts[0])
+            name.set_color_by_gradient(REANLEA_TXT_COL)
+        credit = Text("Inspired by Burkard's (aka Mathologer) Twisted Squares video", font_size=26).next_to(name, DOWN)
+        banner = ManimBanner().next_to(credit, DOWN).scale(0.3)
+        self.play(Write(title), run_time=0.8)
+        self.play(Write(name), run_time=0.8)
+        self.play(Write(credit), banner.create(), runt_time=0.8)
+        self.play(banner.expand())
+        self.play(Unwrite(title), Unwrite(credit, reverse=False), Unwrite(banner), Unwrite(name[0:2]), run_time=0.8)
+        self.play(name[2:].animate.scale(0.3).move_to(5 * RIGHT + 3.5 * DOWN))
+
+        color_of_polygons = WHITE
+        stroke_width_of_polygons = 1
+        fill_opacity_of_polygons = 0
+        fix_angle = PI / 4
+        size = 4
+        max_num_of_polys = 100
+        max_num_of_vertices = 17
+
+        percent_label = Variable(0.5, label=Text("Percent"), num_decimal_places=5).move_to(5.5*LEFT + UP).scale(0.5)
+        percent_label.label.set_color(GREEN)
+        num_of_vertices_label = Variable(4, label=Text("#Sides"), var_type=Integer).move_to(5.5 * LEFT).scale(0.5)
+        num_of_vertices_label.label.set_color(BLUE)
+        num_of_polygons_label = Variable(16, label=Text("#Polygons"), var_type=Integer).move_to(5.5 * LEFT + DOWN).scale(0.5)
+        num_of_polygons_label.label.set_color(RED)
+
+        percent_tracker = percent_label.tracker
+        num_of_vertices_tracker = num_of_vertices_label.tracker
+        num_of_polygons_tracker = num_of_polygons_label.tracker
+
+        def np_array_to_list(np_array):
+            """Turns a np array of lists into a list of lists, it's a temporary fix!"""
+            result = []
+            for i in np_array:
+                new_i = []
+                for j in i:
+                    new_i.append(j)
+                result.append(new_i)
+            return result
+
+        def updater(mobj):
+            p = int(num_of_polygons_tracker.get_value())
+            v = int(num_of_vertices_tracker.get_value())
+            x = percent_tracker.get_value()
+
+            polygons[0].become(RegularPolygon(v, color=color_of_polygons, stroke_width=stroke_width_of_polygons,
+                                                fill_opacity=fill_opacity_of_polygons).rotate(fix_angle).scale(size))
+            vertices_of_polygons[0][:v] = np_array_to_list(polygons[0].get_vertices())
+            for i in range(1, p):
+                for j in range(v):
+                    vertices_of_polygons[i][j] = [(1-x) * vertices_of_polygons[i-1][j][k] + x * vertices_of_polygons[i-1][(j+1) % v][k]
+                                                  for k in range(3)]
+
+                polygons[i].become(Polygon(*vertices_of_polygons[i][:v], color=color_of_polygons, stroke_width=stroke_width_of_polygons,
+                                       fill_opacity=fill_opacity_of_polygons))
+            for k in range(p, max_num_of_polys):
+                polygons[k].become(Square(side_length=0))
+            mobj.become(VGroup(*polygons))
+
+
+        # a list of lists, vertices_of_polygons[i] is the ith polygon's list of vertices while vertices_of_polygons[i][j] is its jth vertix
+        vertices_of_polygons = [list(range(max_num_of_vertices)) for i in range(max_num_of_polys)]
+        polygons = [Square() for i in range(max_num_of_polys)]
+
+        group = VGroup(*polygons).add_updater(updater)
+        self.play(DrawBorderThenFill(group), run_time=1.5)
+        self.play(Write(percent_label), run_time=0.7)
+        self.play(Write(num_of_vertices_label), run_time=0.6)
+        self.play(Write(num_of_polygons_label), run_time=0.5)
+
+        self.play(percent_tracker.animate.set_value(0.001), num_of_polygons_tracker.animate.set_value(max_num_of_polys), run_time=3)
+        self.play(percent_tracker.animate.set_value(0.5), num_of_polygons_tracker.animate.set_value(16), run_time=3)
+        texts = Text("But wait, there is more!!!", gradient=[RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE]).to_edge(UP).shift(0.1* UP)
+        self.play(Write(texts))
+        self.play(Unwrite(texts), num_of_polygons_tracker.animate.set_value(0))
+
+        fix_angle = 0
+        for i in range(3, 7):
+            if i != 4:
+                num_of_polygons_tracker.set_value(16)
+                num_of_vertices_tracker.set_value(i)
+                self.play(DrawBorderThenFill(group))
+                self.wait(0.5)
+                self.play(percent_tracker.animate.set_value(0.001), num_of_polygons_tracker.animate.set_value(max_num_of_polys), run_time=3)
+                self.play(percent_tracker.animate.set_value(0.5), num_of_polygons_tracker.animate.set_value(0), run_time=3)
+                self.wait(0.5)
+
+        texts = Text("It's time to be faster...", gradient=[RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE])
+        self.play(Write(texts), run_time=0.6)
+        self.play(Unwrite(texts), run_time=0.5)
+        num_of_polygons_tracker.set_value(max_num_of_polys)
+        for i in range(7, 18):
+            percent_tracker.set_value(0.5)
+            num_of_vertices_tracker.set_value(i)
+            self.play(DrawBorderThenFill(group), run_time=1.8)
+            self.play(percent_tracker.animate.set_value(0.001), run_time=1.8)
+            self.wait(0.25)
+
+        self.wait()
+
+
+        # manim -pqh discord.py TwistedSquares
+
+
 ###################################################################################################################
 
 # NOTE :-
