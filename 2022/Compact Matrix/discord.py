@@ -2961,6 +2961,33 @@ class TwistedSquares(Scene):
         # manim -pqh discord.py TwistedSquares
 
 
+
+myTexTemplate = TexTemplate(
+                    tex_compiler="xelatex",
+                    output_format='.xdv',
+                    )
+myTexTemplate.add_to_preamble(r"\usepackage{fontspec}")
+
+MathTex.set_default(tex_template=myTexTemplate) 
+Tex.set_default(tex_template=myTexTemplate) 
+
+class tedxnitjalandhar(Scene):
+    def construct(self):
+        text1= Tex(r"\fontspec{arialbd.ttf}TEDx \fontspec{arial.ttf}NIT Jalandhar").scale(1.2).shift(2*UP)
+        text2 = Tex(r"\fontspec{arial.ttf}Independently organized TED event").set_color("#DA291C")
+
+        
+        self.play(Write(text1))
+        self.play(text1[0][3].animate.shift(0.1*UP))
+        self.play(text1[0][:4].animate.set_color("#DA291C"))
+        self.play(Write(text2))
+        
+        self.wait(2)
+
+
+        # manim -pqh discord.py tedxnitjalandhar
+
+
 ###################################################################################################################
 
 # NOTE :-
