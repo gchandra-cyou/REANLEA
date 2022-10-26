@@ -1786,12 +1786,93 @@ class Scene3(Scene):
         with RegisterFont("Cousine") as fonts:
             fld_dfn_tx_1 = VGroup(*[Text(x, font=fonts[0]) for x in (
                 "A Field",
-                "is a set, together with two laws of composition"
+                "is a set, together with two laws of composition :"
             )]).scale(0.35)
+
+            fld_dfn_tx_2 = Text(" called addition : ", font=fonts[0]).scale(0.35)
+
+            fld_dfn_tx_3 = Text(" called multiplication : ", font=fonts[0]).scale(0.35)
+
+            fld_dfn_4 = Text(", which satisfies the following axioms : ", font=fonts[0]).scale(0.35).to_edge(edge=LEFT, buff=2).shift(0.5*UP)
+
+            fld_dfn_tx_5 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "I. Addition makes",
+                "into an abelian group",
+                " Its Identity element is denoted by"
+            )]).scale(0.35)
+
+            fld_dfn_tx_6 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "II. Multiplication is Commutative, and it makes",
+                "the set of all non-zero elements of",
+                "into an abelian group.",
+                "Its Identity element is denoted by"
+            )]).scale(0.35)
+
+            fld_dfn_tx_7 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "III. DISTRIBUTIVE LAW :",
+                
+            )]).scale(0.35).to_edge(edge=LEFT, buff=2.25).shift(2.05*DOWN)
+
+
 
         fld_dfn_mtx_1=MathTex(r"(F,+,\cdot)").scale(0.65)
 
-        fld_dfn_1=VGroup(fld_dfn_tx_1[0],fld_dfn_mtx_1,fld_dfn_tx_1[1]).arrange(RIGHT,buff=0.2).move_to(2*UP+2*LEFT)
+        fld_dfn_1=VGroup(fld_dfn_tx_1[0],fld_dfn_mtx_1,fld_dfn_tx_1[1]).arrange(RIGHT,buff=0.2).to_edge(edge=LEFT).shift(2*UP)#.move_to(2*UP+2*LEFT)
+        
+
+
+        fld_dfn_mtx_2_1=MathTex(r"\diamondsuit", r"F \times F", r"\xrightarrow{+}","  F ",",").scale(0.65)
+        fld_dfn_mtx_2_1[0].scale(0.65).shift(.2*LEFT)
+
+        fld_dfn_mtx_2_2=MathTex("a",",","b",r"\rightsquigarrow","a","+","b").scale(0.65)
+
+        fld_dfn_2=VGroup(fld_dfn_mtx_2_1, fld_dfn_tx_2,fld_dfn_mtx_2_2).arrange(RIGHT,buff=0.2).to_edge(edge=LEFT, buff=2).shift(1.5*UP)
+        fld_dfn_2[1].shift(0.05*DOWN)
+        fld_dfn_2[2].shift(0.05*DOWN)
+
+
+        fld_dfn_mtx_3_1=MathTex(r"\diamondsuit", r"F \times F", r"\xrightarrow{\cdot}","  F ",",").scale(0.65)
+        fld_dfn_mtx_3_1[0].scale(0.65).shift(.2*LEFT)
+
+        fld_dfn_mtx_3_2=MathTex("a",",","b",r"\rightsquigarrow","a",r"\cdot","b").scale(0.65)
+
+        fld_dfn_3=VGroup(fld_dfn_mtx_3_1, fld_dfn_tx_3,fld_dfn_mtx_3_2).arrange(RIGHT,buff=0.2).to_edge(edge=LEFT, buff=2).shift(UP)
+        fld_dfn_3[1].shift(0.05*DOWN)
+        fld_dfn_3[2].shift(0.05*DOWN)
+
+
+        fld_dfn_mtx_5=MathTex("F",r"(F,+).","0.").scale(0.65)
+        fld_dfn_5_1=VGroup(fld_dfn_tx_5[0],fld_dfn_mtx_5[0],fld_dfn_tx_5[1],fld_dfn_mtx_5[1]).arrange(RIGHT, buff=0.2).to_edge(edge=LEFT, buff=2.5)
+        fld_dfn_5_1[1].shift(0.05*UP)
+        fld_dfn_5_1[3].shift(0.05*UP)
+        fld_dfn_5_2=VGroup(fld_dfn_tx_5[2],fld_dfn_mtx_5[2]).arrange(RIGHT, buff=0.2).to_edge(edge=LEFT, buff=2.9).shift(.35*DOWN)
+        fld_dfn_5_2[1].shift(0.05*UP)
+        fld_dfn_5=VGroup(fld_dfn_5_1,fld_dfn_5_2)
+
+
+        fld_dfn_mtx_6=MathTex(r"(F^{\times},\cdot),","F","1.").scale(0.65)
+
+        fld_dfn_6_1=VGroup(fld_dfn_tx_6[0],fld_dfn_mtx_6[0]).arrange(RIGHT, buff=0.2).to_edge(edge=LEFT, buff=2.375).shift(.85*DOWN)
+        fld_dfn_6_1[1].shift(0.05*UP)
+        fld_dfn_6_2=VGroup(fld_dfn_tx_6[1],fld_dfn_mtx_6[1],fld_dfn_tx_6[2]).arrange(RIGHT, buff=0.2).to_edge(edge=LEFT, buff=2.95).shift(1.2*DOWN)
+        fld_dfn_6_2[1].shift(0.05*UP)
+        fld_dfn_6_3=VGroup(fld_dfn_tx_6[3],fld_dfn_mtx_6[2]).arrange(RIGHT, buff=0.2).to_edge(edge=LEFT, buff=2.95).shift(1.55*DOWN)
+        fld_dfn_6_3[1].shift(0.05*UP)
+
+        fld_dfn_6=VGroup(fld_dfn_6_1, fld_dfn_6_2,fld_dfn_6_3)
+
+
+        fld_dfn_mtx_7=MathTex(r"a \cdot (b +c)","=",r"a \cdot b", "+", r"a \cdot c", ",",r"\forall", "a",",","b",",","c","\in F").scale(0.65).to_edge(edge=LEFT, buff=2.95).shift(2.4*DOWN)
+        fld_dfn_mtx_7[6:].shift(0.35*RIGHT)
+        fld_dfn_mtx_7[7:].shift(0.1*RIGHT)
+
+        fld_dfn_7=VGroup(fld_dfn_tx_7,fld_dfn_mtx_7)
+        
+
+
+
+        
+
 
 
 
@@ -1817,6 +1898,8 @@ class Scene3(Scene):
         op_grp=VGroup(op_grp_1,op_grp_2)
 
         fld_grp=VGroup(txt_4,stripe_1).move_to(3.25*UP)
+
+        fld_dfn=VGroup(fld_dfn_1,fld_dfn_2,fld_dfn_3,fld_dfn_4,fld_dfn_5,fld_dfn_6,fld_dfn_7).shift(1.5*RIGHT)
 
 
         
@@ -1910,8 +1993,9 @@ class Scene3(Scene):
             Create(stripe_1)
         )
         self.play(
-            Write(fld_dfn_1)
+            Write(fld_dfn)
         )
+        
     
         
         
