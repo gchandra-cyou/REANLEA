@@ -50,6 +50,7 @@ from PIL import Image
 from random import choice, seed
 from random import random, seed
 from enum import Enum
+from scipy.stats import norm, gamma
 
 
 config.background_color= REANLEA_BACKGROUND_COLOR
@@ -2986,6 +2987,93 @@ class tedxnitjalandhar(Scene):
 
 
         # manim -pqh discord.py tedxnitjalandhar
+
+
+
+class alphaGradient(Scene):
+    def construct(self):
+        
+        imgsize = (100, 1) #The size of the image
+        image = Image.new('RGBA', imgsize) #Create the image
+
+        (r,g,b) = color_to_int_rgb( YELLOW )
+
+        dist = norm(loc = 0.5, scale = .1)
+        peak = dist.pdf(0.5)
+
+        for xpix in range(imgsize[0]):
+            x = xpix/imgsize[0]
+            a = 255 * (dist.pdf(x)/peak)
+            #Place the pixel        
+            image.putpixel((xpix, 0), (int(r), int(g), int(b), int(a)))  
+              
+        distBar = ImageMobject(image)
+        distBar.stretch_to_fit_width(10).stretch_to_fit_height(2)        
+        self.add(distBar.shift(1*DOWN))
+        ax = Axes(x_range=[0,1,.1],y_range=[0,peak],x_length=10,y_length=2).move_to(distBar.get_left(),LEFT)
+        distGraph = ax.plot(dist.pdf).set_color(BLUE)
+        self.add(distGraph) 
+        self.wait(2)  
+
+        (r,g,b) = color_to_int_rgb( "#ff0000" )
+
+        dist = gamma(a=1.99)
+        peak = 0.4
+
+        for xpix in range(imgsize[0]):
+            x = xpix/imgsize[0]*8
+            a = 255 * (dist.pdf(x)/peak)
+            #Place the pixel        
+            image.putpixel((xpix, 0), (int(r), int(g), int(b), int(a)))  
+              
+        distBar2 = ImageMobject(image)
+        distBar2.stretch_to_fit_width(10).stretch_to_fit_height(2)        
+        self.add(distBar2.shift(1.5*UP))
+        ax2 = Axes(x_range=[0,8,1],y_range=[0,peak],x_length=10,y_length=2).move_to(distBar2.get_left(),LEFT)
+        distGraph2 = ax2.plot(dist.pdf).set_color(BLUE)
+        self.add(distGraph2) 
+        self.wait(2) 
+
+
+        # manim -pqh discord.py alphaGradient
+
+
+
+class imgrad(Scene):
+    def construct(self):
+        
+        imgsize = (100, 100) #The size of the image
+
+        image = Image.new('RGB', imgsize) #Create the image
+
+        innerColor = [0, 255, 0] #Color at the center
+        outerColor = [0, 0, 0] #Color at the corners
+
+        def gradient(t: float) -> float:
+            return (1-math.erf((t-30)/10))/2
+
+        for y in range(imgsize[1]):
+            for x in range(imgsize[0]):
+
+                #Find the distance to the center
+                distanceToCenter = gradient(math.sqrt((x - imgsize[0]/2) ** 2 + (y - imgsize[1]/2) ** 2))
+
+                #Calculate r, g, and b values
+                r = innerColor[0] * distanceToCenter + outerColor[0] * (1 - distanceToCenter)
+                g = innerColor[1] * distanceToCenter + outerColor[1] * (1 - distanceToCenter)
+                b = innerColor[2] * distanceToCenter + outerColor[2] * (1 - distanceToCenter)
+
+                #Place the pixel        
+                image.putpixel((x, y), (int(r), int(g), int(b)))  
+              
+        bgGlow = ImageMobject(image)
+        bgGlow.height = 7        
+        self.add(bgGlow)
+        self.wait(2)
+
+
+        # manim -pqh discord.py imgrad
+
 
 
 ###################################################################################################################

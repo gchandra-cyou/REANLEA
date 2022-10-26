@@ -1878,9 +1878,6 @@ class Scene3(Scene):
 
 
 
-
-
-
         # manim -pqh anim1.py Scene3
 
         # manim -pql anim1.py Scene3
