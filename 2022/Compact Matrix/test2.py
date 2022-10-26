@@ -1793,17 +1793,37 @@ class ArrangeSumobjectsExample(Scene):
 
 class tex_fill(Scene):
     def construct(self):
-        txt_1=MathTex("\mathbb{R}").set_stroke(color=PURE_RED, width=5)
-        l_1=Line().set_stroke(width=5, color=(REANLEA_AQUA, PURE_RED))
+
+        with RegisterFont("Merienda One") as fonts:
+            txt_4=Text("F i e l d", font=fonts[0]).scale(0.65).set_color(REANLEA_TXT_COL).move_to(5.5*LEFT+3.35*UP)
+
+        stripe_1=get_stripe(factor=0.1, buff_max=1.75).move_to(5.35*LEFT+3*UP)
+
 
 
         self.play(
-            Write(l_1)
+            Write(txt_4)
+        )
+        self.play(
+            Write(stripe_1)
         )
 
         self.wait(2)
 
         # manim -pqh test2.py tex_fill
+
+        # manim -sqk test2.py tex_fill
+
+
+
+###################################################################################################################
+
+
+# Changing FONTS : import any font from Google
+# some of my fav fonts: Cinzel,Kalam,Prata,Kaushan Script,Cormorant, Handlee,Monoton, Bad Script, Reenie Beanie, 
+# Poiret One,Merienda,Julius Sans One,Merienda One,Cinzel Decorative, Montserrat, Cousine
+# Marcellus SC,Contrail One,Thasadith,Spectral SC,Dongle,Cormorant SC,Comfortaa, Josefin Sans (LOVE), Fuzzy Bubbles
+
 
       
 

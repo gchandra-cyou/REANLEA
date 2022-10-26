@@ -1724,6 +1724,7 @@ class Scene3(Scene):
 
         # MOBJECT REGION
 
+
         vec_1= Arrow(start=LEFT,end=RIGHT,tip_length=0.125, max_stroke_width_to_length_ratio=2, buff=0)
         vec_1.set_color(REANLEA_WARM_BLUE).rotate(55*DEGREES).shift(1.7347*RIGHT)
 
@@ -1733,6 +1734,8 @@ class Scene3(Scene):
 
 
         l_1=Line().rotate(PI/2).set_stroke(width=5, color=(PURE_GREEN,REANLEA_BLUE_SKY)).scale(0.5).shift(0.5*RIGHT+ 0.5*UP)
+
+        stripe_1=get_stripe(factor=0.1, buff_max=1.75).move_to(5.35*LEFT+3*UP)
         
 
 
@@ -1772,6 +1775,29 @@ class Scene3(Scene):
                 "represents a vector"
             )]).scale(0.2).set_color(REANLEA_GREY).arrange_submobjects(.25*DOWN).move_to(1.75*UP+3.75*RIGHT)
 
+        
+        with RegisterFont("Merienda One") as fonts:
+            txt_4=Text("F i e l d", font=fonts[0]).scale(0.65).set_color(REANLEA_TXT_COL).move_to(5.5*LEFT+3.35*UP)
+
+        
+
+
+
+        with RegisterFont("Cousine") as fonts:
+            fld_dfn_tx_1 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "A Field",
+                "is a set, together with two laws of composition"
+            )]).scale(0.35)
+
+        fld_dfn_mtx_1=MathTex(r"(F,+,\cdot)").scale(0.65)
+
+        fld_dfn_1=VGroup(fld_dfn_tx_1[0],fld_dfn_mtx_1,fld_dfn_tx_1[1]).arrange(RIGHT,buff=0.2).move_to(2*UP+2*LEFT)
+
+
+
+
+
+
 
         # INDICATE REGION
 
@@ -1780,8 +1806,17 @@ class Scene3(Scene):
 
         # GROUP REGION
 
-        grp_1=VGroup(vec_1,txt_1, txt_3,sr_bez_1)
+        grp_2=VGroup(vec_1,txt_1, txt_3,sr_bez_1)
         r_grp=VGroup(r_1_copy,txt_blg_1_copy,l_1)
+
+        op_grp_1=VGroup(
+            line_grp,grp_1,sgn_pos_1,sgn_neg_1,vec_1,txt_1, 
+            txt_3,txt_2,txt_vs,txt_fld, r_1,r_1_copy,txt_blg_1_copy,dts
+        )
+        op_grp_2=VGroup(sgn_grp,sr_bez_1,sr_txt_2,l_1)
+        op_grp=VGroup(op_grp_1,op_grp_2)
+
+        fld_grp=VGroup(txt_4,stripe_1).move_to(3.25*UP)
 
 
         
@@ -1826,7 +1861,7 @@ class Scene3(Scene):
 
         
         self.play(
-            grp_1.animate.shift(2*RIGHT),
+            grp_2.animate.shift(2*RIGHT),
             AddTextLetterByLetter(txt_2[0])
         )
         
@@ -1863,6 +1898,24 @@ class Scene3(Scene):
         self.play(
             Write(txt_fld)
         )
+        self.wait(2)
+
+        self.play(
+            FadeOut(op_grp)
+        )
+        self.play(
+            AddTextLetterByLetter(txt_4)
+        )
+        self.play(
+            Create(stripe_1)
+        )
+        self.play(
+            Write(fld_dfn_1)
+        )
+    
+        
+        
+        
 
 
 
