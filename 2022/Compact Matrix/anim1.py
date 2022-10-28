@@ -1984,7 +1984,8 @@ class Scene3(Scene):
         self.wait(2)
 
         self.play(
-            FadeOut(op_grp)
+            FadeOut(op_grp),
+            run_time=3
         )
         self.play(
             AddTextLetterByLetter(txt_4)
@@ -1993,7 +1994,8 @@ class Scene3(Scene):
             Create(stripe_1)
         )
         self.play(
-            Write(fld_dfn)
+            Write(fld_dfn),
+            run_time=6
         )
         
     
@@ -2022,6 +2024,8 @@ class Scene3(Scene):
         # manim -sqk anim1.py Scene3
 
         # manim -sql anim1.py Scene3
+
+        # manim -pqh -r 1080,1920 anim1.py Scene3
 
 
 
