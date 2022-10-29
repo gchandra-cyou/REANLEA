@@ -2159,11 +2159,12 @@ class Scene3(Scene):
 
         self.wait(2)
 
+
+
+        grp_lst=VGroup(txt_4, stripe_1, fld_dfn,fld_exp)
+
         self.play(
-            FadeOut(txt_4),
-            FadeOut(stripe_1),
-            FadeOut(fld_dfn),
-            FadeOut(fld_exp)
+            FadeOut(grp_lst)
         )
         self.play(
             Write(txt_5)
@@ -2173,6 +2174,14 @@ class Scene3(Scene):
         )
         self.play(
             Write(vsp_dfn)
+        )
+        self.wait(4)
+
+        grp_lst_2=VGroup(vsp_dfn,txt_5, stripe_2)
+
+
+        self.play(
+            TransformMatchingShapes(grp_lst_2,op_grp)
         )
 
         
