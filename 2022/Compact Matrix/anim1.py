@@ -636,6 +636,9 @@ class Scene1(Scene):
             Transform(vect_1_lbl,vect_1_lbl_vec),
             Transform(txt_2,txt_2_vect)
         )
+        
+
+
 
 
 
@@ -1736,6 +1739,8 @@ class Scene3(Scene):
         l_1=Line().rotate(PI/2).set_stroke(width=5, color=(PURE_GREEN,REANLEA_BLUE_SKY)).scale(0.5).shift(0.5*RIGHT+ 0.5*UP)
 
         stripe_1=get_stripe(factor=0.1, buff_max=1.75).move_to(5.35*LEFT+3*UP)
+
+        stripe_2=get_stripe(factor=0.1, buff_max=3).move_to(3*UP+.2*RIGHT)
         
 
 
@@ -1778,6 +1783,8 @@ class Scene3(Scene):
         
         with RegisterFont("Merienda One") as fonts:
             txt_4=Text("F i e l d", font=fonts[0]).scale(0.65).set_color(REANLEA_TXT_COL).move_to(5.5*LEFT+3.35*UP)
+
+            txt_5=Text("Vector Space", font=fonts[0]).scale(0.65).set_color(REANLEA_TXT_COL).move_to(3.35*UP)
 
         
 
@@ -1869,6 +1876,150 @@ class Scene3(Scene):
         fld_dfn_7=VGroup(fld_dfn_tx_7,fld_dfn_mtx_7)
         
 
+        fld_exp_1=MathTex(r"(\mathbb{R},+,\cdot)").set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_AQUA_GREEN,REANLEA_WARM_BLUE)
+        with RegisterFont("Pacifico") as fonts:
+            fld_exp_2=Text(" is a Field", font=fonts[0]).scale(0.65).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER).move_to(5.5*LEFT+3.35*UP)
+
+        fld_exp=VGroup(fld_exp_1,fld_exp_2).arrange(RIGHT, buff=0.2).shift(2.25*DOWN).scale(1.5)
+
+
+
+
+
+
+            # vector space definition
+
+        with RegisterFont("Cousine") as fonts:
+            vsp_dfn_tx_1 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "A Vector Space",
+                "over a field",
+                "is a set, together with two laws of composition :"
+            )]).scale(0.35)
+
+            vsp_dfn_tx_2 = Text(", called addition : ", font=fonts[0]).scale(0.35)
+
+            vsp_dfn_tx_3 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                ", called scalar multiplication by",
+                "elements of a field: "
+            )]).scale(0.35)
+
+            vsp_dfn_4 = Text(", which satisfies the following axioms : ", font=fonts[0]).scale(0.35).to_edge(edge=LEFT, buff=2.5).shift(0.1*DOWN)
+
+            vsp_dfn_tx_5 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "I. Addition makes",
+                "into an abelian group",
+                ", with Identity denoted by"
+            )]).scale(0.35)
+
+            vsp_dfn_tx_6 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "II.",
+                
+            )]).scale(0.35).to_edge(edge=LEFT, buff=2.25)
+
+            vsp_dfn_tx_7 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "III. ASSOCIATIVE LAW :",
+                
+            )]).scale(0.35)
+
+
+            vsp_dfn_tx_8 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "IV. DISTRIBUTIVE LAW :",
+                "and"  
+            )]).scale(0.35)
+
+
+
+        vsp_dfn_mtx_1=MathTex("V", "F").scale(0.65)
+
+        vsp_dfn_1=VGroup(vsp_dfn_tx_1[0],vsp_dfn_mtx_1[0],vsp_dfn_tx_1[1],vsp_dfn_mtx_1[1],vsp_dfn_tx_1[2]).arrange(RIGHT,buff=0.2).to_edge(edge=LEFT, buff=.5).shift(2*UP)
+        vsp_dfn_1[1].shift(0.05*UP)
+        vsp_dfn_1[3].shift(0.05*UP)
+        
+
+        vsp_dfn_mtx_2_1=MathTex(r"\diamondsuit", r"V \times V", r"\xrightarrow{+}", "V").scale(0.65)
+        vsp_dfn_mtx_2_1[0].scale(0.65).shift(.2*LEFT)
+
+        vsp_dfn_mtx_2_2=MathTex("v",",","w",r"\rightsquigarrow","v","+","w").scale(0.65)
+
+        vsp_dfn_2=VGroup(vsp_dfn_mtx_2_1, vsp_dfn_tx_2,vsp_dfn_mtx_2_2).arrange(RIGHT,buff=0.2).to_edge(edge=LEFT, buff=2).shift(1.5*UP)
+        vsp_dfn_2[1].shift(0.1*DOWN)
+        vsp_dfn_2[2].shift(0.1*DOWN)
+        
+
+
+
+        vsp_dfn_mtx_3_1=MathTex(r"\diamondsuit", r"F \times V", r"\xrightarrow{\cdot}","  V ").scale(0.65)
+        vsp_dfn_mtx_3_1[0].scale(0.65).shift(.2*LEFT)
+
+        vsp_dfn_mtx_3_2=MathTex("c",",","v",r"\rightsquigarrow","c",r"\cdot","v").scale(0.65)
+
+        vsp_dfn_3_i=VGroup(vsp_dfn_mtx_3_1, vsp_dfn_tx_3[0]).arrange(RIGHT,buff=0.2).to_edge(edge=LEFT, buff=2).shift(.9*UP)
+        vsp_dfn_3_i[1].shift(0.05*DOWN)
+        vsp_dfn_3_ii=VGroup(vsp_dfn_tx_3[1],vsp_dfn_mtx_3_2).arrange(RIGHT,buff=0.2).to_edge(edge=LEFT, buff=4.55).shift(0.5*UP)
+        vsp_dfn_3_ii[1].shift(0.05*DOWN)
+        vsp_dfn_3=VGroup(vsp_dfn_3_i,vsp_dfn_3_ii)
+
+
+
+        vsp_dfn_mtx_5=MathTex("V",r"(V,+)","0",".").scale(0.65)
+        vsp_dfn_5_1=VGroup(vsp_dfn_tx_5[0],vsp_dfn_mtx_5[0],vsp_dfn_tx_5[1],vsp_dfn_mtx_5[1]).arrange(RIGHT, buff=0.2).to_edge(edge=LEFT, buff=2.5).shift(.6*DOWN)
+        vsp_dfn_5_1[1].shift(0.05*UP)
+        vsp_dfn_5_1[3].shift(0.05*UP)
+        vsp_dfn_5_2=VGroup(vsp_dfn_tx_5[2],vsp_dfn_mtx_5[2],vsp_dfn_mtx_5[3]).arrange(RIGHT, buff=0.2).to_edge(edge=LEFT, buff=2.9).shift(DOWN)
+        vsp_dfn_5_2[1].shift(0.05*UP)
+        vsp_dfn_5=VGroup(vsp_dfn_5_1,vsp_dfn_5_2).shift(.2*RIGHT)
+
+
+        vsp_dfn_mtx_6=MathTex(r"1 \cdot v ","=","v", ",",r"\forall","v",r"\in","V").scale(0.65).to_edge(edge=LEFT, buff=3.3)
+        vsp_dfn_mtx_6[3].shift(0.1*RIGHT)
+        vsp_dfn_mtx_6[4:].shift(0.15*RIGHT)
+        vsp_dfn_mtx_6[5:].shift(0.1*RIGHT)
+        vsp_dfn_mtx_6[6:].shift(0.1*RIGHT)
+        vsp_dfn_mtx_6[7:].shift(0.1*RIGHT)
+
+        
+
+        vsp_dfn_6=VGroup(vsp_dfn_tx_6,vsp_dfn_mtx_6).shift(1.6*DOWN)
+        vsp_dfn_6[0].to_edge(edge=LEFT, buff=2.55)
+        
+
+
+        
+
+
+        vsp_dfn_mtx_7=MathTex(r"(ab) \cdot v","=",r"a \cdot (bv)", ",", r"\forall", "a",",","b","\in F" , "," , r"\forall", "v","\in V").scale(0.65).to_edge(edge=LEFT, buff=2.95)
+        vsp_dfn_mtx_7[3:].shift(0.1*RIGHT)
+        vsp_dfn_mtx_7[4:].shift(0.25*RIGHT)
+        vsp_dfn_mtx_7[5:].shift(0.1*RIGHT)
+        vsp_dfn_mtx_7[8:].shift(0.1*RIGHT)
+        vsp_dfn_mtx_7[9:].shift(0.1*RIGHT)
+        vsp_dfn_mtx_7[10:].shift(0.25*RIGHT)
+        vsp_dfn_mtx_7[11:].shift(0.1*RIGHT)
+        
+
+        vsp_dfn_7=VGroup(vsp_dfn_tx_7,vsp_dfn_mtx_7).arrange(RIGHT, buff=0.1).shift(2.1*DOWN)
+        vsp_dfn_7[0].shift(0.2*LEFT)
+
+
+
+        vsp_dfn_mtx_8_1=MathTex(r"(a+b) \cdot v", "=", r"a \cdot v + b \cdot v").scale(0.65)
+        vsp_dfn_mtx_8_2=MathTex(r"a \cdot (v+w)", "=", r"a \cdot v + a \cdot w", ",").scale(0.65)
+        vsp_dfn_mtx_8_3=MathTex(r"\forall", "a",",","b","\in F" , "," , r"\forall", "v",",","w","\in V").scale(0.65)
+        vsp_dfn_mtx_8_3[1:].shift(0.1*RIGHT)
+        vsp_dfn_mtx_8_3[6:].shift(0.25*RIGHT)
+        vsp_dfn_mtx_8_3[7:].shift(0.1*RIGHT)
+
+
+        vsp_dfn_8=VGroup(vsp_dfn_tx_8[0], vsp_dfn_mtx_8_1, vsp_dfn_tx_8[1],vsp_dfn_mtx_8_2, vsp_dfn_mtx_8_3).arrange(RIGHT, buff=0.2).shift(2.6*DOWN)
+        vsp_dfn_8[0].to_edge(edge=LEFT, buff=2.575)
+        vsp_dfn_8[1:].to_edge(edge=LEFT, buff=3.5).shift(0.35*DOWN)
+        vsp_dfn_8[4].to_edge(edge=LEFT, buff=7.5).shift(0.45*DOWN)
+        
+
+
+        
+
+
 
 
         
@@ -1899,8 +2050,8 @@ class Scene3(Scene):
 
         fld_grp=VGroup(txt_4,stripe_1).move_to(3.25*UP)
 
-        fld_dfn=VGroup(fld_dfn_1,fld_dfn_2,fld_dfn_3,fld_dfn_4,fld_dfn_5,fld_dfn_6,fld_dfn_7).shift(1.5*RIGHT)
-
+        fld_dfn=VGroup(fld_dfn_1,fld_dfn_2,fld_dfn_3,fld_dfn_4,fld_dfn_5,fld_dfn_6,fld_dfn_7).shift(1.25*RIGHT)
+        vsp_dfn=VGroup(vsp_dfn_1,vsp_dfn_2,vsp_dfn_3,vsp_dfn_4,vsp_dfn_5,vsp_dfn_6,vsp_dfn_7, vsp_dfn_8).shift(RIGHT+.25*UP)
 
         
 
@@ -1997,24 +2148,39 @@ class Scene3(Scene):
             Write(fld_dfn),
             run_time=6
         )
-        
-    
-        
-        
-        
+        self.wait(2)
+        self.play(
+            fld_dfn.animate.scale(.65).shift(UP)
+        )
 
+        self.play(
+            Write(fld_exp)
+        )
+
+        self.wait(2)
+
+        self.play(
+            FadeOut(txt_4),
+            FadeOut(stripe_1),
+            FadeOut(fld_dfn),
+            FadeOut(fld_exp)
+        )
+        self.play(
+            Write(txt_5)
+        )
+        self.play(
+            Create(stripe_2)
+        )
+        self.play(
+            Write(vsp_dfn)
+        )
+
+        
+        
 
 
 
         self.wait(4)
-
-
-
-
-
-
-
-
 
 
         # manim -pqh anim1.py Scene3
