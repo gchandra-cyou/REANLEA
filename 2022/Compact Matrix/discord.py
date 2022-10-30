@@ -3076,6 +3076,327 @@ class imgrad(Scene):
 
 
 
+
+
+
+class stickman_2(Scene):
+    def construct(self):
+        """
+        n       parte           len     ang_i
+        0       tronco          2.5     0
+        1       braco esq       1.5     7*PI/6
+        2       brado dir       1.5     5*PI/6
+        3       antebra esq     1.5     PI
+        4       antebra dir     1.5     PI
+        5       coxa esq        1.5     7*PI/6
+        6       coxa dir        1.5     5*PI/6
+        7       perna esq       1.5     PI
+        8       perna dir       1.5     PI
+        9       pescoço         0.25    0
+        -       cabeça          1       -
+
+        """
+        init_angs = (0, PI*7/6, PI*5/6, PI, PI, PI*7/6, PI*5/6, PI, PI, 0)
+        init_comprs = (2.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 0.25, 0.5)
+        init_colors = (BLACK, PURE_BLUE, PURE_GREEN, BLUE, GREEN,
+                       PURE_BLUE, PURE_GREEN, BLUE, GREEN, GRAY, RED)
+
+        self.x0, self.y0 = ValueTracker(0.0), ValueTracker(0.0)
+        self.compr, self.ang = [], []
+        self.linhas = VGroup()
+        self.direcao = "frente"
+        self.raio_cabeca = 0.5
+        self.espessura = 12
+
+        for i in range(10):
+            self.ang.append(ValueTracker(init_angs[i]))
+            self.compr.append(ValueTracker(init_comprs[i]))
+            self.linhas.add(
+                Line(
+                    color=init_colors[i],
+                    stroke_width=self.espessura,
+                    start=self.get_start(i),
+                    end=self.get_end(i)
+                )
+            )
+            self.play(Create(self.linhas[i]), run_time=0.25)
+        self.cabeca = Circle(
+            radius=self.raio_cabeca).set_fill(init_colors[-1], 1)
+        self.cabeca.move_to(self.get_end(9) + 0.5 * self.get_versor(9))
+
+        self.play(Create(self.cabeca), run_time=0.25)
+        self.wait()
+
+        # Parte 1
+        self.atualiza_tudo()
+        self.redimensiona(0.25, True)
+        self.redimensiona(8, True)
+        self.redimensiona(0.5, True)
+        self.anda("direita", 4, 1)
+        self.anda("esquerda", 4, 1)
+        self.wait()
+        self.acena("direito")
+        self.acena("esquerdo")
+        self.wait()
+        self.recolore(BLACK)
+        self.wait(2)
+        self.recolore(ORANGE)
+        self.wait(2)
+        self.recolore(PINK)
+        self.wait(2)
+        self.anda("direita", 4, 0.5)
+        self.anda("esquerda", 4, 0.5)
+        self.wait()
+        self.acena("direito")
+        self.redimensiona(4, True)
+        self.redimensiona(0.25, False)
+        self.wait()
+
+        # self.embed()
+        # for i in range(len(self.linhas)):
+        #     print("start{}:[{:.2f}, {:.2f}]\t\tend{}:[{:.2f}, {:.2f}]".format(
+        #         i, self.get_start(i)[0], self.get_start(i)[1],
+        #         i, self.get_end(i)[0], self.get_end(i)[1]))
+
+        # Fim
+        self.desatualiza_tudo()
+        self.play(FadeOut(VGroup(self.cabeca, self.linhas)), run_time=2)
+        self.wait()
+
+    def get_compr(self, n):
+        try:
+            compr = self.compr[n].get_value()
+        except IndexError as err:
+            print(err)
+
+        return compr
+
+    def get_ang(self, n):
+        try:
+            ang = self.ang[n].get_value()
+        except IndexError as err:
+            print(err)
+
+        return ang
+
+    def get_versor(self, n):
+        try:
+            n = np.array([np.sin(self.get_ang(n)), np.cos(self.get_ang(n)), 0])
+        except IndexError as err:
+            print(err)
+
+        return n
+
+    def get_dif(self, n):
+        return self.get_compr(n) * self.get_versor(n)
+
+    def get_start(self, n):
+        if n == 0:
+            start = np.array([self.x0.get_value(), self.y0.get_value(), 0])
+        elif n == 1 or n == 2:
+            start = self.get_end(0)
+        elif n == 3:
+            start = self.get_end(1)
+        elif n == 4:
+            start = self.get_end(2)
+        elif n == 5 or n == 6:
+            start = self.get_start(0)
+        elif n == 7:
+            start = self.get_end(5)
+        elif n == 8:
+            start = self.get_end(6)
+        elif n == 9:
+            start = self.get_end(0)
+
+        # print("start[{}]: [{:.2}, {:.2}]".format(n, start[0], start[1]))
+
+        return start
+
+    def get_end(self, n):
+        end = self.get_start(n) + self.get_dif(n)
+
+        # print("end[{}]: [{:.2}, {:.2}]".format(n, end[0], end[1]))
+
+        return end
+
+    def atualiza_linha(self, linha):
+        try:
+            for i in range(10):
+                if linha == self.linhas[i]:
+                    n = i
+        except:
+            print("Linha não encontrada.")
+
+        linha.put_start_and_end_on(
+            start=self.get_start(n), end=self.get_end(n))
+
+    def atualiza_cabeca(self, cabeca):
+        cabeca.move_to(
+            self.get_end(9) + self.raio_cabeca * self.get_versor(9))
+
+    def atualiza_tudo(self):
+        for linha in self.linhas:
+            linha.add_updater(self.atualiza_linha)
+        self.cabeca.add_updater(self.atualiza_cabeca)
+
+    def desatualiza_tudo(self):
+        for linha in self.linhas:
+            linha.remove_updater(self.atualiza_linha)
+        self.cabeca.remove_updater(self.atualiza_cabeca)
+
+    def vira(self, direcao):
+        if direcao == "frente" and self.direcao != "frente":
+            self.play(
+                self.ang[0].animate.set_value(0),
+                self.ang[1].animate.set_value(PI*7/6),
+                self.ang[2].animate.set_value(PI*5/6),
+                self.ang[3].animate.set_value(PI),
+                self.ang[4].animate.set_value(PI),
+                self.ang[5].animate.set_value(PI*7/6),
+                self.ang[6].animate.set_value(PI*5/6),
+                self.ang[7].animate.set_value(PI),
+                self.ang[8].animate.set_value(PI),
+                self.ang[9].animate.set_value(0)
+            )
+            self.direcao = "frente"
+        elif direcao == "direita" and self.direcao != "direita":
+            self.play(
+                self.ang[0].animate.set_value(0),
+                self.ang[1].animate.set_value(PI*7/6),
+                self.ang[2].animate.set_value(PI*11/12),
+                self.ang[3].animate.set_value(PI*23/24),
+                self.ang[4].animate.set_value(PI*4/5),
+                self.ang[5].animate.set_value(PI*13/12),
+                self.ang[6].animate.set_value(PI*5/6),
+                self.ang[7].animate.set_value(PI*7/6),
+                self.ang[8].animate.set_value(PI*23/24),
+                self.ang[9].animate.set_value(0)
+            )
+            self.direcao = "direita"
+        elif direcao == "esquerda" and self.direcao != "esquerda":
+            self.play(
+                self.ang[0].animate.set_value(0),
+                self.ang[1].animate.set_value(PI*(2-7/6)),
+                self.ang[2].animate.set_value(PI*(2-11/12)),
+                self.ang[3].animate.set_value(PI*(2-23/24)),
+                self.ang[4].animate.set_value(PI*(2-4/5)),
+                self.ang[5].animate.set_value(PI*(2-13/12)),
+                self.ang[6].animate.set_value(PI*(2-5/6)),
+                self.ang[7].animate.set_value(PI*(2-7/6)),
+                self.ang[8].animate.set_value(PI*(2-23/24)),
+                self.ang[9].animate.set_value(0)
+            )
+            self.direcao = "esquerda"
+
+    def anda(self, direcao, passos=2, seg_p_passo=0.5):
+        if direcao == "direita" and self.direcao != "direita":
+            self.vira("direita")
+        elif direcao == "esquerda" and self.direcao != "esquerda":
+            self.vira("esquerda")
+
+        assert passos % 2 == 0
+
+        deltaX = 3 * abs(self.get_end(8)[0] - self.get_end(6)[0])
+        ang_passos = PI/4
+
+        if direcao == "esquerda":
+            deltaX *= -1
+            ang_passos *= -1
+
+        for i in range(passos):
+            ang_passos *= -1
+            self.play(
+                self.ang[1].animate.increment_value(ang_passos),
+                self.ang[2].animate.increment_value(-ang_passos),
+                self.ang[3].animate.increment_value(ang_passos/2),
+                self.ang[4].animate.increment_value(-ang_passos/2),
+                self.ang[5].animate.increment_value(ang_passos),
+                self.ang[6].animate.increment_value(-ang_passos),
+                self.ang[7].animate.increment_value(ang_passos),
+                self.ang[8].animate.increment_value(-ang_passos),
+                self.x0.animate.increment_value(deltaX),
+                run_time=seg_p_passo,
+                # rate_func=rate_functions.linear
+            )
+
+    def acena(self, braco="direito", acenadas=2, velocidade=0.5, angulo_mao=PI/3):
+        if self.direcao != "frente":
+            self.vira("frente")
+
+        ang_bra = PI/12
+        if braco == "esquerdo":
+            bra, antebra = self.ang[1], self.ang[3]
+            ang_antebra = antebra.get_value()
+        else:
+            bra, antebra = self.ang[2], self.ang[4]
+            ang_bra *= -1
+            ang_antebra = -antebra.get_value()
+
+        self.play(
+            bra.animate.increment_value(ang_bra),
+            antebra.animate.increment_value(ang_antebra),
+            run_time=velocidade)
+
+        self.play(
+            antebra.animate.increment_value(-angulo_mao/2),
+            run_time=velocidade/2)
+        for i in range(acenadas):
+            self.play(
+                antebra.animate.increment_value(angulo_mao),
+                run_time=velocidade)
+            self.play(
+                antebra.animate.increment_value(-angulo_mao),
+                run_time=velocidade)
+
+        self.direcao = "errada"
+        self.vira("frente")
+
+    def redimensiona(self, fator=1.0, redi_espess=False):
+        self.desatualiza_tudo()
+
+        if redi_espess:
+            self.espessura *= fator
+
+        new_linhas = VGroup()
+        for i in range(10):
+            self.compr[i] *= fator
+            new_linhas.add(
+                Line(
+                    color=self.linhas[i].get_color(),
+                    stroke_width=self.espessura,
+                    start=self.get_start(i),
+                    end=self.get_end(i)
+                )
+            )
+
+        self.raio_cabeca *= fator
+        new_cabeca = Circle(radius=self.raio_cabeca)
+        new_cabeca.set_fill(self.cabeca.get_color(), 1)
+        new_cabeca.set_stroke(self.cabeca.get_color(), 1)
+        new_cabeca.move_to(
+            self.get_end(9) + self.raio_cabeca * self.get_versor(9))
+
+        self.play(
+            Transform(self.linhas, new_linhas),
+            Transform(self.cabeca, new_cabeca),
+            run_time=2)
+
+        self.atualiza_tudo()
+
+    def recolore(self, color):
+        self.cabeca.set_fill(color, 1).set_stroke(color, opacity=1)
+        self.cabeca.set_stroke(color, 1)
+        for linha in self.linhas:
+            linha.set_color(color)
+
+
+        
+    
+    
+    # manim -pqh discord.py stickman_2
+
+
+
 ###################################################################################################################
 
 # NOTE :-
