@@ -2214,6 +2214,13 @@ class Scene3(Scene):
 
 class Scene4(Scene):
     def construct(self):
+
+        a=Text("a")
+
+        self.play(FadeIn(a))
+
+
+        self.wait(4)
         
 
     
