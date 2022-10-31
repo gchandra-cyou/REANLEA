@@ -51,6 +51,7 @@ from random import choice, seed
 from random import random, seed
 from enum import Enum
 from scipy.stats import norm, gamma
+from scipy.optimize import fsolve
 
 
 config.background_color= REANLEA_BACKGROUND_COLOR
@@ -3390,11 +3391,47 @@ class stickman_2(Scene):
             linha.set_color(color)
 
 
-        
-    
-    
-    # manim -pqh discord.py stickman_2
+     # manim -pqh discord.py stickman_2
 
+
+
+class funcs(Scene):
+    def construct(self):
+        a = ValueTracker(1)
+        b = ValueTracker(1)
+        c = ValueTracker(1)
+        d = ValueTracker(1)
+        e = ValueTracker(1)
+
+        ax = Axes(x_range=[-10,10],y_range=[-10,10])
+        self.add(ax)
+
+        f = always_redraw(lambda: ax.plot(lambda x: a.get_value()*x**2+b.get_value()*x+c.get_value()).set_color(RED))
+        g = always_redraw(lambda: ax.plot(lambda x: d.get_value()*x+e.get_value()).set_color(BLUE))
+
+        self.play(Create(f))
+        self.play(Create(g))
+        self.wait(2)
+
+        roots = VGroup()
+        def rootsUpdater(mobj):
+            res = VGroup()
+            f = lambda x: a.get_value()*x**2+b.get_value()*x+c.get_value()
+            g = lambda x: d.get_value()*x+e.get_value()
+            fg = lambda x: f(x)-g(x)
+            zeros = fsolve(fg, [ax.x_range[0],ax.x_range[1]])
+            for zero in zeros:
+                res.add(Circle(radius=0.2).set_color(YELLOW).move_to(ax.c2p(zero,f(zero))))
+            mobj.become(res)
+        roots.add_updater(rootsUpdater)
+
+        self.add(roots)
+
+        self.play(c.animate.set_value(-3))
+        self.wait()
+
+
+        # manim -pqh discord.py funcs
 
 
 ###################################################################################################################
