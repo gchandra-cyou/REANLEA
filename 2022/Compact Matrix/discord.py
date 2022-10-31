@@ -3434,9 +3434,79 @@ class funcs(Scene):
         # manim -pqh discord.py funcs
 
 
+
+
+class Gates_design(VGroup):
+    def __init__(self,**kwargs):
+        super().__init__(**kwargs)
+        
+        top_arc = Arc(radius=1, start_angle=0, angle=PI).rotate(-PI/2)
+        line1=Line()
+        line1.move_to(top_arc.get_start()).shift((line1.get_length()/2)*LEFT)
+        line2=line1.copy()
+        line1.move_to(top_arc.get_end()).shift((line2.get_length()/2)*LEFT)
+        line3=Line(line1.get_start(),line2.get_start())
+
+        connector_line1=Line()
+        connector_line1.move_to(line3.get_start()-[0,line3.get_length()/3,0]).shift((connector_line1.get_length()/2)*LEFT)
+        connector_line2=Line()
+        connector_line2.move_to(line3.get_start()-[0,line3.get_length()*2/3,0]).shift((connector_line1.get_length()/2)*LEFT)
+
+        circle=Circle(radius=0.3)
+        circle.move_to(top_arc.point_from_proportion(0.5)).shift(circle.get_radius()*RIGHT)
+
+        line4=Line()
+        line4.move_to(circle.get_right()).shift((line4.get_length()/2)*RIGHT)
+        self.gate_vmobject=VGroup(top_arc,line1,line2,line3,connector_line1,connector_line2,circle,line4)
+        
+
+class Gates(Scene):
+    def construct(self):
+        gate1 = Gates_design()
+        gate2 = Gates_design()
+        gate_group= VGroup(gate1.gate_vmobject,gate2.gate_vmobject).arrange(DOWN)
+        #self.add(gate_group)
+
+        self.play(
+            Write(gate_group)
+        )
+
+
+
+        # manim -pqh discord.py Gates
+
+
+class defFun(Scene):
+    def construct(self):
+        def f(x):
+            if x < 0.5:
+                return 0
+            else:
+                return 2*(x-0.5)
+
+        ax = Axes(
+            x_range = [0, 1, 1],
+            y_range = [0, 1, 1],
+            tips=False
+        )
+
+        plt = ax.plot(f, discontinuities = [0.5]).set_stroke(width=15, color=[PURE_GREEN,BLUE_C,PURE_RED])
+
+
+        self.play(
+            Create(plt)
+        )
+
+        self.wait(3)
+
+
+        # manim -pqh discord.py defFun
+
+
 ###################################################################################################################
 
 # NOTE :-
+
 '''
 Q1. How can I configure the output video format to be square or vertical? Can it be done directly with manim?
 Ans: python3 -m manim -pql -r 1080,1920 my_file.py
