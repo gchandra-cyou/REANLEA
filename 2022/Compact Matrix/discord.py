@@ -52,6 +52,7 @@ from random import random, seed
 from enum import Enum
 from scipy.stats import norm, gamma
 from scipy.optimize import fsolve
+import random
 
 
 config.background_color= REANLEA_BACKGROUND_COLOR
@@ -3501,6 +3502,208 @@ class defFun(Scene):
 
 
         # manim -pqh discord.py defFun
+
+
+
+
+class FancyText(Scene):
+    def construct(self):
+        text_orig = Text("Hello World!").scale_to_fit_width(config.frame_width - 1)
+
+        text = DashedVMobject(
+            VMobject().set_points(text_orig.get_all_points()),
+            dashed_ratio=1,
+            num_dashes=45,
+        )
+        text.save_state()
+
+        text_segments = VGroup(*text.submobjects)
+        anims = []
+        random.shuffle(text_segments)
+        for segment in text_segments:
+            anims.append(FadeIn(segment, shift=DOWN))
+
+        self.play(
+            AnimationGroup(*anims, lag_ratio=0.1, run_time=3)
+        )
+        #self.play(FadeTransform(text_segments, text_orig))
+        self.wait()
+
+
+        # manim -pqh discord.py FancyText
+
+
+ 
+
+class VectorFieldScene1(Scene):
+    def construct(self):
+
+        frame_width = config["frame_width"]
+        frame_height = config["frame_height"]
+
+        grid = NumberPlane(axis_config={"include_tip":True},
+            background_line_style={
+                "stroke_color": BLUE,
+                "stroke_width": 0.8,
+                "stroke_opacity": 0.2
+            }
+        )
+        #self.play(Create(grid))
+        self.wait()
+
+        #State Space: UNSTABLE NODE
+        def x_dot(x,y):
+            return y
+
+        def y_dot(x,y):
+            return 2*x/3-(4/9)*(x*x*x)
+
+        #Angle of vector
+        def phi(x,y):
+            return np.arctan2(y_dot(x,y),x_dot(x,y))
+
+        def vec_x(x,y):
+            return np.cos(phi(x,y))
+
+        def vec_y(x,y):
+            return np.sin(phi(x,y))
+
+        func = lambda pos: (x_dot(pos[0],pos[1]))*RIGHT + (y_dot(pos[0],pos[1]))*UP
+        vf = ArrowVectorField(func, x_range = [-7, 7, 0.4], y_range = [-5, 5, 0.4])#length_func = lambda x: x / 4)#, length_func  = length_func) #stroke_width does nothing :(
+        #self.play(Create(vf))
+        self.wait()
+
+        self.t = 0
+
+        #Circle
+        a = 1.5
+        R = 0.2
+        t = 0.05
+        x1 = -a-R
+        x2 = -a+np.sqrt(R*R-t*t)
+        x3 = -np.sqrt(R*R-t*t)
+        x4 = np.sqrt(R*R-t*t)
+        x5 = a-np.sqrt(R*R-t*t)
+        x6 = a+R
+
+        T = 6
+
+        dot1 = Dot(color=BLUE).move_to(grid.c2p(-a, 0,0))
+        dot2 = Dot(color=GREEN).move_to(grid.c2p(0, 0,0))
+        dot3 = Dot(color=BLUE).move_to(grid.c2p(+a, 0,0))
+
+        #self.play(Create(dot1))
+        #self.play(Create(dot2))
+        #self.play(Create(dot3))
+
+
+        r = lambda theta: 2 + 0.2 * np.sin(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
+        graph1 = grid.plot_polar_graph(r, [0, 2 * PI], color=YELLOW)
+        self.wait()
+        self.play(Create(graph1))
+        self.wait()
+
+
+
+
+
+        def y_fun(x):
+            if (x1<=x<=x2):
+                return np.sqrt(R*R-(x+a)*(x+a))
+            elif (x2<=x<=x3):
+                return t
+            elif (x3<=x<=x4):
+                return np.sqrt(R*R-x*x)
+            elif (x4<=x<=x5):
+                return t
+            elif (x5<=x<=x6):
+                return np.sqrt(R*R-(x-a)*(x-a))
+            else:
+                return 0
+
+        def x_para(u):
+            if (u < T):
+                return 2*(R+a)*u/T - (R+a)
+            elif (u >= T):
+                return -2*(R+a)*u/T + 3*(R+a)
+        
+        def y_para(u):
+            if (u < T):
+                return y_fun(2*(R+a)*u/T - (R+a))
+            elif (u >= T):
+                return -y_fun(-2*(R+a)*u/T + 3*(R+a))
+        
+        graph2 = grid.plot_parametric_curve(lambda u: [x_para(u), y_para(u), 0], t_range=(0,2*T),color = YELLOW)
+        self.wait()
+        #self.play(Transform(graph1,graph2))
+        # self.play(Create(graph1),rate_func=linear)
+        self.wait(3)
+
+
+
+        # #DOT
+        # dot = always_redraw(
+        #     lambda: Dot(color=YELLOW).move_to(
+        #         grid.c2p(x_para(self.t), y_para(self.t),0) #circle parameter eqns
+        #     )
+        # )
+        # dot.set_z_index(1)
+        # self.play(Create(dot))
+        # self.wait()
+
+        # #ARROW
+        # L = 1
+        # arrow = always_redraw(
+        #     lambda: Arrow(grid.c2p(x_para(self.t), y_para(self.t),0), grid.c2p(x_para(self.t) + L*vec_x(x_para(self.t), y_para(self.t)), y_para(self.t) + L*vec_y(x_para(self.t), y_para(self.t)),0), buff=0, color=YELLOW)
+        # )
+        # self.play(Create(arrow))
+
+        # def update_box(mob, dt):
+        #     self.t = self.t + dt
+
+        # dot.add_updater(update_box)
+        # self.wait(2*T)
+        # dot.remove_updater(update_box)
+        # self.wait(3)
+
+
+
+        # manim -pqh discord.py VectorFieldScene1
+
+        # manim -sqk discord.py VectorFieldScene1
+
+
+
+
+
+class ArbitraryShape(Scene):
+    def construct(self):
+
+
+        grid = NumberPlane(axis_config={"include_tip":True},
+            background_line_style={
+                "stroke_color": BLUE,
+                "stroke_width": 0.8,
+                "stroke_opacity": 0.2
+            }
+        )
+
+
+        r1 = lambda theta: 2 + 0.2 * np.sin(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
+        graph1 = grid.plot_polar_graph(r1, [0, 2 * PI])
+        graph1.set_stroke(width=15, color=[REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE]).scale(.75).shift(4*LEFT)
+
+        r2 = lambda theta: 2 + 0.25 * np.cos(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
+        graph2 = grid.plot_polar_graph(r2, [0, 2 * PI])
+        graph2.set_stroke(width=15, color=[REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE]).scale(.75).shift(4*RIGHT)
+
+
+        self.play(Create(graph1))
+        self.play(Create(graph2))
+        self.wait(2)
+
+
+        # manim -sqk discord.py ArbitraryShape
 
 
 ###################################################################################################################
