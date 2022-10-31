@@ -2183,13 +2183,19 @@ class Scene3(Scene):
         self.play(
             TransformMatchingShapes(grp_lst_2,op_grp)
         )
-
-        
-        
-
-
-
         self.wait(4)
+
+
+        self.play(
+            FadeOut(op_grp)
+        )
+
+        
+        
+
+
+
+        self.wait(8)
 
 
         # manim -pqh anim1.py Scene3
@@ -2206,5 +2212,23 @@ class Scene3(Scene):
 
 ###################################################################################################################
 
+class Scene4(Scene):
+    def construct(self):
+        
+
+    
+    
+    
+    
+    # manim -pqh anim1.py Scene3
+
+    # manim -pql anim1.py Scene3
+
+    # manim -sqk anim1.py Scene3
+
+    # manim -sql anim1.py Scene3   
+
+
+###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"
