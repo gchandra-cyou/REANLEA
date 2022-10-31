@@ -3693,9 +3693,9 @@ class ArbitraryShape(Scene):
         graph1 = grid.plot_polar_graph(r1, [0, 2 * PI])
         graph1.set_stroke(width=15, color=[REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE]).scale(.75).shift(4*LEFT)
 
-        r2 = lambda theta: 2 + 0.25 * np.cos(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
+        r2 = lambda theta: 2 + 0.2 * np.cos(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
         graph2 = grid.plot_polar_graph(r2, [0, 2 * PI])
-        graph2.set_stroke(width=15, color=[REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE]).scale(.75).shift(4*RIGHT)
+        graph2.set_stroke(width=15, color=[REANLEA_SLATE_BLUE, REANLEA_TXT_COL_LIGHTER]).scale(.75).shift(4*RIGHT)
 
 
         self.play(Create(graph1))

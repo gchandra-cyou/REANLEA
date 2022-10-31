@@ -2215,12 +2215,81 @@ class Scene3(Scene):
 class Scene4(Scene):
     def construct(self):
 
-        a=Text("a")
 
-        self.play(FadeIn(a))
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
 
 
-        self.wait(4)
+        # HEADING
+
+        with RegisterFont("Montserrat") as fonts:
+            txt_1=Text("C A R T E S I A N    P R O D U C T", font=fonts[0])#.to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            txt_1.set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE_LIGHTER)
+
+
+
+        # OBJECT REGION
+
+        strp_1=get_stripe(factor=0.05, buff_max=5.2).move_to(3*UP+.2*RIGHT)
+
+        grid = NumberPlane(axis_config={"include_tip":True},
+            background_line_style={
+                "stroke_color": BLUE,
+                "stroke_width": 0.8,
+                "stroke_opacity": 0.2
+            }
+        )
+
+
+        r1 = lambda theta: 2 + 0.2 * np.sin(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
+        graph1 = grid.plot_polar_graph(r1, [0, 2 * PI])
+        graph1.set_stroke(width=7, color=[REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE]).scale(.75).shift(4*LEFT)
+
+        r2 = lambda theta: 2 + 0.2 * np.cos(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
+        graph2 = grid.plot_polar_graph(r2, [0, 2 * PI])
+        graph2.set_stroke(width=7, color=[REANLEA_SLATE_BLUE, REANLEA_TXT_COL_LIGHTER]).scale(.75).shift(4.5*RIGHT)
+
+
+
+        # GROUP REGION
+
+        txt_1_grp=VGroup(txt_1,strp_1)
+
+
+
+
+        # PLAY REGION
+
+        self.wait()
+
+        self.play(
+            AddTextLetterByLetter(txt_1)
+        )
+        self.wait()
+
+        self.play(
+            txt_1.animate.to_edge(UP).scale(.5)
+        )
+
+        self.play(
+            Create(strp_1)
+        )
+
+        self.play(
+            Create(graph1)
+        )
+        self.play(
+            Create(graph2)
+        )
+
+
+
+        
+
+
+        self.wait(2)
         
 
     
