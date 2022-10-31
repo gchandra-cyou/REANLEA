@@ -2220,15 +2220,24 @@ class Scene4(Scene):
     
     
     
-    # manim -pqh anim1.py Scene3
+    # manim -pqh anim1.py Scene4
 
-    # manim -pql anim1.py Scene3
+    # manim -pql anim1.py Scene4
 
-    # manim -sqk anim1.py Scene3
+    # manim -sqk anim1.py Scene4
 
-    # manim -sql anim1.py Scene3   
+    # manim -sql anim1.py Scene4  
 
 
 ###################################################################################################################
 
-# cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix"
+# NOTE :-
+'''
+Q1. How can I configure the output video format to be square or vertical? Can it be done directly with manim?
+Ans: python3 -m manim -pql -r 1080,1920 my_file.py
+'''
+
+
+###################################################################################################################
+
+# cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix" 
