@@ -3706,6 +3706,155 @@ class ArbitraryShape(Scene):
         # manim -sqk discord.py ArbitraryShape
 
 
+
+class VectorFieldScene2(Scene):
+    def construct(self):
+
+        grid = NumberPlane(axis_config={"include_tip":True},
+            background_line_style={
+                "stroke_color": BLUE,
+                "stroke_width": 0.8,
+                "stroke_opacity": 0.2
+            }
+        )
+        self.play(Create(grid))
+        self.wait()
+
+        # length_func = lambda x: 2
+
+        def x_dot(x,y):
+            return y/2
+
+        def y_dot(x,y):
+            return x/2-x*x*x/8
+
+        def phi(x,y):
+            return np.arctan2(y_dot(x,y),x_dot(x,y))
+
+        def vec_x(x,y):
+            return np.cos(phi(x,y))
+
+        def vec_y(x,y):
+            return np.sin(phi(x,y))
+
+        func = lambda pos: (x_dot(pos[0],pos[1]))*RIGHT + (y_dot(pos[0],pos[1]))*UP
+        vf = ArrowVectorField(func, x_range = [-7, 7, 0.4], y_range = [-5, 5, 0.4])#, length_func  = length_func) #stroke_width does nothing :(
+        self.play(Create(vf))
+        self.wait()
+
+
+        self.x1 = 3 #initial value
+        self.v1 = 0
+        self.t = 0
+        dot = always_redraw(
+            lambda: Dot().move_to(
+                grid.c2p(self.x1, self.v1)
+            )
+        )
+        self.play(Create(dot))
+        L = 1
+
+        path = VMobject()
+        path.set_points_as_corners([dot.get_center(), dot.get_center()])
+        def update_path(path):
+            previous_path = path.copy()
+            previous_path.add_points_as_corners([dot.get_center()])
+            path.become(previous_path)
+        path.add_updater(update_path)
+        self.add(path)
+
+        def update_box(mob, dt):
+            # #update velocity
+            self.v1 = self.v1 + y_dot(self.x1,self.v1) * dt
+            #update position
+            self.x1 = self.x1 + x_dot(self.x1,self.v1) * dt
+            #update time
+            self.t = self.t + dt
+
+        dot.add_updater(update_box)
+
+        # self.wait(1)
+
+        # stream_lines = StreamLines(
+        #     func, stroke_width=1,
+        #     max_anchors_per_line=50
+        # )
+        # self.add(stream_lines)
+        # stream_lines.start_animation(warm_up=True, flow_speed=1, max_anchors_per_line=5)
+        # self.wait(stream_lines.virtual_time / stream_lines.flow_speed)
+
+        T = 18.418
+        self.wait(T)
+        dot.remove_updater(update_box)
+        self.wait()
+        self.play(Uncreate(dot))
+
+        dot1 = Dot(color=BLUE).move_to(grid.c2p(-2,0,0)) #center
+        dot2 = Dot(color=GREEN).move_to(grid.c2p(0,0,0)) #saddle
+        dot3 = Dot(color=BLUE).move_to(grid.c2p(2,0,0)) #center
+        self.play(Create(dot1),Create(dot2),Create(dot3))
+
+        self.wait()
+
+        dot_right_loop = always_redraw(
+            lambda: Dot().move_to(
+                grid.c2p(self.x1, self.v1)
+            )
+        )
+        path_right = VMobject()
+        path_right.set_points_as_corners([dot_right_loop.get_center(), dot_right_loop.get_center()])
+        def update_path(path):
+            previous_path = path.copy()
+            previous_path.add_points_as_corners([dot_right_loop.get_center()])
+            path.become(previous_path)
+        path_right.add_updater(update_path)
+        self.add(path_right)
+
+        self.wait()
+        self.x1 = 2.5 #initial value
+        self.v1 = 0
+        self.t = 0
+        self.play(Create(dot_right_loop))
+        dot_right_loop.add_updater(update_box)
+        T = 9.51 #IC: (2.5,0)
+        self.wait(T)
+        dot_right_loop.remove_updater(update_box)
+        self.wait()
+        self.play(Uncreate(dot_right_loop))
+
+
+        dot_left_loop = always_redraw(
+            lambda: Dot().move_to(
+                grid.c2p(self.x1, self.v1)
+            )
+        )
+        path_left = VMobject()
+        path_left.set_points_as_corners([dot_left_loop.get_center(), dot_left_loop.get_center()])
+        def update_path(path):
+            previous_path = path.copy()
+            previous_path.add_points_as_corners([dot_left_loop.get_center()])
+            path.become(previous_path)
+        path_left.add_updater(update_path)
+        self.add(path_left)
+        self.play(Uncreate(dot_right_loop))
+        self.x1 = -2.5 #initial value
+        self.v1 = 0
+        self.t = 0
+        self.play(Create(dot_left_loop))
+        dot_left_loop.add_updater(update_box)
+        T = 9.51 #IC: (-2.5,0)
+        self.wait(T)
+        dot_left_loop.remove_updater(update_box)
+        self.wait()
+        self.play(Uncreate(dot_left_loop))
+
+
+
+        # manim -pqh discord.py VectorFieldScene2
+
+        # manim -sqk discord.py VectorFieldScene2
+
+
 ###################################################################################################################
 
 # NOTE :-

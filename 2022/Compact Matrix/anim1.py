@@ -17,6 +17,7 @@ from difflib import restore
 
 import fractions
 from imp import create_dynamic
+import math
 from multiprocessing import context
 from multiprocessing import dummy
 from multiprocessing.dummy import Value
@@ -2244,18 +2245,52 @@ class Scene4(Scene):
 
 
         r1 = lambda theta: 2 + 0.2 * np.sin(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
-        graph1 = grid.plot_polar_graph(r1, [0, 2 * PI])
-        graph1.set_stroke(width=7, color=[REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE]).scale(.75).shift(4*LEFT)
+        grph_1 = grid.plot_polar_graph(r1, [0, 2 * PI])
+        grph_1.set_stroke(width=7, color=[REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE]).scale(.75).shift(4*LEFT)
+        grph_1_lbl=MathTex("A").shift(grph_1.get_center()).set_color(REANLEA_SLATE_BLUE)
 
         r2 = lambda theta: 2 + 0.2 * np.cos(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
-        graph2 = grid.plot_polar_graph(r2, [0, 2 * PI])
-        graph2.set_stroke(width=7, color=[REANLEA_SLATE_BLUE, REANLEA_TXT_COL_LIGHTER]).scale(.75).shift(4.5*RIGHT)
+        grph_2 = grid.plot_polar_graph(r2, [0, 2 * PI])
+        grph_2.set_stroke(width=7, color=[REANLEA_SLATE_BLUE, REANLEA_BLUE_SKY]).scale(.75).shift(4.5*RIGHT)
+        grph_2_lbl=MathTex("B").shift(grph_2.get_center()).set_color(REANLEA_BLUE_SKY)
+
+
+
+        dot_1=Dot(radius=0.125, color=REANLEA_SLATE_BLUE_LIGHTER).move_to(grph_1.get_center()).set_sheen(-0.6,DOWN)
+        dot_1_lbl=MathTex("x").set_color(REANLEA_SLATE_BLUE_LIGHTER).move_to(grph_1.get_center()+.5*DOWN).scale(.6)
+
+        dot_2=Dot(radius=0.125, color=REANLEA_BLUE_SKY).move_to(grph_2.get_center()).set_sheen(-0.6,DOWN)
+        dot_2_lbl=MathTex("y").set_color(REANLEA_BLUE_SKY).move_to(grph_2.get_center()+.5*DOWN).scale(.6)
+
+
+        
+        # EQUATION REGION
+
+        eqn_1=MathTex("A",r"\times","B","=",r"\{", r"(x,y)",r"\mid", r"x \in A",",", r"y \in B", r"\}").shift(2*DOWN)
+        eqn_1[0].set_color(REANLEA_SLATE_BLUE)
+        eqn_1[1].set_color(PURE_RED)
+        eqn_1[2].set_color(REANLEA_BLUE_SKY)
+        eqn_1[5:10].scale(.9)
+        eqn_1[5][1].set_color(REANLEA_SLATE_BLUE)
+        eqn_1[5][3].set_color(REANLEA_BLUE_SKY)
+        eqn_1[7].set_color(REANLEA_SLATE_BLUE)
+        eqn_1[7][1].set_color(PURE_RED).scale(.65)
+        eqn_1[9].set_color(REANLEA_BLUE_SKY)
+        eqn_1[9][1].set_color(PURE_RED).scale(.65)
+        eqn_1[8:].shift(0.15*RIGHT)
+        eqn_1[9:].shift(0.1*RIGHT)
+        
+
+
+
+
 
 
 
         # GROUP REGION
 
         txt_1_grp=VGroup(txt_1,strp_1)
+        dot_lbl_grp=VGroup(dot_1_lbl,dot_2_lbl)
 
 
 
@@ -2278,10 +2313,37 @@ class Scene4(Scene):
         )
 
         self.play(
-            Create(graph1)
+            Create(grph_1)
         )
         self.play(
-            Create(graph2)
+            Create(grph_2)
+        )
+        self.play(
+            Write(grph_1_lbl),
+            Write(grph_2_lbl)
+        )
+        self.wait(2)
+
+        self.play(
+            grph_1.animate.scale(.5).set_stroke(width=5),
+            grph_2.animate.scale(.5).set_stroke(width=5),
+            grph_1_lbl.animate.shift(2*UP),
+            grph_2_lbl.animate.shift(2*UP)
+        )
+        self.wait(2)
+
+        self.play(
+            Write(dot_1),
+            Write(dot_2)
+        )
+        self.play(
+            Write(dot_1_lbl),
+            Write(dot_2_lbl)
+        )
+        self.wait(2)
+
+        self.play(
+            TransformMatchingShapes(dot_lbl_grp,eqn_1)
         )
 
 
