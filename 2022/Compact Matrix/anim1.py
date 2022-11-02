@@ -2246,8 +2246,8 @@ class Scene4(Scene):
 
         r1 = lambda theta: 2 + 0.2 * np.sin(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
         grph_1 = grid.plot_polar_graph(r1, [0, 2 * PI])
-        grph_1.set_stroke(width=7, color=[REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE]).scale(.75).shift(4*LEFT)
-        grph_1_lbl=MathTex("A").shift(grph_1.get_center()).set_color(REANLEA_SLATE_BLUE)
+        grph_1.set_stroke(width=7, color=[REANLEA_GREEN_AUQA,REANLEA_SLATE_BLUE]).scale(.75).shift(4*LEFT)
+        grph_1_lbl=MathTex("A").shift(grph_1.get_center()).set_color(REANLEA_GREEN_AUQA)
 
         r2 = lambda theta: 2 + 0.2 * np.cos(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
         grph_2 = grid.plot_polar_graph(r2, [0, 2 * PI])
@@ -2256,8 +2256,8 @@ class Scene4(Scene):
 
 
 
-        dot_1=Dot(radius=0.125, color=REANLEA_SLATE_BLUE_LIGHTER).move_to(grph_1.get_center()).set_sheen(-0.6,DOWN)
-        dot_1_lbl=MathTex("x").set_color(REANLEA_SLATE_BLUE_LIGHTER).move_to(grph_1.get_center()+.5*DOWN).scale(.6)
+        dot_1=Dot(radius=0.125, color=REANLEA_GREEN_AUQA).move_to(grph_1.get_center()).set_sheen(-0.6,DOWN)
+        dot_1_lbl=MathTex("x").set_color(REANLEA_GREEN_AUQA).move_to(grph_1.get_center()+.5*DOWN).scale(.6)
 
         dot_2=Dot(radius=0.125, color=REANLEA_BLUE_SKY).move_to(grph_2.get_center()).set_sheen(-0.6,DOWN)
         dot_2_lbl=MathTex("y").set_color(REANLEA_BLUE_SKY).move_to(grph_2.get_center()+.5*DOWN).scale(.6)
@@ -2267,19 +2267,83 @@ class Scene4(Scene):
         # EQUATION REGION
 
         eqn_1=MathTex("A",r"\times","B","=",r"\{", r"(x,y)",r"\mid", r"x \in A",",", r"y \in B", r"\}").shift(2*DOWN)
-        eqn_1[0].set_color(REANLEA_SLATE_BLUE)
+        eqn_1[0].set_color(REANLEA_GREEN_AUQA)
         eqn_1[1].set_color(PURE_RED)
         eqn_1[2].set_color(REANLEA_BLUE_SKY)
         eqn_1[5:10].scale(.9)
-        eqn_1[5][1].set_color(REANLEA_SLATE_BLUE)
+        eqn_1[5][1].set_color(REANLEA_GREEN_AUQA)
         eqn_1[5][3].set_color(REANLEA_BLUE_SKY)
-        eqn_1[7].set_color(REANLEA_SLATE_BLUE)
+        eqn_1[7].set_color(REANLEA_GREEN_AUQA)
         eqn_1[7][1].set_color(PURE_RED).scale(.65)
         eqn_1[9].set_color(REANLEA_BLUE_SKY)
         eqn_1[9][1].set_color(PURE_RED).scale(.65)
         eqn_1[8:].shift(0.15*RIGHT)
         eqn_1[9:].shift(0.1*RIGHT)
         
+
+
+        eqn_2=MathTex("A","=",r"\{","a,b", r"\}").set_color(REANLEA_GREEN_AUQA).scale(.7).to_edge(LEFT, buff=.5).shift(2.5*UP)
+
+        eqn_3=MathTex("B","=",r"\{","1,2,3", r"\}").set_color(REANLEA_BLUE_SKY).scale(.7).to_edge(LEFT, buff=.5).shift(2*UP)
+
+
+
+        # CARTESIAN EXAMPLE REGION
+
+        tbl_AB=MathTable(
+            [
+                ["(a,1)", "(a,2)","(a,3)"],
+                ["(b,1)", "(b,2)","(b,3)"]
+            ]
+        )
+        tbl_AB.get_vertical_lines().set_stroke(width=2, color=REANLEA_BLUE_SKY)
+        tbl_AB.get_horizontal_lines().set_stroke(width=2, color=REANLEA_SLATE_BLUE)
+        ent_tbl_AB=tbl_AB.get_entries_without_labels()
+
+        for k in range(len(ent_tbl_AB)):
+            ent_tbl_AB[k][0][1].set_color(REANLEA_GREEN_AUQA)
+            ent_tbl_AB[k][0][3].set_color(REANLEA_BLUE_SKY)
+
+        tbl_AB_lbl=MathTex(r"A \times B").next_to(tbl_AB, 2.5*DOWN + RIGHT).scale(.75).set_color(PURE_RED)
+        tbl_AB_lbl[0][0].set_color(REANLEA_GREEN_AUQA)
+        tbl_AB_lbl[0][2].set_color(REANLEA_BLUE_SKY)
+        tbl_AB_lbl_ln=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(3*PI/4).next_to(tbl_AB_lbl, .5*UP+.5*LEFT).set_z_index(2)
+        sr_tbl_AB=SurroundingRectangle(tbl_AB, color=REANLEA_WELDON_BLUE ,corner_radius=.25).set_fill(color=REANLEA_WELDON_BLUE, opacity=0.25)
+        t_AB=VGroup(tbl_AB,tbl_AB_lbl,tbl_AB_lbl_ln,sr_tbl_AB)
+
+
+        tbl_A=MathTable(
+            [
+              ["a"],
+              ["b"]  
+            ],
+            v_buff=0.85
+        ).next_to(tbl_AB, LEFT).set_color(REANLEA_GREEN_AUQA)
+        tbl_A.get_horizontal_lines().set_opacity(0)
+
+        tbl_A_lbl=MathTex("A").next_to(tbl_A, 2*UP+LEFT).scale(.75).set_color(REANLEA_GREEN_AUQA)
+        tbl_A_lbl_ln=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(3*PI/4).next_to(tbl_A_lbl, .5*DOWN+.5*RIGHT).set_z_index(2)
+        sr_tbl_A=Ellipse(width=3, color=REANLEA_WELDON_BLUE).set_fill(color=REANLEA_GREEN_AUQA, opacity=0.15).move_to(tbl_A.get_center()).rotate(PI/2)
+
+        t_A=VGroup(tbl_A,tbl_A_lbl,tbl_A_lbl_ln,sr_tbl_A)
+
+
+
+
+        tbl_B=MathTable(
+            [
+                ["1","2","3"]
+            ],
+            h_buff=2.25
+        ).next_to(tbl_AB,UP).set_color(REANLEA_BLUE_SKY)
+        tbl_B.get_vertical_lines().set_opacity(0)
+
+        tbl_B_lbl=Text("B").next_to(tbl_B, UP+4*RIGHT).scale(.75).set_color(REANLEA_BLUE_SKY)
+        tbl_B_lbl_ln=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(PI/4).next_to(tbl_B_lbl, .5*DOWN+.5*LEFT).set_z_index(2)
+        sr_tbl_B=Ellipse(width=8, color=REANLEA_WELDON_BLUE).set_fill(color=REANLEA_BLUE_SKY, opacity=0.25).move_to(tbl_B.get_center())
+                    
+        t_B=VGroup(tbl_B,tbl_B_lbl,tbl_B_lbl_ln,sr_tbl_B)
+
 
 
 
@@ -2291,7 +2355,20 @@ class Scene4(Scene):
 
         txt_1_grp=VGroup(txt_1,strp_1)
         dot_lbl_grp=VGroup(dot_1_lbl,dot_2_lbl)
+        set_a_grp=VGroup(grph_1,grph_1_lbl,dot_1,dot_1_lbl)
+        set_b_grp=VGroup(grph_2,grph_2_lbl,dot_2,dot_2_lbl)
+        cp_grp_1=VGroup(set_a_grp,set_b_grp,eqn_1)
 
+        eqn_2_3_grp=VGroup(eqn_2,eqn_3)
+
+        tbl_grp=VGroup(t_AB,t_A,t_B).scale(0.75).shift(2*LEFT+DOWN)
+
+
+
+        # EXTRA REGION
+
+        sep_ln=Line().scale(2).rotate(PI/2).set_stroke(width=5, color=[REANLEA_MAGENTA,REANLEA_WARM_BLUE]).shift(1.5*RIGHT)
+        
 
 
 
@@ -2343,8 +2420,29 @@ class Scene4(Scene):
         self.wait(2)
 
         self.play(
-            TransformMatchingShapes(dot_lbl_grp,eqn_1)
+            TransformMatchingShapes(dot_lbl_grp.copy(),eqn_1)
         )
+        self.play(
+            set_a_grp.animate.shift(2*RIGHT),
+            set_b_grp.animate.shift(2*LEFT)
+        )
+        self.play(
+            cp_grp_1.animate.scale(.65).move_to(4.5*RIGHT),
+        )
+        self.play(
+            Create(sep_ln.reverse_direction())
+        )
+        
+        self.play(
+            TransformMatchingShapes(grph_1_lbl.copy(), eqn_2)
+        )
+        self.play(
+            TransformMatchingShapes(grph_2_lbl.copy(), eqn_3)
+        )
+        self.play(
+            TransformMatchingShapes(eqn_2_3_grp.copy(),tbl_grp),
+        )
+        
 
 
 

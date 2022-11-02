@@ -1917,6 +1917,123 @@ class tex_fill(Scene):
 
 
 
+
+class ArrangeInGrid(Scene):
+                def construct(self):
+                    boxes = VGroup(*[
+                        Rectangle(REANLEA_BLUE_ALT, 0.5, 0.5).add(Text(str(i+1)).scale(0.5).set_color(REANLEA_SAFRON))
+                        for i in range(24)
+                    ])
+                    #self.add(boxes)
+
+                    boxes.arrange_in_grid(
+                        buff=(0.25,.5),
+                        col_alignments="lccccr",
+                        row_alignments="uccd",
+                        col_widths=[1, *[None]*4, 1],
+                        row_heights=[1, *[None]*2, 1],
+                        flow_order="dr"
+                    )
+                    self.play(
+                        Create(boxes, run_time=4)
+                    )
+                    self.wait()
+
+
+            # manim -pqh test2.py ArrangeInGrid
+
+
+
+class GetRowLabelsExample(Scene):
+                def construct(self):
+                    table = MathTable(
+                        [
+                            ["(a,1)", "(a,2)","(a,3)"],
+                            ["(b,1)", "(b,2)","(b,3)"]
+                        ],
+                        #row_labels=[Text("a"), Text("b")],
+                        #col_labels=[Text("1"), Text("2"), Text("3")]
+                    )
+
+                    table.get_vertical_lines().set_stroke(width=2, color=PURE_GREEN)
+                    table.get_horizontal_lines().set_stroke(width=2, color=PURE_RED)
+                    #table.get_entries_without_labels()[1][0][1].set_color(REANLEA_BLUE_SKY)
+                    ent=table.get_entries_without_labels()
+
+                    for k in range(len(ent)):
+                        ent[k][0][1].set_color(REANLEA_BLUE_SKY)
+                        ent[k][0][3].set_color(REANLEA_ORANGE)
+
+                    table_2=Table(
+                        [
+                            ["1","2","3"]
+                        ],
+                        h_buff=2.25,
+                    ).next_to(table, UP)
+                    table_2.get_vertical_lines().set_opacity(0)
+
+                    table_2_lbl=Text("B").next_to(table_2, UP+4*RIGHT).scale(.5)
+                    table_2_lbl_ln=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(PI/4).next_to(table_2_lbl, .5*DOWN+.5*LEFT)
+                    t_2_lbl=VGroup(table_2_lbl,table_2_lbl_ln)
+
+                    table_3=MathTable(
+                        [
+                            ["a"],
+                            ["b"]
+                        ],
+                        v_buff=.85
+                    ).next_to(table,LEFT)
+                    table_3.get_horizontal_lines().set_opacity(0)
+
+
+                    table_3_lbl=Text("A").next_to(table_3, 2*UP+LEFT).scale(.5)
+                    table_3_lbl_ln=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(3*PI/4).next_to(table_3_lbl, .5*DOWN+.5*RIGHT)
+                    t_3_lbl=VGroup(table_3_lbl,table_3_lbl_ln)
+
+                    '''lab = table.get_row_labels()
+                    for item in lab:
+                        item.set_color(random_bright_color())'''
+                    
+                    sr_table=SurroundingRectangle(table, color=REANLEA_WELDON_BLUE ,corner_radius=.15).set_fill(color=REANLEA_WELDON_BLUE, opacity=0.25)
+
+                    sr_table_2=Ellipse(width=8, color=REANLEA_WELDON_BLUE).set_fill(color=REANLEA_WELDON_BLUE, opacity=0.25).move_to(table_2.get_center())
+                    
+                    sr_table_3=Ellipse(width=3, color=REANLEA_WELDON_BLUE).set_fill(color=REANLEA_WELDON_BLUE, opacity=0.25).move_to(table_3.get_center()).rotate(PI/2)
+
+
+                    self.play(
+                        Create(table, run_time=3)
+                    )
+                    self.play(
+                        Create(sr_table)
+                    )
+                    self.play(
+                        Write(table_2)
+                    )
+                    self.play(
+                        Create(sr_table_2)
+                    )
+                    self.play(
+                        Write(table_3)
+                    )
+                    self.play(
+                        Create(sr_table_3)
+                    )
+                    self.play(Write(t_2_lbl))
+
+                    self.play(Write(t_3_lbl))
+
+
+                    self.wait()
+
+
+            # manim -pqh test2.py GetRowLabelsExample
+
+            # manim -sqk test2.py GetRowLabelsExample
+
+
+
+
 ###################################################################################################################
 
 
