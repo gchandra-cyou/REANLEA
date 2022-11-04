@@ -2286,6 +2286,18 @@ class Scene4(Scene):
 
         eqn_3=MathTex("B","=",r"\{","1,2,3", r"\}").set_color(REANLEA_BLUE_SKY).scale(.7).to_edge(LEFT, buff=.5).shift(2*UP)
 
+        eqn_4=MathTex(r"A \times B", "=", r"\{","(a,1),", "(a,2),","(a,3),","(b,1),", "(b,2),","(b,3),", r"\}").scale(.7).to_edge(LEFT, buff=.5).shift(1.5*UP)
+        eqn_4[0][0].set_color(REANLEA_GREEN_AUQA)
+        eqn_4[0][1].set_color(PURE_RED)  
+        eqn_4[0][2].set_color(REANLEA_BLUE_SKY)      
+
+        for k in range(len(eqn_4)-1):
+            if k > 2 :
+                eqn_4[k][1].set_color(REANLEA_GREEN_AUQA)
+                eqn_4[k][3].set_color(REANLEA_BLUE_SKY)
+
+
+        
 
 
         # CARTESIAN EXAMPLE REGION
@@ -2346,6 +2358,62 @@ class Scene4(Scene):
 
 
 
+        eqn_2_ref=MathTex("A","=",r"\{","4,5", r"\}").set_color(REANLEA_GREEN_AUQA).scale(.7).to_edge(LEFT, buff=.5).shift(2.5*UP)
+
+        tbl_AB_ref=MathTable(
+            [
+                ["(4,1)", "(4,2)","(4,3)"],
+                ["(5,1)", "(5,2)","(5,3)"]
+            ]
+        )
+        tbl_AB_ref.get_vertical_lines().set_stroke(width=2, color=REANLEA_BLUE_SKY)
+        tbl_AB_ref.get_horizontal_lines().set_stroke(width=2, color=REANLEA_SLATE_BLUE)
+        ent_tbl_AB_ref=tbl_AB_ref.get_entries_without_labels()
+
+        for k in range(len(ent_tbl_AB_ref)):
+            ent_tbl_AB_ref[k][0][1].set_color(REANLEA_GREEN_AUQA)
+            ent_tbl_AB_ref[k][0][3].set_color(REANLEA_BLUE_SKY)
+
+        tbl_AB_lbl_ref=MathTex(r"A \times B").next_to(tbl_AB_ref, 2.5*DOWN + RIGHT).scale(.75).set_color(PURE_RED)
+        tbl_AB_lbl_ref[0][0].set_color(REANLEA_GREEN_AUQA)
+        tbl_AB_lbl_ref[0][2].set_color(REANLEA_BLUE_SKY)
+        tbl_AB_lbl_ln_ref=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(3*PI/4).next_to(tbl_AB_lbl_ref, .5*UP+.5*LEFT).set_z_index(2)
+        sr_tbl_AB_ref=SurroundingRectangle(tbl_AB, color=REANLEA_WELDON_BLUE ,corner_radius=.25).set_fill(color=REANLEA_WELDON_BLUE, opacity=0.25)
+        t_AB_ref=VGroup(tbl_AB_ref,tbl_AB_lbl_ref,tbl_AB_lbl_ln_ref,sr_tbl_AB_ref)
+
+
+        tbl_A_ref=MathTable(
+            [
+              ["4"],
+              ["5"]  
+            ],
+            v_buff=0.85
+        ).next_to(tbl_AB_ref, LEFT).set_color(REANLEA_GREEN_AUQA)
+        tbl_A_ref.get_horizontal_lines().set_opacity(0)
+
+        tbl_A_lbl_ref=MathTex("A").next_to(tbl_A, 2*UP+LEFT).scale(.75).set_color(REANLEA_GREEN_AUQA)
+        tbl_A_lbl_ln_ref=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(3*PI/4).next_to(tbl_A_lbl, .5*DOWN+.5*RIGHT).set_z_index(2)
+        sr_tbl_A_ref=Ellipse(width=3, color=REANLEA_WELDON_BLUE).set_fill(color=REANLEA_GREEN_AUQA, opacity=0.15).move_to(tbl_A.get_center()).rotate(PI/2)
+
+        t_A_ref=VGroup(tbl_A_ref,tbl_A_lbl_ref,tbl_A_lbl_ln_ref,sr_tbl_A_ref)
+
+
+        tbl_B_ref=MathTable(
+            [
+                ["1","2","3"]
+            ],
+            h_buff=2.25
+        ).next_to(tbl_AB_ref,UP).set_color(REANLEA_BLUE_SKY)
+        tbl_B_ref.get_vertical_lines().set_opacity(0)
+
+        tbl_B_lbl_ref=Text("B").next_to(tbl_B_ref, UP+4*RIGHT).scale(.75).set_color(REANLEA_BLUE_SKY)
+        tbl_B_lbl_ln_ref=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(PI/4).next_to(tbl_B_lbl_ref, .5*DOWN+.5*LEFT).set_z_index(2)
+        sr_tbl_B_ref=Ellipse(width=8, color=REANLEA_WELDON_BLUE).set_fill(color=REANLEA_BLUE_SKY, opacity=0.25).move_to(tbl_B.get_center())
+                    
+        t_B_ref=VGroup(tbl_B_ref,tbl_B_lbl_ref,tbl_B_lbl_ln_ref,sr_tbl_B_ref)
+
+
+
 
 
 
@@ -2363,6 +2431,11 @@ class Scene4(Scene):
 
         tbl_grp=VGroup(t_AB,t_A,t_B).scale(0.75).shift(2*LEFT+DOWN)
 
+        cp_grp_2=VGroup(eqn_2_3_grp,tbl_grp)
+
+        tbl_grp_ref=VGroup(t_AB_ref,t_A_ref,t_B_ref).scale(0.75).shift(2*LEFT+DOWN)
+
+        cp_grp_2_ref=VGroup(eqn_2_ref,eqn_3,tbl_grp_ref)
 
 
         # EXTRA REGION
@@ -2440,10 +2513,25 @@ class Scene4(Scene):
             TransformMatchingShapes(grph_2_lbl.copy(), eqn_3)
         )
         self.play(
-            TransformMatchingShapes(eqn_2_3_grp.copy(),tbl_grp),
+            TransformMatchingShapes(eqn_2_3_grp.copy(), eqn_4)
         )
-        
+        self.wait(2)
 
+        self.play(
+            TransformMatchingShapes(eqn_4,tbl_grp),
+        )
+        self.wait(2)
+
+        self.play(
+            TransformMatchingShapes(tbl_grp,tbl_grp_ref),
+            TransformMatchingShapes(eqn_2,eqn_2_ref)
+        )
+        self.wait(2)
+
+        self.play(
+            cp_grp_1.animate.shift(1.5*UP),
+            cp_grp_2_ref.animate.scale(.6).next_to(cp_grp_1, DOWN).shift(1.25*UP)
+        )
 
 
         
