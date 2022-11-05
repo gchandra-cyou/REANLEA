@@ -2034,6 +2034,151 @@ class GetRowLabelsExample(Scene):
 
 
 
+class axEx(Scene):
+    def construct(self):
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+            }, 
+        ).set_color(REANLEA_WHITE).scale(.5).shift(3*LEFT)
+        ax_2=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+            }, 
+        ).set_color(REANLEA_WHITE).scale(.5).shift(3*LEFT)
+
+        ax_1_x_lbl=ax_1.get_x_axis_label(
+            Tex("$x$-axis").scale(0.65),
+            edge=DOWN,
+            direction=DOWN,
+            buff=0.3
+        ).shift(RIGHT)
+        ax_1_y_lbl=ax_1.get_y_axis_label(
+            Tex("$y$-axis").scale(0.65).rotate(90 * DEGREES),       #label rotation
+            edge=LEFT,
+            direction=LEFT,
+            buff=0.3,
+        ).shift(UP)
+
+        ax_1_lbl=VGroup(ax_1_x_lbl,ax_1_y_lbl)
+
+        ax_1_coords=ax_1.copy().add_coordinates()
+        
+    
+
+
+        dot_ax_1=Dot(ax_1.coords_to_point(0,0), color=PURE_GREEN).set_sheen(-0.4,DOWN).set_z_index()
+        
+
+        sgn_pos_1=MathTex("+").scale(.5).set_color(PURE_GREEN)
+        sgn_pos_2=Circle(radius=0.15, color=PURE_GREEN).move_to(sgn_pos_1.get_center()).set_stroke(width= 1)
+        sgn_pos=VGroup(sgn_pos_1,sgn_pos_2)
+
+        sgn_neg_1=MathTex("-").scale(.5).set_color(PURE_RED).move_to(6.5*LEFT)
+        sgn_neg_2=Circle(radius=0.15, color=PURE_RED).move_to(sgn_neg_1.get_center()).set_stroke(width= 1)
+        sgn_neg=VGroup(sgn_neg_1,sgn_neg_2)
+
+        r1=Polygon(ax_1.c2p(0,-1.5),ax_1.c2p(5.5,-1.5),ax_1.c2p(5.5,4.5),ax_1.c2p(0,4.5)).set_opacity(0)
+        r1.set_fill(color=REANLEA_BLUE_LAVENDER, opacity=0.25)
+
+
+        r2=Polygon(ax_1.c2p(0,-1.5),ax_1.c2p(0,4.5),ax_1.c2p(-1.5,4.5),ax_1.c2p(-1.5,-1.5)).set_opacity(0)
+        r2.set_fill(color=REANLEA_CHARM, opacity=0.25)
+
+        r3=Polygon(ax_1.c2p(-1.5,0),ax_1.c2p(5.5,0),ax_1.c2p(5.5,4.5),ax_1.c2p(-1.5,4.5)).set_opacity(0)
+        r3.set_fill(color=REANLEA_BLUE_LAVENDER, opacity=0.25)
+
+        r4=Polygon(ax_1.c2p(-1.5,0),ax_1.c2p(5.5,0),ax_1.c2p(5.5,-1.5),ax_1.c2p(-1.5,-1.5)).set_opacity(0)
+        r4.set_fill(color=REANLEA_CHARM, opacity=0.25)
+
+        
+
+        self.play(
+            Write(ax_1)
+        )
+        self.play(
+            Write(ax_1_lbl)
+        )
+        self.play(
+            Create(dot_ax_1)
+        )
+        self.play(
+            Create(r1.reverse_direction())
+        )
+        self.play(
+            Write(sgn_pos.move_to(ax_1.c2p(5,.5)))
+        )
+        self.play(
+            FadeOut(sgn_pos),
+            Uncreate(r1),
+            lag_ratio=.5
+        )
+        self.play(
+            Create(r2)
+        )
+        self.play(
+            Write(sgn_neg.move_to(ax_1.c2p(-1,.5)))
+        )
+        self.play(
+            FadeOut(sgn_neg),
+            Uncreate(r2),
+            lag_ratio=.5
+        )
+        self.wait(2)
+        self.play(
+            Create(r3)
+        )
+        self.play(
+            Write(sgn_pos.move_to(ax_1.c2p(.5,4)))
+        )
+        self.play(
+            FadeOut(sgn_pos),
+            Uncreate(r3),
+            lag_ratio=.5
+        )
+        self.play(
+            Create(r4)
+        )
+        self.play(
+            Write(sgn_neg.move_to(ax_1.c2p(.5,-1)))
+        )
+        self.play(
+            FadeOut(sgn_neg),
+            Uncreate(r4),
+            lag_ratio=.5
+        )
+        self.play(
+            Create(ax_2)
+        )
+        self.play(
+            ax_1_x_lbl.animate.shift(.5*DOWN),
+            ax_1_y_lbl.animate.shift(.5*LEFT),
+            Write(ax_1_coords),
+            FadeOut(ax_1)
+        )
+        
+        
+
+        
+
+
+        self.wait(2)
+
+
+        # manim -pqh test2.py axEx
+
+        # manim -sqk test2.py axEx
+
+
 ###################################################################################################################
 
 
