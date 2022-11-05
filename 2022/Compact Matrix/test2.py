@@ -2045,7 +2045,7 @@ class axEx(Scene):
                 "font_size": 24,
                 "include_ticks": False,
             }, 
-        ).set_color(REANLEA_WHITE).scale(.5).shift(3*LEFT)
+        ).set_color(REANLEA_WHITE).scale(.5).shift(3*LEFT).set_z_index(1)
         ax_2=Axes(
             x_range=[-1.5,5.5],
             y_range=[-1.5,4.5],
@@ -2054,7 +2054,7 @@ class axEx(Scene):
             axis_config={
                 "font_size": 24,
             }, 
-        ).set_color(REANLEA_WHITE).scale(.5).shift(3*LEFT)
+        ).set_color(REANLEA_WHITE).scale(.5).shift(3*LEFT).set_z_index(-1)
 
         ax_1_x_lbl=ax_1.get_x_axis_label(
             Tex("$x$-axis").scale(0.65),
@@ -2076,7 +2076,7 @@ class axEx(Scene):
     
 
 
-        dot_ax_1=Dot(ax_1.coords_to_point(0,0), color=PURE_GREEN).set_sheen(-0.4,DOWN).set_z_index()
+        dot_ax_1=Dot(ax_1.coords_to_point(0,0), color=PURE_GREEN).set_sheen(-0.4,DOWN).set_z_index(2)
         
 
         sgn_pos_1=MathTex("+").scale(.5).set_color(PURE_GREEN)
