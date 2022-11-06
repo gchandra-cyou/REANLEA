@@ -3855,6 +3855,273 @@ class VectorFieldScene2(Scene):
         # manim -sqk discord.py VectorFieldScene2
 
 
+
+from numpy import*
+
+def credits(self, title: str, credit: str):
+    title = Text(title).shift(UP).scale(0.6)
+    name = Text("By R E A N L E A")
+    credit = Text(credit, font_size=26).next_to(name, DOWN)
+    banner = ManimBanner().next_to(credit, DOWN).scale(0.3)
+    self.play(Write(title), run_time=0.8)
+    self.play(Write(name), run_time=0.8)
+    self.add_foreground_mobject(name)
+    self.play(Write(credit), banner.create(), runt_time=0.8)
+    self.play(banner.expand())
+    self.play(Unwrite(title), Unwrite(credit, reverse=False), Unwrite(banner), Unwrite(name[0:2]), run_time=0.8)
+    self.play(name[2:].animate.scale(0.3).move_to(5 * RIGHT + 3.5 * DOWN))
+
+class ComplexSequences(Scene):
+    def construct(self):
+        credits(self, "Complex Sequences, Twisted Polygons and Cardioids", "I feel like this deserves a part 2, Burkard.")
+        max_num_of_dots = 42
+        segments_color = "#5200FF"
+
+        a = 2.1
+        plane = ComplexPlane(background_line_style={"stroke_color": "#00FFFF", "stroke_opacity": 0.7}).scale(a)
+        x_label = plane.get_x_axis_label(Tex("Re"), RIGHT, DOWN, buff=0.1).set_color(BLUE).scale(0.7)
+        y_label = plane.get_y_axis_label(Tex("Im"), UP, LEFT, buff=0.1).set_color(BLUE).scale(0.7)
+        self.play(Write(plane), run_time=1)
+        self.play(Write(x_label), Write(y_label))
+        unit_circle = Circle(radius=1, color="#00FF4C").scale(a)
+        self.play(Write(unit_circle))
+
+
+        initial_point = (1/sqrt(2)) + (1/sqrt(2))*1j
+        modulus_var = Variable(absolute(initial_point), Tex(r"$|z_0|$"), num_decimal_places=3).move_to(5.4*LEFT + 0.5*UP).scale(0.8)
+        modulus_var.label.set_color(YELLOW)
+        modulus_var.add_updater(lambda x: x.tracker.set_value(absolute(get_dot())))
+        arg_var = Variable(angle(initial_point), Tex(r"Arg $z_0$"), num_decimal_places=3).move_to(5.4*LEFT + 0.5*DOWN).scale(0.8)
+        arg_var.label.set_color(YELLOW)
+        arg_var.add_updater(lambda x: x.tracker.set_value(angle(get_dot())))
+
+        segments = list(range(max_num_of_dots))
+        dots = list(range(max_num_of_dots))
+        dots[0] = Dot(plane.number_to_point(initial_point), color=YELLOW)
+        dot_label = MathTex("z_0", font_size=45).next_to(dots[0], UR, buff=0.1)
+        dot_label.add_updater(lambda x: x.next_to(dots[0], UR, buff=0.1))
+
+        def get_dot(): return (1/a)*(dots[0].get_center()[0] + dots[0].get_center()[1]*1j)
+
+        self.play(GrowFromCenter(dots[0]))
+        self.play(Write(dot_label))
+        self.add_foreground_mobjects(dots[0], dot_label)
+        self.play(Write(modulus_var), Write(arg_var))
+        self.wait()
+
+
+        texts = Tex("Consider the complex number $z_0$").move_to(3*UP)
+        self.play(Write(texts))
+        self.play(FadeOut(texts, shift=UP))
+        texts = Tex(r"and the complex valued function $f(z)=z\cdot z_0$").move_to(3*UP)
+        self.play(Write(texts))
+        self.play(modulus_var.animate.shift(UP), arg_var.animate.shift(UP),
+                    texts[0][27:].animate.move_to(5.4*LEFT + 0.5*DOWN).scale(0.8), FadeOut(texts[0][:27], shift=UP))
+        
+        function_text = texts[0][27:]
+        frame = SurroundingRectangle(function_text, color=segments_color)
+        self.play(Create(frame))
+
+
+        texts = Tex(r"What do you think will happen if we keep applying $f$ to $z_0$?").move_to(3*UP)
+        self.play(Write(texts))
+        self.wait(0.5)
+        self.play(FadeOut(texts, shift=UP))
+
+        ###############################
+        def nth_term(n, f, z0):
+            result = z0
+            for i in range(n):
+                result = f(result)
+            return result
+
+        f = lambda z: z * get_dot()
+        
+        def group_updater(mobj):
+            z0 = get_dot()
+            for i in range(1, max_num_of_dots):
+                dots[i].become(Dot(plane.n2p(nth_term(i, f, z0)), color=segments_color))
+                segments[i].become(Line(dots[i-1].get_center(), dots[i].get_center(), color=segments_color))
+
+        for i in range(1, max_num_of_dots):
+            dots[i] = Dot(plane.n2p(nth_term(i, f, initial_point)), color=segments_color) 
+            segments[i] = Line(dots[i-1].get_center(), dots[i].get_center(), color=segments_color)
+            self.play(GrowFromCenter(dots[i]), Create(segments[i]), run_time=2**(-0.4*i))
+        
+        texts = Tex(r"Hmmm. But what if $z_0$ was different?").move_to(3*UP)
+        self.play(Write(texts))
+        self.wait(0.5)
+        self.play(FadeOut(texts, shift=UP))
+        
+        group = VGroup().add_updater(group_updater)
+        self.add(group)
+        ###############################
+
+        self.play(dots[0].animate.move_to(plane.n2p(-initial_point)), run_time = 3)
+
+        r = ValueTracker(1)
+        theta = ValueTracker(-(3/4)*PI)
+
+        def dot_updater(d):
+            d.move_to(plane.n2p(r.get_value()*(cos(theta.get_value()) + sin(theta.get_value())*1j)))
+        
+        dots[0].add_updater(dot_updater)
+
+
+        self.play(r.animate.set_value(0.9), theta.animate.set_value(theta.get_value()-PI/2), run_time = 2)
+        self.play(r.animate.set_value(0.7), theta.animate.set_value(theta.get_value()-(4/5)*PI), run_time = 2)
+        self.play(r.animate.set_value(1.1), theta.animate.set_value(theta.get_value()-PI/3), run_time = 2)
+        self.play(r.animate.set_value(0.4), theta.animate.set_value(theta.get_value()-PI), run_time = 2)
+        self.play(r.animate.set_value(1), theta.animate.set_value(0), run_time = 2)
+        self.play(r.animate.set_value(1.05), theta.animate.set_value((3/4)*PI), run_time = 2)
+        self.play(r.animate.set_value(1.15), theta.animate.set_value((3/2)*PI), run_time = 1.5)
+        self.play(r.animate.set_value(1.25), theta.animate.set_value(2*PI), run_time = 1)
+        self.play(r.animate.set_value(1), theta.animate.set_value(0), run_time = 5)
+        self.play(theta.animate.set_value(-PI), run_time = 40, rate_func=linear)
+        self.play(r.animate.set_value(0.99))
+        self.play(theta.animate.set_value(-2*PI), run_time = 40, rate_func=linear)
+        self.play(r.animate.set_value(1))
+        
+
+
+
+        texts = Tex(r"Very pretty, don't you think!").move_to(3*UP)
+        texts2 = Tex(r"-Burkard").next_to(texts, DR).scale(0.5).shift(LEFT)
+        self.play(Write(texts))
+        self.play(Write(texts2))
+        self.play(FadeOut(texts, texts2, shift=UP))
+
+        texts = Tex(r"Hmmm. But did you notice the twisted polygons? coincidence?").move_to(3*UP)
+        self.play(Write(texts))
+        self.wait(0.5)
+        self.play(FadeOut(texts, shift=UP))
+        self.wait()
+
+        texts = Tex(r"Now let's see what happens if we change $f$").move_to(3*UP)
+        self.play(Write(texts))
+        self.wait(0.5)
+        self.play(FadeOut(texts, shift=UP))
+
+        self.play(Transform(function_text, Tex("$f(z) = z^2$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8)), 
+                  Transform(frame, SurroundingRectangle(Tex("$f(z) = z^2$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8), color=segments_color)))
+
+        f = lambda z: z*z
+
+        self.play(r.animate.set_value(1.201), theta.animate.set_value(-PI), run_time = 2)
+        self.play(r.animate.set_value(0.7), theta.animate.set_value(PI), run_time = 2)
+        self.play(r.animate.set_value(1))
+        self.play(theta.animate.set_value(2*PI), run_time = 2)
+        theta.set_value(0)
+
+        texts = Tex(r"A cardioid? Why?").move_to(3*UP)
+        self.play(Write(texts))
+        self.wait(0.5)
+        self.play(FadeOut(texts, shift=UP))
+        self.wait()
+
+        texts = Tex(r"A quick forewarning, the following animations are not 100\% accurate!!!").move_to(3*UP).scale(0.8)
+        self.play(Write(texts))
+        self.wait(0.5)
+        self.play(FadeOut(texts, shift=UP))
+
+
+        self.play(Transform(function_text, Tex("$f(z) = z^{1.5}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8)), 
+                  Transform(frame, SurroundingRectangle(Tex("$f(z) = z^{1.5}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8), color=segments_color)))
+
+        f = lambda z: z**(1.5)
+        self.play(theta.animate.set_value(2*PI), run_time = 2)
+        theta.set_value(0)
+
+        self.play(Transform(function_text, Tex("$f(z) = z^{2.5}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8)), 
+                  Transform(frame, SurroundingRectangle(Tex("$f(z) = z^{2.5}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8), color=segments_color)))
+
+        f = lambda z: z**(2.5)
+        self.play(theta.animate.set_value(2*PI), run_time = 2)
+        theta.set_value(0)
+
+
+        self.play(Transform(function_text, Tex("$f(z) = z^{3}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8)), 
+                  Transform(frame, SurroundingRectangle(Tex("$f(z) = z^{3}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8), color=segments_color)))
+
+        f = lambda z: z**(3)
+        self.play(theta.animate.set_value(2*PI), run_time = 2)
+        theta.set_value(0)
+
+        self.play(Transform(function_text, Tex("$f(z) = z^{3.5}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8)), 
+                  Transform(frame, SurroundingRectangle(Tex("$f(z) = z^{3.5}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8), color=segments_color)))
+
+        f = lambda z: z**(3.5)
+        self.play(theta.animate.set_value(2*PI), run_time = 2)
+        theta.set_value(0)
+
+        self.play(Transform(function_text, Tex("$f(z) = z^{4}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8)), 
+                  Transform(frame, SurroundingRectangle(Tex("$f(z) = z^{4}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8), color=segments_color)))
+
+        f = lambda z: z**(4)
+        self.play(theta.animate.set_value(2*PI), run_time = 2)
+        theta.set_value(0)
+
+        texts = Tex(r"Enough cardioids! let's try something... complex!").move_to(3*UP)
+        self.play(Write(texts))
+        self.wait(0.5)
+        self.play(FadeOut(texts, shift=UP))
+
+        self.play(Transform(function_text, Tex("$f(z) = z^{i}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8)), 
+                  Transform(frame, SurroundingRectangle(Tex("$f(z) = z^{i}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8), color=segments_color)))
+
+        f = lambda z: z**(1j)
+        self.play(theta.animate.set_value(2.00111*PI), run_time = 2)
+        theta.set_value(0)
+
+        self.play(Transform(function_text, Tex("$f(z) = z^{-1}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8)), 
+                  Transform(frame, SurroundingRectangle(Tex("$f(z) = z^{-1}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8), color=segments_color)))
+
+        f = lambda z: z**(-1)
+        self.play(theta.animate.set_value(2.0001*PI), run_time = 2)
+        theta.set_value(0)
+
+        self.play(Transform(function_text, Tex("$f(z) = z^{1+i}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8)), 
+                  Transform(frame, SurroundingRectangle(Tex("$f(z) = z^{1+i}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8), color=segments_color)))
+
+        f = lambda z: z**(1+1j)
+        self.play(r.animate.set_value(1.2006), theta.animate.set_value(-PI), run_time = 2)
+        self.play(r.animate.set_value(0.7), theta.animate.set_value(PI), run_time = 2)
+        self.play(r.animate.set_value(1))
+        self.play(theta.animate.set_value(2*PI), run_time = 2)
+        theta.set_value(0)
+
+
+        self.play(Transform(function_text, Tex("$f(z) = e^{z}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8)), 
+                  Transform(frame, SurroundingRectangle(Tex("$f(z) = e^{z}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8), color=segments_color)))
+        f = lambda z: e**(z)
+        self.play(theta.animate.set_value(2*PI), run_time = 2)
+        theta.set_value(0)
+
+        self.play(Transform(function_text, Tex("$f(z) = z^{z}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8)), 
+                  Transform(frame, SurroundingRectangle(Tex("$f(z) = z^{z}$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8), color=segments_color)))
+        f = lambda z: z**(z)
+        self.play(theta.animate.set_value(2*PI), run_time = 2)
+        theta.set_value(0)
+
+        self.play(Transform(function_text, Tex(r"$f(z) = \log(z)$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8)), 
+                  Transform(frame, SurroundingRectangle(Tex(r"$f(z) = \log(z)$").move_to(5.4*LEFT + 0.5*DOWN).scale(0.8), color=segments_color)))
+
+        f = lambda z: log(z)
+        self.play(theta.animate.set_value(2*PI-0.1), run_time = 2)
+        theta.set_value(0)
+
+        texts = Tex(r"This last one suggests an interesting fact...").move_to(3*UP)
+        self.play(Write(texts))
+        self.wait(0.5)
+        self.play(FadeOut(texts, shift=UP))
+
+        self.wait()
+
+
+
+        # manim -pqh discord.py ComplexSequences
+
+
 ###################################################################################################################
 
 # NOTE :-

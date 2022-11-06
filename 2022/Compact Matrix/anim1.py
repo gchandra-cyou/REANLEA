@@ -2742,6 +2742,16 @@ class Scene4(Scene):
            TransformMatchingShapes(tbl_AB_ref[0][4].copy(), dot_a2_b2_lbl),
            TransformMatchingShapes(tbl_AB_ref[0][5].copy(), dot_a2_b3_lbl)
         )
+        self.wait(2)
+
+        self.play(
+            Uncreate(line_rem),
+            Uncreate(dots_rem),
+            Uncreate(dots_rem_lbl),
+            Uncreate(dot_ax_1),
+            Uncreate(ax_1_coords),
+            ReplacementTransform(ax_2,ax_1)
+        )
         
 
 

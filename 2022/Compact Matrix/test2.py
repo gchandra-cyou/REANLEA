@@ -2179,12 +2179,85 @@ class axEx(Scene):
         # manim -sqk test2.py axEx
 
 
+
+
+
+class PointCloudDotExample(Scene):
+    def construct(self):
+        cloud_1 = PointCloudDot(color=RED)
+        cloud_2 = PointCloudDot(stroke_width=4, radius=1)
+        cloud_3 = PointCloudDot(density=15)
+
+        group = Group(cloud_1, cloud_2, cloud_3).arrange()
+
+        self.wait(2)
+        self.play(
+            group.animate.shift(RIGHT)
+        )
+        self.wait(2)
+
+
+        # manim -pqh test2.py PointCloudDotExample
+
+
+
+class ExamplePoint(Scene):
+            def construct(self):
+    
+                for i in range(10):
+                    point = Point(location=[0.63 * np.random.randint(-4, 4), 0.37 * np.random.randint(-4, 4), 0], color=REANLEA_BLUE_LAVENDER)
+                    self.add(point)
+                
+                self.play(
+                    Write(point)
+                )
+
+
+        # manim -pqh test2.py ExamplePoint
+
+
+
+
+class Ex(Scene):
+    def construct(self):
+
+
+        #dots
+        eps=.1
+        line_1=Line(ORIGIN,2*RIGHT)
+        dots=VGroup(*[Dot(point=i*RIGHT + j*UP,radius=0.0125) for i in np.arange(0,2+eps,eps) for j in np.arange(0,2+eps,eps)])
+        
+        dots.set_color(REANLEA_BLUE_LAVENDER)
+
+        line_2=Line(start=dots[0].get_center(),end=dots[-1].get_center())
+        l_2_lngth=DecimalNumber(line_2.get_length()).shift(UP)
+        
+
+
+        #play
+        self.wait()
+        self.add(line_1)
+
+        self.play(
+            Create(dots)
+        )
+
+        self.wait(2)
+
+
+
+        # manim -pqh test2.py Ex
+
+        # manim -sqk test2.py Ex
+        
+
+
 ###################################################################################################################
 
 
 # Changing FONTS : import any font from Google
 # some of my fav fonts: Cinzel,Kalam,Prata,Kaushan Script,Cormorant, Handlee,Monoton, Bad Script, Reenie Beanie, 
-# Poiret One,Merienda,Julius Sans One,Merienda One,Cinzel Decorative, Montserrat, Cousine
+# Poiret One,Merienda,Julius Sans One,Merienda One,Cinzel Decorative, Montserrat, Cousine, The Nautigal
 # Marcellus SC,Contrail One,Thasadith,Spectral SC,Dongle,Cormorant SC,Comfortaa, Josefin Sans (LOVE), Fuzzy Bubbles
 
 
