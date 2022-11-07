@@ -124,7 +124,7 @@ class Ex(Scene):
             txt_2.shift(2*DOWN).scale(2)
             txt_2.set_color_by_gradient(REANLEA_AQUA)
 
-            txt_2[1].scale(3.5).set_color(GOLD)
+            txt_2[1].scale(3.5).set_color(GOLD).set_sheen(-.4, DOWN)
         
         strp_1=get_stripe(factor=.05, buff_max=2).next_to(txt_2[2], .25*UP).shift(.25*RIGHT)
         strp_2=get_stripe(factor=.05, buff_max=2).next_to(txt_2[2], .25*DOWN).shift(.25*RIGHT)
