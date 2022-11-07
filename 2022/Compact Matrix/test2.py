@@ -2225,7 +2225,14 @@ class Ex(Scene):
         #dots
         eps=.1
         line_1=Line(ORIGIN,2*RIGHT)
-        dots=VGroup(*[Dot(point=i*RIGHT + j*UP,radius=0.0125) for i in np.arange(0,2+eps,eps) for j in np.arange(0,2+eps,eps)])
+
+        dots=VGroup(
+            *[
+                Dot(point=i*RIGHT + j*UP,radius=0.0125)
+                    for i in np.arange(eps,2+eps,eps) 
+                    for j in np.arange(eps,2+eps,eps)
+            ]
+        )
         
         dots.set_color(REANLEA_BLUE_LAVENDER)
 
@@ -2250,6 +2257,18 @@ class Ex(Scene):
 
         # manim -sqk test2.py Ex
         
+
+class Ex2(Scene):
+    def construct(self):
+        a=dot_square(eps=.2)
+
+        self.play(
+            Create(a)
+        )
+        self.wait(2)
+
+        # manim -pqh test2.py Ex2
+
 
 
 ###################################################################################################################

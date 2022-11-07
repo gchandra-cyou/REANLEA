@@ -2520,6 +2520,9 @@ class Scene4(Scene):
         dots_rem_lbl=VGroup(dot_a1_b1_lbl,dots_rem_0_lbl)
 
 
+        
+
+
 
 
 

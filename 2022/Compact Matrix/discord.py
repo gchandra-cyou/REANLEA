@@ -4122,6 +4122,55 @@ class ComplexSequences(Scene):
         # manim -pqh discord.py ComplexSequences
 
 
+
+class myDot(Scene):
+    def construct(self):
+        squares = [Square(side_length=1).move_to([x,0,0]) for x in [-5,-3,-1]]
+
+        for square in squares:
+            self.play(Create(square))  
+        
+        arcAngles = [ValueTracker(0*DEGREES) for i in range(len(squares)-1)]
+
+        arcs = []
+
+        arcs.append(always_redraw(lambda: Arc(
+                start_angle = 0,
+                arc_center = (squares[0].get_bottom()+squares[1].get_bottom())/2,
+                angle = arcAngles[0].get_value(),
+                radius = (squares[0].get_bottom()[0]-squares[1].get_bottom()[0])/2
+            )
+        ))
+
+        arcs.append(always_redraw(lambda: Arc(
+                start_angle = 0,
+                arc_center = (squares[1].get_bottom()+squares[2].get_bottom())/2,
+                angle = arcAngles[1].get_value(),
+                radius = (squares[1].get_bottom()[0]-squares[2].get_bottom()[0])/2
+            )
+        ))
+        for arc in arcs:
+            self.add(arc)
+
+        dot = always_redraw(lambda: Dot().move_to(arcs[0].get_end()))
+        self.add(dot)
+        self.play(arcAngles[0].animate.set_value(180*DEGREES),run_time=2)
+        self.remove(dot)
+        dot = always_redraw(lambda: Dot().move_to(arcs[1].get_end()))
+        self.add(dot)
+        self.play(arcAngles[1].animate.set_value(180*DEGREES),run_time=2)
+        self.wait()
+        self.play(arcAngles[1].animate.set_value(0*DEGREES),run_time=2)
+        self.remove(dot)
+        dot = always_redraw(lambda: Dot().move_to(arcs[0].get_end()))
+        self.add(dot)
+        self.play(arcAngles[0].animate.set_value(0*DEGREES),run_time=2)
+
+        self.wait(2)
+
+
+        # manim -pqh discord.py myDot
+
 ###################################################################################################################
 
 # NOTE :-
