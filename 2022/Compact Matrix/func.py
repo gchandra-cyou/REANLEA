@@ -452,14 +452,18 @@ def create_glow(vmobject, rad=1, col=YELLOW):
         glow_group.add(new_circle)
     return glow_group
 
-def dot_square(
-    eps=0.1, x_max=2, y_max=2, col=REANLEA_BLUE_LAVENDER
+def square_cloud(
+    x_min=0, x_max=2, x_eps=0.1,
+    y_min=0, y_max=2, y_eps=0.1,
+    col=REANLEA_BLUE_LAVENDER,
+    rad=0.0125,
+    sheen_factor=-0.4, sheen_dir=DOWN
 ):
     dots=VGroup(
         *[
-            Dot(point=i*RIGHT + j*UP,radius=0.0125)
-            for i in np.arange(eps,x_max+eps,eps) 
-            for j in np.arange(eps,y_max+eps,eps)
+            Dot(point=i*RIGHT + j*UP,radius=rad).set_sheen(sheen_factor,sheen_dir)
+            for i in np.arange(x_min, x_max+x_eps, x_eps) 
+            for j in np.arange(y_min, y_max+y_eps, y_eps)
         ]
     )    
     dots.set_color(col)

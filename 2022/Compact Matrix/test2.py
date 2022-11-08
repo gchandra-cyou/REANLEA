@@ -2260,16 +2260,73 @@ class Ex(Scene):
 
 class Ex2(Scene):
     def construct(self):
-        a=dot_square(eps=.2)
+        a=square_cloud(x_eps=.5, y_eps=.5, rad=DEFAULT_DOT_RADIUS, sheen_factor=0, x_max=4, y_max=0)
+        
+        
+        ax=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+            }, 
+        ).set_color(REANLEA_YELLOW_CREAM).scale(.5).shift(3*LEFT).set_z_index(-1)
+        a[0].move_to(ax.c2p(0,0))
+        a[1].move_to(ax.c2p((a[2].get_center()[0]-a[1].get_center()[0]),0))
+
+        
+
+        self.play(
+            Create(ax)
+        )
 
         self.play(
             Create(a)
         )
+        
         self.wait(2)
 
         # manim -pqh test2.py Ex2
 
+        # manim -sqk test2.py Ex2
 
+class Ex3(Scene):
+    def construct(self):
+        ax_2=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+            }, 
+        ).set_color(REANLEA_YELLOW_CREAM)#.scale(.5).shift(3*LEFT).set_z_index(-1)
+
+        dots_A_1=square_cloud(x_max=5, x_eps=1,col=REANLEA_GREEN_AUQA, rad=DEFAULT_DOT_RADIUS,  y_max=0).set_z_index(2)
+        dots_A_1.shift(3*LEFT)
+        
+
+        dots_B_1=square_cloud(x_max=0,col=REANLEA_BLUE_SKY, rad=DEFAULT_DOT_RADIUS, y_eps=1, y_max=4).set_z_index(2)
+        
+
+
+        self.play(
+            Create(ax_2)
+        )
+        self.play(
+            Create(dots_A_1)
+        )
+        self.play(
+            Create(dots_B_1)
+        )
+        
+        self.wait(2)
+
+
+        # manim -pqh test2.py Ex3
+
+        # manim -sqk test2.py Ex3
 
 ###################################################################################################################
 

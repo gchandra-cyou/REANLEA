@@ -2485,6 +2485,8 @@ class Scene4(Scene):
         dot_b_3=Dot(ax_2.coords_to_point(0,3), color=REANLEA_BLUE_SKY).set_sheen(-0.4,DOWN).set_z_index(2)
         dots_B=VGroup(dot_b_1,dot_b_2,dot_b_3)
 
+        dot_A_B=VGroup(dots_A,dots_B)
+
 
 
         dot_a1_b1=Dot(ax_2.coords_to_point(2,1),color=REANLEA_BLUE_LAVENDER).set_sheen(-0.4,DOWN).set_z_index(2)
@@ -2520,7 +2522,18 @@ class Scene4(Scene):
         dots_rem_lbl=VGroup(dot_a1_b1_lbl,dots_rem_0_lbl)
 
 
-        
+        dots_A_1=square_cloud(x_min=1,x_max=5, x_eps=1,col=REANLEA_GREEN_AUQA, rad=DEFAULT_DOT_RADIUS, y_eps=.5, y_max=.5).set_z_index(2)
+        dots_A_1.move_to(ax_2.get_x_axis().get_center()+RIGHT)
+
+        dots_B_1=square_cloud(x_max=.5, x_eps=.5,col=REANLEA_BLUE_SKY, rad=DEFAULT_DOT_RADIUS, y_eps=1, y_max=4).set_z_index(2)
+        dots_B_1.move_to(ax_2.get_y_axis().get_center()+UP)
+
+        dots_A_B_1=square_cloud(
+            x_min=1, x_max=5, x_eps=1,
+            y_max=4,y_eps=1,
+            rad=DEFAULT_DOT_RADIUS
+        ).set_z_index(2)
+        dots_A_B_1.move_to(ax_2.c2p(dots_A_1[0].get_center()[0],dots_B_1[0].get_center()[1]))
 
 
 
@@ -2755,6 +2768,15 @@ class Scene4(Scene):
             Uncreate(ax_1_coords),
             ReplacementTransform(ax_2,ax_1)
         )
+        self.wait()
+
+        self.play(
+            ReplacementTransform(dots_A,dots_A_1)
+        )
+        self.play(
+            ReplacementTransform(dots_B,dots_B_1)
+        )
+        self.play(Write(dots_A_B_1))
         
 
 
