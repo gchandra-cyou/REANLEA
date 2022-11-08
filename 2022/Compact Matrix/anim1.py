@@ -2521,22 +2521,10 @@ class Scene4(Scene):
         line_rem=VGroup(line_a1_b1,line_rem_0)
         dots_rem_lbl=VGroup(dot_a1_b1_lbl,dots_rem_0_lbl)
 
-
-        dots_A_1=square_cloud(x_min=1,x_max=5, x_eps=1,col=REANLEA_GREEN_AUQA, rad=DEFAULT_DOT_RADIUS, y_eps=.5, y_max=.5).set_z_index(2)
-        dots_A_1.move_to(ax_2.get_x_axis().get_center()+RIGHT)
-
-        dots_B_1=square_cloud(x_max=.5, x_eps=.5,col=REANLEA_BLUE_SKY, rad=DEFAULT_DOT_RADIUS, y_eps=1, y_max=4).set_z_index(2)
-        dots_B_1.move_to(ax_2.get_y_axis().get_center()+UP)
-
-        dots_A_B_1=square_cloud(
-            x_min=1, x_max=5, x_eps=1,
-            y_max=4,y_eps=1,
-            rad=DEFAULT_DOT_RADIUS
-        ).set_z_index(2)
-        dots_A_B_1.move_to(ax_2.c2p(dots_A_1[0].get_center()[0],dots_B_1[0].get_center()[1]))
+        dots_A_1=square_cloud(x_min=2,x_max=4,x_eps=1, y_max=0, col=REANLEA_GREEN_AUQA, rad=DEFAULT_DOT_RADIUS)
 
 
-
+        
 
 
 
@@ -2773,11 +2761,6 @@ class Scene4(Scene):
         self.play(
             ReplacementTransform(dots_A,dots_A_1)
         )
-        self.play(
-            ReplacementTransform(dots_B,dots_B_1)
-        )
-        self.play(Write(dots_A_B_1))
-        
 
 
 
