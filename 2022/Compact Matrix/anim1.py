@@ -2593,6 +2593,16 @@ class Scene4(Scene):
         dt_3_lbl=always_redraw(
             lambda : MathTex(r"(x,y)").scale(.3).set_color(REANLEA_PINK).next_to(dt_3,.25*UR).set_z_index(3)
         )
+
+
+
+        ax_1_x_lbl_r=ax_1.get_x_axis_label(
+            MathTex(r"\mathbb{R}").scale(0.65)
+        ).next_to(ax_2.get_x_axis().get_end(), DOWN).set_color_by_gradient(REANLEA_SLATE_BLUE,REANLEA_GREEN_AUQA)
+
+        ax_1_y_lbl_r=ax_1.get_x_axis_label(
+            MathTex(r"\mathbb{R}").scale(0.65)
+        ).next_to(ax_2.get_y_axis().get_end(), LEFT).set_color_by_gradient(REANLEA_SLATE_BLUE,REANLEA_BLUE_SKY)
         
         
 
@@ -2918,6 +2928,12 @@ class Scene4(Scene):
         self.play(
             dt_1.animate.shift(0.5*RIGHT),
             dt_2.animate.shift(DOWN)
+        )
+        self.wait(4)
+
+        self.play(
+            ReplacementTransform(ax_1_x_lbl,ax_1_x_lbl_r),
+            ReplacementTransform(ax_1_y_lbl,ax_1_y_lbl_r)
         )
 
         
