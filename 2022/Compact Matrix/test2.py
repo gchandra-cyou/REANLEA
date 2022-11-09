@@ -2439,13 +2439,20 @@ class Ex4(Scene):
         ind_sq=Polygon([x_1,y_1,0],[x_2,y_1,0],[x_2,y_2,0],[x_1,y_2,0]).set_opacity(0).set_fill(color=REANLEA_BLUE_LAVENDER, opacity=0.25)
         line=Line(start=[x_1,y_1,0], end=[x_2,y_2,0])
 
-
-
-            
+           
         z=MathTex(dots_A_1[0].get_center()).scale(.5)
         z0=MathTex(ax_2.c2p(0,0)).scale(.5).shift(.5*UP)
         za=MathTex(dots_A[0].get_center()).scale(.5).shift(UP)
         zb=MathTex(s_fact).scale(.5).shift(1.5*UP)
+
+
+        dt_1=Dot(line_x.get_center(), color=REANLEA_MAGENTA, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
+        dt_2=Dot(line_y.get_center(), color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
+        dt_3=Dot([dt_1.get_center()[0],dt_2.get_center()[1],0], color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
+
+
+
+
 
         self.play(
             Create(ax_2)
@@ -2480,29 +2487,152 @@ class Ex4(Scene):
         )
         self.wait()
 
-        self.play(
-            x_grp.animate.move_to(ORIGIN).scale(3)
-        )
-        self.wait()
-        self.play(
-            Restore(x_grp)
-        )
+        
         self.wait()
 
         self.play(
-            Create(line_x),
-            Create(line_y),
-            Write(ind_sq)
+            Write(line_x),
+            Write(line_y),
+            TransformMatchingShapes(dots_5,ind_sq)
         )
+        self.wait(2)
 
-        
-        
+        self.play(
+            Write(dt_1),
+            Write(dt_2),
+            Write(dt_3)
+        )
 
         self.wait(2)
 
         # manim -pqh test2.py Ex4
 
+        # manim -pql test2.py Ex4
+
         # manim -sqk test2.py Ex4
+
+        # manim -sql test2.py Ex4
+
+
+class Ex5(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+
+        ax_2=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+            }, 
+        ).set_color(REANLEA_YELLOW_CREAM).scale(.5)#.shift(3*LEFT).set_z_index(1)
+
+        s_fact=ax_2.c2p(0,0)[0]*RIGHT+ax_2.c2p(0,0)[1]*UP
+
+        dot_a_1=Dot(ax_2.coords_to_point(2,0), color=REANLEA_GREEN_AUQA).set_sheen(-0.4,DOWN).set_z_index(2)
+        dot_a_2=Dot(ax_2.coords_to_point(4,0), color=REANLEA_GREEN_AUQA).set_sheen(-0.4,DOWN).set_z_index(2)
+        dots_A=VGroup(dot_a_1,dot_a_2)
+
+        dot_b_1=Dot(ax_2.coords_to_point(0,1), color=REANLEA_BLUE_SKY).set_sheen(-0.4,DOWN).set_z_index(2)
+        dot_b_2=Dot(ax_2.coords_to_point(0,2), color=REANLEA_BLUE_SKY).set_sheen(-0.4,DOWN).set_z_index(2)
+        dot_b_3=Dot(ax_2.coords_to_point(0,3), color=REANLEA_BLUE_SKY).set_sheen(-0.4,DOWN).set_z_index(2)
+        dots_B=VGroup(dot_b_1,dot_b_2,dot_b_3)
+
+
+        dots_A_1=square_cloud(x_min=1,x_max=4,x_eps=1, y_max=0, col=REANLEA_GREEN_AUQA, rad=DEFAULT_DOT_RADIUS).shift(s_fact).set_z_index(2)
+        dots_B_1=square_cloud(x_max=0,y_min=1,y_max=3, y_eps=1, col=REANLEA_BLUE_SKY,rad=DEFAULT_DOT_RADIUS).shift(s_fact).set_z_index(2)
+        dots_C_1=square_cloud(x_min=2,x_max=4, x_eps=1, y_min=1,y_max=3, y_eps=1, rad=DEFAULT_DOT_RADIUS).shift(s_fact).set_z_index(2)
+
+        dots_in_grp=VGroup(dots_A_1,dots_B_1,dots_C_1)
+
+        def sq_cld(
+            eps=1,
+            **kwargs
+        ):  
+            n=.75*(1/eps)
+            dots_A_1=square_cloud(x_min=2,x_max=4,x_eps=eps, y_max=0, col=REANLEA_GREEN_AUQA, rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
+            dots_B_1=square_cloud(x_max=0,y_min=1,y_max=3, y_eps=eps, col=REANLEA_BLUE_SKY,rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
+            dots_C_1=square_cloud(x_min=2,x_max=4, x_eps=eps, y_min=1,y_max=3, y_eps=eps, rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
+
+            dots=VGroup(dots_A_1,dots_B_1,dots_C_1)
+
+            return dots
+
+        
+        dots_2=sq_cld(eps=.5)
+        dots_3=sq_cld(eps=.25)
+        dots_4=sq_cld(eps=.125)
+        dots_5=sq_cld(eps=.0625)
+
+        x_grp=VGroup(ax_2,dots_5).save_state()
+
+        line_x=Line(start=dots_A_1[0].get_center(), end=dots_A_1[-1].get_center()).set_stroke(width=3, color=REANLEA_GREEN_AUQA).set_z_index(4.5)
+        line_y=Line(start=dots_B_1[0].get_center(), end=dots_B_1[-1].get_center()).set_stroke(width=3, color=REANLEA_BLUE_SKY).set_z_index(4.5)
+        
+        x_1=dots_A_1[0].get_center()[0]
+        x_2=dots_A_1[-1].get_center()[0]
+
+        y_1=dots_B_1[0].get_center()[1]
+        y_2=dots_B_1[-1].get_center()[1]
+
+        ind_sq=Polygon([x_1,y_1,0],[x_2,y_1,0],[x_2,y_2,0],[x_1,y_2,0]).set_opacity(0).set_fill(color=REANLEA_BLUE_LAVENDER, opacity=0.25)
+        line=Line(start=[x_1,y_1,0], end=[x_2,y_2,0])
+
+           
+        z=MathTex(dots_A_1[0].get_center()).scale(.5)
+        z0=MathTex(ax_2.c2p(0,0)).scale(.5).shift(.5*UP)
+        za=MathTex(dots_A[0].get_center()).scale(.5).shift(UP)
+        zb=MathTex(s_fact).scale(.5).shift(1.5*UP)
+
+
+        dt_1=Dot(line_x.get_center(), color=REANLEA_MAGENTA, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
+        dt_2=Dot(line_y.get_center(), color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
+        #dt_3=Dot([dt_1.get_center()[0],dt_2.get_center()[1],0], color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
+        
+        dt_3=always_redraw(
+            lambda : Dot([dt_1.get_center()[0],dt_2.get_center()[1],0], color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
+        )
+
+
+
+
+
+        self.play(
+            Create(ax_2)
+        )
+        self.play(
+            Write(line_x),
+            Write(line_y),
+            Write(ind_sq)
+        )
+        self.wait()
+
+        self.play(
+            Write(dt_1),
+            Write(dt_2),
+            Write(dt_3),
+        )
+        self.play(
+            dt_1.animate.shift(RIGHT),
+            dt_2.animate.shift(.5*UP)
+        )
+
+
+        self.wait(2)
+
+        # manim -pqh test2.py Ex5
+
+        # manim -pql test2.py Ex5
+
+        # manim -sqk test2.py Ex5
+
+        # manim -sql test2.py Ex5
 
 
 ###################################################################################################################

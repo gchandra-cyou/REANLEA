@@ -2435,6 +2435,8 @@ class Scene4(Scene):
             }, 
         ).set_color(REANLEA_YELLOW_CREAM).scale(.5).shift(3*LEFT).set_z_index(-1)
 
+        s_fact=ax_2.c2p(0,0)[0]*RIGHT+ax_2.c2p(0,0)[1]*UP
+
         ax_1_x_lbl=ax_1.get_x_axis_label(
             Tex("$x$-axis").scale(0.65),
             edge=DOWN,
@@ -2521,9 +2523,49 @@ class Scene4(Scene):
         line_rem=VGroup(line_a1_b1,line_rem_0)
         dots_rem_lbl=VGroup(dot_a1_b1_lbl,dots_rem_0_lbl)
 
-        dots_A_1=square_cloud(x_min=2,x_max=4,x_eps=1, y_max=0, col=REANLEA_GREEN_AUQA, rad=DEFAULT_DOT_RADIUS)
+        dots_A_1=square_cloud(x_min=1,x_max=4,x_eps=1, y_max=0, col=REANLEA_GREEN_AUQA, rad=DEFAULT_DOT_RADIUS).shift(s_fact).set_z_index(2)
+        dots_B_1=square_cloud(x_max=0,y_min=1,y_max=3, y_eps=1, col=REANLEA_BLUE_SKY,rad=DEFAULT_DOT_RADIUS).shift(s_fact).set_z_index(2)
+        dots_C_1=square_cloud(x_min=2,x_max=4, x_eps=1, y_min=1,y_max=3, y_eps=1, rad=DEFAULT_DOT_RADIUS).shift(s_fact).set_z_index(2)
 
+        dots_in_grp=VGroup(dots_A_1,dots_B_1,dots_C_1)
 
+        def sq_cld(
+            eps=1,
+            **kwargs
+        ):  
+            n=.75*(1/eps)
+            dots_A_1=square_cloud(x_min=1,x_max=4,x_eps=eps, y_max=0, col=REANLEA_GREEN_AUQA, rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
+            dots_B_1=square_cloud(x_max=0,y_min=1,y_max=3, y_eps=eps, col=REANLEA_BLUE_SKY,rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
+            dots_C_1=square_cloud(x_min=1,x_max=4, x_eps=eps, y_min=1,y_max=3, y_eps=eps, rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
+
+            dots=VGroup(dots_A_1,dots_B_1,dots_C_1)
+
+            return dots
+
+        
+        dots_2=sq_cld(eps=.5)
+        dots_3=sq_cld(eps=.25)
+        dots_4=sq_cld(eps=.125)
+        dots_5=sq_cld(eps=.0625)
+
+        x_grp=VGroup(ax_2,dots_5).save_state()
+
+        line_x=Line(start=dots_A_1[0].get_center(), end=dots_A_1[-1].get_center()).set_stroke(width=4.5, color=REANLEA_GREEN_AUQA).set_z_index(5)
+        line_y=Line(start=dots_B_1[0].get_center(), end=dots_B_1[-1].get_center()).set_stroke(width=4.5, color=REANLEA_BLUE_SKY).set_z_index(5)
+
+        line_x_lbl=Tex("A").scale(.5).set_color(REANLEA_GREEN_AUQA).next_to(line_x,DOWN)
+        line_y_lbl=Tex("B").scale(.5).set_color(REANLEA_BLUE_SKY).next_to(line_y,LEFT)
+        
+        x_1=dots_A_1[0].get_center()[0]
+        x_2=dots_A_1[-1].get_center()[0]
+
+        y_1=dots_B_1[0].get_center()[1]
+        y_2=dots_B_1[-1].get_center()[1]
+
+        ind_sq=Polygon([x_1,y_1,0],[x_2,y_1,0],[x_2,y_2,0],[x_1,y_2,0]).set_opacity(0).set_fill(color=REANLEA_BLUE_LAVENDER, opacity=0.25)
+
+        ind_sq_lbl=MathTex(r"A \times B").scale(.5).set_color(REANLEA_BLUE_LAVENDER).next_to(ind_sq[-1],.65*UR)
+        
         
 
 
@@ -2756,10 +2798,46 @@ class Scene4(Scene):
             Uncreate(ax_1_coords),
             ReplacementTransform(ax_2,ax_1)
         )
+        self.wait(2)
+
+        
+        self.play(
+            ReplacementTransform(dots_A,dots_A_1),
+            ReplacementTransform(dots_B,dots_B_1)
+        )
+        self.play(
+            Write(dots_C_1)
+        )
         self.wait()
 
         self.play(
-            ReplacementTransform(dots_A,dots_A_1)
+            ReplacementTransform(dots_in_grp, dots_2)
+        )
+        self.play(
+            ReplacementTransform(dots_2,dots_3)
+        )
+        self.play(
+            ReplacementTransform(dots_3,dots_4)
+        )
+        self.play(
+            ReplacementTransform(dots_4,dots_5)
+        )
+        self.wait()
+
+        self.play(
+            Write(line_x),
+            Write(line_y),
+            TransformMatchingShapes(dots_5,ind_sq)
+        )
+        self.wait()
+
+        self.play(
+            Write(line_x_lbl),
+            Write(line_y_lbl)
+        )
+        self.wait(.5)
+        self.play(
+            Write(ind_sq_lbl)
         )
 
 

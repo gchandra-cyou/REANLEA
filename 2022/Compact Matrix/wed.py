@@ -55,12 +55,12 @@ import itertools as it
 
 
 
-config.background_color= REANLEA_BACKGROUND_COLOR_OXFORD_BLUE
+config.background_color= REANLEA_BACKGROUND_COLOR
 config.max_files_cached=500
 config.frame_height = 16
 config.frame_width = 9
-config.pixel_width = 1080*3
-config.pixel_height = 1920*3
+config.pixel_width = 1080*2
+config.pixel_height = 1920*2
 config.frame_rate = 60
 
 ###################################################################################################################
