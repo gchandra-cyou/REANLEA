@@ -2599,6 +2599,15 @@ class Ex5(Scene):
             lambda : Dot([dt_1.get_center()[0],dt_2.get_center()[1],0], color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
         )
 
+        d_line_x=always_redraw(
+            lambda : DashedLine(start=dt_1.get_center(), end=dt_3.get_center()).set_stroke(color=REANLEA_AQUA_GREEN, width=1).set_z_index(7)
+        )
+
+        d_line_y=always_redraw(
+            lambda : DashedLine(start=dt_2.get_center(), end=dt_3.get_center()).set_stroke(color=REANLEA_MAGENTA_LIGHTER, width=1).set_z_index(7)
+        )
+        dt_3_ref=dt_3.copy()
+
 
 
 
@@ -2616,8 +2625,21 @@ class Ex5(Scene):
         self.play(
             Write(dt_1),
             Write(dt_2),
-            Write(dt_3),
+            
         )
+        self.play(
+            Write(d_line_x),
+            Write(d_line_y)
+        )
+        self.play(
+            Write(dt_3_ref)
+        )
+        self.add(dt_3)
+        self.play(
+            FadeOut(dt_3_ref)
+        )
+        
+
         self.play(
             dt_1.animate.shift(RIGHT),
             dt_2.animate.shift(.5*UP)
