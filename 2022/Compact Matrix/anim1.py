@@ -2915,6 +2915,10 @@ class Scene4(Scene):
             dt_1.animate.shift(1.5*LEFT),
             
         )
+        self.play(
+            dt_1.animate.shift(0.5*RIGHT),
+            dt_2.animate.shift(DOWN)
+        )
 
 
 

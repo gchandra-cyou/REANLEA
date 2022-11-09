@@ -4171,6 +4171,112 @@ class myDot(Scene):
 
         # manim -pqh discord.py myDot
 
+
+
+def inversion_homotopy(x,y,z,t):
+
+    a = 1/(x*x+y*y)
+
+    x_ = (1+(a-1)*t)*x
+    y_ = (1+(a-1)*t)*y
+
+    if x_ > 10000000:
+        x_ = 10000000*x
+    if y_ > 10000000:
+        y_ = 10000000*y
+
+    return (x_,y_,z)
+
+def mobius(x,y,a,b,c,d):
+    z = x + y * 1j
+    z_ = (a*np.conj(z)+b)/(c*np.conj(z)+d)
+    return z_.real, z_.imag
+
+def mobius_homotopy_1(x,y,z,t):
+    
+    a=0.01+0.02j
+    b=0.9+0.01j
+    c=1
+    d=0.03+0.07j
+
+    # z -> (az+b)/(cz+d)
+    
+    a_ = (1-t/4)*1 + t*a/4 # a_: 1 to a
+    b_ = (1-t/4)*0 + t*b/4 # b_: 0 to b
+    c_ = (1-t/4)*0 + t*c/4 # c_: 0 to c
+    d_ = (1-t/4)*1 + t*d/4 # d_: 1 to d
+    x_, y_ = mobius(x,y,a_,b_,c_,d_)
+    return (x_, y_, z)
+
+def mobius_homotopy_2(x,y,z,t):
+    
+    a=0.91-0.07j
+    b=0.10+0.03j
+    c=0.01-1.05j
+    d=0.04-0.06j
+
+    # z -> (az+b)/(cz+d)
+    
+    a_ = (1-t/4)*1 + t*a/4 # a_: 1 to a
+    b_ = (1-t/4)*0 + t*b/4 # b_: 0 to b
+    c_ = (1-t/4)*0 + t*c/4 # c_: 0 to c
+    d_ = (1-t/4)*1 + t*d/4 # d_: 1 to d
+    x_, y_ = mobius(x,y,a_,b_,c_,d_)
+    return (x_, y_, z)
+
+
+class invert(Scene):
+
+    def construct(self):
+
+        unit_circle = Circle(fill_opacity = 0, radius = 1)
+
+        #self.add(unit_circle)
+        #self.play(Create(unit_circle),run_time = 2)
+        
+        circles = []
+
+        '''for c in circles:
+                c.insert_n_curves(10)'''
+
+                
+        circles.append(Circle(fill_opacity = 0, radius = np.sqrt(2)/2))
+        circles.append(Circle(fill_opacity = 0, radius = np.sqrt(2)/2))
+        circles.append(Circle(fill_opacity = 0, radius = np.sqrt(2)/2))
+        circles.append(Circle(fill_opacity = 0, radius = np.sqrt(2)/2))
+
+        circles[0].move_to([-1, 0,0])
+        circles[1].move_to([ 0,-1,0])
+        circles[2].move_to([ 1, 0,0])
+        circles[3].move_to([ 0, 1,0])
+
+        self.add(
+            circles[0],
+            circles[1],
+            circles[2],
+            circles[3]
+        )
+        self.play(
+            FadeIn(circles[0]),
+            FadeIn(circles[1]),
+            FadeIn(circles[2]),
+            FadeIn(circles[3]),
+            run_time = 5
+        )
+        self.wait()
+        self.play(
+            Homotopy(homotopy = mobius_homotopy_1, mobject = circles[0]),
+            Homotopy(homotopy = mobius_homotopy_1, mobject = circles[1]),
+            Homotopy(homotopy = mobius_homotopy_1, mobject = circles[2]),
+            Homotopy(homotopy = mobius_homotopy_1, mobject = circles[3]),
+            run_time = 5)
+        self.wait()
+
+
+        
+
+        # manim -pqh discord.py invert
+
 ###################################################################################################################
 
 # NOTE :-

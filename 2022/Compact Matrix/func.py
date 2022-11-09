@@ -518,6 +518,9 @@ def line_highlight(
 
 
 
+
+
+
 '''class EmojiImageMobject(ImageMobject):
     def __init__(self, emoji, **kwargs):
         emoji_code = "-".join(f"{ord(c):x}" for c in emoji)
