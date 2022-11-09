@@ -2920,10 +2920,6 @@ class Scene4(Scene):
             dt_2.animate.shift(DOWN)
         )
 
-
-
-
-
         
 
 
