@@ -4277,6 +4277,72 @@ class invert(Scene):
 
         # manim -pqh discord.py invert
 
+
+
+
+import scipy as sp
+class Counter(Scene):
+    def construct(self):
+        def transition(t):
+            return (sp.special.erf(t)+1)/2
+        def fading(t):
+            return transition(20*(t-0.1))*transition(-20*(t-0.9))
+
+        func = lambda pos: ((pos[0] * UR + pos[1] * LEFT) - pos) / 3
+        streamer = StreamLines(
+            func,
+            x_range=[-4,4,1],
+            y_range=[-4,4,1],
+        ) 
+        self.add(streamer)   
+        dot = Dot().set_color(RED)
+        self.add(dot)
+        self.wait(1)
+        dots = VGroup()
+        for streamline in streamer.stream_lines:
+            dot = always_redraw(lambda: Dot())
+            dot.pprop = np.random.random()
+            dot.clr = random_color()
+            dot.move_to(streamline.point_from_proportion(0))
+            dots.add(dot)
+
+        self.play(Create(dots))
+        def scene_updater(dt):
+            for i, streamline in enumerate(streamer.stream_lines):
+                dots[i].pprop = (dots[i].pprop + dt/2) % 1.0
+                dots[i].move_to(streamline.point_from_proportion(dots[i].pprop))
+                dots[i].set_color(dots[i].clr).set_opacity(fading(dots[i].pprop))
+        self.add_updater(scene_updater)
+
+        self.wait(4)
+
+
+        # manim -pqh discord.py Counter
+
+
+
+
+class squares2(Scene):
+    def construct(self):
+        field = np.random.rand(6,6)
+        element_height = 8/(len(field)*1.1)
+
+        squares = VGroup(
+            *[Square(
+                side_length=element_height, 
+                stroke_width=0, 
+                fill_opacity=1).set_color(rgb_to_color([field[y,x],0,0])).move_to([x*(element_height+0.1)-4, 4-y*(element_height+0.1), 0],UL)                
+                for y in range(field.shape[0]) for x in range(field.shape[1]) 
+            ]
+        )
+        self.play(Create(squares))
+        self.wait(2)
+        self.play(Rotate(squares, angle=2*PI))                
+        self.wait(2)
+
+
+        # manim -pqh discord.py squares2
+
 ###################################################################################################################
 
 # NOTE :-
