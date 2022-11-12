@@ -2674,25 +2674,15 @@ class Ex6(Scene):
                 "font_size": 24,
                 "include_ticks": False,
             }, 
-        ).set_color(REANLEA_YELLOW_CREAM).scale(.5)#.shift(3*LEFT).set_z_index(1)
-
+        ).set_color(REANLEA_YELLOW_CREAM).scale(.5).shift(3*LEFT).set_z_index(-1)
         s_fact=ax_2.c2p(0,0)[0]*RIGHT+ax_2.c2p(0,0)[1]*UP
-
-        dot_a_1=Dot(ax_2.coords_to_point(2,0), color=REANLEA_GREEN_AUQA).set_sheen(-0.4,DOWN).set_z_index(2)
-        dot_a_2=Dot(ax_2.coords_to_point(4,0), color=REANLEA_GREEN_AUQA).set_sheen(-0.4,DOWN).set_z_index(2)
-        dots_A=VGroup(dot_a_1,dot_a_2)
-
-        dot_b_1=Dot(ax_2.coords_to_point(0,1), color=REANLEA_BLUE_SKY).set_sheen(-0.4,DOWN).set_z_index(2)
-        dot_b_2=Dot(ax_2.coords_to_point(0,2), color=REANLEA_BLUE_SKY).set_sheen(-0.4,DOWN).set_z_index(2)
-        dot_b_3=Dot(ax_2.coords_to_point(0,3), color=REANLEA_BLUE_SKY).set_sheen(-0.4,DOWN).set_z_index(2)
-        dots_B=VGroup(dot_b_1,dot_b_2,dot_b_3)
-
 
         dots_A_1=square_cloud(x_min=1,x_max=4,x_eps=1, y_max=0, col=REANLEA_GREEN_AUQA, rad=DEFAULT_DOT_RADIUS).shift(s_fact).set_z_index(2)
         dots_B_1=square_cloud(x_max=0,y_min=1,y_max=3, y_eps=1, col=REANLEA_BLUE_SKY,rad=DEFAULT_DOT_RADIUS).shift(s_fact).set_z_index(2)
-        dots_C_1=square_cloud(x_min=1,x_max=4, x_eps=1, y_min=1, y_max=3, y_eps=1, rad=DEFAULT_DOT_RADIUS).shift(s_fact).set_z_index(2)
+        dots_C_1=square_cloud(x_min=1,x_max=4, x_eps=1, y_min=1,y_max=3, y_eps=1, rad=DEFAULT_DOT_RADIUS).shift(s_fact).set_z_index(2)
 
         dots_in_grp=VGroup(dots_A_1,dots_B_1,dots_C_1)
+
 
         def sq_cld(
             eps=1,
@@ -2707,30 +2697,74 @@ class Ex6(Scene):
 
             return dots
 
-        
         dots_5=sq_cld(eps=.0625)
 
-        x_grp=VGroup(ax_2,dots_5).save_state()
+        line_x=Line(start=dots_A_1[0].get_center(), end=dots_A_1[-1].get_center()).set_stroke(width=4.5, color=REANLEA_GREEN_AUQA).set_z_index(5)
+        line_y=Line(start=dots_B_1[0].get_center(), end=dots_B_1[-1].get_center()).set_stroke(width=4.5, color=REANLEA_BLUE_SKY).set_z_index(5)
 
-        line_x=Line(start=dots_A_1[0].get_center(), end=dots_A_1[-1].get_center()).set_stroke(width=3, color=REANLEA_GREEN_AUQA).set_z_index(4.5)
-        line_y=Line(start=dots_B_1[0].get_center(), end=dots_B_1[-1].get_center()).set_stroke(width=3, color=REANLEA_BLUE_SKY).set_z_index(4.5)
-        
+        line_x_lbl=Tex("A").scale(.5).set_color(REANLEA_GREEN_AUQA).next_to(line_x,DOWN)
+        line_y_lbl=Tex("B").scale(.5).set_color(REANLEA_BLUE_SKY).next_to(line_y,LEFT)
+
         x_1=dots_A_1[0].get_center()[0]
         x_2=dots_A_1[-1].get_center()[0]
 
         y_1=dots_B_1[0].get_center()[1]
         y_2=dots_B_1[-1].get_center()[1]
 
-        ind_sq=Polygon([x_1,y_1,0],[x_2,y_1,0],[x_2,y_2,0],[x_1,y_2,0]).set_opacity(0).set_fill(color=REANLEA_BLUE_LAVENDER, opacity=0.25)
-
+        ind_sq=Polygon([x_1,y_1,0],[x_2,y_1,0],[x_2,y_2,0],[x_1,y_2,0]).set_opacity(0).set_fill(color=REANLEA_BLUE_LAVENDER, opacity=0.35)
+        ind_sq_1=Polygon([ax_2.get_x_axis().get_start()[0],ax_2.get_y_axis().get_start()[1],0],
+                         [ax_2.get_x_axis().get_end()[0],ax_2.get_y_axis().get_start()[1],0],
+                         [ax_2.get_x_axis().get_end()[0],ax_2.get_y_axis().get_end()[1],0],
+                         [ax_2.get_x_axis().get_start()[0],ax_2.get_y_axis().get_end()[1],0],).set_opacity(0).set_fill(color=REANLEA_BLUE_LAVENDER, opacity=0.35)
         
 
+        ind_sq_lbl=MathTex(r"A \times B").scale(.5).set_color(REANLEA_BLUE_LAVENDER).next_to(ind_sq[-1],.65*UR)
+
+        dt_1=Dot(line_x.get_center(), color=REANLEA_MAGENTA, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
+        dt_2=Dot(line_y.get_center(), color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
+        #dt_3=Dot([dt_1.get_center()[0],dt_2.get_center()[1],0], color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
+
+               
+        dt_3=always_redraw(
+            lambda : Dot([dt_1.get_center()[0],dt_2.get_center()[1],0], color=REANLEA_PINK_LIGHTER, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
+        )
+        dt_3_ref=dt_3.copy()
+
+        d_line_x=always_redraw(
+            lambda : DashedLine(start=dt_1.get_center(), end=dt_3.get_center()).set_stroke(color=REANLEA_AQUA_GREEN, width=1).set_z_index(7)
+        )
+
+        d_line_y=always_redraw(
+            lambda : DashedLine(start=dt_2.get_center(), end=dt_3.get_center()).set_stroke(color=REANLEA_MAGENTA_LIGHTER, width=1).set_z_index(7)
+        )
+
+        dt_1_lbl=always_redraw(
+            lambda : Tex("x").scale(.3).set_color(REANLEA_MAGENTA_LIGHTER).next_to(dt_1,.25*UR)
+        )
+        dt_2_lbl=always_redraw(
+            lambda : Tex("y").scale(.3).set_color(REANLEA_YELLOW).next_to(dt_2,.25*UR)
+        )
+        dt_3_lbl=always_redraw(
+            lambda : MathTex(r"(x,y)").scale(.3).set_color(REANLEA_PINK).next_to(dt_3,.25*UR).set_z_index(3)
+        )
 
 
+
+        ax_1_x_lbl_r=ax_2.get_x_axis_label(
+            MathTex(r"\mathbb{R}").scale(0.65)
+        ).next_to(ax_2.get_x_axis().get_end(), DOWN).set_color_by_gradient(REANLEA_SLATE_BLUE,REANLEA_GREEN_AUQA)
+
+        ax_1_y_lbl_r=ax_2.get_x_axis_label(
+            MathTex(r"\mathbb{R}").scale(0.65)
+        ).next_to(ax_2.get_y_axis().get_end(), LEFT).set_color_by_gradient(REANLEA_SLATE_BLUE,REANLEA_BLUE_SKY)
+        
 
 
         self.play(
             Create(ax_2)
+        )
+        self.play(
+            Write(dots_5)
         )
         self.play(
             Write(line_x),
@@ -2738,8 +2772,76 @@ class Ex6(Scene):
             Write(ind_sq)
         )
         self.wait()
+
         self.play(
-            Write(dots_5)
+            Write(line_x_lbl),
+            Write(line_y_lbl)
+        )
+        self.wait(.5)
+        self.play(
+            Write(ind_sq_lbl)
+        )
+
+        self.wait()
+
+        self.play(
+            Write(dt_1),
+            Write(dt_2)
+        )
+        self.play(
+            Write(d_line_x),
+            Write(d_line_y)
+        )
+        self.play(
+            Write(dt_3_ref)
+        )
+        self.add(dt_3)
+        self.play(
+            FadeOut(dt_3_ref)
+        )
+        self.wait()
+
+        self.play(
+            Write(dt_1_lbl),
+            Write(dt_2_lbl),
+            Write(dt_3_lbl)
+        )
+        
+
+        self.play(
+            dt_1.animate.shift(RIGHT),
+            dt_2.animate.shift(.5*UP)
+        )
+        self.wait()
+        self.play(
+            dt_1.animate.shift(1.25*LEFT),
+            dt_2.animate.shift(.75*DOWN)
+        )
+        self.wait()
+        self.play(
+            dt_1.animate.shift(1.5*RIGHT),
+            dt_2.animate.shift(.5*UP)
+        )
+        self.play(
+            dt_2.animate.shift(.5*UP)
+        )
+        self.play(
+            dt_1.animate.shift(1.5*LEFT),
+            
+        )
+        self.play(
+            dt_1.animate.shift(0.5*RIGHT),
+            dt_2.animate.shift(DOWN)
+        )
+        self.wait(4)
+
+        self.play(
+            Write(ax_1_x_lbl_r),
+            Write(ax_1_y_lbl_r)
+        )
+        
+        self.play(
+            ReplacementTransform(ind_sq,ind_sq_1)
         )
         
         
