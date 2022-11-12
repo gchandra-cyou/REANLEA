@@ -2935,6 +2935,7 @@ class Scene4(Scene):
             ReplacementTransform(ax_1_x_lbl,ax_1_x_lbl_r),
             ReplacementTransform(ax_1_y_lbl,ax_1_y_lbl_r)
         )
+        
 
         
 
@@ -2958,6 +2959,7 @@ class Scene4(Scene):
 ###################################################################################################################
 
 # NOTE :-
+
 '''
 Q1. How can I configure the output video format to be square or vertical? Can it be done directly with manim?
 Ans: python3 -m manim -pql -r 1080,1920 my_file.py
