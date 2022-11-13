@@ -2878,7 +2878,7 @@ class Ex7(Scene):
                 "font_size": 24,
                 "include_ticks": False,
             }, 
-        ).set_color(REANLEA_YELLOW_CREAM).scale(.5).shift(3*LEFT).set_z_index(-1)
+        ).set_color(REANLEA_YELLOW_CREAM).scale(.5).shift(3*LEFT).set_z_index(-1).scale(.75)
 
         line_x_lbl=Tex("A").scale(.5).set_color(REANLEA_GREEN_AUQA).next_to(ax_2.get_x_axis().get_center(), DOWN)
         line_y_lbl=Tex("B").scale(.5).set_color(REANLEA_BLUE_SKY).next_to(ax_2.get_y_axis().get_center(), LEFT)
@@ -2902,7 +2902,7 @@ class Ex7(Scene):
                          [ax_2.get_x_axis().get_start()[0],ax_2.get_y_axis().get_end()[1],0],).set_opacity(0).set_fill(color=REANLEA_BLUE_LAVENDER, opacity=0.35).set_z_index(-2)
 
 
-        x_grp=VGroup(ax_2,ind_sq_1,lbl_1)
+        x_grp=VGroup(ax_2,lbl_1)
 
         eqn_5=MathTex(r"\mathbb{R}",r"\times",r"\mathbb{R}","=",r"\{", r"(x_{1},x_{2})",r"\mid", r"x , y \in \mathbb{R}", r"\}")
         eqn_5.next_to(x_grp,DOWN).scale(.6).shift(.5*UP).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_AQUA)
@@ -2919,6 +2919,30 @@ class Ex7(Scene):
         br_6_lbl=MathTex("n").scale(.55).next_to(br_6,DOWN).shift(.15*UP).set_color(REANLEA_AQUA)
 
 
+        ax_3 = ThreeDAxes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False,
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+            }
+        ).shift(3*LEFT).set_color(REANLEA_YELLOW_CREAM).scale(.5).scale(.75)
+        '''ax_3.shift(
+            (ax_2.get_center()[0]-ax_3.get_center()[1])*RIGHT,
+            (ax_2.get_origin()[1]-ax_3.get_origin()[0])*UP,
+        )'''
+        
+        
+
+        x_label = ax_3.get_x_axis_label(MathTex(r"\mathbb{R}"))
+        y_label = ax_3.get_y_axis_label(MathTex(r"\mathbb{R}")).shift(UP * 1.8)
+
+        a=MathTex(ax_2.get_center())
+        b=MathTex(ax_3.get_center()).shift(UP)
+
+
 
 
         
@@ -2932,19 +2956,23 @@ class Ex7(Scene):
         self.play(
             ReplacementTransform(lbl,lbl_1)
         )
-        self.play(
+
+        ''' self.play(
             Create(ind_sq)
         )
         self.play(
             ReplacementTransform(ind_sq,ind_sq_1)
-        )
+        )'''
+
         self.wait()
 
-        self.play(
-            x_grp.animate.scale(.75).shift(.5*UP)
-        )
+        '''self.play(
+            x_grp.animate.scale(.75)
+        )'''
+
         self.wait()
-        self.play(
+
+        '''self.play(
             Write(eqn_5)
         )
         self.wait()
@@ -2955,6 +2983,20 @@ class Ex7(Scene):
             Write(br_6)
         )
         self.play(Write(br_6_lbl))
+        self.wait()
+
+        self.play(
+            FadeOut(ind_sq_1)
+        )'''
+
+        self.play(
+            Write(a),
+            Write(b)
+        )
+
+        self.play(
+            Write(ax_3)
+        )
         
         
 
@@ -2969,6 +3011,106 @@ class Ex7(Scene):
         # manim -sqk test2.py Ex7
 
         # manim -sql test2.py Ex7
+
+
+
+class Axes3DEx(ThreeDScene):
+    def construct(self):
+        axes = ThreeDAxes(
+            tips=False,
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+            }
+        )
+
+        x_label = axes.get_x_axis_label(MathTex(r"\mathbb{R}"))
+        y_label = axes.get_y_axis_label(MathTex(r"\mathbb{R}")).shift(UP * 1.8)
+        z_label = axes.get_z_axis_label(MathTex(r"\mathbb{R}")).shift(UP * 1.8)
+
+
+        # zoom out so we see the axes
+        self.set_camera_orientation(zoom=0.5)
+
+        self.play(FadeIn(axes), FadeIn(x_label), FadeIn(y_label))
+
+        self.wait(0.5)
+
+        # animate the move of the camera to properly see the axes
+        self.move_camera(phi=75 * DEGREES, theta=30 * DEGREES, zoom=1, run_time=1.5)
+
+        # built-in updater which begins camera rotation
+        self.begin_ambient_camera_rotation(rate=0.15)
+
+        
+
+        self.wait(3)
+
+
+
+        # manim -pqh test2.py Axes3DEx
+
+        # manim -sqk test2.py Axes3DEx
+        
+
+class Ex8(Scene):
+    def construct(self):
+
+        ax_2=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+            }, 
+        ).scale(.5).set_z_index(-1)
+
+
+        ax_3 = ThreeDAxes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False,
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+            }
+        ).set_color(RED).scale(.5)
+        
+
+        a=MathTex(ax_2.get_center()).scale(.5)
+        b=MathTex(ax_3.get_center()).shift(UP).scale(.5).set_color(RED)
+
+
+
+        self.play(
+            Create(ax_2)
+        )
+
+        self.play(
+            FadeIn(ax_3)
+        )
+
+        self.play(
+            Write(a),
+            Write(b)
+        )
+        
+        
+
+        self.wait(2)
+
+        
+
+        # manim -pqh test2.py Ex8
+
+        # manim -pql test2.py Ex8
+
+        # manim -sqk test2.py Ex8
+
+        # manim -sql test2.py Ex8
 
 
 ###################################################################################################################
