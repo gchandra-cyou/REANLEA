@@ -2583,13 +2583,13 @@ class Scene4(Scene):
 
         
 
-        dt_1=Dot(line_x.get_center(), color=REANLEA_MAGENTA, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
-        dt_2=Dot(line_y.get_center(), color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
+        dt_1=Dot(line_x.get_center(), color=REANLEA_MAGENTA, radius=.075).set_sheen(-.4,DOWN).set_z_index(6)
+        dt_2=Dot(line_y.get_center(), color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(6)
         #dt_3=Dot([dt_1.get_center()[0],dt_2.get_center()[1],0], color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
 
                
         dt_3=always_redraw(
-            lambda : Dot([dt_1.get_center()[0],dt_2.get_center()[1],0], color=REANLEA_PINK_LIGHTER, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
+            lambda : Dot([dt_1.get_center()[0],dt_2.get_center()[1],0], color=REANLEA_PINK_LIGHTER, radius=.075).set_sheen(-.4,DOWN).set_z_index(6)
         )
         dt_3_ref=dt_3.copy()
 
@@ -2607,10 +2607,10 @@ class Scene4(Scene):
         
 
         dt_1_lbl=always_redraw(
-            lambda : Tex("x").scale(.3).set_color(REANLEA_MAGENTA_LIGHTER).next_to(dt_1,.25*UR)
+            lambda : MathTex("x").scale(.3).set_color(REANLEA_MAGENTA_LIGHTER).next_to(dt_1,.25*UR)
         )
         dt_2_lbl=always_redraw(
-            lambda : Tex("y").scale(.3).set_color(REANLEA_YELLOW).next_to(dt_2,.25*UR)
+            lambda : MathTex("y").scale(.3).set_color(REANLEA_YELLOW).next_to(dt_2,.25*UR)
         )
         dt_3_lbl=always_redraw(
             lambda : MathTex(r"(x,y)").scale(.3).set_color(REANLEA_PINK).next_to(dt_3,.25*UR).set_z_index(3)
@@ -2630,6 +2630,8 @@ class Scene4(Scene):
 
         lbl_r=VGroup(ax_1_x_lbl_r,ax_1_y_lbl_r)
 
+        cp_grp_3=VGroup(ax_1,line_x_1,line_y_1,ind_sq_1,ind_sq_1_lbl,lbl_r,dt_grp,dt_lbl_grp,d_line_grp)
+
 
         eqn_5=MathTex(r"\mathbb{R}",r"\times",r"\mathbb{R}","=",r"\{", r"(x,y)",r"\mid", r"x \in \mathbb{R}",",", r"y \in \mathbb{R}", r"\}")
 
@@ -2639,6 +2641,10 @@ class Scene4(Scene):
         eqn_6[9][7:10].scale(.5)
         eqn_6[13][6:9].scale(.5)
 
+
+
+        eqn_5.next_to(cp_grp_3,DOWN).scale(.6).shift(.5*UP).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_AQUA)
+        eqn_6.next_to(cp_grp_3,DOWN).scale(.6).shift(.5*UP).set_color_by_gradient(REANLEA_AQUA)
 
         br_6=Brace(eqn_6[0:7], buff=.05).set_color(REANLEA_TXT_COL_DARKER)
 
@@ -2672,7 +2678,7 @@ class Scene4(Scene):
 
         ind_sq_grp=VGroup(ind_sq,dots_5)
 
-        cp_grp_3=VGroup(ax_1,line_x_1,line_y_1,ind_sq_1,ind_sq_1_lbl,lbl_r,dt_grp,dt_lbl_grp,d_line_grp)
+        
 
 
 
@@ -2680,8 +2686,7 @@ class Scene4(Scene):
 
         sep_ln=Line().scale(2).rotate(PI/2).set_stroke(width=5, color=[REANLEA_MAGENTA,REANLEA_WARM_BLUE]).shift(1.5*RIGHT)
 
-        eqn_5.next_to(cp_grp_3,DOWN).scale(.6).shift(.5*UP).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_AQUA)
-        eqn_6.next_to(cp_grp_3,DOWN).scale(.6).shift(.5*UP).set_color_by_gradient(REANLEA_AQUA)
+        
         
 
 
