@@ -2889,6 +2889,19 @@ class Ex7(Scene):
         line_y_lbl_1=MathTex(r"\mathbb{R}").scale(.5).set_color(REANLEA_BLUE_SKY).next_to(ax_2.get_y_axis().get_end(), RIGHT)
         
         lbl_1=VGroup(line_x_lbl_1,line_y_lbl_1)
+
+        ind_sq=Polygon([ax_2.get_x_axis().get_start()[0]/2,ax_2.get_y_axis().get_start()[1]/2,0],
+                         [ax_2.get_x_axis().get_end()[0]/2,ax_2.get_y_axis().get_start()[1]/2,0],
+                         [ax_2.get_x_axis().get_end()[0]/2,ax_2.get_y_axis().get_end()[1]/2,0],
+                         [ax_2.get_x_axis().get_start()[0]/2,ax_2.get_y_axis().get_end()[1]/2,0],).set_opacity(0).set_fill(color=REANLEA_BLUE_LAVENDER, opacity=0.35).set_z_index(-2)
+
+
+        ind_sq_1=Polygon([ax_2.get_x_axis().get_start()[0],ax_2.get_y_axis().get_start()[1],0],
+                         [ax_2.get_x_axis().get_end()[0],ax_2.get_y_axis().get_start()[1],0],
+                         [ax_2.get_x_axis().get_end()[0],ax_2.get_y_axis().get_end()[1],0],
+                         [ax_2.get_x_axis().get_start()[0],ax_2.get_y_axis().get_end()[1],0],).set_opacity(0).set_fill(color=REANLEA_BLUE_LAVENDER, opacity=0.35).set_z_index(-2)
+
+
         
 
         self.play(
@@ -2899,6 +2912,12 @@ class Ex7(Scene):
         )
         self.play(
             ReplacementTransform(lbl,lbl_1)
+        )
+        self.play(
+            Create(ind_sq)
+        )
+        self.play(
+            ReplacementTransform(ind_sq,ind_sq_1)
         )
         
         

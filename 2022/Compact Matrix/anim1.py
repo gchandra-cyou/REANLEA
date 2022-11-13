@@ -2963,9 +2963,10 @@ class Scene4(Scene):
         self.play(
             ReplacementTransform(line_x,line_x_1),
             ReplacementTransform(line_y,line_y_1),
-            ReplacementTransform(ind_sq_grp,ind_sq_1),
+            ReplacementTransform(ind_sq,ind_sq_1),
             ReplacementTransform(ind_sq_lbl,ind_sq_1_lbl),
-            ReplacementTransform(lbl,lbl_r)
+            ReplacementTransform(lbl,lbl_r),
+            FadeOut(dots_5)
         )
         
         
