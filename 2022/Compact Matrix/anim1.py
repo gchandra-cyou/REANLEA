@@ -2552,10 +2552,18 @@ class Scene4(Scene):
 
         line_x=Line(start=dots_A_1[0].get_center(), end=dots_A_1[-1].get_center()).set_stroke(width=4.5, color=REANLEA_GREEN_AUQA).set_z_index(5)
         line_y=Line(start=dots_B_1[0].get_center(), end=dots_B_1[-1].get_center()).set_stroke(width=4.5, color=REANLEA_BLUE_SKY).set_z_index(5)
+        line_grp=VGroup(line_x,line_y)
 
         line_x_lbl=Tex("A").scale(.5).set_color(REANLEA_GREEN_AUQA).next_to(line_x,DOWN)
         line_y_lbl=Tex("B").scale(.5).set_color(REANLEA_BLUE_SKY).next_to(line_y,LEFT)
+
+        lbl=VGroup(line_x_lbl,line_y_lbl)
         
+
+        line_x_1=Line(start=ax_2.get_x_axis().get_start(), end=ax_2.get_x_axis().get_end()).set_stroke(width=4.5, color=REANLEA_GREEN_AUQA)
+        line_y_1=Line(start=ax_2.get_y_axis().get_start(), end=ax_2.get_y_axis().get_end()).set_stroke(width=4.5, color=REANLEA_BLUE_SKY)
+
+
         x_1=dots_A_1[0].get_center()[0]
         x_2=dots_A_1[-1].get_center()[0]
 
@@ -2564,7 +2572,16 @@ class Scene4(Scene):
 
         ind_sq=Polygon([x_1,y_1,0],[x_2,y_1,0],[x_2,y_2,0],[x_1,y_2,0]).set_opacity(0).set_fill(color=REANLEA_BLUE_LAVENDER, opacity=0.35)
 
-        ind_sq_lbl=MathTex(r"A \times B").scale(.5).set_color(REANLEA_BLUE_LAVENDER).next_to(ind_sq[-1],.65*UR)
+        ind_sq_lbl=MathTex(r"A \times B").scale(.5).set_color(REANLEA_BLUE_LAVENDER).next_to(ind_sq[-1],0.65*UR).shift(.65*RIGHT+.45*UP)
+
+        ind_sq_1=Polygon([ax_2.get_x_axis().get_start()[0],ax_2.get_y_axis().get_start()[1],0],
+                         [ax_2.get_x_axis().get_end()[0],ax_2.get_y_axis().get_start()[1],0],
+                         [ax_2.get_x_axis().get_end()[0],ax_2.get_y_axis().get_end()[1],0],
+                         [ax_2.get_x_axis().get_start()[0],ax_2.get_y_axis().get_end()[1],0],).set_opacity(0).set_fill(color=REANLEA_BLUE_LAVENDER, opacity=0.35).set_z_index(-2)
+
+        ind_sq_1_lbl=MathTex(r"\mathbb{R} \times \mathbb{R}").scale(.5).set_color(REANLEA_BLUE_LAVENDER).next_to(ind_sq[-1],0.65*UR).shift(.65*RIGHT+.45*UP)
+
+        
 
         dt_1=Dot(line_x.get_center(), color=REANLEA_MAGENTA, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
         dt_2=Dot(line_y.get_center(), color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
@@ -2584,6 +2601,8 @@ class Scene4(Scene):
             lambda : DashedLine(start=dt_2.get_center(), end=dt_3.get_center()).set_stroke(color=REANLEA_MAGENTA_LIGHTER, width=1).set_z_index(7)
         )
 
+        
+
         dt_1_lbl=always_redraw(
             lambda : Tex("x").scale(.3).set_color(REANLEA_MAGENTA_LIGHTER).next_to(dt_1,.25*UR)
         )
@@ -2598,11 +2617,13 @@ class Scene4(Scene):
 
         ax_1_x_lbl_r=ax_1.get_x_axis_label(
             MathTex(r"\mathbb{R}").scale(0.65)
-        ).next_to(ax_2.get_x_axis().get_end(), DOWN).set_color_by_gradient(REANLEA_SLATE_BLUE,REANLEA_GREEN_AUQA)
+        ).next_to(ax_2.get_x_axis().get_end(), DOWN+.5*RIGHT).set_color_by_gradient(REANLEA_SLATE_BLUE,REANLEA_GREEN_AUQA)
 
         ax_1_y_lbl_r=ax_1.get_x_axis_label(
             MathTex(r"\mathbb{R}").scale(0.65)
-        ).next_to(ax_2.get_y_axis().get_end(), LEFT).set_color_by_gradient(REANLEA_SLATE_BLUE,REANLEA_BLUE_SKY)
+        ).next_to(ax_2.get_y_axis().get_end(), LEFT+.5*UP).set_color_by_gradient(REANLEA_SLATE_BLUE,REANLEA_BLUE_SKY)
+
+        lbl_r=VGroup(ax_1_x_lbl_r,ax_1_y_lbl_r)
         
         
 
@@ -2629,6 +2650,8 @@ class Scene4(Scene):
         tbl_grp_ref=VGroup(t_AB_ref,t_A_ref,t_B_ref).scale(0.75).shift(2*LEFT+DOWN)
 
         cp_grp_2_ref=VGroup(eqn_2_ref,eqn_3,tbl_grp_ref)
+
+        ind_sq_grp=VGroup(ind_sq,dots_5)
 
 
         # EXTRA REGION
@@ -2935,6 +2958,16 @@ class Scene4(Scene):
             ReplacementTransform(ax_1_x_lbl,ax_1_x_lbl_r),
             ReplacementTransform(ax_1_y_lbl,ax_1_y_lbl_r)
         )
+        self.wait(2)
+
+        self.play(
+            ReplacementTransform(line_x,line_x_1),
+            ReplacementTransform(line_y,line_y_1),
+            ReplacementTransform(ind_sq_grp,ind_sq_1),
+            ReplacementTransform(ind_sq_lbl,ind_sq_1_lbl),
+            ReplacementTransform(lbl,lbl_r)
+        )
+        
         
 
         

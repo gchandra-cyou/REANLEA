@@ -2689,15 +2689,15 @@ class Ex6(Scene):
             **kwargs
         ):  
             n=.75*(1/eps)
-            dots_A_1=square_cloud(x_min=1,x_max=4,x_eps=eps, y_max=0, col=REANLEA_GREEN_AUQA, rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
-            dots_B_1=square_cloud(x_max=0,y_min=1,y_max=3, y_eps=eps, col=REANLEA_BLUE_SKY,rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
-            dots_C_1=square_cloud(x_min=1,x_max=4, x_eps=eps, y_min=1,y_max=3, y_eps=eps, rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
+            dots_A_1=square_cloud(x_min=-2,x_max=5,x_eps=eps, y_max=0, col=REANLEA_GREEN_AUQA, rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
+            dots_B_1=square_cloud(x_max=0,y_min=-2,y_max=4, y_eps=eps, col=REANLEA_BLUE_SKY,rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
+            dots_C_1=square_cloud(x_min=-2,x_max=5, x_eps=eps, y_min=-2,y_max=4, y_eps=eps, rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
 
             dots=VGroup(dots_A_1,dots_B_1,dots_C_1)
 
             return dots
 
-        dots_5=sq_cld(eps=.0625)
+        dots_5=sq_cld(eps=.125)
 
         line_x=Line(start=dots_A_1[0].get_center(), end=dots_A_1[-1].get_center()).set_stroke(width=4.5, color=REANLEA_GREEN_AUQA).set_z_index(5)
         line_y=Line(start=dots_B_1[0].get_center(), end=dots_B_1[-1].get_center()).set_stroke(width=4.5, color=REANLEA_BLUE_SKY).set_z_index(5)
@@ -2763,7 +2763,7 @@ class Ex6(Scene):
         self.play(
             Create(ax_2)
         )
-        self.play(
+        '''self.play(
             Write(dots_5)
         )
         self.play(
@@ -2842,7 +2842,7 @@ class Ex6(Scene):
         
         self.play(
             ReplacementTransform(ind_sq,ind_sq_1)
-        )
+        )'''
         
         
 
@@ -2857,6 +2857,63 @@ class Ex6(Scene):
         # manim -sqk test2.py Ex6
 
         # manim -sql test2.py Ex6
+
+
+
+
+class Ex7(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+
+        ax_2=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+            }, 
+        ).set_color(REANLEA_YELLOW_CREAM).scale(.5).shift(3*LEFT).set_z_index(-1)
+
+        line_x_lbl=Tex("A").scale(.5).set_color(REANLEA_GREEN_AUQA).next_to(ax_2.get_x_axis().get_center(), DOWN)
+        line_y_lbl=Tex("B").scale(.5).set_color(REANLEA_BLUE_SKY).next_to(ax_2.get_y_axis().get_center(), LEFT)
+
+        lbl=VGroup(line_x_lbl,line_y_lbl)
+        
+        line_x_lbl_1=MathTex(r"\mathbb{R}").scale(.5).set_color(REANLEA_GREEN_AUQA).next_to(ax_2.get_x_axis().get_end(), UP)
+        line_y_lbl_1=MathTex(r"\mathbb{R}").scale(.5).set_color(REANLEA_BLUE_SKY).next_to(ax_2.get_y_axis().get_end(), RIGHT)
+        
+        lbl_1=VGroup(line_x_lbl_1,line_y_lbl_1)
+        
+
+        self.play(
+            Create(ax_2)
+        )
+        self.play(
+            Write(lbl)
+        )
+        self.play(
+            ReplacementTransform(lbl,lbl_1)
+        )
+        
+        
+
+        self.wait(2)
+
+        
+
+        # manim -pqh test2.py Ex7
+
+        # manim -pql test2.py Ex7
+
+        # manim -sqk test2.py Ex7
+
+        # manim -sql test2.py Ex7
 
 
 ###################################################################################################################
