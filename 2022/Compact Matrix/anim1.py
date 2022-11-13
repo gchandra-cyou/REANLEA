@@ -2560,8 +2560,8 @@ class Scene4(Scene):
         lbl=VGroup(line_x_lbl,line_y_lbl)
         
 
-        line_x_1=Line(start=ax_2.get_x_axis().get_start(), end=ax_2.get_x_axis().get_end()).set_stroke(width=4.5, color=REANLEA_GREEN_AUQA)
-        line_y_1=Line(start=ax_2.get_y_axis().get_start(), end=ax_2.get_y_axis().get_end()).set_stroke(width=4.5, color=REANLEA_BLUE_SKY)
+        line_x_1=Line(start=ax_2.get_x_axis().get_start(), end=ax_2.get_x_axis().get_end()).set_stroke(width=4.5, color=REANLEA_GREEN_AUQA).set_z_index(5)
+        line_y_1=Line(start=ax_2.get_y_axis().get_start(), end=ax_2.get_y_axis().get_end()).set_stroke(width=4.5, color=REANLEA_BLUE_SKY).set_z_index(5)
 
 
         x_1=dots_A_1[0].get_center()[0]
@@ -2593,6 +2593,8 @@ class Scene4(Scene):
         )
         dt_3_ref=dt_3.copy()
 
+        dt_grp=VGroup(dt_1,dt_2,dt_3)
+
         d_line_x=always_redraw(
             lambda : DashedLine(start=dt_1.get_center(), end=dt_3.get_center()).set_stroke(color=REANLEA_AQUA_GREEN, width=1).set_z_index(7)
         )
@@ -2600,6 +2602,7 @@ class Scene4(Scene):
         d_line_y=always_redraw(
             lambda : DashedLine(start=dt_2.get_center(), end=dt_3.get_center()).set_stroke(color=REANLEA_MAGENTA_LIGHTER, width=1).set_z_index(7)
         )
+        d_line_grp=VGroup(d_line_x,d_line_y)
 
         
 
@@ -2613,6 +2616,8 @@ class Scene4(Scene):
             lambda : MathTex(r"(x,y)").scale(.3).set_color(REANLEA_PINK).next_to(dt_3,.25*UR).set_z_index(3)
         )
 
+        dt_lbl_grp=VGroup(dt_1_lbl,dt_2_lbl,dt_3_lbl)
+
 
 
         ax_1_x_lbl_r=ax_1.get_x_axis_label(
@@ -2624,6 +2629,20 @@ class Scene4(Scene):
         ).next_to(ax_2.get_y_axis().get_end(), LEFT+.5*UP).set_color_by_gradient(REANLEA_SLATE_BLUE,REANLEA_BLUE_SKY)
 
         lbl_r=VGroup(ax_1_x_lbl_r,ax_1_y_lbl_r)
+
+
+        eqn_5=MathTex(r"\mathbb{R}",r"\times",r"\mathbb{R}","=",r"\{", r"(x,y)",r"\mid", r"x \in \mathbb{R}",",", r"y \in \mathbb{R}", r"\}")
+
+        eqn_6=MathTex(r"\mathbb{R}",r"\times",r"\mathbb{R}",r"\times","...",r"\times",r"\mathbb{R}","=",r"\{", r"(x_{1},x_{2}, ... , x_{n})",r"\mid", r"x_{i} \in \mathbb{R}","","for","","i=1,2,...,n", r"\}")
+        eqn_6[12].scale(.5)
+        eqn_6[4].scale(.5)
+        eqn_6[9][7:10].scale(.5)
+        eqn_6[13][6:9].scale(.5)
+
+
+        br_6=Brace(eqn_6[0:7], buff=.05).set_color(REANLEA_TXT_COL_DARKER)
+
+        br_6_lbl=MathTex("n").scale(.55).next_to(br_6,DOWN).shift(.15*UP).set_color(REANLEA_AQUA)
         
         
 
@@ -2653,10 +2672,16 @@ class Scene4(Scene):
 
         ind_sq_grp=VGroup(ind_sq,dots_5)
 
+        cp_grp_3=VGroup(ax_1,line_x_1,line_y_1,ind_sq_1,ind_sq_1_lbl,lbl_r,dt_grp,dt_lbl_grp,d_line_grp)
+
+
 
         # EXTRA REGION
 
         sep_ln=Line().scale(2).rotate(PI/2).set_stroke(width=5, color=[REANLEA_MAGENTA,REANLEA_WARM_BLUE]).shift(1.5*RIGHT)
+
+        eqn_5.next_to(cp_grp_3,DOWN).scale(.6).shift(.5*UP).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_AQUA)
+        eqn_6.next_to(cp_grp_3,DOWN).scale(.6).shift(.5*UP).set_color_by_gradient(REANLEA_AQUA)
         
 
 
@@ -2967,6 +2992,27 @@ class Scene4(Scene):
             ReplacementTransform(ind_sq_lbl,ind_sq_1_lbl),
             ReplacementTransform(lbl,lbl_r),
             FadeOut(dots_5)
+        )
+        self.wait(2)
+
+        self.play(
+            cp_grp_3.animate.scale(.75).shift(.5*UP)
+        )
+        self.wait(2)
+
+        self.play(
+            Write(eqn_5)
+        )
+        self.wait()
+
+        self.play(
+            TransformMatchingShapes(eqn_5,eqn_6)
+        )
+        self.play(
+            Write(br_6)
+        )
+        self.play(
+            Write(br_6_lbl)
         )
         
         

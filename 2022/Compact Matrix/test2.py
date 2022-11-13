@@ -2902,6 +2902,25 @@ class Ex7(Scene):
                          [ax_2.get_x_axis().get_start()[0],ax_2.get_y_axis().get_end()[1],0],).set_opacity(0).set_fill(color=REANLEA_BLUE_LAVENDER, opacity=0.35).set_z_index(-2)
 
 
+        x_grp=VGroup(ax_2,ind_sq_1,lbl_1)
+
+        eqn_5=MathTex(r"\mathbb{R}",r"\times",r"\mathbb{R}","=",r"\{", r"(x_{1},x_{2})",r"\mid", r"x , y \in \mathbb{R}", r"\}")
+        eqn_5.next_to(x_grp,DOWN).scale(.6).shift(.5*UP).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_AQUA)
+
+        eqn_6=MathTex(r"\mathbb{R}",r"\times",r"\mathbb{R}",r"\times","...",r"\times",r"\mathbb{R}","=",r"\{", r"(x_{1},x_{2}, ... , x_{n})",r"\mid", r"x_{i} \in \mathbb{R}","","for","","i=1,2,...,n", r"\}")
+        eqn_6.next_to(x_grp,DOWN).scale(.6).shift(.5*UP+.5*RIGHT).set_color_by_gradient(REANLEA_AQUA)
+        eqn_6[12].scale(.5)
+        eqn_6[4].scale(.5)
+        eqn_6[9][7:10].scale(.5)
+        eqn_6[13][6:9].scale(.5)
+
+        br_6=Brace(eqn_6[0:7], buff=.05).set_color(REANLEA_TXT_COL_DARKER)
+
+        br_6_lbl=MathTex("n").scale(.55).next_to(br_6,DOWN).shift(.15*UP).set_color(REANLEA_AQUA)
+
+
+
+
         
 
         self.play(
@@ -2919,6 +2938,23 @@ class Ex7(Scene):
         self.play(
             ReplacementTransform(ind_sq,ind_sq_1)
         )
+        self.wait()
+
+        self.play(
+            x_grp.animate.scale(.75).shift(.5*UP)
+        )
+        self.wait()
+        self.play(
+            Write(eqn_5)
+        )
+        self.wait()
+        self.play(
+            TransformMatchingShapes(eqn_5,eqn_6)
+        )
+        self.play(
+            Write(br_6)
+        )
+        self.play(Write(br_6_lbl))
         
         
 
