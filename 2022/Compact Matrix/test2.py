@@ -3196,6 +3196,105 @@ class Ex9(ThreeDScene):
 
 
 
+class Ex10(Scene):
+    def construct(self):
+
+        ax_2=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+            }, 
+        ).set_color(REANLEA_YELLOW_CREAM).scale(.5).shift(3*LEFT).set_z_index(-1).scale(.75)
+
+
+        dt_1=Dot(ax_2.c2p(2,0), color=REANLEA_MAGENTA, radius=.075).set_sheen(-.4,DOWN).set_z_index(6).save_state()
+        dt_2=Dot(ax_2.c2p(0,2), color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(6).save_state()
+        
+               
+        dt_3=always_redraw(
+            lambda : Dot([dt_1.get_center()[0],dt_2.get_center()[1],0], color=REANLEA_PINK_LIGHTER, radius=.075).set_sheen(-.4,DOWN).set_z_index(6)
+        )
+        
+        dt_1_lbl=always_redraw(
+            lambda : MathTex("x").scale(.3).set_color(REANLEA_MAGENTA_LIGHTER).next_to(dt_1,.25*UR)
+        )
+        dt_2_lbl=always_redraw(
+            lambda : MathTex("y").scale(.3).set_color(REANLEA_YELLOW).next_to(dt_2,.25*UR)
+        )
+        dt_3_lbl=always_redraw(
+            lambda : MathTex(r"(x,y)").scale(.3).set_color(REANLEA_PINK).next_to(dt_3,.25*UR).set_z_index(3)
+        )
+
+        dt_lbl_grp=VGroup(dt_1_lbl,dt_2_lbl,dt_3_lbl)
+
+        dt_1_lbl_0=MathTex("(x,0)").scale(.3).set_color(REANLEA_MAGENTA_LIGHTER).next_to(dt_1,.25*UR)
+        dt_2_lbl_0=MathTex("(0,y)").scale(.3).set_color(REANLEA_YELLOW).next_to(dt_2,.25*UR)
+        dt_lbl_grp_0=VGroup(dt_1_lbl_0,dt_2_lbl_0,dt_3_lbl)
+
+        self.add(ax_2)
+        self.play(
+            Write(dt_1),
+            Write(dt_2),
+            Write(dt_3)
+        )
+        self.play(
+            Write(dt_lbl_grp)
+        )
+        self.play(
+            dt_1.animate.shift(RIGHT),
+            dt_2.animate.shift(.5*UP)
+        )
+        self.wait()
+        self.play(
+            dt_1.animate.shift(1.25*LEFT),
+            dt_2.animate.shift(.75*DOWN)
+        )
+        self.wait()
+        self.play(
+            dt_1.animate.shift(1.5*RIGHT),
+            dt_2.animate.shift(.5*UP)
+        )
+        self.play(
+            dt_2.animate.shift(.5*UP)
+        )
+        self.play(
+            dt_1.animate.shift(1.5*LEFT),
+            
+        )
+        self.play(
+            dt_1.animate.shift(0.5*RIGHT),
+            dt_2.animate.shift(DOWN)
+        )
+        self.wait()
+        self.play(
+            Restore(dt_1),
+            Restore(dt_2)
+        )
+        self.play(
+            ReplacementTransform(dt_lbl_grp,dt_lbl_grp_0)
+        )
+
+
+        self.wait(2)
+        
+
+        
+        
+
+        # manim -pqh test2.py Ex10
+
+        # manim -pql test2.py Ex10
+
+        # manim -sqk test2.py Ex10
+
+        # manim -sql test2.py Ex10
+
+
+
 ###################################################################################################################
 
 
