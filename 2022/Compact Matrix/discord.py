@@ -2179,11 +2179,16 @@ class Rotation3DExample(ThreeDScene):
     def construct(self):
         cube = Cube(side_length=3, fill_opacity=1).set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_MAGENTA,REANLEA_BLUE)
 
+        a=MathTex(r"\mathbb{R}^{3}").shift(2*UR)
+
         self.begin_ambient_camera_rotation(rate=0.3)
 
         self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
 
         self.play(Write(cube), run_time=2)
+        self.play(
+            Write(a)
+        )
 
         self.wait(3)
 
@@ -4342,6 +4347,29 @@ class squares2(Scene):
 
 
         # manim -pqh discord.py squares2
+
+
+class Rotation3DEx(ThreeDScene):
+    def construct(self):
+        cube = Cube(side_length=3, fill_opacity=1)
+
+        a=MathTex(r"\mathbb{R}^{3}").shift(2*UR)
+
+        self.begin_ambient_camera_rotation(rate=0.3)
+
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+
+        self.play(Write(cube), run_time=2)
+        self.play(
+            Write(a)
+        )
+
+        self.wait(3)
+
+        self.play(Unwrite(cube), run_time=2)
+
+
+        # manim -pqh discord.py Rotation3DEx
 
 ###################################################################################################################
 

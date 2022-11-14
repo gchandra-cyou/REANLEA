@@ -2583,8 +2583,8 @@ class Scene4(Scene):
 
         
 
-        dt_1=Dot(line_x.get_center(), color=REANLEA_MAGENTA, radius=.075).set_sheen(-.4,DOWN).set_z_index(6)
-        dt_2=Dot(line_y.get_center(), color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(6)
+        dt_1=Dot(line_x.get_center(), color=REANLEA_MAGENTA, radius=.075).set_sheen(-.4,DOWN).set_z_index(6).save_state()
+        dt_2=Dot(line_y.get_center(), color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(6).save_state()
         #dt_3=Dot([dt_1.get_center()[0],dt_2.get_center()[1],0], color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
 
                
@@ -2618,6 +2618,14 @@ class Scene4(Scene):
 
         dt_lbl_grp=VGroup(dt_1_lbl,dt_2_lbl,dt_3_lbl)
 
+        dt_1_lbl_0=always_redraw(
+            lambda : MathTex("(x,0)").scale(.3).set_color(REANLEA_MAGENTA_LIGHTER).next_to(dt_1,.25*UR)
+        )
+        dt_2_lbl_0=always_redraw(
+            lambda : MathTex("(0,y)").scale(.3).set_color(REANLEA_YELLOW).next_to(dt_2,.25*UR)
+        )
+        dt_lbl_grp_0=VGroup(dt_1_lbl_0,dt_2_lbl_0,dt_3_lbl)
+
 
 
         ax_1_x_lbl_r=ax_1.get_x_axis_label(
@@ -2643,12 +2651,14 @@ class Scene4(Scene):
 
 
 
-        eqn_5.next_to(cp_grp_3,DOWN).scale(.6).shift(.5*UP).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_AQUA)
+        eqn_5.next_to(cp_grp_3,DOWN).scale(.6).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_AQUA)
         eqn_6.next_to(cp_grp_3,DOWN).scale(.6).shift(.5*UP).set_color_by_gradient(REANLEA_AQUA)
 
         br_6=Brace(eqn_6[0:7], buff=.05).set_color(REANLEA_TXT_COL_DARKER)
 
         br_6_lbl=MathTex("n").scale(.55).next_to(br_6,DOWN).shift(.15*UP).set_color(REANLEA_AQUA)
+
+
         
         
 
@@ -2982,6 +2992,11 @@ class Scene4(Scene):
             dt_1.animate.shift(0.5*RIGHT),
             dt_2.animate.shift(DOWN)
         )
+        self.wait()
+        self.play(
+            Restore(dt_1),
+            Restore(dt_2)
+        )
         self.wait(4)
 
         self.play(
@@ -2996,6 +3011,7 @@ class Scene4(Scene):
             ReplacementTransform(ind_sq,ind_sq_1),
             ReplacementTransform(ind_sq_lbl,ind_sq_1_lbl),
             ReplacementTransform(lbl,lbl_r),
+            TransformMatchingShapes(dt_lbl_grp,dt_lbl_grp_0),
             FadeOut(dots_5)
         )
         self.wait(2)
@@ -3006,11 +3022,16 @@ class Scene4(Scene):
         self.wait(2)
 
         self.play(
-            Write(eqn_5)
+            Write(eqn_5.shift(0.5*UP))
         )
         self.wait()
-
+        dt_mv_1=Dot(radius=0.08, color=REANLEA_SLATE_BLUE_LIGHTEST).move_to(ax_1.c2p(0,0)).set_sheen(-0.6,DOWN).set_z_index(7)
+        
         self.play(
+            Write(dt_mv_1)
+        )
+
+        '''self.play(
             TransformMatchingShapes(eqn_5,eqn_6)
         )
         self.play(
@@ -3018,7 +3039,7 @@ class Scene4(Scene):
         )
         self.play(
             Write(br_6_lbl)
-        )
+        )'''
         
         
 

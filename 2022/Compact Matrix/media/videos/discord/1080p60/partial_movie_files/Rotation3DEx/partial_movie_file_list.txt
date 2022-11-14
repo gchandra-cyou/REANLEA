@@ -1,0 +1,5 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1080p60/partial_movie_files/Rotation3DEx/1127669549_768860190_729892282.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1080p60/partial_movie_files/Rotation3DEx/3514726062_1139596073_122213401.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1080p60/partial_movie_files/Rotation3DEx/2941703250_3931201982_3271953252.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1080p60/partial_movie_files/Rotation3DEx/2512719444_1371604339_3165654000.mp4'

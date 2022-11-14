@@ -3051,9 +3051,9 @@ class Axes3DEx(ThreeDScene):
         # manim -pqh test2.py Axes3DEx
 
         # manim -sqk test2.py Axes3DEx
-        
 
-class Ex8(Scene):
+
+class Ex8(ThreeDScene):
     def construct(self):
 
         ax_2=Axes(
@@ -3071,7 +3071,6 @@ class Ex8(Scene):
         ax_3 = ThreeDAxes(
             x_range=[-1.5,5.5],
             y_range=[-1.5,4.5],
-            y_length=(round(config.frame_width)-2)*6/7,
             tips=False,
             axis_config={
                 "font_size": 24,
@@ -3090,17 +3089,20 @@ class Ex8(Scene):
         )
 
         self.play(
-            FadeIn(ax_3)
+            Write(ax_3)
         )
 
         self.play(
             Write(a),
             Write(b)
         )
-        
-        
 
-        self.wait(2)
+        
+        self.move_camera(phi=75 * DEGREES, theta=30 * DEGREES, zoom=1, run_time=1.5)
+
+        self.begin_ambient_camera_rotation(rate=0.15)
+
+        self.wait(5)
 
         
 
@@ -3111,6 +3113,87 @@ class Ex8(Scene):
         # manim -sqk test2.py Ex8
 
         # manim -sql test2.py Ex8
+
+
+
+class Rotation3DExample(ThreeDScene):
+    def construct(self):
+        cube = Cube(side_length=3, fill_opacity=1).set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_MAGENTA,REANLEA_BLUE)
+
+        a=MathTex(r"\mathbb{R}^{3}").shift(2*UR)
+
+        self.begin_ambient_camera_rotation(rate=0.3)
+
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+
+        self.play(Write(cube), run_time=2)
+        self.play(
+            Write(a)
+        )
+
+        self.wait(3)
+
+        self.play(Unwrite(cube), run_time=2)
+
+
+class Ex9(ThreeDScene):
+    def construct(self):
+
+        ax_3 = ThreeDAxes(
+            tips=False,
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+            }
+        ).set_color(REANLEA_BLUE_LAVENDER).scale(1)
+
+        cube = Cube(side_length=3, fill_opacity=.5).set_color_by_gradient(REANLEA_BLUE_LAVENDER)
+
+        upDot= Dot3D(point=UP,color=REANLEA_AQUA)
+        rightDot= Dot3D(point=RIGHT,color=REANLEA_BLUE_SKY)
+        outDot= Dot3D(point=OUT,color=REANLEA_YELLOW_CREAM)
+
+        urDot=Dot3D(point=[rightDot.get_center()[0], upDot.get_center()[1],0], color=REANLEA_BLUE)
+        
+
+        d_ln_x=DashedLine(start=rightDot.get_center(), end=urDot.get_center())
+        d_ln_y=DashedLine(start=upDot.get_center(), end=urDot.get_center())
+        d_ln_xy=VGroup(d_ln_x,d_ln_y)
+
+
+        self.play(
+            Write(ax_3)
+        )
+        self.play(
+            Write(upDot),
+            Write(rightDot)
+        )
+        self.play(
+            Write(d_ln_xy)
+        )
+        
+
+        self.move_camera(phi=75 * DEGREES, theta=30* DEGREES, zoom=1, run_time=1.5)
+        
+
+        '''self.begin_ambient_camera_rotation(rate=0.15)
+
+        self.wait(5)
+
+        self.play(Write(cube), run_time=2)
+
+        self.wait(5)'''
+
+        
+
+        # manim -pqh test2.py Ex9
+
+        # manim -pql test2.py Ex9
+
+        # manim -sqk test2.py Ex9
+
+        # manim -sql test2.py Ex9
+
 
 
 ###################################################################################################################
