@@ -2584,7 +2584,7 @@ class Scene4(Scene):
         
 
         dt_1=Dot(line_x.get_center(), color=REANLEA_MAGENTA, radius=.075).set_sheen(-.4,DOWN).set_z_index(6).save_state()
-        dt_2=Dot(line_y.get_center(), color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(6).save_state()
+        dt_2=Dot(line_y.get_center(), color=REANLEA_VIOLET, radius=.075).set_sheen(-.4,DOWN).set_z_index(6).save_state()
         #dt_3=Dot([dt_1.get_center()[0],dt_2.get_center()[1],0], color=REANLEA_YELLOW, radius=.075).set_sheen(-.4,DOWN).set_z_index(5)
 
                
@@ -2605,12 +2605,12 @@ class Scene4(Scene):
         d_line_grp=VGroup(d_line_x,d_line_y)
 
         
-        dt_1_lbl=MathTex("x").scale(.3).set_color(REANLEA_MAGENTA_LIGHTER).next_to(dt_1,.25*UR)
+        
         dt_1_lbl=always_redraw(
-            lambda : MathTex("x").scale(.3).set_color(REANLEA_MAGENTA_LIGHTER).next_to(dt_1,.25*UR)
+            lambda : MathTex("x").scale(.3).set_color(REANLEA_MAGENTA).next_to(dt_1,.25*UR)
         )
         dt_2_lbl=always_redraw(
-            lambda : MathTex("y").scale(.3).set_color(REANLEA_YELLOW).next_to(dt_2,.25*UR)
+            lambda : MathTex("y").scale(.3).set_color(REANLEA_VIOLET_LIGHTER).next_to(dt_2,.25*UR)
         )
         dt_3_lbl=always_redraw(
             lambda : MathTex(r"(x,y)").scale(.3).set_color(REANLEA_PINK).next_to(dt_3,.25*UR).set_z_index(3)
@@ -2620,8 +2620,8 @@ class Scene4(Scene):
 
 
 
-        dt_1_lbl_0=MathTex("(x,0)").scale(.3).set_color(REANLEA_MAGENTA_LIGHTER).next_to(dt_1,.25*UR)
-        dt_2_lbl_0=MathTex("(0,y)").scale(.3).set_color(REANLEA_YELLOW).next_to(dt_2,.25*UR)
+        dt_1_lbl_0=MathTex("(x,0)").scale(.3).set_color(REANLEA_MAGENTA).next_to(dt_1,.25*UR)
+        dt_2_lbl_0=MathTex("(0,y)").scale(.3).set_color(REANLEA_VIOLET_LIGHTER).next_to(dt_2,.25*UR)
         dt_lbl_grp_0=VGroup(dt_1_lbl_0,dt_2_lbl_0,dt_3_lbl)
 
 
@@ -2637,7 +2637,6 @@ class Scene4(Scene):
         lbl_r=VGroup(ax_1_x_lbl_r,ax_1_y_lbl_r)
 
         cp_grp_3=VGroup(ax_1,line_x_1,line_y_1,ind_sq_1,ind_sq_1_lbl,lbl_r,dt_grp,dt_lbl_grp_0,d_line_grp)
-
 
         eqn_5=MathTex(r"\mathbb{R}",r"\times",r"\mathbb{R}","=",r"\{", r"(x,y)",r"\mid", r"x \in \mathbb{R}",",", r"y \in \mathbb{R}", r"\}")
 
@@ -2656,11 +2655,8 @@ class Scene4(Scene):
 
         br_6_lbl=MathTex("n").scale(.55).next_to(br_6,DOWN).shift(.15*UP).set_color(REANLEA_AQUA)
 
-
-        
-        
-
-
+        eqn_7=MathTex("(x,0)","+","(0,y)","=","(x,y)").scale(.65).set_color_by_gradient(REANLEA_TXT_COL,REANLEA_GREY).next_to(cp_grp_3,DOWN).shift(.85*UP)
+        sr_eqn_7=SurroundingRectangle(eqn_7, color=REANLEA_WELDON_BLUE,buff=.15, corner_radius=.125)
 
 
 
@@ -3019,9 +3015,15 @@ class Scene4(Scene):
             Write(eqn_5.shift(0.5*UP))
         )
         self.wait()
+
+
+
         dt_mv_1=Dot(radius=0.08, color=REANLEA_GOLD).move_to(ax_1.c2p(0,0)).set_sheen(-0.6,DOWN).set_z_index(7)
         dt_mv_2=Dot(radius=0.08, color=REANLEA_GOLD).move_to(ax_1.c2p(0,0)).set_sheen(-0.6,DOWN).set_z_index(7)
+        dt_mv_3=Dot(radius=0.08, color=REANLEA_GOLD).move_to(ax_1.c2p(0,0)).set_sheen(-0.6,DOWN).set_z_index(7)
         
+
+
         self.play(
             Create(dt_mv_1)
         )
@@ -3034,7 +3036,16 @@ class Scene4(Scene):
         self.play(
             dt_mv_1.animate.move_to(dt_3.get_center())
         )
+
+        self.play(
+            Write(eqn_7),
+            eqn_5.animate.scale(.85).shift(.3*DOWN)
+        )
+        self.play(
+            Create(sr_eqn_7)
+        )
         self.wait()
+
 
         self.play(
             Create(dt_mv_2)
@@ -3044,11 +3055,65 @@ class Scene4(Scene):
         self.play(
             dt_mv_2.animate.move_to(dt_2.get_center())
         )
-        self.wait()
         self.play(
             dt_mv_2.animate.move_to(dt_3.get_center())
         )
         self.wait()
+        self.play(
+            Indicate(eqn_7, color=REANLEA_BLUE_SKY)
+        )
+        self.play(
+            FadeOut(dt_mv_1),
+            FadeOut(dt_mv_2)            
+        )
+
+
+
+        glow_dt_1=get_glowing_surround_circle(dt_1, color=REANLEA_GOLD)
+        glow_dt_2=get_glowing_surround_circle(dt_2, color=REANLEA_GOLD)
+        glow_dt_3=get_glowing_surround_circle(dt_3, color=REANLEA_GOLD)
+
+
+
+        self.play(
+            Create(glow_dt_1),
+            Create(glow_dt_2)
+        )
+
+
+
+        arr_1=Arrow(start=ax_1.c2p(0,0), end=dt_1.get_center(), buff=0, tip_length=.125, stroke_width=4, color=REANLEA_BLUE).set_z_index(8)
+        arr_2=Arrow(start=ax_1.c2p(0,0), end=dt_2.get_center(), buff=0, tip_length=.125, stroke_width=4, color=REANLEA_BLUE).set_z_index(8)
+        arr_3=Arrow(start=ax_1.c2p(0,0), end=dt_3.get_center(), buff=0, tip_length=.125, stroke_width=4, color=REANLEA_SLATE_BLUE_LIGHTER).set_z_index(8)
+
+
+
+        self.play(
+            Create(arr_1),
+            Create(arr_2)
+        )
+        self.wait(2)
+
+        self.play(
+            arr_2.animate.shift(dt_1.get_center()[0]*LEFT)
+        )
+        self.wait()
+
+        self.play(
+            Create(dt_mv_3)
+        )
+        self.play(
+            dt_mv_3.animate.move_to(dt_1.get_center())
+        )
+        self.wait()
+        self.play(
+            dt_mv_3.animate.move_to(dt_3.get_center())
+        )
+        self.wait(2)
+
+        
+
+
 
 
         '''self.play(
