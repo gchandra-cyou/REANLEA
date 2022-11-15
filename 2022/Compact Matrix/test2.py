@@ -3384,7 +3384,7 @@ class Ex11(Scene):
             grp_1.animate.scale(.75).shift(.5*UP)
         )
 
-        glow_dt_1=get_glowing_surround_circle(dt_1, color=REANLEA_GOLD)
+        glow_dt_1=get_glowing_surround_circle(dt_1, color=REANLEA_GOLD, buff_max=.075, n=20)
         glow_dt_2=get_glowing_surround_circle(dt_2, color=REANLEA_GOLD)
         glow_dt_3=get_glowing_surround_circle(dt_3, color=PURE_GREEN)
 

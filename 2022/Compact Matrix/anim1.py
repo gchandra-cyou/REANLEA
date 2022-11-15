@@ -2600,8 +2600,11 @@ class Scene4(Scene):
         )
 
         d_line_y=always_redraw(
-            lambda : DashedLine(start=dt_2.get_center(), end=dt_3.get_center()).set_stroke(color=REANLEA_MAGENTA_LIGHTER, width=1).set_z_index(7)
+            lambda : DashedLine(start=dt_2.get_center(), end=dt_3.get_center()).set_stroke(color=REANLEA_VIOLET, width=1).set_z_index(7)
         )
+
+        d_line_y_ref=DashedLine(start=dt_2.get_center(), end=dt_3.get_center()).set_stroke(color=REANLEA_VIOLET, width=1).set_z_index(7)
+        
         d_line_grp=VGroup(d_line_x,d_line_y)
 
         
@@ -2636,7 +2639,7 @@ class Scene4(Scene):
 
         lbl_r=VGroup(ax_1_x_lbl_r,ax_1_y_lbl_r)
 
-        cp_grp_3=VGroup(ax_1,line_x_1,line_y_1,ind_sq_1,ind_sq_1_lbl,lbl_r,dt_grp,dt_lbl_grp_0,d_line_grp)
+        cp_grp_3=VGroup(ax_1,line_x_1,line_y_1,ind_sq_1,ind_sq_1_lbl,lbl_r,dt_grp,dt_lbl_grp_0,d_line_x,d_line_y_ref)
 
         eqn_5=MathTex(r"\mathbb{R}",r"\times",r"\mathbb{R}","=",r"\{", r"(x,y)",r"\mid", r"x \in \mathbb{R}",",", r"y \in \mathbb{R}", r"\}")
 
@@ -2648,7 +2651,7 @@ class Scene4(Scene):
 
 
 
-        eqn_5.next_to(cp_grp_3,DOWN).scale(.6).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_AQUA)
+        eqn_5.next_to(cp_grp_3,DOWN).scale(.6).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_AQUA).shift(0.5*UP).save_state()
         eqn_6.next_to(cp_grp_3,DOWN).scale(.6).shift(.5*UP).set_color_by_gradient(REANLEA_AQUA)
 
         br_6=Brace(eqn_6[0:7], buff=.05).set_color(REANLEA_TXT_COL_DARKER)
@@ -2657,6 +2660,9 @@ class Scene4(Scene):
 
         eqn_7=MathTex("(x,0)","+","(0,y)","=","(x,y)").scale(.65).set_color_by_gradient(REANLEA_TXT_COL,REANLEA_GREY).next_to(cp_grp_3,DOWN).shift(.85*UP)
         sr_eqn_7=SurroundingRectangle(eqn_7, color=REANLEA_WELDON_BLUE,buff=.15, corner_radius=.125)
+
+        eqn_8=MathTex(r"\mathbb{R}",r"\times",r"\mathbb{R}",r"\times",r"\mathbb{R}","=",r"\{", r"(x,y,z)",r"\mid", r"x, y, z \in \mathbb{R}", r"\}")
+
 
 
 
@@ -2988,6 +2994,10 @@ class Scene4(Scene):
             Restore(dt_1),
             Restore(dt_2)
         )
+        self.add(d_line_y_ref)
+        self.play(
+            FadeOut(d_line_y)
+        )
         
         self.play(
             ReplacementTransform(ax_1_x_lbl,ax_1_x_lbl_r),
@@ -3012,7 +3022,7 @@ class Scene4(Scene):
         self.wait(2)
 
         self.play(
-            Write(eqn_5.shift(0.5*UP))
+            Write(eqn_5)
         )
         self.wait()
 
@@ -3021,6 +3031,7 @@ class Scene4(Scene):
         dt_mv_1=Dot(radius=0.08, color=REANLEA_GOLD).move_to(ax_1.c2p(0,0)).set_sheen(-0.6,DOWN).set_z_index(7)
         dt_mv_2=Dot(radius=0.08, color=REANLEA_GOLD).move_to(ax_1.c2p(0,0)).set_sheen(-0.6,DOWN).set_z_index(7)
         dt_mv_3=Dot(radius=0.08, color=REANLEA_GOLD).move_to(ax_1.c2p(0,0)).set_sheen(-0.6,DOWN).set_z_index(7)
+        dt_mv_4=Dot(radius=0.08, color=REANLEA_GOLD).move_to(ax_1.c2p(0,0)).set_sheen(-0.6,DOWN).set_z_index(7)
         
 
 
@@ -3071,7 +3082,7 @@ class Scene4(Scene):
 
         glow_dt_1=get_glowing_surround_circle(dt_1, color=REANLEA_GOLD)
         glow_dt_2=get_glowing_surround_circle(dt_2, color=REANLEA_GOLD)
-        glow_dt_3=get_glowing_surround_circle(dt_3, color=REANLEA_GOLD)
+        glow_dt_3=get_glowing_surround_circle(dt_3, color=PURE_GREEN)
 
 
 
@@ -3082,9 +3093,9 @@ class Scene4(Scene):
 
 
 
-        arr_1=Arrow(start=ax_1.c2p(0,0), end=dt_1.get_center(), buff=0, tip_length=.125, stroke_width=4, color=REANLEA_BLUE).set_z_index(8)
-        arr_2=Arrow(start=ax_1.c2p(0,0), end=dt_2.get_center(), buff=0, tip_length=.125, stroke_width=4, color=REANLEA_BLUE).set_z_index(8)
-        arr_3=Arrow(start=ax_1.c2p(0,0), end=dt_3.get_center(), buff=0, tip_length=.125, stroke_width=4, color=REANLEA_SLATE_BLUE_LIGHTER).set_z_index(8)
+        arr_1=Arrow(start=ax_1.c2p(0,0), end=dt_1.get_center(), buff=0, tip_length=.125, stroke_width=4, color=REANLEA_BLUE).set_z_index(7).save_state()
+        arr_2=Arrow(start=ax_1.c2p(0,0), end=dt_2.get_center(), buff=0, tip_length=.125, stroke_width=4, color=REANLEA_BLUE).set_z_index(7).save_state()
+        arr_3=Arrow(start=ax_1.c2p(0,0), end=dt_3.get_center(), buff=0, tip_length=.125, stroke_width=4, color=REANLEA_BLUE_ALT).set_z_index(7)
 
 
 
@@ -3095,7 +3106,7 @@ class Scene4(Scene):
         self.wait(2)
 
         self.play(
-            arr_2.animate.shift(dt_1.get_center()[0]*LEFT)
+            arr_2.animate.shift((dt_1.get_center()[0]-ax_1.c2p(0,0)[0])*RIGHT)
         )
         self.wait()
 
@@ -3110,6 +3121,80 @@ class Scene4(Scene):
             dt_mv_3.animate.move_to(dt_3.get_center())
         )
         self.wait(2)
+
+        self.play(
+            Uncreate(dt_mv_3),
+            Restore(arr_2),
+            arr_1.animate.shift((dt_2.get_center()[1]-ax_1.c2p(0,0)[1])*UP)
+        )
+        self.wait()
+
+        self.play(
+            Create(dt_mv_4)
+        )
+        self.play(
+            dt_mv_4.animate.move_to(dt_2.get_center())
+        )
+        self.wait()
+        self.play(
+            dt_mv_4.animate.move_to(dt_3.get_center())
+        )
+        self.wait()
+
+        self.play(
+            Restore(arr_1),
+            arr_2.animate.shift((dt_1.get_center()[0]-ax_1.c2p(0,0)[0])*RIGHT)
+        )
+        self.play(
+            Create(glow_dt_3)
+        )
+        self.play(
+            Create(arr_3)
+        )
+        self.wait(2)
+
+        
+        uncrt_grp_1= VGroup(arr_1,arr_2,arr_3, glow_dt_1,glow_dt_2)    
+        self.play(
+            Uncreate(uncrt_grp_1)
+        )
+        self.play(
+            d_line_y_ref.animate.shift((dt_2.get_center()[1]-ax_1.c2p(0,0)[1])*DOWN)
+        )
+        self.wait(2)
+
+        dt_mv_4_grp=VGroup(dt_mv_4,glow_dt_3)
+
+        self.play(
+            dt_mv_4_grp.animate.move_to(dt_1.get_center())
+        )
+        self.play(
+            dt_mv_4_grp.animate.move_to(ax_1.c2p(0,0))
+        )
+        self.wait()
+        self.play(
+            dt_mv_4_grp.animate.move_to(dt_1.get_center())
+        )
+        self.play(
+            dt_mv_4_grp.animate.move_to(dt_3.get_center())
+        )
+
+        self.wait(2)
+
+        uncrt_grp_2=VGroup(cp_grp_3,dt_mv_4_grp)
+        eqn_7_grp=VGroup(eqn_7,sr_eqn_7)
+
+        self.play(
+            Restore(eqn_5),
+            Uncreate(eqn_7_grp)
+        )
+        self.play(
+            Uncreate(uncrt_grp_2),
+            TransformMatchingShapes(eqn_5,eqn_8)     
+        )
+        
+
+        self.wait(10)
 
         
 
