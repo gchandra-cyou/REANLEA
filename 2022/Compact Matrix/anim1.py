@@ -2662,6 +2662,7 @@ class Scene4(Scene):
         sr_eqn_7=SurroundingRectangle(eqn_7, color=REANLEA_WELDON_BLUE,buff=.15, corner_radius=.125)
 
         eqn_8=MathTex(r"\mathbb{R}",r"\times",r"\mathbb{R}",r"\times",r"\mathbb{R}","=",r"\{", r"(x,y,z)",r"\mid", r"x, y, z \in \mathbb{R}", r"\}")
+        eqn_8.next_to(cp_grp_3,DOWN).scale(.6).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_AQUA).shift(0.5*UP).save_state()
 
 
 
@@ -3185,16 +3186,16 @@ class Scene4(Scene):
         eqn_7_grp=VGroup(eqn_7,sr_eqn_7)
 
         self.play(
-            Restore(eqn_5),
-            Uncreate(eqn_7_grp)
+            FadeOut(uncrt_grp_2),
+            FadeOut(eqn_5),
+            FadeOut(eqn_7_grp)     
         )
         self.play(
-            Uncreate(uncrt_grp_2),
-            TransformMatchingShapes(eqn_5,eqn_8)     
+            Write(eqn_8)
         )
         
 
-        self.wait(10)
+        self.wait(60)
 
         
 
@@ -3229,7 +3230,11 @@ class Scene4(Scene):
 
     # manim -sqk anim1.py Scene4
 
-    # manim -sql anim1.py Scene4  
+    # manim -sql anim1.py Scene4
+
+
+
+
 
 
 ###################################################################################################################

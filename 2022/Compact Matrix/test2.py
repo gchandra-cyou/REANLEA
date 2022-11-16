@@ -3136,6 +3136,13 @@ class Rotation3DExample(ThreeDScene):
         self.play(Unwrite(cube), run_time=2)
 
 
+
+'''config.frame_height = 16
+config.frame_width = 16
+config.pixel_width = 1920
+config.pixel_height = 1920'''
+
+
 class Ex9(ThreeDScene):
     def construct(self):
 
@@ -3144,44 +3151,83 @@ class Ex9(ThreeDScene):
             axis_config={
                 "font_size": 24,
                 "include_ticks": False,
+                #"stroke_width":4,
             }
-        ).set_color(REANLEA_BLUE_LAVENDER).scale(1)
+        ).set_stroke(width=4, color=REANLEA_TXT_COL)
 
         cube = Cube(side_length=3, fill_opacity=.5).set_color_by_gradient(REANLEA_BLUE_LAVENDER)
 
-        upDot= Dot3D(point=UP,color=REANLEA_AQUA)
-        rightDot= Dot3D(point=RIGHT,color=REANLEA_BLUE_SKY)
-        outDot= Dot3D(point=OUT,color=REANLEA_YELLOW_CREAM)
 
-        urDot=Dot3D(point=[rightDot.get_center()[0], upDot.get_center()[1],0], color=REANLEA_BLUE)
+        d_1=Dot3D(point=UP+RIGHT+OUT, color=REANLEA_BLUE_DARKER, resolution=[32,32])
         
 
-        d_ln_x=DashedLine(start=rightDot.get_center(), end=urDot.get_center())
-        d_ln_y=DashedLine(start=upDot.get_center(), end=urDot.get_center())
-        d_ln_xy=VGroup(d_ln_x,d_ln_y)
+        d_line_x=always_redraw(
+            lambda : DashedLine(start=ax_3.c2p(0,0,0), end=[d_1.get_center()[0],0,0]).set_stroke(color=REANLEA_GREEN_DARKEST, width=1).set_z_index(7)
+        )
+        d_line_y=always_redraw(
+            lambda : DashedLine(start=[d_1.get_center()[0],0,0], end=[d_1.get_center()[0],d_1.get_center()[1],0]).set_stroke(color=REANLEA_WARM_BLUE, width=1).set_z_index(7)
+        )
+        d_line_z=always_redraw(
+            lambda : DashedLine(start=[d_1.get_center()[0],d_1.get_center()[1],0], end=[d_1.get_center()[0],d_1.get_center()[1],d_1.get_center()[2]]).set_stroke(color=REANLEA_BLUE_SKY, width=1).set_z_index(7)
+        )
+
+        grp=VGroup(ax_3,cube,d_1,d_line_x,d_line_y,d_line_z).scale(1.25)
+        
 
 
         self.play(
             Write(ax_3)
         )
         self.play(
-            Write(upDot),
-            Write(rightDot)
+            FadeIn(d_1)
         )
+
+        self.move_camera(phi=75* DEGREES, theta=30* DEGREES, zoom=1, run_time=1.5)
+
         self.play(
-            Write(d_ln_xy)
+            Write(d_line_x)
         )
+        d_1_lbl=MathTex("(x,0,0)").next_to([d_1.get_center()[0],0,0], UP).scale(.4).shift(.35*DOWN).set_color(REANLEA_GREEN).flip()
+        d_1_lbl.rotate(PI/2, about_point=[d_1.get_center()[0],0,0], axis=RIGHT)
         
+        self.play(
+            Write(d_1_lbl),
+            Write(d_line_y),
+            lag_ratio=.75
+        )
 
-        self.move_camera(phi=75 * DEGREES, theta=30* DEGREES, zoom=1, run_time=1.5)
-        
+        d_2_lbl=MathTex("(x,y,0)").next_to([d_1.get_center()[0],d_1.get_center()[1],0], DOWN).set_color(REANLEA_WARM_BLUE).scale(.4).shift(.35*UP).flip()
+        d_2_lbl.rotate(PI/2, about_point=[0,d_1.get_center()[1],0], axis=RIGHT)
 
-        '''self.begin_ambient_camera_rotation(rate=0.15)
+        self.play(
+            Write(d_2_lbl),
+            Write(d_line_z),
+            lag_ratio=.75
+        )
 
-        self.wait(5)
+        d_3_lbl=MathTex("(x,y,z)").next_to([d_1.get_center()[0],d_1.get_center()[1],d_1.get_center()[2]], UP).scale(.4).shift(.15*DOWN).set_color(REANLEA_BLUE_SKY)
+        d_3_lbl.rotate(PI/2, about_point=d_1.get_center(), axis=RIGHT).rotate(-PI, axis=OUT)
 
-        self.play(Write(cube), run_time=2)
+        self.play(
+            Write(d_3_lbl)
+        )        
 
+        self.begin_ambient_camera_rotation(rate=0.35)
+
+
+        self.play(
+            Write(cube),
+            d_line_y.animate.set_stroke(color=REANLEA_WARM_BLUE_DARKER, width=1),
+            d_line_z.animate.set_stroke(color=REANLEA_BLUE_DARKER, width=1),
+            d_1_lbl.animate.set_stroke(color=REANLEA_GREEN_DARKEST),
+            d_2_lbl.animate.set_color(REANLEA_WARM_BLUE_DARKER),
+            d_3_lbl.animate.set_color(REANLEA_BLUE_DARKER),
+            run_time=2
+        )
+
+        '''self.wait(5)
+
+        self.begin_ambient_camera_rotation(rate=0.85)
         self.wait(5)'''
 
         
