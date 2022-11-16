@@ -3155,7 +3155,7 @@ class Ex9(ThreeDScene):
             }
         ).set_stroke(width=4, color=REANLEA_TXT_COL)
 
-        cube = Cube(side_length=3, fill_opacity=.5).set_color_by_gradient(REANLEA_BLUE_LAVENDER)
+        cube = Cube(side_length=3, fill_opacity=.45).set_color_by_gradient(REANLEA_BLUE_LAVENDER)
 
 
         d_1=Dot3D(point=UP+RIGHT+OUT, color=REANLEA_BLUE_DARKER, resolution=[32,32])
@@ -3165,10 +3165,10 @@ class Ex9(ThreeDScene):
             lambda : DashedLine(start=ax_3.c2p(0,0,0), end=[d_1.get_center()[0],0,0]).set_stroke(color=REANLEA_GREEN_DARKEST, width=1).set_z_index(7)
         )
         d_line_y=always_redraw(
-            lambda : DashedLine(start=[d_1.get_center()[0],0,0], end=[d_1.get_center()[0],d_1.get_center()[1],0]).set_stroke(color=REANLEA_WARM_BLUE, width=1).set_z_index(7)
+            lambda : DashedLine(start=[d_1.get_center()[0],0,0], end=[d_1.get_center()[0],d_1.get_center()[1],0]).set_stroke(color=REANLEA_BLUE_ALT, width=1).set_z_index(7)
         )
         d_line_z=always_redraw(
-            lambda : DashedLine(start=[d_1.get_center()[0],d_1.get_center()[1],0], end=[d_1.get_center()[0],d_1.get_center()[1],d_1.get_center()[2]]).set_stroke(color=REANLEA_BLUE_SKY, width=1).set_z_index(7)
+            lambda : DashedLine(start=[d_1.get_center()[0],d_1.get_center()[1],0], end=[d_1.get_center()[0],d_1.get_center()[1],d_1.get_center()[2]]).set_stroke(color=REANLEA_BLUE, width=1).set_z_index(7)
         )
 
         grp=VGroup(ax_3,cube,d_1,d_line_x,d_line_y,d_line_z).scale(1.25)
@@ -3217,18 +3217,19 @@ class Ex9(ThreeDScene):
 
         self.play(
             Write(cube),
-            d_line_y.animate.set_stroke(color=REANLEA_WARM_BLUE_DARKER, width=1),
-            d_line_z.animate.set_stroke(color=REANLEA_BLUE_DARKER, width=1),
             d_1_lbl.animate.set_stroke(color=REANLEA_GREEN_DARKEST),
             d_2_lbl.animate.set_color(REANLEA_WARM_BLUE_DARKER),
             d_3_lbl.animate.set_color(REANLEA_BLUE_DARKER),
             run_time=2
         )
 
-        '''self.wait(5)
+        self.add_fixed_orientation_mobjects(d_1_lbl,d_2_lbl,d_3_lbl)
 
-        self.begin_ambient_camera_rotation(rate=0.85)
-        self.wait(5)'''
+        self.wait(10)
+
+        
+
+        
 
         
 
@@ -3466,6 +3467,106 @@ class Ex11(Scene):
 
         # manim -sql test2.py Ex11
 
+
+class Ex12(ThreeDScene):
+    def construct(self):
+
+        ax_3 = ThreeDAxes(
+            tips=False,
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+                #"stroke_width":4,
+            }
+        ).set_stroke(width=4, color=REANLEA_TXT_COL)
+
+        cube = Cube(side_length=3, fill_opacity=.45).set_color_by_gradient(REANLEA_BLUE_LAVENDER)
+
+
+        d_1=Dot3D(point=UP+RIGHT+OUT, color=REANLEA_BLUE_DARKER, resolution=[32,32])
+        
+
+        d_line_x=always_redraw(
+            lambda : DashedLine(start=ax_3.c2p(0,0,0), end=[d_1.get_center()[0],0,0]).set_stroke(color=REANLEA_GREEN_DARKEST, width=1).set_z_index(7)
+        )
+
+        d_line_x_lbl=MathTex("(x,0,0)").next_to([d_1.get_center()[0],0,0], UP).scale(.4).shift(.35*DOWN).set_color(REANLEA_GREEN).flip()
+        d_line_x_lbl.rotate(PI/2, about_point=[d_1.get_center()[0],0,0], axis=RIGHT)#.rotate(-PI/2)
+
+        self.add(ax_3)
+
+        self.move_camera(phi=75* DEGREES, theta=30* DEGREES, zoom=1, run_time=1.5)
+
+        self.play(
+            #FadeIn(d_1),
+            Write(d_line_x)
+        )
+
+
+        self.play(
+            Write(d_line_x_lbl)
+        )
+        self.add_fixed_orientation_mobjects(d_line_x_lbl)
+        self.wait()
+
+        self.begin_ambient_camera_rotation(rate=0.35)
+
+        self.wait(5)
+
+
+
+        # manim -pqh test2.py Ex12
+
+        # manim -pql test2.py Ex12
+
+        # manim -sqk test2.py Ex12
+
+        # manim -sql test2.py Ex12
+        
+
+
+
+class Test3DEx(ThreeDScene):
+    def construct(self):
+        ax = ThreeDAxes(
+            tips=False,
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+                #"stroke_width":4,
+            }
+        ).set_stroke(width=4, color=REANLEA_TXT_COL).scale(.75)
+
+        
+        x = MathTex(r"\mathbb{R}").next_to(ax, RIGHT)
+        y = MathTex(r"\mathbb{R}").next_to(ax, UP)
+        z = MathTex(r"\mathbb{R}").next_to(ax, OUT)
+        #z.rotate(angle=PI/2, axis=UP).rotate(PI/2, axis=RIGHT)
+        
+
+        d_1=Dot3D(point=UP+RIGHT+OUT, color=REANLEA_BLUE_DARKER, resolution=[32,32])
+
+        d_line_x=always_redraw(
+            lambda : DashedLine(start=ax.c2p(0,0,0), end=[d_1.get_center()[0],0,0]).set_stroke(color=REANLEA_GREEN_DARKEST, width=1).set_z_index(7)
+        )
+
+        d_line_x_lbl=MathTex("(x,0,0)").next_to([d_1.get_center()[0],0,0], UP).scale(.4).shift(.35*DOWN).set_color(REANLEA_GREEN).flip()
+        d_line_x_lbl.rotate(PI/2, about_point=[d_1.get_center()[0],0,0], axis=RIGHT)
+        
+        self.play(Create(ax))
+        
+        self.add_fixed_orientation_mobjects(x, y, z, d_line_x_lbl)
+        
+        self.move_camera(phi=75* DEGREES, theta=30* DEGREES, zoom=1, run_time=1.5)
+
+        
+        
+        self.wait()
+
+
+        # manim -pqh test2.py Test3DEx
+
+        # manim -sqk test2.py Test3DEx
 
 
 ###################################################################################################################

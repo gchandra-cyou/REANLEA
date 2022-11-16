@@ -4371,6 +4371,246 @@ class Rotation3DEx(ThreeDScene):
 
         # manim -pqh discord.py Rotation3DEx
 
+
+
+
+class TwoToTheZ(Scene):
+    def construct(self):
+        #self.camera.background_color = "#334466"
+
+        axes = (
+            Axes(
+                x_range=[-3.14, 5.50, 1],
+                y_range=[-2.43, 2.43, 1],
+                x_length=16,
+                y_length=9,
+                axis_config={"include_ticks": False}
+            )
+        )
+
+        line_1 = Line(axes.c2p(0, 0), axes.c2p(6, 0), color=RED, stroke_width=2)
+        line_2 = line_1.copy()
+
+        dots = {}
+        labels = {}
+        for a in range(-1, 3):
+            for b in range(-4, 5):
+                num = np.exp(np.log(2) * (a + b*1j))
+                dots[a + b*1j] = (
+                    Dot(axes.c2p(num.real, num.imag), color=YELLOW)
+                    .scale(2**(a-0.5))
+                    .set_z_index(1)
+                )
+                shift = {
+                    -4: 0.3*LEFT + 0.45*DOWN,
+                    -3: 0.35*RIGHT + 0.45*DOWN,
+                    -2: 0.6*RIGHT + 0.3*DOWN,
+                    -1: 0.6*RIGHT + 0.1*UP,
+                    0: 0.3*RIGHT + 0.25*DOWN,
+                    1: 0.6*RIGHT + 0.1*UP,
+                    2: 0.6*RIGHT + 0.3*UP,
+                    3: 0.35*RIGHT + 0.45*UP,
+                    4: 0.3*LEFT + 0.45*UP
+                }
+
+                text = "2^{"
+                # Concat a
+                if a != 0 or b == 0:
+                    text += str(a)
+                    if b > 0:
+                        text += "+"
+
+                # Concat b
+                if b == 0:
+                    text += "}"
+                elif b == 1:
+                    text += "i}"
+                elif b == -1:
+                    text += "-i}"
+                else:
+                    text += str(b) + "i}"
+
+                labels[a + b*1j] = (
+                    MathTex(text)
+                    .scale(2**(a-0.5))
+                    .move_to(dots[a + b*1j].get_center() + (2**a)*shift[b])
+                    .set_z_index(1)
+                )
+                if a == 0:
+                    labels[b*1j].scale(1.3).set_color(RED)
+
+        self.play(DrawBorderThenFill(axes))
+        self.play(
+            *[DrawBorderThenFill(dots[a]) for a in range(-1, 3)],
+            *[Write(labels[a]) for a in range(-1, 3)]
+        )
+        self.wait()
+
+        def vector_sigmoid(x):
+            return 1 / (1 + np.exp(-x))
+
+        def vector_smooth(t, inflection = 10.0):
+            error = vector_sigmoid(-inflection / 2)
+            return np.minimum(
+                np.maximum((vector_sigmoid(inflection * (t - 0.5)) - error) / (1 - 2 * error), 0),
+                1,
+            )
+
+        run_time = 6
+
+        fps = config.frame_rate
+        frames = int(round(run_time, 1) * fps)
+
+        linspace = np.linspace(0, 1, frames + 1)
+        angles = vector_smooth(linspace) * np.pi
+
+        ln_2 = np.log(2)
+        wait_times = [np.where(angles >= k * ln_2)[0][0] / fps for k in range(1, 5)]
+
+        circle_animations = [
+            AnimationGroup(
+                # Generating lines
+                Rotate(line_1, angle=PI, about_point=axes.c2p(0, 0)),
+                Rotate(line_2, angle=-PI, about_point=axes.c2p(0, 0)),
+
+                # Circles other than unit circle
+                *[Create(Arc(
+                    radius=(axes.c2p(2 ** k, 0)[0] - axes.c2p(0, 0)[0]),
+                    angle=PI,
+                    arc_center=axes.c2p(0, 0),
+                    stroke_width=1,
+                    stroke_color=BLUE
+                )) for k in (-5, -4, -3, -2, -1, 1, 2)],
+                *[Create(Arc(
+                    radius=(axes.c2p(2 ** k, 0)[0] - axes.c2p(0, 0)[0]),
+                    angle=-PI,
+                    arc_center=axes.c2p(0, 0),
+                    stroke_width=1,
+                    stroke_color=BLUE
+                )) for k in (-5, -4, -3, -2, -1, 1, 2)],
+
+                # Unit circle
+                Create(Arc(
+                    radius=(axes.c2p(1, 0)[0] - axes.c2p(0, 0)[0]),
+                    angle=PI,
+                    arc_center=axes.c2p(0, 0),
+                    stroke_width=2,
+                    stroke_color=RED
+                )),
+                Create(Arc(
+                    radius=(axes.c2p(1, 0)[0] - axes.c2p(0, 0)[0]),
+                    angle=-PI,
+                    arc_center=axes.c2p(0, 0),
+                    stroke_width=2,
+                    stroke_color=RED
+                )),
+
+                run_time=run_time
+            )
+        ]
+
+        line_animations = [
+            AnimationGroup(
+                # Radial lines
+                Create(
+                    Line(axes.c2p(0, 0), axes.c2p(5, 0), stroke_width=1, stroke_color=BLUE)
+                    .rotate(b * ln_2, about_point=axes.c2p(0, 0)),
+                    run_time=0.1
+                ),
+                Create(
+                    Line(axes.c2p(0, 0), axes.c2p(5, 0), stroke_width=1, stroke_color=BLUE)
+                    .rotate(-b * ln_2, about_point=axes.c2p(0, 0)),
+                    run_time=0.1
+                ),
+
+                # Dots and labels
+                *[DrawBorderThenFill(dots[a + b*1j]) for a in range(-1, 2)],
+                *[Write(labels[a + b*1j]) for a in range(-1, 2)],
+                *[DrawBorderThenFill(dots[a - b*1j]) for a in range(-1, 2)],
+                *[Write(labels[a - b*1j]) for a in range(-1, 2)],
+            )
+            for b in range(1, 5)
+        ]
+
+        self.play(Create(line_1), Create(line_2), run_time=0.5)
+        self.play(
+            AnimationGroup(
+                *circle_animations,
+                *[Succession(Wait(wait_times[i]), line_animations[i]) for i in range(4)],
+                lag_ratio=0
+            ),
+            run_time=run_time
+        )
+        self.play(Uncreate(line_1), Uncreate(line_2), run_time=0.5)
+        self.wait(2)
+
+
+        # manim -pqh discord.py TwoToTheZ
+
+
+
+class Diagonal(Scene):
+    def construct(self):
+        grid = MathTex(
+            r"""
+            \begin{array}{c c c c c c}
+                0 & \rightarrow & 0 & 1 & 0 & \cdots \\
+                1 & \rightarrow & 0 & 1 & 1 & \cdots \\
+                2 & \rightarrow & 1 & 1 & 0 & \cdots \\
+                \vdots & \vdots & \vdots & \vdots & \vdots & \ddots 
+            \end{array}
+            """ 
+        ).set_color(BLUE).scale(2)
+        for i in [0, 8, 16, 24, 25, 26]:
+            grid[0][i].set_color(YELLOW)
+
+        for i in [1, 9, 17, 27, 28, 29]:
+            grid[0][i].set_color(GREEN)
+
+        for i in [2, 11, 20, 39, 40, 41]:
+            grid[0][i].set_color(RED)
+
+        self.play(
+            Write(grid)
+        )
+       # self.add(get_submobject_index_labels(grid[0]))
+        self.wait()
+
+
+        # manim -pqh discord.py Diagonal
+
+
+class Test3D(ThreeDScene):
+    def construct(self):
+        c = Cube()
+        t = Text("Hi cube!").next_to(c, UP)
+        self.play(Create(c), Write(t))
+        self.add_fixed_orientation_mobjects(t)
+        self.move_camera(phi=PI/3, theta=PI/3, run_time=3)
+        self.wait()
+
+
+        # manim -pqh discord.py Test3DEx
+
+
+class Test3Dex(ThreeDScene):
+    def construct(self):
+        c = ThreeDAxes()
+        
+        x = Text("x").next_to(c, RIGHT)
+        y = Text("y").next_to(c, UP)
+        #z = Text("Hi cube!").next_to(c, UP)
+        
+        self.play(Create(c), Write(x), Write(y))
+        
+        self.add_fixed_orientation_mobjects(x, y)
+        
+        self.move_camera(phi=PI/3, theta=PI/3, run_time=3)
+        
+        self.wait()
+
+        # manim -pqh discord.py Test3DEx
+
 ###################################################################################################################
 
 # NOTE :-
