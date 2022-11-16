@@ -3155,7 +3155,13 @@ class Ex9(ThreeDScene):
             }
         ).set_stroke(width=4, color=REANLEA_TXT_COL)
 
-        cube = Cube(side_length=3, fill_opacity=.45).set_color_by_gradient(REANLEA_BLUE_LAVENDER)
+        x = MathTex(r"\mathbb{R}").next_to(ax_3, RIGHT).set_color(REANLEA_BLUE_LAVENDER).set_sheen(-.4, DOWN)
+        y = MathTex(r"\mathbb{R}").next_to(ax_3, UP).set_color(REANLEA_BLUE_LAVENDER).set_sheen(-.4, DOWN)
+        z = MathTex(r"\mathbb{R}").next_to(ax_3, OUT).set_color(REANLEA_BLUE_LAVENDER).set_sheen(-.4, DOWN)
+
+        
+
+        cube = Cube(side_length=3, fill_opacity=.45).set_color_by_gradient(REANLEA_BLUE_LAVENDER).scale(1.25)
 
 
         d_1=Dot3D(point=UP+RIGHT+OUT, color=REANLEA_BLUE_DARKER, resolution=[32,32])
@@ -3171,13 +3177,19 @@ class Ex9(ThreeDScene):
             lambda : DashedLine(start=[d_1.get_center()[0],d_1.get_center()[1],0], end=[d_1.get_center()[0],d_1.get_center()[1],d_1.get_center()[2]]).set_stroke(color=REANLEA_BLUE, width=1).set_z_index(7)
         )
 
-        grp=VGroup(ax_3,cube,d_1,d_line_x,d_line_y,d_line_z).scale(1.25)
+        d_line_grp=VGroup(d_line_x,d_line_y,d_line_z)
+
+        grp=VGroup(ax_3,cube,d_1,d_line_x,d_line_y,d_line_z)
         
 
 
         self.play(
             Write(ax_3)
         )
+        self.add_fixed_orientation_mobjects(x,y,z)
+
+        
+
         self.play(
             FadeIn(d_1)
         )
@@ -3185,32 +3197,22 @@ class Ex9(ThreeDScene):
         self.move_camera(phi=75* DEGREES, theta=30* DEGREES, zoom=1, run_time=1.5)
 
         self.play(
-            Write(d_line_x)
+            Write(d_line_grp)
         )
-        d_1_lbl=MathTex("(x,0,0)").next_to([d_1.get_center()[0],0,0], UP).scale(.4).shift(.35*DOWN).set_color(REANLEA_GREEN).flip()
-        d_1_lbl.rotate(PI/2, about_point=[d_1.get_center()[0],0,0], axis=RIGHT)
+
+        d_1_lbl=MathTex("(x,0,0)").next_to([d_1.get_center()[0],0,0], DOWN).scale(.3).shift(.1*LEFT).set_color(REANLEA_GREEN)
+        #d_1_lbl.rotate(PI/2, about_point=[d_1.get_center()[0],0,0], axis=RIGHT)
+
+        d_2_lbl=MathTex("(x,y,0)").next_to([d_1.get_center()[0],d_1.get_center()[1],0], UP).set_color(REANLEA_WARM_BLUE).scale(.3)
+        #d_2_lbl.rotate(PI/2, about_point=[0,d_1.get_center()[1],0], axis=RIGHT)
+
+        d_3_lbl=MathTex("(x,y,z)").next_to([d_1.get_center()[0],d_1.get_center()[1],d_1.get_center()[2]], OUT).scale(.3).set_color(REANLEA_BLUE_SKY)
+        #d_3_lbl.rotate(PI/2, about_point=d_1.get_center(), axis=RIGHT).rotate(-PI, axis=OUT)
+
+        d_lbl_grp=VGroup(d_1_lbl,d_2_lbl,d_3_lbl)
+
+        self.add_fixed_orientation_mobjects(d_1_lbl,d_2_lbl,d_3_lbl)    
         
-        self.play(
-            Write(d_1_lbl),
-            Write(d_line_y),
-            lag_ratio=.75
-        )
-
-        d_2_lbl=MathTex("(x,y,0)").next_to([d_1.get_center()[0],d_1.get_center()[1],0], DOWN).set_color(REANLEA_WARM_BLUE).scale(.4).shift(.35*UP).flip()
-        d_2_lbl.rotate(PI/2, about_point=[0,d_1.get_center()[1],0], axis=RIGHT)
-
-        self.play(
-            Write(d_2_lbl),
-            Write(d_line_z),
-            lag_ratio=.75
-        )
-
-        d_3_lbl=MathTex("(x,y,z)").next_to([d_1.get_center()[0],d_1.get_center()[1],d_1.get_center()[2]], UP).scale(.4).shift(.15*DOWN).set_color(REANLEA_BLUE_SKY)
-        d_3_lbl.rotate(PI/2, about_point=d_1.get_center(), axis=RIGHT).rotate(-PI, axis=OUT)
-
-        self.play(
-            Write(d_3_lbl)
-        )        
 
         self.begin_ambient_camera_rotation(rate=0.35)
 
@@ -3218,12 +3220,12 @@ class Ex9(ThreeDScene):
         self.play(
             Write(cube),
             d_1_lbl.animate.set_stroke(color=REANLEA_GREEN_DARKEST),
-            d_2_lbl.animate.set_color(REANLEA_WARM_BLUE_DARKER),
-            d_3_lbl.animate.set_color(REANLEA_BLUE_DARKER),
+            d_2_lbl.animate.set_color(REANLEA_BLUE_DARKER),
+            d_3_lbl.animate.set_color(REANLEA_WARM_BLUE_DARKER),
             run_time=2
         )
 
-        self.add_fixed_orientation_mobjects(d_1_lbl,d_2_lbl,d_3_lbl)
+        
 
         self.wait(10)
 
@@ -3535,7 +3537,7 @@ class Test3DEx(ThreeDScene):
                 "include_ticks": False,
                 #"stroke_width":4,
             }
-        ).set_stroke(width=4, color=REANLEA_TXT_COL).scale(.75)
+        ).set_stroke(width=4, color=REANLEA_TXT_COL)
 
         
         x = MathTex(r"\mathbb{R}").next_to(ax, RIGHT)
@@ -3550,21 +3552,30 @@ class Test3DEx(ThreeDScene):
             lambda : DashedLine(start=ax.c2p(0,0,0), end=[d_1.get_center()[0],0,0]).set_stroke(color=REANLEA_GREEN_DARKEST, width=1).set_z_index(7)
         )
 
-        d_line_x_lbl=MathTex("(x,0,0)").next_to([d_1.get_center()[0],0,0], UP).scale(.4).shift(.35*DOWN).set_color(REANLEA_GREEN).flip()
-        d_line_x_lbl.rotate(PI/2, about_point=[d_1.get_center()[0],0,0], axis=RIGHT)
+        d_line_x_lbl=MathTex("(x,0,0)").next_to([d_1.get_center()[0],0,0], DOWN).scale(.25).set_color(REANLEA_GREEN).shift(.15*LEFT)
+        #d_line_x_lbl.rotate(PI/2, about_point=[d_1.get_center()[0],0,0], axis=RIGHT)
         
         self.play(Create(ax))
         
-        self.add_fixed_orientation_mobjects(x, y, z, d_line_x_lbl)
+        self.add_fixed_orientation_mobjects(x, y, z)
         
         self.move_camera(phi=75* DEGREES, theta=30* DEGREES, zoom=1, run_time=1.5)
+        self.play(
+            Write(d_line_x)
+        )
+        self.add_fixed_orientation_mobjects(d_line_x_lbl)
+        
 
-        
-        
         self.wait()
+
+        self.begin_ambient_camera_rotation(rate=0.35)
+
+        self.wait(5)
 
 
         # manim -pqh test2.py Test3DEx
+
+        # manim -pql test2.py Test3DEx
 
         # manim -sqk test2.py Test3DEx
 
