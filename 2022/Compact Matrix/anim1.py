@@ -3235,7 +3235,105 @@ class Scene4(Scene):
 
 
 
+class Scene4_1(ThreeDScene):
+    def construct(self):
 
+        ax_3 = ThreeDAxes(
+            tips=False,
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+                #"stroke_width":4,
+            }
+        ).set_stroke(width=4, color=REANLEA_TXT_COL)
+
+        x = MathTex(r"\mathbb{R}").next_to(ax_3, RIGHT).set_color(REANLEA_BLUE_LAVENDER).set_sheen(-.4, DOWN)
+        y = MathTex(r"\mathbb{R}").next_to(ax_3, UP).set_color(REANLEA_BLUE_LAVENDER).set_sheen(-.4, DOWN)
+        z = MathTex(r"\mathbb{R}").next_to(ax_3, OUT).set_color(REANLEA_BLUE_LAVENDER).set_sheen(-.4, DOWN)
+
+        
+
+        cube = Cube(side_length=3, fill_opacity=.45).set_color_by_gradient(REANLEA_BLUE_LAVENDER).scale(1.25)
+
+
+        d_1=Dot3D(point=UP+RIGHT+OUT, color=REANLEA_BLUE_DARKER, resolution=[32,32])
+        
+
+        d_line_x=always_redraw(
+            lambda : DashedLine(start=ax_3.c2p(0,0,0), end=[d_1.get_center()[0],0,0]).set_stroke(color=REANLEA_GREEN_DARKEST, width=1).set_z_index(7)
+        )
+        d_line_y=always_redraw(
+            lambda : DashedLine(start=[d_1.get_center()[0],0,0], end=[d_1.get_center()[0],d_1.get_center()[1],0]).set_stroke(color=REANLEA_BLUE_ALT, width=1).set_z_index(7)
+        )
+        d_line_z=always_redraw(
+            lambda : DashedLine(start=[d_1.get_center()[0],d_1.get_center()[1],0], end=[d_1.get_center()[0],d_1.get_center()[1],d_1.get_center()[2]]).set_stroke(color=REANLEA_BLUE, width=1).set_z_index(7)
+        )
+
+        d_line_grp=VGroup(d_line_x,d_line_y,d_line_z)
+
+        grp=VGroup(ax_3,cube,d_1,d_line_x,d_line_y,d_line_z)
+        
+
+
+        self.play(
+            Write(ax_3)
+        )
+        self.add_fixed_orientation_mobjects(x,y,z)
+
+        
+
+        self.play(
+            FadeIn(d_1)
+        )
+
+        self.move_camera(phi=75* DEGREES, theta=30* DEGREES, zoom=1, run_time=1.5)
+
+        self.play(
+            Write(d_line_grp)
+        )
+
+        d_1_lbl=MathTex("(x,0,0)").next_to([d_1.get_center()[0],0,0], DOWN).scale(.3).shift(.1*LEFT).set_color(REANLEA_GREEN)
+        #d_1_lbl.rotate(PI/2, about_point=[d_1.get_center()[0],0,0], axis=RIGHT)
+
+        d_2_lbl=MathTex("(x,y,0)").next_to([d_1.get_center()[0],d_1.get_center()[1],0], UP).set_color(REANLEA_WARM_BLUE).scale(.3)
+        #d_2_lbl.rotate(PI/2, about_point=[0,d_1.get_center()[1],0], axis=RIGHT)
+
+        d_3_lbl=MathTex("(x,y,z)").next_to([d_1.get_center()[0],d_1.get_center()[1],d_1.get_center()[2]], OUT).scale(.3).set_color(REANLEA_BLUE_SKY)
+        #d_3_lbl.rotate(PI/2, about_point=d_1.get_center(), axis=RIGHT).rotate(-PI, axis=OUT)
+
+        d_lbl_grp=VGroup(d_1_lbl,d_2_lbl,d_3_lbl)
+
+        self.add_fixed_orientation_mobjects(d_1_lbl,d_2_lbl,d_3_lbl)    
+        
+
+        self.begin_ambient_camera_rotation(rate=0.35)
+
+
+        self.play(
+            Write(cube),
+            d_1_lbl.animate.set_stroke(color=REANLEA_GREEN_DARKEST),
+            d_2_lbl.animate.set_color(REANLEA_BLUE_DARKER),
+            d_3_lbl.animate.set_color(REANLEA_WARM_BLUE_DARKER),
+            run_time=2
+        )
+
+        
+
+        self.wait(10)
+
+        
+
+        
+
+        
+
+        # manim -pqh anim1.py Scene4_1
+
+        # manim -pql anim1.py Scene4_1
+
+        # manim -sqk anim1.py Scene4_1
+
+        # manim -sql anim1.py Scene4_1
 
 ###################################################################################################################
 
