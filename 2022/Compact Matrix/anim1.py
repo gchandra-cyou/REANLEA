@@ -2652,7 +2652,7 @@ class Scene4(Scene):
 
 
         eqn_5.next_to(cp_grp_3,DOWN).scale(.6).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_AQUA).shift(0.5*UP).save_state()
-        eqn_6.next_to(cp_grp_3,DOWN).scale(.6).shift(.5*UP).set_color_by_gradient(REANLEA_AQUA)
+        eqn_6.scale(.6).shift(1.75*UP+2.85*LEFT).set_color_by_gradient(REANLEA_AQUA)#.next_to(cp_grp_3,DOWN)
 
         br_6=Brace(eqn_6[0:7], buff=.05).set_color(REANLEA_TXT_COL_DARKER)
 
@@ -2663,6 +2663,14 @@ class Scene4(Scene):
 
         eqn_8=MathTex(r"\mathbb{R}",r"\times",r"\mathbb{R}",r"\times",r"\mathbb{R}","=",r"\{", r"(x,y,z)",r"\mid", r"x, y, z \in \mathbb{R}", r"\}")
         eqn_8.next_to(cp_grp_3,DOWN).scale(.6).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_AQUA).shift(0.5*UP).save_state()
+
+        eqn_9=MathTex(r"\mathbb{R}^{n}").next_to(eqn_6[7],LEFT).shift(.2*RIGHT)
+        eqn_9.scale(.6).set_color_by_gradient(REANLEA_AQUA)
+
+        eqn_10=VGroup(eqn_9,eqn_6[7:])
+
+        bend_bezier_arrow_indi=bend_bezier_arrow_indicate().scale(.75).set_color(REANLEA_TXT_COL)
+        bend_bezier_arrow_indi.flip(RIGHT).rotate(90*DEGREES).next_to(eqn_7,DOWN)
 
 
 
@@ -3195,25 +3203,81 @@ class Scene4(Scene):
         )
         
 
-        self.wait(60)
+        self.wait(26)
 
         
-
-
-
-
-        '''self.play(
-            TransformMatchingShapes(eqn_5,eqn_6)
+        self.play(
+            TransformMatchingShapes(eqn_8,eqn_6)
         )
         self.play(
             Write(br_6)
         )
         self.play(
             Write(br_6_lbl)
-        )'''
-        
-        
+        )
 
+        r_n_lbl=VGroup(br_6,br_6_lbl,eqn_6[0:7])
+
+        self.play(
+            TransformMatchingShapes(r_n_lbl,eqn_9)
+        )
+        self.play(
+            eqn_10.animate.shift(LEFT)
+        )
+
+        bend_bez_arrow=bend_bezier_arrow().rotate(-30*DEGREES).scale(0.55).set_color(REANLEA_TXT_COL).next_to(eqn_10[0],DOWN).shift(.4*RIGHT)
+
+        self.play(
+            Create(bend_bez_arrow)
+        )
+
+        with RegisterFont("Cedarville Cursive") as fonts:
+            txt_2=Text("Vector Space", font=fonts[0]).scale(.5)#.to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            txt_2.set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE_LIGHTER)
+            txt_2.next_to(bend_bez_arrow,RIGHT).shift(.1*LEFT+.05*DOWN).rotate(10*DEGREES)
+
+        self.play(
+            Create(txt_2)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+
+            vs_dfn_tx_1 = Text("vector addition : ", font=fonts[0]).scale(0.35).set_color(REANLEA_SLATE_BLUE_LIGHTEST)
+
+            vs_dfn_tx_2 = Text("& scalar multiplication : ", font=fonts[0]).scale(0.35).shift(.55*RIGHT).set_color(REANLEA_SLATE_BLUE_LIGHTEST)
+        
+        with RegisterFont("Caveat") as fonts:
+
+            vs_dfn_tx_3 = Text("where,", font=fonts[0]).scale(0.5).shift(.1*LEFT).set_color(REANLEA_TXT_COL)
+
+        vs_dfn_mtx_1=MathTex(r"(x_{1},x_{2}, ... , x_{n})","+",r"(y_{1},y_{2}, ... , y_{n})",r"=",r"(x_{1}+y_{1},x_{2}+y_{2}, ... , x_{n}+y_{n})").scale(0.45).next_to(vs_dfn_tx_1,DOWN).shift(3*RIGHT)
+        vs_dfn_mtx_2=MathTex(r"\lambda",r"\cdot",r"(x_{1},x_{2}, ... , x_{n})",r"=",r"(\lambda \cdot x_{1},\lambda \cdot x_{2}, ... , \lambda \cdot x_{n})").scale(0.45).next_to(vs_dfn_tx_1,DOWN).shift(2.1*RIGHT)
+        vs_dfn_mtx_3_1=MathTex(r"(x_{1},x_{2}, ... , x_{n})",r"\in \mathbb{R}^{n}").scale(0.45).next_to(vs_dfn_tx_3,DOWN).shift(RIGHT)
+        vs_dfn_mtx_3_2=MathTex(r"\lambda",r"\in \mathbb{R}").scale(0.45).next_to(vs_dfn_tx_3,DOWN).shift(.35*DOWN+.35*RIGHT)
+        vs_dfn_mtx_3=VGroup(vs_dfn_mtx_3_1,vs_dfn_mtx_3_2).shift(.15*UP+.35*RIGHT)
+
+        vs_dfn_1=VGroup(vs_dfn_tx_1,vs_dfn_mtx_1).shift(5*LEFT)
+        vs_dfn_2=VGroup(vs_dfn_tx_2,vs_dfn_mtx_2).shift(5*LEFT+DOWN)
+        vs_dfn_3=VGroup(vs_dfn_tx_3,vs_dfn_mtx_3).shift(2*DOWN+3*LEFT)
+        vs_dfn=VGroup(vs_dfn_1,vs_dfn_2,vs_dfn_3)
+
+        self.play(
+            Write(vs_dfn)
+        )
+        self.wait(4)
+
+        con_grp=VGroup(vs_dfn,txt_2,bend_bez_arrow,eqn_10,sep_ln,cp_grp_1,cp_grp_2_ref,txt_1,strp_1)
+        self.play(
+            FadeOut(con_grp)
+        )
+        with RegisterFont("Caveat") as fonts:
+            con_tex_1 = Text("what about the distance in the space", font=fonts[0]).scale(0.85).shift(.1*LEFT).set_color(REANLEA_TXT_COL)
+        con_tex_2=MathTex(r"\mathbb{R}^{n}","","?").next_to(con_tex_1,RIGHT).scale(.75).set_color(REANLEA_TXT_COL)
+        con_tex=VGroup(con_tex_1,con_tex_2).move_to(ORIGIN)
+
+        self.play(
+            Write(con_tex)
+        )
         
 
 
@@ -3272,12 +3336,15 @@ class Scene4_1(ThreeDScene):
         d_line_grp=VGroup(d_line_x,d_line_y,d_line_z)
 
         grp=VGroup(ax_3,cube,d_1,d_line_x,d_line_y,d_line_z)
+
+        ax_lbl=VGroup(x,y,z)
         
 
 
         self.play(
             Write(ax_3)
         )
+        self.play(Write(ax_lbl))
         self.add_fixed_orientation_mobjects(x,y,z)
 
         
@@ -3292,7 +3359,7 @@ class Scene4_1(ThreeDScene):
             Write(d_line_grp)
         )
 
-        d_1_lbl=MathTex("(x,0,0)").next_to([d_1.get_center()[0],0,0], DOWN).scale(.3).shift(.1*LEFT).set_color(REANLEA_GREEN)
+        d_1_lbl=MathTex("(x,0,0)").next_to([d_1.get_center()[0],0,0], DOWN).scale(.3).shift(.1*LEFT).set_color(REANLEA_GREEN_DARKER)
         #d_1_lbl.rotate(PI/2, about_point=[d_1.get_center()[0],0,0], axis=RIGHT)
 
         d_2_lbl=MathTex("(x,y,0)").next_to([d_1.get_center()[0],d_1.get_center()[1],0], UP).set_color(REANLEA_WARM_BLUE).scale(.3)
@@ -3303,6 +3370,8 @@ class Scene4_1(ThreeDScene):
 
         d_lbl_grp=VGroup(d_1_lbl,d_2_lbl,d_3_lbl)
 
+        self.play(Write(d_lbl_grp))
+
         self.add_fixed_orientation_mobjects(d_1_lbl,d_2_lbl,d_3_lbl)    
         
 
@@ -3311,7 +3380,7 @@ class Scene4_1(ThreeDScene):
 
         self.play(
             Write(cube),
-            d_1_lbl.animate.set_stroke(color=REANLEA_GREEN_DARKEST),
+            d_1_lbl.animate.set_stroke(color=REANLEA_TXT_COL_DARKER),
             d_2_lbl.animate.set_color(REANLEA_BLUE_DARKER),
             d_3_lbl.animate.set_color(REANLEA_WARM_BLUE_DARKER),
             run_time=2
@@ -3320,6 +3389,20 @@ class Scene4_1(ThreeDScene):
         
 
         self.wait(10)
+
+        self.play(
+            Uncreate(cube), run_time=2
+        )
+        
+        self.play(
+            Uncreate(d_line_grp),
+            Uncreate(ax_3),
+            Uncreate(d_lbl_grp),
+            FadeOut(d_1),
+            Uncreate(ax_lbl)
+        )
+
+        self.wait(2)
 
         
 

@@ -3580,6 +3580,116 @@ class Test3DEx(ThreeDScene):
         # manim -sqk test2.py Test3DEx
 
 
+
+class Ex13(Scene):
+    def construct(self):
+
+        sep_ln=Line().scale(2).rotate(PI/2).set_stroke(width=5, color=[REANLEA_MAGENTA,REANLEA_WARM_BLUE]).shift(1.5*RIGHT)
+        self.play(
+            Write(sep_ln)
+        )
+        
+        eqn_6=MathTex(r"\mathbb{R}",r"\times",r"\mathbb{R}",r"\times","...",r"\times",r"\mathbb{R}","=",r"\{", r"(x_{1},x_{2}, ... , x_{n})",r"\mid", r"x_{i} \in \mathbb{R}","","for","","i=1,2,...,n", r"\}")
+        eqn_6[12].scale(.5)
+        eqn_6[4].scale(.5)
+        eqn_6[9][7:10].scale(.5)
+        eqn_6[13][6:9].scale(.5)
+
+        eqn_6.scale(.6).shift(1.75*UP+2.85*LEFT).set_color_by_gradient(REANLEA_AQUA)
+
+        self.play(
+            Write(eqn_6)
+        )
+
+        self.wait()
+
+        eqn_7=MathTex(r"\mathbb{R}^{n}").next_to(eqn_6[7],LEFT).shift(.2*RIGHT)
+        eqn_7.scale(.6).set_color_by_gradient(REANLEA_AQUA)
+
+        self.play(
+            TransformMatchingShapes(eqn_6[0:7],eqn_7)
+        )
+        
+        
+        self.wait()
+
+        eqn_8=VGroup(eqn_7,eqn_6[7:])
+        self.play(
+            eqn_8.animate.shift(LEFT)
+        )
+
+        bend_bezier_arrow_indi=bend_bezier_arrow_indicate().scale(.55).set_color(REANLEA_TXT_COL)
+        bend_bezier_arrow_indi.flip(RIGHT).rotate(90*DEGREES).next_to(eqn_8[0],DOWN).shift(.5*RIGHT)
+
+        bend_bez_arrow=bend_bezier_arrow().rotate(-30*DEGREES).scale(0.55).set_color(REANLEA_TXT_COL).next_to(eqn_8[0],DOWN).shift(.4*RIGHT)
+
+        self.play(
+            Create(bend_bez_arrow)
+        )
+
+        with RegisterFont("Cedarville Cursive") as fonts:
+            txt_2=Text("Vector Space", font=fonts[0]).scale(.5)#.to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            txt_2.set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE_LIGHTER)
+            txt_2.next_to(bend_bez_arrow,RIGHT).shift(.1*LEFT+.05*DOWN).rotate(10*DEGREES)
+
+        self.play(
+            Create(txt_2)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+
+            vs_dfn_tx_1 = Text("vector addition : ", font=fonts[0]).scale(0.35).set_color(REANLEA_SLATE_BLUE_LIGHTEST)
+
+            vs_dfn_tx_2 = Text("& scalar multiplication : ", font=fonts[0]).scale(0.35).shift(.55*RIGHT).set_color(REANLEA_SLATE_BLUE_LIGHTER)
+        
+        with RegisterFont("Caveat") as fonts:
+
+            vs_dfn_tx_3 = Text("where,", font=fonts[0]).scale(0.5).shift(.1*LEFT).set_color(REANLEA_TXT_COL)
+
+        vs_dfn_mtx_1=MathTex(r"(x_{1},x_{2}, ... , x_{n})","+",r"(y_{1},y_{2}, ... , y_{n})",r"=",r"(x_{1}+y_{1},x_{2}+y_{2}, ... , x_{n}+y_{n})").scale(0.45).next_to(vs_dfn_tx_1,DOWN).shift(3*RIGHT)
+        vs_dfn_mtx_2=MathTex(r"\lambda",r"\cdot",r"(x_{1},x_{2}, ... , x_{n})",r"=",r"(\lambda \cdot x_{1},\lambda \cdot x_{2}, ... , \lambda \cdot x_{n})").scale(0.45).next_to(vs_dfn_tx_1,DOWN).shift(2.1*RIGHT)
+        vs_dfn_mtx_3_1=MathTex(r"(x_{1},x_{2}, ... , x_{n})",r"\in \mathbb{R}^{n}").scale(0.45).next_to(vs_dfn_tx_3,DOWN).shift(RIGHT)
+        vs_dfn_mtx_3_2=MathTex(r"\lambda",r"\in \mathbb{R}").scale(0.45).next_to(vs_dfn_tx_3,DOWN).shift(.35*DOWN+.35*RIGHT)
+        vs_dfn_mtx_3=VGroup(vs_dfn_mtx_3_1,vs_dfn_mtx_3_2).shift(.15*UP+.35*RIGHT)
+
+        vs_dfn_1=VGroup(vs_dfn_tx_1,vs_dfn_mtx_1).shift(5*LEFT)
+        vs_dfn_2=VGroup(vs_dfn_tx_2,vs_dfn_mtx_2).shift(5*LEFT+DOWN)
+        vs_dfn_3=VGroup(vs_dfn_tx_3,vs_dfn_mtx_3).shift(2*DOWN+3*LEFT)
+        vs_dfn=VGroup(vs_dfn_1,vs_dfn_2,vs_dfn_3)
+
+        self.play(
+            Write(vs_dfn)
+        )
+
+        
+        with RegisterFont("Caveat") as fonts:
+            con_tex_1 = Text("what about the distance in the space", font=fonts[0]).scale(0.85).shift(.1*LEFT).set_color(REANLEA_TXT_COL)
+        con_tex_2=MathTex(r"\mathbb{R}^{n}").next_to(con_tex_1,RIGHT).scale(.85).set_color(REANLEA_TXT_COL)
+        con_tex=VGroup(con_tex_1,con_tex_2)
+
+        self.play(
+            FadeOut(vs_dfn)
+        )
+        self.play(
+            Write(con_tex)
+        )
+        
+        self.wait(2)
+
+
+
+
+
+        # manim -pqh test2.py Ex13
+
+        # manim -pql test2.py Ex13
+
+        # manim -sqk test2.py Ex13
+
+        # manim -sql test2.py Ex13
+
+
+
 ###################################################################################################################
 
 
