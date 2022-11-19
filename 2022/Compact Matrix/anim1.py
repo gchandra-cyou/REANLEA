@@ -3270,6 +3270,8 @@ class Scene4(Scene):
         self.play(
             FadeOut(con_grp)
         )
+        self.wait()
+
         with RegisterFont("Caveat") as fonts:
             con_tex_1 = Text("what about the distance in the space", font=fonts[0]).scale(0.85).shift(.1*LEFT).set_color(REANLEA_TXT_COL)
         con_tex_2=MathTex(r"\mathbb{R}^{n}","","?").next_to(con_tex_1,RIGHT).scale(.75).set_color(REANLEA_TXT_COL)
@@ -3281,7 +3283,7 @@ class Scene4(Scene):
         
 
 
-        self.wait(4)
+        self.wait(10)
         
 
     
