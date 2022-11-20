@@ -4611,6 +4611,50 @@ class Test3Dex(ThreeDScene):
 
         # manim -pqh discord.py Test3DEx
 
+
+
+
+class cosineIter(Scene):
+  def construct(self):
+    axes = Axes(x_range = [0, 2.5, 0.5],
+                y_range = [0, 1, 0.2],
+                x_axis_config = {"numbers_to_include": np.arange(0,2.5,0.5)},
+                y_axis_config = {"numbers_to_include": np.arange(0,1,0.2)})
+
+    axis_labels = axes.get_axis_labels()
+      
+    ident = axes.plot(lambda x: x, color=PURE_BLUE)
+    cos_graph = axes.plot(lambda x: np.cos(x), color=RED)
+    
+    
+    
+    graphing_stuff = VGroup(axes, axis_labels)
+
+    self.play(DrawBorderThenFill(axes), Write (axis_labels))
+    self.wait()    
+    self.play(Create(ident))
+    self.wait()
+    self.play(Create(cos_graph))
+    self.wait()  
+
+    x = 0
+    y = 0
+    i = 0
+
+    while (i<10):
+        y2 = np.cos(x)
+        vline = Line(start=axes.c2p(x,y), end=axes.c2p(x,y2), color=YELLOW)
+        self.play(Create(vline), run_time=2)
+        y = y2
+        hline = Line(start=axes.c2p(x,y),end=axes.c2p(y,y), color=BLUE)
+        self.play(Create(hline), run_time=2)
+        x = y
+
+        i += 1
+
+
+        # manim -pqh discord.py cosineIter
+
 ###################################################################################################################
 
 # NOTE :-

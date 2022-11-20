@@ -3274,7 +3274,7 @@ class Scene4(Scene):
 
         with RegisterFont("Caveat") as fonts:
             con_tex_1 = Text("what about the distance in the space", font=fonts[0]).scale(0.85).shift(.1*LEFT).set_color(REANLEA_TXT_COL)
-        con_tex_2=MathTex(r"\mathbb{R}^{n}","","?").next_to(con_tex_1,RIGHT).scale(.75).set_color(REANLEA_TXT_COL)
+        con_tex_2=MathTex(r"\mathbb{R}^{n}").next_to(con_tex_1,RIGHT).scale(.75).set_color(REANLEA_TXT_COL)
         con_tex=VGroup(con_tex_1,con_tex_2).move_to(ORIGIN)
 
         self.play(
@@ -3419,6 +3419,32 @@ class Scene4_1(ThreeDScene):
         # manim -sqk anim1.py Scene4_1
 
         # manim -sql anim1.py Scene4_1
+
+
+
+class Scene4_2(ThreeDScene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+
+        self.wait(15)
+
+        
+
+        
+
+        
+
+        # manim -pqh anim1.py Scene4_2
+
+        # manim -pql anim1.py Scene4_2
+
+        # manim -sqk anim1.py Scene4_2
+
+        # manim -sql anim1.py Scene4_2
 
 ###################################################################################################################
 
