@@ -1,12 +1,13 @@
-############################################# by GOBINDA CHANDRA ###################################################
+############################################# by GOBINDA CHANDRA ##################################################
 
-                                    # VISIT : https://reanlea.com/ 
-                                    # YouTube : https://www.youtube.com/Reanlea/ 
-                                    # Twitter : https://twitter.com/Reanlea_ 
+                                    # VISIT    : https://reanlea.com/ 
+                                    # YouTube  : https://www.youtube.com/Reanlea/ 
+                                    # Twitter  : https://twitter.com/Reanlea_ 
                                     # Facebook : https://www.facebook.com/reanlea.ed/ 
                                     # Telegram : https://t.me/reanlea/ 
 
-#####################################################################################################################
+###################################################################################################################
+
 
 from __future__ import annotations
 from ast import Return
@@ -2213,6 +2214,7 @@ class Scene3(Scene):
 
 ###################################################################################################################
 
+
 class Scene4(Scene):
     def construct(self):
 
@@ -3190,7 +3192,7 @@ class Scene4(Scene):
 
         self.wait(2)
 
-        uncrt_grp_2=VGroup(cp_grp_3,dt_mv_4_grp)
+        '''uncrt_grp_2=VGroup(cp_grp_3,dt_mv_4_grp)
         eqn_7_grp=VGroup(eqn_7,sr_eqn_7)
 
         self.play(
@@ -3283,7 +3285,7 @@ class Scene4(Scene):
         
 
 
-        self.wait(10)
+        self.wait(10)'''
         
 
     
@@ -3297,6 +3299,8 @@ class Scene4(Scene):
     # manim -sqk anim1.py Scene4
 
     # manim -sql anim1.py Scene4
+
+    # manim -sqk -r 4800,1200 anim1.py Scene4   (for patreon banner)
 
 
 

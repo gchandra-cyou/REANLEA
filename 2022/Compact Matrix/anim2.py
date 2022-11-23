@@ -1,12 +1,12 @@
 ############################################# by GOBINDA CHANDRA ###################################################
 
-                                    # VISIT : https://reanlea.com/ 
-                                    # YouTube : https://www.youtube.com/Reanlea/ 
-                                    # Twitter : https://twitter.com/Reanlea_ 
+                                    # VISIT    : https://reanlea.com/ 
+                                    # YouTube  : https://www.youtube.com/Reanlea/ 
+                                    # Twitter  : https://twitter.com/Reanlea_ 
                                     # Facebook : https://www.facebook.com/reanlea.ed/ 
                                     # Telegram : https://t.me/reanlea/ 
 
-#####################################################################################################################
+####################################################################################################################
 
 from __future__ import annotations
 from ast import Return

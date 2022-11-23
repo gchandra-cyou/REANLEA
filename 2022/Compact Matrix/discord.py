@@ -4655,6 +4655,150 @@ class cosineIter(Scene):
 
         # manim -pqh discord.py cosineIter
 
+
+
+class weier(Scene):
+    def construct(self):
+        n = 300
+        a = ValueTracker(0.5)
+        b = ValueTracker(0.6)
+        xrng = ValueTracker(4)
+
+        ax = Axes()
+        func = VMobject()
+        def axUpdater(mobj):
+            xmin = -xrng.get_value()
+            xmax = +xrng.get_value()
+            newax =Axes(x_range=[xmin,xmax,10**int(np.log10(xmax)-1)],y_range=[-1,4])
+            newax.add_coordinates()
+            newfunc = newax.plot(
+                lambda x: sum([a.get_value()**k*np.cos(b.get_value()**k*PI*x) for k in range(n)]),
+                x_range=[xmin,xmax,xrng.get_value()/200],
+                use_smoothing=False,
+                ).set_color(RED).set_stroke(width=3)
+            mobj.become(newax)
+            func.become(newfunc)            
+        ax.add_updater(axUpdater)
+
+        self.add(ax,func)
+
+        self.play(
+            b.animate.set_value(7),
+            run_time=2
+        )        
+        self.wait(2)
+        self.play(
+            xrng.animate.set_value(0.01),
+            run_time=10
+        ) 
+
+
+        # manim -pqh discord.py weier
+
+
+class RealTest(Scene):
+    def construct(self):
+        transform_txt = VGroup(*[Text("1"), Text("2"), Text("3"), Text("4")])
+        transform_txt.arrange(direction=RIGHT, buff=2)
+
+        wrt_txt = VGroup(*[Text("1"), Text("2"), Text("3"), Text("4")])
+        wrt_txt.arrange(direction=ORIGIN)
+
+        print(f"debug: {wrt_txt._original__init__}")
+
+        w = VGroup( *[x for x in wrt_txt[0:2]], *[x for x in wrt_txt[3:1:-1]])
+        t = transform_txt[0:2] + transform_txt[3:1:-1]
+
+        print(f"debug 2: {w._original__init__}")
+
+        for wt, tt in zip(w, t):
+            self.play(Write(wt))
+            self.play(ReplacementTransform(wt, tt))
+
+        self.wait(1)  
+
+
+        # manim -pqh discord.py  RealTest
+
+
+
+
+class sinex(Scene):
+    def construct(self):
+
+        tracker = ValueTracker(0)
+
+        ax = Axes(x_range=[0,2*PI,PI/2], x_length=12,
+                y_range=[-1.5,1.5,1], y_length=6,
+                y_axis_config={"include_numbers": True},
+                tips=False
+                )
+        
+        g = ax.plot(
+            lambda x: np.sin(x), x_range=[0,6*PI,PI/2], color=BLUE
+                )
+        line1 = ax.plot(
+            lambda x: 1/2, x_range=[0,6*PI,PI/2]
+                )
+
+        self.last_y = g.underlying_function(tracker.get_value()) 
+
+        dot = Dot(ax.c2p(tracker.get_value(),g.underlying_function(tracker.get_value())))
+        def dotUpdater(mobj):
+            y = g.underlying_function(tracker.get_value())
+            dot.move_to(ax.c2p(tracker.get_value(),y))
+            if np.sign(y-0.5) != np.sign(self.last_y-0.5):
+                self.add(Dot(ax.c2p(tracker.get_value(),y), color=RED))
+            self.last_y = y    
+        dot.add_updater(dotUpdater)
+
+        self.add(ax, g, dot, line1)
+        self.play(tracker.animate.set_value(2*PI),rate_func=linear, run_time=3)
+        self.wait()  
+
+
+        # manim -pqh discord.py sinex
+
+
+class SN(Scene):
+    def construct(self):
+        
+        template = TexTemplate()       
+        template.documentclass = r"\documentclass[tikz]{standalone}"
+        template.add_to_preamble(r"\usepackage{tikz}")
+        template.add_to_preamble(r"\usetikzlibrary{trees}")
+        
+        self.add(
+            Tex(r"""
+\begin{tikzpicture}[level distance=3cm] \tikzstyle{edge from parent}=[-,draw]
+        \node {$\Omega$} [clockwise from=25, sibling angle=50]
+            child {node {\fbox{$B$}} [clockwise from=15, sibling angle=30]
+                child {node {\fbox{$G$}}
+                edge from parent node[fill=black, inner sep=1pt] {$\frac{3}{5}$}}
+                child {node {\fbox{$\overline{G}$}}
+                edge from parent node[fill=black, inner sep=1pt] {$\frac{2}{5}$}}
+            edge from parent node[fill=black, inner sep=1pt] {$\frac{1}{3}$}
+            }
+            child {node {\fbox{$R$}} [clockwise from=15, sibling angle=30]
+                child {node {\fbox{$G$}}
+                edge from parent node[fill=black, inner sep=1pt] {$0,3$}}
+                child {node {\fbox{$\overline{G}$}}
+                edge from parent node[fill=black, inner sep=1pt] {$0,7$}}
+            edge from parent node[fill=black, inner sep=1pt] {$\frac{2}{3}$}
+            };
+    \end{tikzpicture}
+                """,
+                tex_template=template,
+                stroke_width=2,
+                font_size=50,
+                )
+            )
+
+            # manim -pqh discord.py SN
+
+
+
+
 ###################################################################################################################
 
 # NOTE :-
