@@ -4799,6 +4799,139 @@ class SN(Scene):
 
 
 
+class thousand(Scene):
+    def construct(self):
+        agents = 100
+        vg_agents = VGroup(
+            *[Circle(radius=np.random.random()*0.5, 
+                     fill_opacity=0.8,
+                     color=random_bright_color()
+                     ).move_to([
+                         np.random.normal(0, 3),
+                         np.random.normal(0, 2),0]
+                         ) for agent in range(agents)]
+        )
+        self.add(vg_agents)
+        
+        for t in range(100): 
+
+            for i in range(agents):
+                x = np.random.normal(0, 0.3)
+                y = np.random.normal(0, 0.2)
+                vg_agents[i].shift([x, y, 0])
+  
+            self.wait(0.1)
+        self.remove(vg_agents)
+        self.wait(2)
+
+        # manim -pqh discord.py thousand
+
+
+
+
+class circ_sur_ex(Scene):
+    
+    def construct(self):
+
+        circle = Circle(radius=2, stroke_color = WHITE, stroke_width = 8)
+        radius = Line(start=circle.get_center(), end = circle.get_right(), stroke_color = WHITE, stroke_width = 8).set_z_index(2)
+        center = Dot(point= circle.get_center(), radius =0.1, color=WHITE)
+        angle_1 = Arc(radius = 2, start_angle = 0, angle = 1, arc_center = circle.get_center(), stroke_width = 8).set_z_index(3).set_color(RED)
+        angle_1.reverse_direction()
+        vgroup = VGroup(radius, circle, center)
+        self.add(vgroup)
+        self.play(vgroup.animate(rate_func = smooth))
+        self.play(Rotate(radius, about_point = circle.get_right(), angle =-PI/2), rate_func = smooth)
+        self.wait(2)
+        self.play(ReplacementTransform(radius, angle_1),run_tim=4)#
+        self.wait(1)    
+        colors = [BLUE,YELLOW,GREEN,PURPLE,ORANGE]
+        segs = []
+        for i in range(5):    
+            segs.append(angle_1.copy().set_color(colors[i]))
+            self.add(segs[-1])  # [-1] = last element in list
+            dir = segs[-1].point_from_proportion(0.5)-center.get_center()
+            dir = dir / np.linalg.norm(dir)
+            self.play(segs[-1].animate.shift(0.3*dir))
+            self.play(Rotate(segs[-1], 1+i, about_point=center.get_center()))
+            dir = segs[-1].point_from_proportion(0.5)-center.get_center()
+            dir = dir / np.linalg.norm(dir)
+            self.play(segs[-1].animate.shift(-0.3*dir))
+            self.wait(1)
+
+
+            # manim -pqh discord.py circ_sur_ex
+
+ 
+class Combinatorics(Scene):
+    def construct(self):
+        dots, triangles = VGroup(), VGroup()
+        for i in range(6):
+            dot = Dot(3 * RIGHT).rotate(i * TAU / 6, about_point=ORIGIN)
+            dots.add(dot)
+        cols = [BLUE, GREEN, RED, YELLOW, ORANGE]        
+        
+        for i in range(5):
+            for j in range(i, 6):                
+                triangle = Polygon(
+                    dots[i].get_center(),
+                    dots[i + 1].get_center(),
+                    dots[j].get_center(),
+                ).set_fill(cols[i], 0.2)   
+                triangles.add(triangle)
+        #self.add(triangles, dots)  
+        self.play(
+            Write(triangles),
+            Write(dots)
+        )
+        self.wait(3) 
+
+        # manim -pqh discord.py Combinatorics
+
+
+class Shape_ex(Scene):
+    def construct(self):
+        vertices = [
+            3 * RIGHT,
+            2 * UR,
+            UP,
+            2 * UL,
+            3 * LEFT,
+            2 * DL,
+            DOWN,
+            2 * DR,
+            3 * RIGHT
+        ]
+        shape = VMobject().set_points_smoothly(vertices)        
+        hole = Circle(0.6).shift(LEFT)
+        difference = Difference(shape, hole)
+        difference.set_fill(BLUE, 0.3) 
+        #self.add(difference)
+        self.play(
+            Create(shape)
+        )
+        self.play(
+            Create(hole)
+        )
+        self.play(
+            Write(difference)
+        )
+        self.wait(3)
+
+
+        # manim -pqh discord.py Shape_ex
+
+
+
+class QuadraticBezierSimpleEx(Scene):
+    def construct(self):
+        curve = Line(ORIGIN, ORIGIN)
+        curve.add_quadratic_bezier_curve_to(2 * UR, 3 * RIGHT) 
+        self.play(Create(curve))
+        self.wait(3)
+
+        # manim -pqh discord.py QuadraticBezierSimpleEx
+
 ###################################################################################################################
 
 # NOTE :-
