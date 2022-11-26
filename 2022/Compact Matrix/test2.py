@@ -3715,53 +3715,27 @@ class ColoringVectorField(Scene):
 
 class CoordSysExample(Scene):
             def construct(self):
-                # the location of the ticks depends on the x_range and y_range.
-                grid = Axes(
-                    x_range=[0, 1, 0.05],  # step size determines num_decimal_places.
-                    y_range=[0, 1, 0.05],
-                    x_length=9,
-                    y_length=5.5,
-                    axis_config={   #axis config
-                        "numbers_to_include": np.arange(0, 1 + 0.1, 0.1),
-                        "font_size": 24,
-                    },
-                    tips=False,
-                )
 
-                # Labels for the x-axis and y-axis.
-                y_label = grid.get_y_axis_label("y", edge=LEFT, direction=LEFT, buff=0.4)
-                x_label = grid.get_x_axis_label("x")
-                grid_labels = VGroup(x_label, y_label)
+                ax=Axes()
 
                 graphs = VGroup()
-                for n in np.arange(1,20):
-                    graphs += grid.plot(lambda x: x ** n).set_color(REANLEA_BLUE)
-                    graphs += grid.plot(
-                        lambda x: x ** (1 / n), color=WHITE, use_smoothing=False
-                    ).set_color(REANLEA_GREEN_LIGHTER)
-
-                # Extra lines and labels for point (1,1)
-                graphs += grid.get_horizontal_line(grid.c2p(1, 1, 0), color=BLUE)   # get horizontal line from y-axis to point (1,1)
-                graphs += grid.get_vertical_line(grid.c2p(1, 1, 0), color=BLUE)     ## get vertical line from x-axis to point (1,1)
-                graphs += Dot(point=grid.c2p(1, 1, 0), color=YELLOW)    #add a particular point (coordinate to point : c2p)
-                graphs += Tex("(1,1)").scale(0.75).next_to(grid.c2p(1, 1, 0))    #label of a point (1,1)
-                title = Title(
-                    # spaces between braces to prevent SyntaxError
-                    r"Graphs of $y=x^{ {1}\over{n} }$ and $y=x^n (n=1,2,3,...,20)$",
-                    include_underline=False,
-                    font_size=40,
-                )
+                for n in np.arange(1,15):                    
+                    graphs += ImplicitFunction(
+                        lambda x,y : np.abs(x)**n + np.abs(y)**n -1 ,
+                    ).scale(3).set_stroke(width=3)
                 
+                graphs.set_color_by_gradient(REANLEA_BLUE,REANLEA_BLUE_SKY)
 
-                #self.add(title, graphs, grid, grid_labels)
-                grp=VGroup(title,graphs,grid, grid_labels)
+                self.wait()
                 self.play(
-                    Create(grp, run_time=6)
+                    Write(graphs, run_time=20)
                 )
                 self.wait(2)
 
 
                 # manim -pqh test2.py CoordSysExample
+
+                # manim -sqk test2.py CoordSysExample
 
 
 ###################################################################################################################

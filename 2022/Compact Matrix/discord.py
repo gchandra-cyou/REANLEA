@@ -425,6 +425,7 @@ class the_spider(Scene):
             color=PURE_RED,
             min_depth=8, # <- Change this
         )
+        
 
         #self.add(graph)
 
