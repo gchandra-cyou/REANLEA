@@ -3750,6 +3750,11 @@ class CoordSysExample(Scene):
 
 class ColoringVectorFieldWithDot(Scene):
     def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
        
         func = lambda x: x - ORIGIN
         colors = [REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE,REANLEA_AQUA,REANLEA_GREY]
@@ -3773,7 +3778,7 @@ class ColoringVectorFieldWithDot(Scene):
         self.wait(2)
 
         self.play(
-            Write(vf, run_time=1)
+            Write(vf, run_time=2)
         )
         self.wait(2)
 
@@ -3782,7 +3787,7 @@ class ColoringVectorFieldWithDot(Scene):
         )
         self.wait(2)
 
-        for i in range(270,275):
+        for i in range(280,285):
             self.play(Wiggle(vf[i], scale_value=2, rotation_angle=0.4))
         
         self.wait()
@@ -3797,7 +3802,13 @@ class ColoringVectorFieldWithDot(Scene):
         )
 
         self.wait(2)
+        self.play(
+            Unwrite(dots)
+        )
+        self.wait(2)
+        
 
+        # manim -pql test2.py ColoringVectorFieldWithDot
 
         # manim -pqh test2.py ColoringVectorFieldWithDot
 
