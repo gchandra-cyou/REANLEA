@@ -4933,6 +4933,59 @@ class QuadraticBezierSimpleEx(Scene):
 
         # manim -pqh discord.py QuadraticBezierSimpleEx
 
+
+class BallGetVectorEx(ThreeDScene):
+    def construct(self):
+        Faces = [RegularPolygon(n=5).set_fill(WHITE,1.0) for i in range(6)]
+        Faces[0].set_fill(RED)
+        Faces[2].set_fill(GREEN)
+        Dode = VGroup(*Faces)
+        self.play(*[Create(F) for F in Faces])
+        for i in range(1,6):
+            P = Faces[i]
+            V = P.get_vertices()
+            self.play(P.animate.rotate(
+                        angle = PI - math.atan(2),
+                        axis = Line(start = V[i%5],end = V[(i+1)%5]).get_vector(),
+                        about_point = V[i%5])
+                    )
+        self.play(Rotate(Dode,-PI/2,RIGHT,about_point = ORIGIN))
+        self.wait()
+
+        # manim -pqh discord.py BallGetVectorEx
+
+
+
+
+class ColoringVectorField(Scene):
+    def construct(self):
+       
+        func = lambda x: x - ORIGIN
+        colors = [REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE,REANLEA_AQUA,REANLEA_GREY]
+        
+        vf = ArrowVectorField(
+            func, min_color_scheme_value=2, 
+            max_color_scheme_value=10, 
+            colors=colors
+        )
+       
+        self.wait()
+        self.play(
+            Write(vf, run_time=1)
+        )
+        
+        for i in range(280,290):
+            self.play(Wiggle(vf[i], scale_value=2, rotation_angle=0.4))             
+
+        for obj in vf:
+            self.add(Dot().move_to(obj.get_end()))
+        self.wait(2)
+
+
+        # manim -pqh discord.py  ColoringVectorField
+
+
+
 ###################################################################################################################
 
 # NOTE :-

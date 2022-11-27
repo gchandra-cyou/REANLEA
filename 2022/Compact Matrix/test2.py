@@ -3628,7 +3628,8 @@ class Ex13(Scene):
         )
 
         with RegisterFont("Cedarville Cursive") as fonts:
-            txt_2=Text("Vector Space", font=fonts[0]).scale(.5)#.to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            txt_2=Text("Vector Space", font=fonts[0]).scale(.5)#.to_edge(UP).shift(.5*DOWN)             
+            # to_edge(UP) == move_to(3.35*UP)
             txt_2.set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE_LIGHTER)
             txt_2.next_to(bend_bez_arrow,RIGHT).shift(.1*LEFT+.05*DOWN).rotate(10*DEGREES)
 
@@ -3692,20 +3693,26 @@ class Ex13(Scene):
 
 class ColoringVectorField(Scene):
     def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_inde(-100)
+        self.add(water_mark)
+
         func = lambda x: x - ORIGIN
-        #curve = ParametricFunction(lambda t: [t, np.sin(t), 0], t_range=[-2*PI, 2*PI, 0.01])
-        colors = [REANLEA_BLUE_LAVENDER,REANLEA_MAGENTA_LIGHTER,REANLEA_MAGENTA,REANLEA_SLATE_BLUE_LIGHTER,REANLEA_BLUE_SKY,REANLEA_PURPLE]
-        min_radius = Circle(radius=2, color=colors[0]).shift(LEFT * 5)
-        max_radius = Circle(radius=10, color=colors[-1]).shift(LEFT * 5)
+        colors = [PURE_RED,PURE_GREEN,YELLOW_E]
+        
         vf = ArrowVectorField(
             func, min_color_scheme_value=2, max_color_scheme_value=10, colors=colors
         )
-        #self.add(vf, min_radius, max_radius)
-        g=VGroup(vf, min_radius, max_radius)
+
+        
+        self.wait()
         self.play(
             Write(vf, run_time=1)
         )
-        self.wait()
+        
+        self.wait(2)
 
 
         # manim -pqh test2.py ColoringVectorField
@@ -3716,19 +3723,22 @@ class ColoringVectorField(Scene):
 class CoordSysExample(Scene):
             def construct(self):
 
-                ax=Axes()
+                # WATER MARK 
+
+                water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+                self.add(water_mark)
 
                 graphs = VGroup()
                 for n in np.arange(1,15):                    
                     graphs += ImplicitFunction(
                         lambda x,y : np.abs(x)**n + np.abs(y)**n -1 ,
-                    ).scale(3).set_stroke(width=3)
+                    ).scale(3).set_stroke(width=1.25)
                 
                 graphs.set_color_by_gradient(REANLEA_BLUE,REANLEA_BLUE_SKY)
 
                 self.wait()
                 self.play(
-                    Write(graphs, run_time=20)
+                    Create(graphs, run_time=20)
                 )
                 self.wait(2)
 
@@ -3736,6 +3746,62 @@ class CoordSysExample(Scene):
                 # manim -pqh test2.py CoordSysExample
 
                 # manim -sqk test2.py CoordSysExample
+
+
+class ColoringVectorFieldWithDot(Scene):
+    def construct(self):
+       
+        func = lambda x: x - ORIGIN
+        colors = [REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE,REANLEA_AQUA,REANLEA_GREY]
+        
+        vf = ArrowVectorField(
+            func, min_color_scheme_value=2, 
+            max_color_scheme_value=10, 
+            colors=colors
+        )
+       
+        dots=VGroup()          
+        for obj in vf:
+            dots += Dot().move_to(obj.get_end()).set_color(obj.get_color()).scale(.75).set_sheen(-.4,DOWN)
+        
+        
+        self.wait()
+
+        self.play(
+            Write(dots)
+        )
+        self.wait(2)
+
+        self.play(
+            Write(vf, run_time=1)
+        )
+        self.wait(2)
+
+        self.play(
+            FadeOut(dots)
+        )
+        self.wait(2)
+
+        for i in range(270,275):
+            self.play(Wiggle(vf[i], scale_value=2, rotation_angle=0.4))
+        
+        self.wait()
+
+        self.play(
+            Write(dots)
+        )
+        self.wait(2)
+
+        self.play(
+            Unwrite(vf)
+        )
+
+        self.wait(2)
+
+
+        # manim -pqh test2.py ColoringVectorFieldWithDot
+
+        # manim -sqk test2.py ColoringVectorFieldWithDot
 
 
 ###################################################################################################################
@@ -3746,7 +3812,10 @@ class CoordSysExample(Scene):
 # Poiret One,Merienda,Julius Sans One,Merienda One,Cinzel Decorative, Montserrat, Cousine, The Nautigal
 # Marcellus SC,Contrail One,Thasadith,Spectral SC,Dongle,Cormorant SC,Comfortaa, Josefin Sans (LOVE), Fuzzy Bubbles
 
+###################################################################################################################
 
+# N.B.-
+#  alt + z --> to controll (on/off) horizontal scrolling
       
 ###################################################################################################################
 
