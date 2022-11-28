@@ -1224,7 +1224,7 @@ def MandelbrotSet0(max_steps: int = 50, resolution: int = 1080, x_range: np.ndar
                     array[n, p] = 67*i*(255/max_steps)
         return array
 
-config.background_color=REANLEA_BACKGROUND_COLOR_OXFORD_BLUE
+
 class Mandel2(Scene):
     def construct(self):
         x=ValueTracker(10)
@@ -3813,6 +3813,126 @@ class ColoringVectorFieldWithDot(Scene):
         # manim -pqh test2.py ColoringVectorFieldWithDot
 
         # manim -sqk test2.py ColoringVectorFieldWithDot
+
+
+class coordsysobjectsEx(Scene):
+    def construct(self):
+        s= VGroup(*[Dot().shift(i*0.2*RIGHT*np.random.uniform(-1,1)+UP*np.random.uniform(-1,1)) for i in range(-15,15)])
+        s.shift(UP).set_color_by_gradient(REANLEA_BLUE_LAVENDER, REANLEA_BLUE, PURE_GREEN)
+        s2= s.copy().set_color_by_gradient(REANLEA_ORANGE_DARKER,REANLEA_VIOLET,REANLEA_PURPLE)
+        s2.arrange_submobjects()
+        s2.shift(DOWN)
+        s3= VGroup(*[Dot().shift(i*0.1*RIGHT*np.random.uniform(-6,6)) for i in range(-15,15)])
+        s3.shift(2*DOWN).set_color_by_gradient(REANLEA_BLUE, PURE_GREEN, REANLEA_GREY_DARKER,REANLEA_VIOLET,REANLEA_AQUA_GREEN)
+        #self.add(s,s2)
+        g=VGroup(s,s2, s3)
+        self.play(Create(g, run_time=4))
+        self.wait()
+                
+
+
+        # manim -pqh test2.py coordsysobjectsEx
+
+class randompointsEx(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(2*RIGHT).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+
+
+        s=VGroup(
+            *[
+                Dot().shift(i*0.2*RIGHT*np.random.uniform(-1,1)+i*0.2*UP*np.random.uniform(-1,1))
+                for i in range(-15,15)
+            ]
+        )
+        s.set_color_by_gradient(REANLEA_BLUE_DARKER,REANLEA_PURPLE,PURE_GREEN)
+
+        dt=Dot().set_color(REANLEA_AQUA).shift(2*LEFT+UP)
+
+
+        self.wait()
+        self.play(
+            Write(dt)
+        )
+        self.play(
+            Write(s)
+        )
+        self.wait(2)
+
+        ln=VGroup()
+        for obj in s:
+            ln += Line(start=dt.get_center(), end=obj.get_center()).set_stroke(width=2, color=[dt.get_color(), obj.get_color()])
+
+        self.play(
+            Write(ln)
+        )
+        self.wait(2)
+
+        # manim -pqh test2.py randompointsEx
+
+        # manim -sqk test2.py randompointsEx
+
+
+class RedrawEx(Scene):
+    def construct(self):
+        dt_1=Dot().set_color(REANLEA_AQUA).shift(2*LEFT+UP)
+        dt_2=Dot().set_color(REANLEA_PURPLE).shift(2*RIGHT+DOWN)
+        ln_1=Line(start=dt_1.get_center(), end=dt_2.get_center()).set_stroke(width=2, color=[dt_2.get_color(),dt_1.get_color()])
+        self.play(
+            Write(dt_1)
+        )
+        self.play(
+            Write(dt_2)
+        )
+        self.wait()
+        self.play(
+            Write(ln_1)
+        )
+        self.wait(3)
+
+        dt_3=dt_1.copy().set_sheen(-.4,DOWN)
+        self.play(
+            Write(dt_3)
+        )
+
+        dt_3_bl=MathTex("x").scale(.5).set_color(REANLEA_YELLOW).next_to(dt_3,UP)
+        self.play(
+            Write(dt_3_bl)
+        )
+        dt_3_bl.add_updater(
+            lambda z : z.become(
+                MathTex("x").scale(.5).set_color(REANLEA_YELLOW).next_to(dt_3,UP)
+            )
+        )
+        
+
+        self.play(
+            dt_3.animate.move_to(
+                .5*dt_1.get_center()+.5*dt_2.get_center()
+            )
+        )
+        self.play(
+            dt_3.animate.move_to(
+                .75*dt_1.get_center()+.25*dt_2.get_center()
+            )
+        )
+        self.play(
+            dt_3.animate.move_to(
+                .25*dt_1.get_center()+.75*dt_2.get_center()
+            )
+        )
+        self.wait(2)
+
+        
+
+        
+        self.wait(2)
+
+
+        # manim -pqh test2.py RedrawEx
 
 
 ###################################################################################################################

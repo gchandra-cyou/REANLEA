@@ -53,6 +53,148 @@ class Scene1(Scene):
 
         water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
         self.add(water_mark)
+        self.wait()
+
+
+        ## CUT - I  ##
+
+        dt_1=Dot().set_color(REANLEA_AQUA).shift(2*LEFT+UP)
+        dt_2=Dot().set_color(REANLEA_PURPLE).shift(2*RIGHT+DOWN)
+        ln_1=Line(start=dt_1.get_center(), end=dt_2.get_center()).set_stroke(width=2, color=[dt_2.get_color(),dt_1.get_color()])
+        self.play(
+            Write(dt_1)
+        )
+        self.play(
+            Write(dt_2)
+        )
+        self.wait()
+        self.play(
+            Write(ln_1)
+        )
+        self.wait(3)
+
+        dts=VGroup(
+            *[
+                Dot().shift(i*0.2*RIGHT*np.random.uniform(-1,1)+i*0.2*UP*np.random.uniform(-1,1))
+                for i in range(-15,15)
+            ]
+        )
+        dts.set_color_by_gradient(REANLEA_SLATE_BLUE,REANLEA_MAGENTA,PURE_GREEN)
+
+        self.play(
+            Create(dts)
+        )
+        self.wait()
+
+        lns=VGroup()
+        for obj in dts:
+            lns += Line(start=dt_1.get_center(), end=obj.get_center()).set_stroke(width=2, color=[ obj.get_color(),dt_1.get_color()])
+
+        self.play(
+            Write(lns),
+            run_time=2
+        )
+        self.wait(4)
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(-2)
+
+        self.play(
+            Create(ax_1)
+        )
+        self.wait()
+
+        self.play(
+            Indicate(dt_2,scale_factor=1.75, color=PURE_RED)
+        )
+        dt_2_lbl=MathTex("(x,y)").scale(.5).set_color(REANLEA_PURPLE_LIGHTER).next_to(dt_2, RIGHT)
+        self.play(
+            Write(dt_2_lbl)
+        )
+        self.wait(2)
+
+        self.play(
+            Indicate(ln_1, color=PURE_RED)
+        )
+
+        dt_1_dummy=dt_1.copy().set_sheen(-.4,DOWN)
+        self.play(
+            dt_1_dummy.animate.move_to(dt_2.get_center()).set_color(dt_2.get_color()),
+            run_time=2.5
+        )
+        self.wait(2)
+
+        d_ln_x_1=DashedLine(start=ax_1.c2p(0,0), end=[dt_1_dummy.get_center()[0], ax_1.c2p(0,0)[1],0]).set_stroke(width=2, color=YELLOW)
+        d_ln_x_1.add_updater(
+            lambda z : z.become(
+                DashedLine(start=ax_1.c2p(0,0), end=[dt_1_dummy.get_center()[0], ax_1.c2p(0,0)[1],0]).set_stroke(width=2, color=YELLOW)
+            )
+        )
+        self.play(
+            Write(d_ln_x_1)
+        )
+
+
+        d_ln_x_1_lbl=MathTex("x").scale(.35).set_color(REANLEA_YELLOW).next_to(d_ln_x_1,DOWN).set_z_index(5)
+        d_ln_x_1_lbl.add_updater(
+            lambda z : z.become(
+                MathTex("x").scale(.35).set_color(REANLEA_YELLOW_GREEN).next_to(d_ln_x_1,DOWN).set_z_index(5)
+            )
+        )
+        self.play(
+            TransformMatchingShapes(dt_2_lbl.copy()[0][1],d_ln_x_1_lbl)
+        )
+
+
+
+        d_ln_y_1=DashedLine(start=[dt_1_dummy.get_center()[0], ax_1.c2p(0,0)[1],0] , end= dt_2.get_center()).set_stroke(width=2, color=YELLOW)
+
+        d_ln_y_1.add_updater(
+            lambda z : z.become(
+                DashedLine(start=[dt_1_dummy.get_center()[0], ax_1.c2p(0,0)[1],0] , end= dt_1_dummy.get_center()).set_stroke(width=2, color=YELLOW)
+            )
+        )
+        self.play(
+            Write(d_ln_y_1)
+        )
+
+        d_ln_y_1_lbl=MathTex("y").scale(.35).set_color(REANLEA_YELLOW).next_to(d_ln_y_1,LEFT).set_z_index(5)
+        d_ln_y_1_lbl.add_updater(
+            lambda z : z.become(
+                MathTex("y").scale(.35).set_color(REANLEA_YELLOW).next_to(d_ln_y_1,LEFT).set_z_index(5)
+            )
+        )
+        self.play(
+            TransformMatchingShapes(dt_2_lbl.copy()[0][3],d_ln_y_1_lbl)
+        )
+
+        self.play(
+            dt_1_dummy.animate.move_to(
+                .5*dt_1.get_center()+.5*dt_2.get_center()
+            )
+        )
+        self.play(
+            dt_1_dummy.animate.move_to(
+                .75*dt_1.get_center()+.25*dt_2.get_center()
+            )
+        )
+        self.play(
+            dt_1_dummy.animate.move_to(
+                .25*dt_1.get_center()+.75*dt_2.get_center()
+            )
+        )
+        self.wait(2)
+
+        
+
 
 
         self.wait(4)
