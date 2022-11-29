@@ -146,7 +146,7 @@ class Scene1(Scene):
         d_ln_x_1_lbl=MathTex("x").scale(.35).set_color(REANLEA_YELLOW).next_to(d_ln_x_1,DOWN).set_z_index(5)
         d_ln_x_1_lbl.add_updater(
             lambda z : z.become(
-                MathTex("x").scale(.35).set_color(REANLEA_YELLOW_GREEN).next_to(d_ln_x_1,DOWN).set_z_index(5)
+                MathTex("x").scale(.35).set_color(REANLEA_YELLOW).next_to(d_ln_x_1,DOWN).set_z_index(5)
             )
         )
         self.play(
@@ -193,6 +193,27 @@ class Scene1(Scene):
         )
         self.wait(2)
 
+        d_ln_lbl_grp=VGroup(d_ln_x_1_lbl,d_ln_y_1_lbl)
+
+        eqn_1_0=MathTex("x",r"\longrightarrow","y").set_color(REANLEA_TXT_COL_LIGHTER).move_to(5*RIGHT+2.5*UP)
+        eqn_1_0[1].scale(1.25)
+        eqn_1_0[0].shift(.1*LEFT)
+        eqn_1_0[2].shift(.1*RIGHT)
+
+        eqn_1_1=MathTex(r"\rho").scale(.75).next_to(eqn_1_0[1],UP).shift(.25*DOWN)
+
+        eqn_1=VGroup(eqn_1_0,eqn_1_1)
+
+
+        self.play(
+            TransformMatchingShapes(d_ln_lbl_grp.copy(),eqn_1)
+        )
+        self.wait()
+        
+        self.play(
+            Indicate(ln_1, color=PURE_RED, scale_factor=1),
+            run_time=3
+        )
         
 
 
