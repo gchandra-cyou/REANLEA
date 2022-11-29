@@ -214,7 +214,78 @@ class Scene1(Scene):
             Indicate(ln_1, color=PURE_RED, scale_factor=1),
             run_time=3
         )
+        self.wait()
         
+        eqn_2=MathTex(r"\rho","(x)","=","y").move_to(5*RIGHT+2.5*UP)
+        eqn_2.set_color(REANLEA_SLATE_BLUE_LIGHTEST)
+        eqn_2[0].scale(1.25).shift(.15*LEFT)
+        
+
+        self.play(
+            TransformMatchingShapes(eqn_1,eqn_2)
+        )
+        self.wait(2)
+
+        self.play(
+            Indicate(dt_1, color=PURE_RED),
+            Indicate(dt_2, color=PURE_RED)
+        )
+
+        dt_1_lbl=MathTex(r"(x_{1},y_{1})").scale(.5).set_color(REANLEA_AQUA).next_to(dt_1, LEFT)
+        dt_2_lbl_2=MathTex(r"(x_{2},y_{2})").scale(.5).set_color(REANLEA_PURPLE_LIGHTER).next_to(dt_2, RIGHT)
+
+        self.play(
+            TransformMatchingShapes(dt_2_lbl,dt_2_lbl_2),
+            Write(dt_1_lbl)
+        )
+        self.play(
+            Indicate(ln_1, color=PURE_RED, scale_factor=1)
+        )
+
+        dt_1_2_lbl_grp=VGroup(dt_1_lbl,dt_2_lbl_2)
+        
+
+        eqn_3=MathTex(
+            r"\frac{y-y_{1}}{x-x_{1}}","=",r"\frac{y_{1}-y_{2}}{x_{1}-x_{2}}"
+        ).scale(.75).move_to(5*RIGHT+2*UP)
+        eqn_3[0][2:4].set_color(REANLEA_AQUA)
+        eqn_3[0][7:9].set_color(REANLEA_AQUA)
+        eqn_3[2][0:2].set_color(REANLEA_AQUA)
+        eqn_3[2][6:8].set_color(REANLEA_AQUA)
+        eqn_3[2][3:5].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_3[2][9:11].set_color(REANLEA_PURPLE_LIGHTER)
+
+        
+
+        self.play(
+            eqn_2.animate.scale(.5).shift(.5*UP), 
+        )
+        sr_eq_2=SurroundingRectangle(eqn_2, color=REANLEA_WELDON_BLUE, corner_radius=.125, buff=.15)
+        self.play(
+            Write(sr_eq_2)
+        )
+
+        self.play(
+            TransformMatchingShapes(dt_1_2_lbl_grp.copy(), eqn_3)
+        )
+        self.wait()
+
+        eqn_4=MathTex(
+            "y","=",r"(\frac{y_{1}-y_{2}}{x_{1}-x_{2}})",r"(x-x_{1})","+","y_{1}"
+        ).scale(.75).move_to(4.5*RIGHT+2*UP)
+
+        eqn_4[2][1:3].set_color(REANLEA_AQUA)
+        eqn_4[2][7:9].set_color(REANLEA_AQUA)
+        eqn_4[2][4:6].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_4[2][10:12].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_4[3][3:5].set_color(REANLEA_AQUA)
+        eqn_4[5].set_color(REANLEA_AQUA)
+
+
+        self.play(
+            TransformMatchingShapes(eqn_3,eqn_4)
+        )
+
 
 
 
