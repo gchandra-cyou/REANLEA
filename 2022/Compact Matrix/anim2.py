@@ -360,7 +360,17 @@ class Scene2(Scene):
         ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(-2) 
 
         dt_1_lbl=MathTex(r"(x_{1},y_{1})").scale(.5).set_color(REANLEA_AQUA).next_to(dt_1, LEFT)
+        dt_1_lbl.add_updater(
+            lambda z : z.become(
+                MathTex(r"(x_{1},y_{1})").scale(.5).set_color(REANLEA_AQUA).next_to(dt_1, LEFT).set_z_index(5)
+            )
+        )
         dt_2_lbl=MathTex(r"(x_{2},y_{2})").scale(.5).set_color(REANLEA_PURPLE_LIGHTER).next_to(dt_2, RIGHT)
+        dt_2_lbl.add_updater(
+            lambda z : z.become(
+                MathTex(r"(x_{2},y_{2})").scale(.5).set_color(REANLEA_PURPLE_LIGHTER).next_to(dt_2, RIGHT).set_z_index(5)
+            )
+        )
 
         eqn_1=MathTex(
             "y","=",r"(\frac{y_{1}-y_{2}}{x_{1}-x_{2}})",r"(x-x_{1})","+","y_{1}"
@@ -425,14 +435,86 @@ class Scene2(Scene):
 
         ## MAIN SCENE ##
 
+        self.wait()
+
+        self.play(
+            Indicate(ln_1, color=PURE_RED, scale_factor=1)
+        )
+
+        bez_1=bend_bezier_arrow().scale(.55).set_color(REANLEA_TXT_COL).flip().rotate(-PI/2-PI/6).shift(3.325*UP+1.15*LEFT)
+
+        self.play(
+            Create(bez_1)
+        )
+
+        eqn_2=MathTex(
+            "L",":=",r"\{","(x,y)",r"\in \mathbb{R}^{2}", r"\mid",  "y","=",r"(\frac{y_{1}-y_{2}}{x_{1}-x_{2}})",r"(x-x_{1})","+","y_{1}",r"\}"
+        ).scale(.55).move_to(3.5*RIGHT+1.5*UP)
+        
+        eqn_2[3][1].set_color(REANLEA_YELLOW)
+        eqn_2[3][3].set_color(REANLEA_YELLOW)
+        eqn_2[6].set_color(REANLEA_YELLOW)
+        eqn_2[9][1].set_color(REANLEA_YELLOW)
+        eqn_2[8][1:3].set_color(REANLEA_AQUA)
+        eqn_2[8][7:9].set_color(REANLEA_AQUA)
+        eqn_2[8][4:6].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_2[8][10:12].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_2[9][3:5].set_color(REANLEA_AQUA)
+        eqn_2[11].set_color(REANLEA_AQUA)
+
+        self.play(
+            ReplacementTransform(eqn_1,eqn_2)
+        )
+        self.wait()
+
+        self.play(
+            Indicate(eqn_2[6:12], color=PURE_GREEN)
+        )
+        self.wait()
+
+        self.play(
+            Indicate(dt_1, color=PURE_RED),
+            Indicate(dt_2, color=PURE_RED)
+        )
+        self.play(
+            FadeOut(bez_1),
+            eqn_2.animate.move_to(3*UP)
+        )
+        self.wait(2)
+
+        self.play(
+            dt_1.animate.move_to(ax_1.c2p(0,0)),
+            dt_2.animate.move_to(ax_1.c2p(4,2)),
+        )
+        self.wait()
+
+        dt_1_lbl_1=MathTex("(0,0)").scale(.5).next_to(ax_1.c2p(0,0)).shift(.35*DOWN).set_color(dt_1.get_color())
+        dt_2_lbl_1=MathTex("(a,b)").scale(.5).move_to(dt_2_lbl.get_center()).set_color(dt_2_lbl.get_color())
+
+
+        eqn_3=MathTex(
+            "L",":=",r"\{","(x,y)",r"\in \mathbb{R}^{2}", r"\mid",  "y","=",r"(\frac{0-b}{0-a})",r"(x-0)","+","0",r"\}"
+        ).scale(.55).move_to(3*UP)
+        
+        
+        
+        
+
+
+        self.play(
+            TransformMatchingShapes(dt_1_lbl,dt_1_lbl_1),
+            TransformMatchingShapes(dt_2_lbl,dt_2_lbl_1),
+        )
+        self.play(
+            FadeOut(eqn_2),
+        )
+        self.play(
+            Write(eqn_3)
+        )
+
         
 
         
-
-        
-
-
-
 
         self.wait(4)
 
