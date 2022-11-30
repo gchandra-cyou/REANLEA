@@ -602,14 +602,75 @@ class Scene2(Scene):
                 .65*ax_1.c2p(0,0)+.35*ax_1.c2p(4,2)
             )
         )
-        dt_1_dummy_2=dt_1.copy().set_color(PURE_GREEN).move_to(.65*ax_1.c2p(0,0)+.35*ax_1.c2p(4,2))
-        dt_1_dummy_2.set_sheen(-.4,DOWN)
+        dt_3=dt_1.copy().set_color(PURE_GREEN).move_to(.65*ax_1.c2p(0,0)+.35*ax_1.c2p(4,2))
+        dt_3.set_sheen(-.4,DOWN)
 
-        self.add(dt_1_dummy_2)
+        self.add(dt_3)
         self.play(
             dt_1_dummy_1.animate.move_to(
                 .25*ax_1.c2p(0,0)+.75*ax_1.c2p(4,2)
             )
+        )
+
+        dt_3_lbl=MathTex(r"(x',\mu x')").scale(.45).set_color(REANLEA_GOLD).next_to(dt_3,UP)
+        self.play(
+            Write(dt_3_lbl)
+        )
+
+        d_ln_2_x=DashedLine(start=ax_1.c2p(0,0), end=[dt_3.get_center()[0], ax_1.c2p(0,0)[1],0]).set_stroke(width=2, color=PURE_GREEN)
+
+        d_ln_2_y=DashedLine(start=[dt_3.get_center()[0], ax_1.c2p(0,0)[1],0], end=dt_3.get_center()).set_stroke(width=2, color=PURE_GREEN)
+
+        d_ln_2=VGroup(d_ln_2_x,d_ln_2_y)
+
+        self.play(
+            Write(d_ln_2),
+            lag_ratio=1
+        )
+
+        dt_1_dummy_1.set_z_index(0)
+
+        d_ln_3_x=DashedLine(start=ax_1.c2p(0,0), end=[dt_1_dummy_1.get_center()[0], ax_1.c2p(0,0)[1],0]).set_stroke(width=1.75, color=REANLEA_PINK_LIGHTER)
+
+        d_ln_3_y=DashedLine(start=[dt_1_dummy_1.get_center()[0], ax_1.c2p(0,0)[1],0], end=dt_1_dummy_1.get_center()).set_stroke(width=1.75, color=REANLEA_PINK_LIGHTER)
+
+        d_ln_3=VGroup(d_ln_3_x,d_ln_3_y)
+
+        self.play(
+            Write(d_ln_3),
+            lag_ratio=1
+        )
+
+        d_ln_2_x_lbl=MathTex("x'").set_color(PURE_GREEN).scale(.45).move_to(ax_1.c2p(.7,-.25))
+        d_ln_3_x_lbl=MathTex("x").set_color(REANLEA_PINK_LIGHTER).scale(.45).move_to(ax_1.c2p(2.2,-.28))
+
+        d_ln_2_3_x_lbl=VGroup(d_ln_2_x_lbl,d_ln_3_x_lbl)
+
+        self.play(
+            dt_1_lbl_1.animate.shift(LEFT).scale(.8),
+            Write(d_ln_2_x_lbl)
+        )
+        self.play(
+            Write(d_ln_3_x_lbl)
+        )
+
+        d_ln_2_x_dummy=d_ln_2_x.copy().set_stroke(width=3).move_to(4*RIGHT+2.5*UP)
+        d_ln_3_x_dummy=d_ln_3_x.copy().set_stroke(width=3).move_to(4.685*RIGHT+2.15*UP)
+        d_ln_2_3_x_dummy_grp=VGroup(d_ln_2_x_dummy,d_ln_3_x_dummy)
+        d_ln_2_3_x_grp=VGroup(d_ln_2_x,d_ln_3_x)
+
+        d_ln_2_x_dummy_lbl=MathTex(r"\zeta").scale(.65).set_color(PURE_GREEN).next_to(d_ln_2_x_dummy).shift(1.35*RIGHT)
+        d_ln_3_x_dummy_lbl=MathTex(r"1").scale(.65).set_color(REANLEA_PINK_LIGHTER).next_to(d_ln_3_x_dummy)
+        d_ln_2_3_x_dummy_lbl_grp=VGroup(d_ln_2_x_dummy_lbl,d_ln_3_x_dummy_lbl)
+
+
+
+        eqn_5=MathTex("x'" ,"=",r"\zeta", "x").scale(1.05).set_color(REANLEA_BLUE_LAVENDER).move_to(5*LEFT+2.5*UP)
+
+        self.play(
+            TransformMatchingShapes(d_ln_2_3_x_lbl.copy(), eqn_5),
+            TransformMatchingShapes(d_ln_2_3_x_grp.copy(), d_ln_2_3_x_dummy_grp),
+            Write(d_ln_2_3_x_dummy_lbl_grp)
         )
         
 
