@@ -242,12 +242,15 @@ class Scene1(Scene):
             Indicate(ln_1, color=PURE_RED, scale_factor=1)
         )
 
-        dt_1_2_lbl_grp=VGroup(dt_1_lbl,dt_2_lbl_2)
+        dt_1_2_lbl_grp=VGroup(dt_1_lbl,dt_2_lbl_2,d_ln_lbl_grp)
         
 
         eqn_3=MathTex(
             r"\frac{y-y_{1}}{x-x_{1}}","=",r"\frac{y_{1}-y_{2}}{x_{1}-x_{2}}"
         ).scale(.75).move_to(5*RIGHT+2*UP)
+
+        eqn_3[0][0].set_color(REANLEA_YELLOW)
+        eqn_3[0][5].set_color(REANLEA_YELLOW)
         eqn_3[0][2:4].set_color(REANLEA_AQUA)
         eqn_3[0][7:9].set_color(REANLEA_AQUA)
         eqn_3[2][0:2].set_color(REANLEA_AQUA)
@@ -273,7 +276,9 @@ class Scene1(Scene):
         eqn_4=MathTex(
             "y","=",r"(\frac{y_{1}-y_{2}}{x_{1}-x_{2}})",r"(x-x_{1})","+","y_{1}"
         ).scale(.75).move_to(4.5*RIGHT+2*UP)
-
+         
+        eqn_4[0].set_color(REANLEA_YELLOW)
+        eqn_4[3][1].set_color(REANLEA_YELLOW)
         eqn_4[2][1:3].set_color(REANLEA_AQUA)
         eqn_4[2][7:9].set_color(REANLEA_AQUA)
         eqn_4[2][4:6].set_color(REANLEA_PURPLE_LIGHTER)
@@ -284,6 +289,20 @@ class Scene1(Scene):
 
         self.play(
             TransformMatchingShapes(eqn_3,eqn_4)
+        )
+        self.wait()
+        self.play(
+            Indicate(
+                lns, color=PURE_RED, scale_factor=1
+            ),
+            run_time=2
+        )
+        self.wait()
+        self.play(
+            Unwrite(dts),
+            Unwrite(lns),
+            FadeOut(eqn_2),
+            FadeOut(sr_eq_2)
         )
 
 
@@ -302,6 +321,132 @@ class Scene1(Scene):
         # manim -sqk anim2.py Scene1
 
         # manim -sql anim2.py Scene1
+
+
+
+
+###################################################################################################################
+
+
+class Scene2(Scene):
+    def construct(self):
+        
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+
+
+        ## PREVIOUS LAST SCENE  ##
+
+        dt_1=Dot().set_color(REANLEA_AQUA).shift(2*LEFT+UP)
+        dt_2=Dot().set_color(REANLEA_PURPLE).shift(2*RIGHT+DOWN)
+        ln_1=Line(start=dt_1.get_center(), end=dt_2.get_center()).set_stroke(width=2, color=[dt_2.get_color(),dt_1.get_color()])
+        ln_1.add_updater(
+            lambda z : z.become(
+                Line(start=dt_1.get_center(), end=dt_2.get_center()).set_stroke(width=2, color=[dt_2.get_color(),dt_1.get_color()])
+            )
+        )
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(-2) 
+
+        dt_1_lbl=MathTex(r"(x_{1},y_{1})").scale(.5).set_color(REANLEA_AQUA).next_to(dt_1, LEFT)
+        dt_2_lbl=MathTex(r"(x_{2},y_{2})").scale(.5).set_color(REANLEA_PURPLE_LIGHTER).next_to(dt_2, RIGHT)
+
+        eqn_1=MathTex(
+            "y","=",r"(\frac{y_{1}-y_{2}}{x_{1}-x_{2}})",r"(x-x_{1})","+","y_{1}"
+        ).scale(.75).move_to(4.5*RIGHT+2*UP)
+        
+        eqn_1[0].set_color(REANLEA_YELLOW)
+        eqn_1[3][1].set_color(REANLEA_YELLOW)
+        eqn_1[2][1:3].set_color(REANLEA_AQUA)
+        eqn_1[2][7:9].set_color(REANLEA_AQUA)
+        eqn_1[2][4:6].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[2][10:12].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[3][3:5].set_color(REANLEA_AQUA)
+        eqn_1[5].set_color(REANLEA_AQUA)
+
+        grp_1_1=VGroup(dt_1,dt_1_lbl,dt_2,dt_2_lbl,ln_1,ax_1,eqn_1)
+        
+        dt_1_dummy=dt_1.copy().set_sheen(-.4,DOWN)
+
+        dt_1_dummy.move_to(.25*dt_1.get_center()+.75*dt_2.get_center()).set_color(dt_2.get_color())
+
+        dt_1_dummy.add_updater(
+            lambda z : z.become(
+                dt_1.copy().set_sheen(-.4,DOWN).move_to(.25*dt_1.get_center()+.75*dt_2.get_center()).set_color(dt_2.get_color())
+            )
+        )
+        
+        d_ln_x_1=DashedLine(start=ax_1.c2p(0,0), end=[dt_1_dummy.get_center()[0], ax_1.c2p(0,0)[1],0]).set_stroke(width=2, color=YELLOW)
+        d_ln_x_1.add_updater(
+            lambda z : z.become(
+                DashedLine(start=ax_1.c2p(0,0), end=[dt_1_dummy.get_center()[0], ax_1.c2p(0,0)[1],0]).set_stroke(width=2, color=YELLOW)
+            )
+        )
+
+        d_ln_x_1_lbl=MathTex("x").scale(.35).set_color(REANLEA_YELLOW).next_to(d_ln_x_1,DOWN).set_z_index(5)
+        d_ln_x_1_lbl.add_updater(
+            lambda z : z.become(
+                MathTex("x").scale(.35).set_color(REANLEA_YELLOW).next_to(d_ln_x_1,DOWN).set_z_index(5)
+            )
+        )
+
+        d_ln_y_1=DashedLine(start=[dt_1_dummy.get_center()[0], ax_1.c2p(0,0)[1],0] , end= dt_1_dummy.get_center()).set_stroke(width=2, color=YELLOW)
+
+        d_ln_y_1.add_updater(
+            lambda z : z.become(
+                DashedLine(start=[dt_1_dummy.get_center()[0], ax_1.c2p(0,0)[1],0] , end= dt_1_dummy.get_center()).set_stroke(width=2, color=YELLOW)
+            )
+        )
+
+        d_ln_y_1_lbl=MathTex("y").scale(.35).set_color(REANLEA_YELLOW).next_to(d_ln_y_1,LEFT).set_z_index(5)
+        d_ln_y_1_lbl.add_updater(
+            lambda z : z.become(
+                MathTex("y").scale(.35).set_color(REANLEA_YELLOW).next_to(d_ln_y_1,LEFT).set_z_index(5)
+            )
+        )
+
+        grp_1_2=VGroup(d_ln_x_1,d_ln_x_1_lbl,d_ln_y_1,d_ln_y_1_lbl)
+
+        grp_1=VGroup(grp_1_1,dt_1_dummy,grp_1_2)
+
+        self.add(grp_1)
+
+
+        ## MAIN SCENE ##
+
+        
+
+        
+
+        
+
+
+
+
+        self.wait(4)
+
+
+
+
+
+        # manim -pqh anim2.py Scene2
+
+        # manim -pql anim2.py Scene2
+
+        # manim -sqk anim2.py Scene2
+
+        # manim -sql anim2.py Scene2
 
 
 
