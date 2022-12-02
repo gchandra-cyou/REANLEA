@@ -4985,6 +4985,76 @@ class ColoringVectorField(Scene):
         # manim -pqh discord.py  ColoringVectorField
 
 
+class inside4(Scene):
+    def construct(self):
+
+        def is_inside(mobj, point):
+            # mobj - a convex polygon
+            # point - a coordinate [x,y,z] ignoring the z-component
+            inside = True 
+            vertices = mobj.copy().force_direction("CCW").get_vertices()
+            for i in range(len(vertices)):
+                # https://stackoverflow.com/questions/2752725/finding-whether-a-point-lies-inside-a-rectangle-or-not
+                # D = (x2 - x1) * (yp - y1) - (xp - x1) * (y2 - y1)
+                i2 = (i + 1) % len(vertices)
+                D = (vertices[i2][0] - vertices[i][0]) * (point[1] - vertices[i][1]) - (point[0] - vertices[i][0]) * (vertices[i2][1] - vertices[i][1])
+                if (D < 0):
+                    inside = False  
+                    break
+            return inside
+ 
+        position_list = [
+            [2*np.cos(a*DEGREES),2*np.sin(a*DEGREES),0] for a in np.arange(0,359.9,72)
+        ]
+        obj = Polygon(*position_list, color=PURPLE_B)
+
+        objs = VGroup(
+            obj.copy().set_color(PURPLE).shift(2*LEFT+1*UP),
+            obj.copy().set_color(RED).rotate(PI).shift(2*RIGHT+1*DOWN),
+        )
+
+        points = VGroup(
+            *[Dot().move_to([np.random.uniform(low=-6.5,high=6.5),
+                            np.random.uniform(low=-3.5,high=3.5),
+                            0]) for i in range(50)]
+        )
+        self.add(objs,points)
+        
+        all_inside = False
+        iter = 0
+        while ((all_inside == False) and (iter < 1000)):
+            iter += 1
+            all_inside = True
+            outsiders = VGroup()
+            for point in points:
+                inside = False 
+                for obj in objs:
+                    inside = is_inside(obj, point.get_center())
+                    if inside:
+                        point.set_color(obj.get_color())
+                        break
+                if inside == False:
+                    all_inside = False
+                    point.set_color(YELLOW)
+                    outsiders += point                    
+            dx = []
+            dy = []
+            for point in outsiders:
+                dx.append(np.random.uniform(low=-1,high=+1))
+                if abs(point.get_center()[0]+dx[-1]) >= 7:
+                    dx[-1] = -dx[-1]
+                dy.append(np.random.uniform(low=-1,high=+1))
+                if abs(point.get_center()[1]+dy[-1]) >= 4:
+                    dy[-1] = -dy[-1]
+            if (all_inside != True):
+                self.play(
+                    *[point.animate.shift([dx[i],dy[i],0]) for i,point in enumerate(outsiders)], 
+                    rate_func=rate_functions.linear,
+                    run_time=1/10
+                ) 
+        self.wait(2) 
+
+        # manim -pqh discord.py inside4
 
 ###################################################################################################################
 
