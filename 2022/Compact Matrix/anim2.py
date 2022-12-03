@@ -545,14 +545,34 @@ class Scene2(Scene):
 
         dt_1_dummy_lbl_1=MathTex(r"(x,(\frac{b}{a})x)").scale(.45).set_color(REANLEA_GOLD).next_to(dt_1_dummy, UP)
         dt_1_dummy_lbl_2=MathTex(r"(x,\mu x)").scale(.45).set_color(REANLEA_GOLD).next_to(dt_1_dummy, UP)
+
+        eqn_4_1=MathTex(
+            "L",":=",r"\{","(x,y)",r"\in \mathbb{R}^{2}", r"\mid",  "y","=",r"\mu",r"x",r"\}"
+        ).scale(.55).move_to(3*UP)
+
+        eqn_4_1[3][1].set_color(REANLEA_YELLOW)
+        eqn_4_1[3][3].set_color(REANLEA_YELLOW)
+        eqn_4_1[6].set_color(REANLEA_YELLOW)
+        eqn_4_1[9].set_color(REANLEA_YELLOW)
+        eqn_4_1[8].set_color(REANLEA_PURPLE_LIGHTER)
+
+        eqn_4_2=MathTex(r"\mu","=",r"\frac{b}{a}").scale(.55).move_to(3*UP+3*RIGHT)
+        eqn_4_2[0].set_color(REANLEA_GOLD)
+        eqn_4_2[2].set_color(REANLEA_GOLD)
         
 
         self.play(
-            Write(dt_1_dummy_lbl_1)
+            Write(dt_1_dummy_lbl_1),
+            
         )
+        
         self.wait()
         self.play(
-            TransformMatchingShapes(dt_1_dummy_lbl_1,dt_1_dummy_lbl_2)
+            TransformMatchingShapes(dt_1_dummy_lbl_1,dt_1_dummy_lbl_2),
+            TransformMatchingShapes(eqn_4,eqn_4_1)
+        )
+        self.play(
+            Write(eqn_4_2)
         )
         self.wait()
         
@@ -700,7 +720,7 @@ class Scene2(Scene):
             Create(arr_1)
         )
 
-        eqn_7=MathTex(r"(x',\mu x')&",r"=(\zeta x,\mu \zeta x)\\ &",r"= \zeta (x, \mu x)",).scale(.75).set_color(REANLEA_YELLOW_CREAM).next_to(arr_1,DOWN).shift(.25*DOWN)
+        eqn_7=MathTex(r"(x',\mu x')&",r"=(\zeta x, \zeta \mu x)\\ &",r"= \zeta (x, \mu x)",).scale(.75).set_color(REANLEA_YELLOW_CREAM).next_to(arr_1,DOWN).shift(.25*DOWN)
 
         self.play(
             AnimationGroup(
@@ -724,16 +744,13 @@ class Scene2(Scene):
         self.wait()
 
         dt_3_lbl_1=MathTex(r"\zeta (x, \mu x)").scale(.45).set_color(REANLEA_GOLD).next_to(dt_3,UP)
-        dt_3_lbl_2=MathTex(r"\zeta (x, \mu x)").scale(.45).set_color(REANLEA_GOLD).next_to(dt_3,UP)
-
+    
         self.play(
-            TransformMatchingShapes(eqn_7[2][1:].copy(), dt_3_lbl_2),
+            TransformMatchingShapes(eqn_7[2][1:].copy(), dt_3_lbl_1),
             TransformMatchingShapes(dt_3_lbl,dt_3_lbl_1),
             lag_ratio=.1
         )
-        self.play(
-            FadeOut(dt_3_lbl_1)
-        )
+        
 
         dt_4=dt_1.copy().set_color(REANLEA_WARM_BLUE).set_sheen(-.4,DOWN).move_to(dt_1_dummy_1.get_center()).set_z_index(-1)
         gl_dt_4=get_glowing_surround_circle(dt_4, color=REANLEA_BLUE_LAVENDER)
@@ -748,10 +765,39 @@ class Scene2(Scene):
             )
         )
         dt_4_lbl=MathTex(r"\xi (x, \mu x)").scale(.45).set_color(REANLEA_GOLD).next_to(dt_4,DOWN)
+        dt_4_lbl.add_updater(
+            lambda z : z.become(
+                MathTex(r"\xi (x, \mu x)").scale(.45).set_color(REANLEA_GOLD).next_to(dt_4,DOWN)
+            )
+        )
         self.wait()
         self.play(
             Write(dt_4_lbl)
         )
+        self.wait(2)
+
+        dt_3_lbl_2=MathTex(r"v'").scale(.675).set_color(REANLEA_GOLD).next_to(dt_3,UP)
+        dt_3_lbl_2[0][0].set_stroke(width=1.025)
+        
+
+        dt_1_dummy_lbl_3=MathTex("v").scale(.675).set_color(REANLEA_GOLD).next_to(dt_1_dummy_1,UP).set_stroke(width=1.025)
+
+        self.play(
+            ReplacementTransform(dt_3_lbl_1,dt_3_lbl_2),
+            ReplacementTransform(dt_1_dummy_lbl_2,dt_1_dummy_lbl_3)
+        )
+        self.wait(2)
+
+        dt_3_lbl_3=MathTex(r"v' = \zeta v").scale(.675).set_color(REANLEA_GOLD).next_to(dt_3,UP)
+        dt_3_lbl_3[0][0].set_stroke(width=1.025)
+        dt_3_lbl_3[0][-1].set_stroke(width=1.025)
+        
+        self.play(
+            TransformMatchingShapes(dt_3_lbl_2,dt_3_lbl_3)
+        )
+        
+
+
         
 
         self.wait(2)
