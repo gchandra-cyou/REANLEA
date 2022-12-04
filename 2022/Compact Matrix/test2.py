@@ -3955,7 +3955,7 @@ class LatexArrowTest_1(Scene):
 
         arr=MathTex(r"\longrightarrow").rotate(-20*DEGREES).next_to(sr_eqn_10,RIGHT).set_stroke(width=2, color=[REANLEA_BLUE,REANLEA_BLUE_SKY]).shift(.35*LEFT+.25*DOWN)
         self.play(
-            Create(arr)
+            Write(arr)
         )
 
         
@@ -3971,9 +3971,11 @@ class LatexArrowTest_1(Scene):
 
         self.wait(2)
 
+        # manim -pqh test2.py LatexArrowTest_1
+
         # manim -sqk test2.py LatexArrowTest_1
 
-        # manim -pqh test2.py LatexArrowTest_1
+        
 
 
 ###################################################################################################################

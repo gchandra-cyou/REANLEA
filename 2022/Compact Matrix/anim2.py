@@ -858,9 +858,9 @@ class Scene2(Scene):
         self.play(
             Create(arr_2)
         )'''
-        arr_2=MathTex(r"\longrightarrow").rotate(-20*DEGREES).next_to(sr_eqn_10,RIGHT).set_stroke(width=2, color=[REANLEA_BLUE,REANLEA_BLUE_SKY]).shift(.75*LEFT+.25*DOWN)
+        arr_2=MathTex(r"\longrightarrow").rotate(-20*DEGREES).next_to(sr_eqn_10,RIGHT).set_stroke(width=2, color=[REANLEA_BLUE,REANLEA_BLUE_SKY]).shift(.35*LEFT+.25*DOWN)
         self.play(
-            Create(arr_2)
+            Write(arr_2)
         )
 
         with RegisterFont("Homemade Apple") as fonts:
