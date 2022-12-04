@@ -3934,6 +3934,47 @@ class RedrawEx(Scene):
 
         # manim -pqh test2.py RedrawEx
 
+class LatexArrowTest_1(Scene):
+    def construct(self):
+
+        eqn_10=MathTex(r"v' - \zeta v","=","0").set_color(REANLEA_GOLD).shift(2.75*DOWN)
+        eqn_10[0][0].set_stroke(width=1.025)
+        eqn_10[0][-1].set_stroke(width=1.025)
+
+        self.play(
+            Write(eqn_10)
+        )
+        self.wait()
+
+        sr_eqn_10=SurroundingRectangle(eqn_10, color=REANLEA_WELDON_BLUE, buff=.2, corner_radius=.05)
+
+        self.play(
+            Create(sr_eqn_10)
+        )
+
+
+        arr=MathTex(r"\longrightarrow").rotate(-20*DEGREES).next_to(sr_eqn_10,RIGHT).set_stroke(width=2, color=[REANLEA_BLUE,REANLEA_BLUE_SKY]).shift(.35*LEFT+.25*DOWN)
+        self.play(
+            Create(arr)
+        )
+
+        
+
+        with RegisterFont("Homemade Apple") as fonts:
+            txt_1=Text("Linearly Dependent", font=fonts[0]).scale(.5)
+            txt_1.set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_TXT_COL_LIGHTER)
+            txt_1.next_to(arr,RIGHT).shift(.1*LEFT+.3*DOWN)
+        
+        self.play(
+            Write(txt_1)
+        )
+
+        self.wait(2)
+
+        # manim -sqk test2.py LatexArrowTest_1
+
+        # manim -pqh test2.py LatexArrowTest_1
+
 
 ###################################################################################################################
 

@@ -3191,8 +3191,8 @@ class Scene4(Scene):
         )
 
         self.wait(2)
-
-        '''uncrt_grp_2=VGroup(cp_grp_3,dt_mv_4_grp)
+#
+        uncrt_grp_2=VGroup(cp_grp_3,dt_mv_4_grp)
         eqn_7_grp=VGroup(eqn_7,sr_eqn_7)
 
         self.play(
@@ -3285,7 +3285,7 @@ class Scene4(Scene):
         
 
 
-        self.wait(10)'''
+        self.wait(10)
         
 
     

@@ -776,13 +776,47 @@ class Scene2(Scene):
         )
         self.wait(2)
 
-        bez_2=bend_bezier_arrow().scale(.55).set_color(REANLEA_TXT_COL)#.flip().rotate(-PI/2-PI/6).shift(3.325*UP+1.15*LEFT)
+        bez_2=bend_bezier_arrow().scale(.35).set_color(REANLEA_TXT_COL).rotate(-40*DEGREES).next_to(eqn_4_1[6], DOWN).shift(.2*RIGHT+.2*UP)
 
         self.play(
-            Write(bez_2)
+            Create(bez_2)
         )
 
-        '''dt_3_lbl_2=MathTex(r"v'").scale(.675).set_color(REANLEA_GOLD).next_to(dt_3,UP)
+        eqn_8=MathTex("f(x)","=",r"\mu x").scale(.65).set_color(REANLEA_WHITE).next_to(bez_2,RIGHT).shift(.3*DOWN + .15*LEFT)
+
+        self.play(
+            Write(eqn_8)
+        )
+        self.wait()
+
+        eqn_8_1=MathTex("f(x')","=",r"\mu x'").scale(.75).shift(5*RIGHT).set_z_index(1)
+
+        self.play(
+            ReplacementTransform(eqn_8.copy(),eqn_8_1)
+        )
+
+        sr_eqn_8_1=SurroundingRectangle(eqn_8_1, color=REANLEA_MAGENTA, buff=.65, corner_radius=.125).set_opacity(.25)
+
+        self.play(
+            Write(sr_eqn_8_1)
+        )
+        self.wait()
+
+        eqn_8_2=MathTex(r"f(\zeta x)","=",r"\zeta \mu x").scale(.75).shift(5*RIGHT).set_z_index(1)
+
+        self.play(
+            TransformMatchingShapes(eqn_8_1,eqn_8_2)
+        )
+        self.wait()
+
+        eqn_8_3=MathTex(r"f(\zeta x)","=",r"\zeta f(x)").scale(.75).shift(5*RIGHT).set_z_index(1)
+
+        self.play(
+            TransformMatchingShapes(eqn_8_2,eqn_8_3)
+        )
+
+
+        dt_3_lbl_2=MathTex(r"v'").scale(.675).set_color(REANLEA_GOLD).next_to(dt_3,UP)
         dt_3_lbl_2[0][0].set_stroke(width=1.025)
         
 
@@ -794,13 +828,49 @@ class Scene2(Scene):
         )
         self.wait(2)
 
-        dt_3_lbl_3=MathTex(r"v' = \zeta v").scale(.675).set_color(REANLEA_GOLD).next_to(dt_3,UP)
-        dt_3_lbl_3[0][0].set_stroke(width=1.025)
-        dt_3_lbl_3[0][-1].set_stroke(width=1.025)
+        eqn_9_pre_grp=VGroup(dt_3_lbl_2, dt_1_dummy_lbl_3)
+
+        eqn_9=MathTex(r"v' = \zeta v").set_color(REANLEA_GOLD).shift(2.75*DOWN)
+        eqn_9[0][0].set_stroke(width=1.025)
+        eqn_9[0][-1].set_stroke(width=1.025)
+        
+
+        self.play(
+            ReplacementTransform(eqn_9_pre_grp.copy(),eqn_9)
+        )
+
+        eqn_10=MathTex(r"v' - \zeta v","=","0").set_color(REANLEA_GOLD).shift(2.75*DOWN)
+        eqn_10[0][0].set_stroke(width=1.025)
+        eqn_10[0][-1].set_stroke(width=1.025)
+
+        self.play(
+            TransformMatchingShapes(eqn_9,eqn_10)
+        )
+
+        sr_eqn_10=SurroundingRectangle(eqn_10, color=REANLEA_WELDON_BLUE, buff=.2, corner_radius=.05)
+
+        self.play(
+            Write(sr_eqn_10)
+        )
+        self.wait(2)
+
+        '''arr_2=Arrow(tip_length=.1).rotate(-20*DEGREES).next_to(sr_eqn_10,RIGHT).scale(.5).set_stroke(width=6, color=[REANLEA_BLUE,REANLEA_BLUE_SKY]).shift(.75*LEFT+.25*DOWN)
+        self.play(
+            Create(arr_2)
+        )'''
+        arr_2=MathTex(r"\longrightarrow").rotate(-20*DEGREES).next_to(sr_eqn_10,RIGHT).set_stroke(width=2, color=[REANLEA_BLUE,REANLEA_BLUE_SKY]).shift(.75*LEFT+.25*DOWN)
+        self.play(
+            Create(arr_2)
+        )
+
+        with RegisterFont("Homemade Apple") as fonts:
+            txt_1=Text("Linearly Dependent", font=fonts[0]).scale(.5)
+            txt_1.set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_TXT_COL_LIGHTER)
+            txt_1.next_to(arr_2,RIGHT).shift(.1*LEFT+.3*DOWN)
         
         self.play(
-            TransformMatchingShapes(dt_3_lbl_2,dt_3_lbl_3)
-        )'''
+            Write(txt_1)
+        )
         
 
 
