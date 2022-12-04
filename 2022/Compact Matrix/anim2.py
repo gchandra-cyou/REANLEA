@@ -776,7 +776,13 @@ class Scene2(Scene):
         )
         self.wait(2)
 
-        dt_3_lbl_2=MathTex(r"v'").scale(.675).set_color(REANLEA_GOLD).next_to(dt_3,UP)
+        bez_2=bend_bezier_arrow().scale(.55).set_color(REANLEA_TXT_COL)#.flip().rotate(-PI/2-PI/6).shift(3.325*UP+1.15*LEFT)
+
+        self.play(
+            Write(bez_2)
+        )
+
+        '''dt_3_lbl_2=MathTex(r"v'").scale(.675).set_color(REANLEA_GOLD).next_to(dt_3,UP)
         dt_3_lbl_2[0][0].set_stroke(width=1.025)
         
 
@@ -794,7 +800,7 @@ class Scene2(Scene):
         
         self.play(
             TransformMatchingShapes(dt_3_lbl_2,dt_3_lbl_3)
-        )
+        )'''
         
 
 
