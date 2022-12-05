@@ -710,7 +710,7 @@ class Scene2(Scene):
         )
 
         eqn_5_6_grp=VGroup(eqn_5,eqn_6)
-        sr_eqn_5_6_grp=SurroundingRectangle(eqn_5_6_grp, color=REANLEA_WELDON_BLUE, buff=.25, corner_radius=.125).set_opacity(.35).shift(.1*DOWN)
+        sr_eqn_5_6_grp=SurroundingRectangle(eqn_5_6_grp, color=REANLEA_WELDON_BLUE, buff=.25, corner_radius=.125).set_opacity(.35).shift(.1*DOWN).set_z_index(-5)
         self.play(
             Write(sr_eqn_5_6_grp)
         )
@@ -729,7 +729,7 @@ class Scene2(Scene):
             )
         )
 
-        sr_eqn_7=SurroundingRectangle(eqn_7, color=REANLEA_BLUE_DARKER, buff=.15, corner_radius=.125).set_opacity(.25)
+        sr_eqn_7=SurroundingRectangle(eqn_7, color=REANLEA_BLUE_DARKER, buff=.15, corner_radius=.125).set_opacity(.25).set_z_index(-1)
 
         self.play(
             Write(sr_eqn_7)
@@ -893,6 +893,8 @@ class Scene2(Scene):
         self.play(
             Write(eqn_11_1)
         )
+        self.wait(2)
+
 
 
         
