@@ -871,7 +871,28 @@ class Scene2(Scene):
         self.play(
             Write(txt_1)
         )
+
+        arr_3=MathTex(r"\longrightarrow").rotate(ln_2.get_angle()+ PI/2).set_stroke(width=2, color=[REANLEA_BLUE,REANLEA_BLUE_SKY]).shift(.05*UP)
+        self.play(
+            Write(arr_3)
+        )
         
+        eqn_11_pre_grp=VGroup(dt_1_dummy_lbl_3, eqn_4_1)
+
+        eqn_11=MathTex(
+            r"L := \{ \lambda v \mid \lambda \in \mathbb{R} \}"
+        ).next_to(arr_3,UP).scale(.55).set_color_by_gradient(REANLEA_GREEN_AUQA).rotate(ln_2.get_angle()).shift(.35*LEFT+.25*DOWN) # .shift(.45*LEFT+1.05*DOWN) .shift(3*DOWN+3*LEFT)
+        eqn_11[0][5].set_stroke(width=1.25).scale(1.35).shift(.035*UP)
+        eqn_11[0][5:].shift(.05*RIGHT)
+
+
+        self.play(
+            ReplacementTransform(eqn_11_pre_grp.copy(),eqn_11)
+        )
+        eqn_11_1=eqn_11.copy()
+        self.play(
+            Write(eqn_11_1)
+        )
 
 
         

@@ -689,7 +689,7 @@ class GraphNetworks(Scene):
 
 #config.disable_caching=True
 
-from numba import jit
+'''from numba import jit
 from numba import njit
 
 class MandelbrotAndJuliaScene(Scene):
@@ -901,7 +901,7 @@ class Mandel(Scene):
         # manim -sqk test2.py Mandel
 
 
-
+'''
 
 
 
@@ -3976,6 +3976,27 @@ class LatexArrowTest_1(Scene):
         # manim -sqk test2.py LatexArrowTest_1
 
         
+class LatexArrowEx(Scene):
+    def construct(self):
+        
+        arr_1=MathTex(r"\longrightarrow").rotate(-20*DEGREES).set_stroke(width=2, color=[REANLEA_BLUE,REANLEA_BLUE_SKY])
+        self.play(
+            Write(arr_1)
+        )
+
+        arr_2=MathTex(r"\rightsquigarrow").rotate(-20*DEGREES).shift(2*DOWN).set_stroke(width=3.5,color=[REANLEA_BLUE,REANLEA_BLUE_SKY])
+        arr_2.scale(2)
+        self.play(
+            Write(arr_2)
+        )
+
+        self.wait(2)
+
+        # manim -pqh test2.py LatexArrowEx
+
+        # manim -sqk test2.py LatexArrowEx
+
+
 
 
 ###################################################################################################################
