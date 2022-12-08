@@ -893,8 +893,17 @@ class Scene2(Scene):
         self.play(
             Write(eqn_11_1)
         )
-        self.wait(2)
+        self.wait()
 
+        
+        self.wait()
+
+        uncrt_grp=VGroup(
+            eqn_8_3,sr_eqn_8_1,eqn_10,sr_eqn_10,arr_2,txt_1,arr_3,eqn_11,eqn_11_1,bez_2,eqn_8,eqn_5_6_grp,sr_eqn_5_6_grp,arr_1,eqn_7,sr_eqn_7,d_ln_2_3_x_dummy_grp,d_ln_2_3_x_dummy_lbl_grp,eqn_4_1,eqn_4_2
+        )
+        self.play(
+            FadeOut(uncrt_grp)
+        )
 
 
         

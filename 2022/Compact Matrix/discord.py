@@ -2004,7 +2004,7 @@ class testingSine(Scene):
 
 #config.disable_caching=True
 
-from numba import jit
+'''from numba import jit
 from numba import njit
 
 class MandelbrotAndJuliaScene(Scene):
@@ -2169,7 +2169,7 @@ def JuliatSet(complex_constant: complex = complex(0, 0), max_steps: int = 50, re
     # manim -pqh test2.py MandelbrotAndJuliaScene
 
 
-
+'''
 
 ###################################################################################################################
 
@@ -5055,6 +5055,39 @@ class inside4(Scene):
         self.wait(2) 
 
         # manim -pqh discord.py inside4
+
+
+
+class raster(Scene):
+    def construct(self):
+        circ = Circle(radius=2)
+        self.add(circ)
+
+        sq_length = 0.2
+        sq = Square(side_length=sq_length, stroke_width=1)
+        def sqUpdater(mobj):
+            diff = Intersection(circ,mobj)
+            if (len(diff)):
+                mobj.set_fill(color=YELLOW, opacity=1)
+            else:
+                mobj.set_fill(color=BLUE, opacity=0)
+        sq.add_updater(sqUpdater)
+
+        grid = VGroup()
+        y = -4
+        while (y <= (4-sq_length)):
+            x = -7
+            while (x <= (7-sq_length)):
+                grid += sq.copy().move_to([x,y,0],aligned_edge=DL)
+                x += sq_length
+            y += sq_length
+        grid.update()
+        self.add(grid)  
+        self.wait(2)
+        self.play(circ.animate.shift(3*RIGHT+2*UP))
+        self.wait(2)
+
+        # manim -pqh discord.py raster
 
 ###################################################################################################################
 
