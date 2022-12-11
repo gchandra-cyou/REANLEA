@@ -3997,7 +3997,22 @@ class LatexArrowEx(Scene):
         # manim -sqk test2.py LatexArrowEx
 
 
+class text_ex(Scene):
+    def construct(self):
+        
+        with RegisterFont("Nanum Pen Script") as fonts:
+            vsp_ruls = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "I. Scalar Multiplication",
+                "II. Vector Addition",
+            )]).scale(0.85).arrange_submobjects(DOWN).shift(4.5*LEFT)
+            vsp_ruls[1].shift(.5*LEFT)
 
+        self.play(
+            Write(vsp_ruls)
+        )
+        self.wait(2)
+
+        # manim -pqh test2.py text_ex
 
 ###################################################################################################################
 

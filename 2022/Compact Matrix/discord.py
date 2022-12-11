@@ -5089,6 +5089,59 @@ class raster(Scene):
 
         # manim -pqh discord.py raster
 
+
+class ColoredCircles(Scene):
+    def construct(self):
+        circles, numbers = VGroup(), VGroup()
+        for _ in range(100):            
+            circles.add(Circle(0.23))
+        circles.arrange_in_grid(buff=0.18)
+        for i in range(100):
+            if i < 11: 
+                num = Text("24", font_size=14)
+            elif 11 <= i < 21:
+                num = Text("25", font_size=14)
+            else:
+                num = Text("26", font_size=14)  
+            numbers.add(num.move_to(circles[i]))
+        circles[:11].set_stroke(GREEN, 2)
+        circles[11:21].set_stroke(BLUE, 2)
+        circles[21:].set_stroke(YELLOW, 2)
+        #self.add(circles, numbers)
+        self.play(
+            Write(circles),
+            Write(numbers)
+        )
+
+        # manim -pqh discord.py ColoredCircles
+
+
+
+class HomographyEx(Scene):
+    def construct(self):
+        img = Square()
+        self.play(FadeIn(img))
+
+        H = np.array(
+            [
+                [1, 0, 0],
+                [0, 1, 0],
+                [0, 0.5, 1],
+            ]
+        )
+
+        def apply_homography(pt):
+            assert pt[2] == 0
+            pt[2] = 1
+            pt = np.dot(H, pt)
+            pt /= pt[2]
+            pt[2] = 0
+            return pt
+
+        self.play(ApplyPointwiseFunction(apply_homography, img))     
+
+        # manim -pqh discord.py HomographyEx
+         
 ###################################################################################################################
 
 # NOTE :-

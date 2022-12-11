@@ -899,10 +899,39 @@ class Scene2(Scene):
         self.wait()
 
         uncrt_grp=VGroup(
-            eqn_8_3,sr_eqn_8_1,eqn_10,sr_eqn_10,arr_2,txt_1,arr_3,eqn_11,eqn_11_1,bez_2,eqn_8,eqn_5_6_grp,sr_eqn_5_6_grp,arr_1,eqn_7,sr_eqn_7,d_ln_2_3_x_dummy_grp,d_ln_2_3_x_dummy_lbl_grp,eqn_4_1,eqn_4_2
+            eqn_8_3,sr_eqn_8_1,eqn_10,sr_eqn_10,arr_2,txt_1,arr_3,eqn_11,eqn_11_1,bez_2,eqn_8,eqn_5_6_grp,sr_eqn_5_6_grp,arr_1,eqn_7,sr_eqn_7,d_ln_2_3_x_dummy_grp,d_ln_2_3_x_dummy_lbl_grp,eqn_4_1,eqn_4_2,dt_4_lbl
         )
         self.play(
             FadeOut(uncrt_grp)
+        )
+        self.play(
+            dt_4_grp.animate.move_to(1.5*UP)
+        )
+
+        dt_4_lbl_1=MathTex("u").scale(.675).set_color(REANLEA_GOLD).next_to(dt_4_grp,UP).set_stroke(width=1.025)
+
+        self.play(
+            Write(dt_4_lbl_1)
+        )
+        self.wait()
+
+        arr_4=Arrow(start=ax_1.c2p(0,0),end=dt_4_grp.get_center(), buff=0.0, tip_length=.025).set_stroke(width=3, color=[REANLEA_YELLOW_GREEN])
+
+        self.play(
+            Create(arr_4)
+        )
+
+        self.wait(2)
+ 
+        with RegisterFont("Nanum Pen Script") as fonts:
+            vsp_ruls = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "I. Scalar Multiplication",
+                "II. Vector Addition",
+            )]).scale(0.85).arrange_submobjects(DOWN).shift(4.5*LEFT)
+            vsp_ruls[1].shift(.5*LEFT)
+
+        self.play(
+            Write(vsp_ruls)
         )
 
 
