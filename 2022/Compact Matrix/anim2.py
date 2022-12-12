@@ -927,12 +927,57 @@ class Scene2(Scene):
             vsp_ruls = VGroup(*[Text(x, font=fonts[0]) for x in (
                 "I. Scalar Multiplication",
                 "II. Vector Addition",
-            )]).scale(0.85).arrange_submobjects(DOWN).shift(4.5*LEFT)
-            vsp_ruls[1].shift(.5*LEFT)
+            )]).scale(0.65).arrange_submobjects(DOWN).shift(4.5*LEFT+2.5*UP)
+            vsp_ruls[1].shift(.4*LEFT)
 
         self.play(
-            Write(vsp_ruls)
+            Write(vsp_ruls[0])
         )
+        self.wait()
+        self.play(
+            Write(vsp_ruls[1])
+        )
+
+        self.wait(2)
+        self.play(
+            Unwrite(vsp_ruls)
+        )
+        self.wait(2)
+
+        self.play(
+            Indicate(ln_2, color=PURE_GREEN),
+            run_time=2.5
+        )
+        self.wait(2)
+
+        em = EmojiImageMobject("🚀").scale(.15).move_to(ax_1.c2p(0,0)).rotate(-20*DEGREES)
+        self.play(
+            FadeIn(em)
+        )
+        arr_5_1=Arrow(start=ax_1.c2p(0,0),end=dt_1_dummy_1.get_center(), buff=0.0, tip_length=.025).set_stroke(width=3, color=[REANLEA_YELLOW_GREEN])
+        self.wait()
+        self.play(
+            em.animate.move_to(
+                dt_1_dummy_1.get_center()+.1*UP
+            ),
+            Create(arr_5_1)
+        )
+        self.wait()
+
+        ln_3_dummy=Line(start=dt_1_dummy_1.get_center(), end=dt_4.get_center())
+        self.play(
+            em.animate.rotate(ln_3_dummy.get_angle()-ln_2.get_angle()).shift(.1*LEFT+.1*DOWN)
+        )
+        self.wait(2)
+
+        self.play(
+            em.animate.move_to(
+                dt_4.get_center()
+            ).shift(.05*LEFT+.05*DOWN)
+        )
+        
+
+
 
 
         

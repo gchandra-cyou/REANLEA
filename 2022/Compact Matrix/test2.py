@@ -4014,6 +4014,80 @@ class text_ex(Scene):
 
         # manim -pqh test2.py text_ex
 
+
+
+class emoji2(Scene):
+    def construct(self):
+        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+
+        response = requests.get("https://cdn-0.emojis.wiki/emoji-pics/apple/person-surfing-apple.png", headers=headers)
+        image_bytes = io.BytesIO(response.content)
+        image = Image.open(image_bytes)
+        
+        emoji = ImageMobject(image)
+        self.add(emoji.move_to(4*RIGHT+2*UP))
+        self.play(emoji.animate.move_to(4*LEFT+2*DOWN))
+
+
+        # manim -pqh test2.py emoji2
+
+
+class emoji3(Scene):
+    def construct(self):
+
+        emoji = ImageMobject("🚀")
+        self.add(emoji.move_to(4*RIGHT+2*UP))
+        self.play(emoji.animate.move_to(4*LEFT+2*DOWN))
+
+
+        # manim -pqh test2.py emoji3
+
+
+class EmojiImageMobject(ImageMobject):
+    def __init__(self, emoji, **kwargs):
+        emoji_code = "-".join(f"{ord(c):x}" for c in emoji)
+        emoji_code = emoji_code.upper()  # <-  needed for openmojis
+        url = f"https://raw.githubusercontent.com/hfg-gmuend/openmoji/master/color/618x618/{emoji_code}.png"
+        im = Image.open(requests.get(url, stream=True).raw)
+        emoji_img = np.array(im.convert("RGBA"))
+        ImageMobject.__init__(self, emoji_img, **kwargs)
+
+
+class emoji4(Scene):
+    def construct(self):
+        
+        em = EmojiImageMobject("🚀").scale(.15).move_to(4*LEFT+2*DOWN)
+        self.add(em)
+        self.wait()
+        self.play(
+            em.animate.move_to(4*RIGHT+2*UP)
+        )
+        self.wait()
+        self.play(
+            em.animate.rotate(PI/2)
+        )
+        self.wait(2)
+
+
+        # manim -pqh test2.py emoji4
+
+
+class emoji5(Scene):
+    def construct(self):
+        
+        em = EmojiImageMobject("🚀").scale(.15)
+        self.play(
+            FadeIn(em)
+        )
+        
+        self.wait(2)
+
+
+        # manim -pqh test2.py emoji5
+
+        # manim -sqk test2.py emoji5
+
+
 ###################################################################################################################
 
 
