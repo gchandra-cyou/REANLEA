@@ -816,11 +816,11 @@ class Scene2(Scene):
         )
 
 
-        dt_3_lbl_2=MathTex(r"v'").scale(.675).set_color(REANLEA_GOLD).next_to(dt_3,UP)
+        dt_3_lbl_2=MathTex(r"v'").scale(.675).set_color(dt_3.get_color()).next_to(dt_3,UP)
         dt_3_lbl_2[0][0].set_stroke(width=1.025)
         
 
-        dt_1_dummy_lbl_3=MathTex("v").scale(.675).set_color(REANLEA_GOLD).next_to(dt_1_dummy_1,UP).set_stroke(width=1.025)
+        dt_1_dummy_lbl_3=MathTex("v").scale(.675).set_color(dt_1_dummy_1.get_color()).next_to(dt_1_dummy_1,UP).set_stroke(width=1.025)
 
         self.play(
             ReplacementTransform(dt_3_lbl_1,dt_3_lbl_2),
@@ -915,7 +915,10 @@ class Scene2(Scene):
         )
         self.wait()
 
-        arr_4=Arrow(start=ax_1.c2p(0,0),end=dt_4_grp.get_center(), buff=0.0, tip_length=.025).set_stroke(width=3, color=[REANLEA_YELLOW_GREEN])
+
+        arr_4=Arrow(start=ax_1.c2p(0,0),end=dt_4_grp.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color(REANLEA_ORANGE).set_z_index(1)
+
+        
 
         self.play(
             Create(arr_4)
@@ -949,7 +952,7 @@ class Scene2(Scene):
         )
         self.wait(2)
 
-        em = EmojiImageMobject("🚀").scale(.15).move_to(ax_1.c2p(0,0)).rotate(-20*DEGREES)
+        '''em = EmojiImageMobject("🚀").scale(.15).move_to(ax_1.c2p(0,0)).rotate(-20*DEGREES)
         self.play(
             FadeIn(em)
         )
@@ -972,10 +975,41 @@ class Scene2(Scene):
             em.animate.move_to(
                 dt_4.get_center()
             ).shift(.05*LEFT+.05*DOWN)
+        )'''
+
+        arr_5_1=Arrow(start=ax_1.c2p(0,0),end=dt_1_dummy_1.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color(dt_1_dummy_1.get_color())
+
+        arr_5_2=Arrow(start=dt_1_dummy_1.get_center(), end=dt_4.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color(dt_4.get_color())
+
+        self.play(
+            Create(arr_5_1)
         )
         
+        self.play(
+            Create(arr_5_2)
+        )
 
+        d_arr_5_1=DashedArrow(start=ax_1.c2p(0,0),end=dt_1_dummy_1.get_center(),
+        dash_length=2.0,stroke_width=2.5, tip_length=0.1, buff=0).set_color(dt_1_dummy_1.get_color()).set_z_index(-1)
 
+        d_arr_5_2=DashedArrow(start=dt_1_dummy_1.get_center(), end=dt_4.get_center(),dash_length=2.0,stroke_width=2.5, tip_length=0.1, buff=0).set_color(dt_4.get_color()).set_z_index(-1)
+
+        self.add(d_arr_5_1,d_arr_5_2)
+
+        x_a=ax_1.c2p(0,0)
+        x_b=dt_1_dummy_1.get_center()
+        x_c=dt_4.get_center()
+
+        d_arr_5_2.set_z_index(0)
+        d_arr_5_1.set_z_index(0)
+
+        self.play(
+            d_arr_5_2.animate.shift((x_b[0]-x_a[0])*LEFT+(x_b[1]-x_a[1])*DOWN)
+        )
+
+        self.play(
+            d_arr_5_1.animate.shift((x_c[1]-x_b[1])*UP+(x_b[0]-x_c[0])*LEFT)
+        )
 
 
         
