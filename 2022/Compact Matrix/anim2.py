@@ -945,8 +945,7 @@ class Scene2(Scene):
         self.wait(2)
 
         self.play(
-            Indicate(ln_2, color=PURE_GREEN),
-            run_time=2.5
+            Indicate(ln_2, color=PURE_GREEN)
         )
         self.wait(2)
 
@@ -959,8 +958,7 @@ class Scene2(Scene):
         self.play(
             em.animate.move_to(
                 dt_1_dummy_1.get_center()+.1*UP
-            ),
-            Create(arr_5_1)
+            )
         )
         self.wait()
 
