@@ -1010,8 +1010,44 @@ class Scene2(Scene):
         self.play(
             d_arr_5_1.animate.shift((x_c[1]-x_b[1])*UP+(x_b[0]-x_c[0])*LEFT)
         )
+        self.wait(2)
 
+        self.play(
+            Indicate(arr_5_1),
+            Indicate(arr_5_2)
+        )
+        self.wait()
 
+        dt_5=dt_1.copy().set_color(REANLEA_PINK).set_sheen(-.4,DOWN).move_to(ax_1.c2p(4,5))
+
+        self.play(
+            Create(dt_5)
+        )
+
+        arr_6=Arrow(start=ax_1.c2p(0,0),end=dt_5.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color(REANLEA_PINK_DARKER).set_z_index(1)
+
+        self.play(
+            Create(arr_6)
+        )
+        dt_6_dummy=dt_1.copy().set_color(REANLEA_PINK).set_sheen(-.4,DOWN).move_to(ax_1.c2p(5.325,2.6625))
+
+        arr_6_1=Arrow(start=ax_1.c2p(0,0),end=dt_6_dummy.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color(dt_1_dummy_1.get_color()).set_z_index(1)
+
+        arr_6_2=Arrow(start=dt_6_dummy.get_center(),end=dt_5.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color(dt_4.get_color()).set_z_index(1)
+
+        x_d=dt_6_dummy.get_center()
+
+        arr_5_2_dummy=arr_5_2.copy().shift((x_d[0]-x_b[0])*RIGHT+(x_d[1]-x_b[1])*UP)
+
+        self.play(
+            ReplacementTransform(arr_5_1,arr_6_1),
+            ReplacementTransform(arr_5_2,arr_5_2_dummy),
+            run_time=2
+        )
+        self.wait(1.25)
+        self.play(
+            ReplacementTransform(arr_5_2_dummy, arr_6_2)
+        )
         
 
         self.wait(2)

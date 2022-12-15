@@ -4087,6 +4087,22 @@ class emoji5(Scene):
 
         # manim -sqk test2.py emoji5
 
+class arr_ex_1(Scene):
+    def construct(self):
+        arr_1=Arrow(start=LEFT,end=RIGHT)
+        arr_2=Arrow(start=LEFT, end=3*RIGHT)
+
+        self.wait()
+        self.play(
+            Create(arr_1)
+        )
+        self.wait()
+        self.play(
+            ReplacementTransform(arr_1,arr_2)
+        )
+        self.wait(2)
+
+        # manim -pqh test2.py arr_ex_1
 
 ###################################################################################################################
 
