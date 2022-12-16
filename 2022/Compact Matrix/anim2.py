@@ -943,12 +943,13 @@ class Scene2(Scene):
 
         self.wait(2)
         self.play(
-            Unwrite(vsp_ruls)
+            FadeOut(vsp_ruls)
         )
         self.wait(2)
 
         self.play(
-            Indicate(ln_2, color=PURE_GREEN)
+            Indicate(ln_2, color=PURE_GREEN),
+            run_time=2.5
         )
         self.wait(2)
 
@@ -977,24 +978,35 @@ class Scene2(Scene):
             ).shift(.05*LEFT+.05*DOWN)
         )'''
 
-        arr_5_1=Arrow(start=ax_1.c2p(0,0),end=dt_1_dummy_1.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color(dt_1_dummy_1.get_color())
+        arr_5_1=Arrow(start=ax_1.c2p(0,0),end=dt_1_dummy_1.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color(REANLEA_TXT_COL)
+
+        arr_5_1_lbl=MathTex("v").scale(.675).set_color(REANLEA_TXT_COL).move_to(ax_1.c2p(1.85,.65)).set_stroke(width=1.025).set_z_index(5)
 
         arr_5_2=Arrow(start=dt_1_dummy_1.get_center(), end=dt_4.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color(dt_4.get_color())
 
+        arr_5_2_lbl=MathTex("w").scale(.675).next_to(arr_5_2, RIGHT).set_color(dt_4.get_color()).set_stroke(width=1.025).shift(.6*LEFT+.1*UP)        # .move_to(ax_1.c2p(2.65,2.65))
+        
+
         self.play(
-            Create(arr_5_1)
+            Create(arr_5_1),
+            Write(arr_5_1_lbl)
         )
         
         self.play(
-            Create(arr_5_2)
+            Create(arr_5_2),
+            Write(arr_5_2_lbl)
         )
 
         d_arr_5_1=DashedArrow(start=ax_1.c2p(0,0),end=dt_1_dummy_1.get_center(),
-        dash_length=2.0,stroke_width=2.5, tip_length=0.1, buff=0).set_color(dt_1_dummy_1.get_color()).set_z_index(-1)
+        dash_length=2.0,stroke_width=2.5, tip_length=0.1, buff=0).set_color(REANLEA_TXT_COL).set_z_index(-1)
+
+        d_arr_5_1_lbl=MathTex("v").scale(.675).set_color(REANLEA_TXT_COL).move_to(ax_1.c2p(1.85,.65)).set_stroke(width=1.025).set_z_index(5)
 
         d_arr_5_2=DashedArrow(start=dt_1_dummy_1.get_center(), end=dt_4.get_center(),dash_length=2.0,stroke_width=2.5, tip_length=0.1, buff=0).set_color(dt_4.get_color()).set_z_index(-1)
 
-        self.add(d_arr_5_1,d_arr_5_2)
+        d_arr_5_2_lbl=MathTex("w").scale(.675).next_to(arr_5_2, RIGHT).set_color(dt_4.get_color()).set_stroke(width=1.025).shift(.6*LEFT+.1*UP)
+
+        self.add(d_arr_5_1,d_arr_5_2,d_arr_5_1_lbl, d_arr_5_2_lbl)
 
         x_a=ax_1.c2p(0,0)
         x_b=dt_1_dummy_1.get_center()
@@ -1003,37 +1015,68 @@ class Scene2(Scene):
         d_arr_5_2.set_z_index(0)
         d_arr_5_1.set_z_index(0)
 
-        self.play(
-            d_arr_5_2.animate.shift((x_b[0]-x_a[0])*LEFT+(x_b[1]-x_a[1])*DOWN)
-        )
+        self.wait(2)
 
         self.play(
-            d_arr_5_1.animate.shift((x_c[1]-x_b[1])*UP+(x_b[0]-x_c[0])*LEFT)
+            d_arr_5_2.animate.shift((x_b[0]-x_a[0])*LEFT+(x_b[1]-x_a[1])*DOWN),
+            d_arr_5_2_lbl.animate.shift((x_b[0]-x_a[0])*LEFT+(x_b[1]-x_a[1])*DOWN).shift(.4*LEFT+.25*DOWN),
+            run_time=2
         )
+
+        self.wait()
+
+        self.play(
+            d_arr_5_1.animate.shift((x_c[1]-x_b[1])*UP+(x_b[0]-x_c[0])*LEFT),
+            d_arr_5_1_lbl.animate.shift((x_c[1]-x_b[1])*UP+(x_b[0]-x_c[0])*LEFT).shift(.25*UP+.5*LEFT),
+            run_time=2
+        )
+
         self.wait(2)
 
         self.play(
             Indicate(arr_5_1),
-            Indicate(arr_5_2)
+            Indicate(arr_5_2),
+            run_time=2
         )
-        self.wait()
+        self.wait(2)
+
+        arr_5_2_lbl.add_updater(
+            lambda z : z.become(
+                MathTex("w").scale(.675).next_to(arr_5_2, RIGHT).set_color(dt_4.get_color()).set_stroke(width=1.025).shift(.6*LEFT+.1*UP) 
+            )
+        )
 
         dt_5=dt_1.copy().set_color(REANLEA_PINK).set_sheen(-.4,DOWN).move_to(ax_1.c2p(4,5))
+
+        dt_5_lbl=MathTex(r"u_{1}").scale(.675).set_color(REANLEA_PINK).next_to(dt_5,UP).set_stroke(width=1.025)
 
         self.play(
             Create(dt_5)
         )
+        self.wait()
+
+        self.play(
+            Write(dt_5_lbl)
+        )
+        self.wait(2)
 
         arr_6=Arrow(start=ax_1.c2p(0,0),end=dt_5.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color(REANLEA_PINK_DARKER).set_z_index(1)
 
         self.play(
-            Create(arr_6)
+            Create(arr_6),
+            run_time=1.5
         )
+        self.wait(2)
+
         dt_6_dummy=dt_1.copy().set_color(REANLEA_PINK).set_sheen(-.4,DOWN).move_to(ax_1.c2p(5.325,2.6625))
 
-        arr_6_1=Arrow(start=ax_1.c2p(0,0),end=dt_6_dummy.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color(dt_1_dummy_1.get_color()).set_z_index(1)
+        arr_6_1=Arrow(start=ax_1.c2p(0,0),end=dt_6_dummy.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color(REANLEA_TXT_COL).set_z_index(1)
+
+        arr_6_1_lbl=MathTex(r"v_{1}").scale(.675).set_color(REANLEA_TXT_COL).move_to(ax_1.c2p(3.55,1.35)).set_stroke(width=1.025).set_z_index(5)
 
         arr_6_2=Arrow(start=dt_6_dummy.get_center(),end=dt_5.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color(dt_4.get_color()).set_z_index(1)
+
+        arr_6_2_lbl=MathTex(r"w_{1}").scale(.675).next_to(arr_6_2, RIGHT).set_color(dt_4.get_color()).set_stroke(width=1.025).shift(.6*LEFT+.1*UP)
 
         x_d=dt_6_dummy.get_center()
 
@@ -1042,13 +1085,61 @@ class Scene2(Scene):
         self.play(
             ReplacementTransform(arr_5_1,arr_6_1),
             ReplacementTransform(arr_5_2,arr_5_2_dummy),
+            Transform(arr_5_1_lbl,arr_6_1_lbl),
             run_time=2
         )
-        self.wait(1.25)
+
         self.play(
-            ReplacementTransform(arr_5_2_dummy, arr_6_2)
+            ReplacementTransform(arr_5_2_dummy, arr_6_2),
+            TransformMatchingShapes(arr_5_2_lbl,arr_6_2_lbl)
         )
+
+        self.wait(2)
+
+        ## test ##
+
+        func = lambda x: x - ax_1.c2p(0,0)
+        colors = [REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE,REANLEA_AQUA,REANLEA_GREY]
         
+        vf = ArrowVectorField(
+            func, min_color_scheme_value=2, 
+            max_color_scheme_value=10, 
+            colors=colors
+        ).set_z_index(-10)
+       
+        dots=VGroup()          
+        for obj in vf:
+            dots += Dot().move_to(obj.get_end()).set_color(obj.get_color()).scale(.75).set_sheen(-.4,DOWN)
+        dots.set_z_index(-10)
+        
+        self.wait(2)
+
+        self.play(
+            Write(dots)
+        )
+        self.wait(2)
+
+        self.play(
+            Write(vf, run_time=2)
+        )
+        self.wait(2)
+
+        self.play(
+            FadeOut(dots)
+        )
+        self.wait(2)
+
+        self.play(
+            Write(dots)
+        )
+
+        self.wait(2)
+        
+        r_tot=Rectangle(width=16, height=9, color=REANLEA_BLUE_DARKEST).set_opacity(.65).set_z_index(-8)
+        self.play(
+            Create(r_tot),
+            run_time=2
+        )
 
         self.wait(2)
 
