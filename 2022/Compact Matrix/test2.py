@@ -4094,7 +4094,7 @@ class arr_ex_1(Scene):
 
         self.wait()
         self.play(
-            Create(arr_1)
+            Create(arr_1, run_time=5)
         )
         self.wait()
         self.play(
@@ -4103,6 +4103,66 @@ class arr_ex_1(Scene):
         self.wait(2)
 
         # manim -pqh test2.py arr_ex_1
+
+
+
+class case_tex_ex(Scene):
+    def construct(self):
+        
+        case_tex_1= MathTex(r"\lambda v' + \gamma v = 0 \longrightarrow \begin{cases}"
+                r" \text{for some} (\lambda , \gamma) \neq (0,0) & \leadsto \text{linearly dependent} \\"
+                r"\text{only for} (\lambda , \gamma) = (0,0) & \leadsto \text{linearly independent}"
+                r"\end{cases}"
+        ).scale(.5)
+
+        self.wait()
+        self.play(
+            Write(case_tex_1)
+        )
+
+        self.wait(2)
+
+        # manim -pqh test2.py case_tex_ex
+
+        # manim -sqk test2.py case_tex_ex
+
+
+
+class des_tree_ex(Scene):
+    def construct(self):
+        
+        ln_h_0=Line(start=LEFT, end=.25*LEFT).set_stroke(width=4, color=[REANLEA_AQUA_GREEN,REANLEA_GREY])
+        ln_v_0=Line().rotate(PI/2).shift(.25*LEFT).set_stroke(width=4, color=[REANLEA_SLATE_BLUE,REANLEA_AQUA_GREEN,REANLEA_PURPLE])
+        ln_h_1_0=Line(start=.27*LEFT,end=.75*RIGHT).shift(UP).set_stroke(width=4, color=[REANLEA_BLUE_SKY,REANLEA_SLATE_BLUE])
+        ln_h_1_1=Line(start=.27*LEFT,end=.75*RIGHT).shift(DOWN).set_stroke(width=4, color=[REANLEA_BLUE_SKY,REANLEA_PURPLE])
+
+        ln_grp=VGroup(ln_h_0,ln_v_0,ln_h_1_0,ln_h_1_1)
+
+
+        self.play(
+            Write(ln_grp)
+        )
+
+
+        # manim -pqh test2.py des_tree_ex
+
+        # manim -sqk test2.py des_tree_ex
+
+
+class des_tree_ex_1(Scene):
+    def construct(self):
+        
+        ln=create_des_tree()
+
+
+        self.play(
+            Write(ln)
+        )
+
+
+        # manim -pqh test2.py des_tree_ex_1
+
+        # manim -sqk test2.py des_tree_ex_1
 
 ###################################################################################################################
 

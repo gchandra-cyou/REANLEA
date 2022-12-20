@@ -5141,6 +5141,157 @@ class HomographyEx(Scene):
         self.play(ApplyPointwiseFunction(apply_homography, img))     
 
         # manim -pqh discord.py HomographyEx
+
+
+class cases_ex(Scene):
+    def construct(self):
+        tex1 = MathTex(r"f(n) = \begin{cases}"
+                r"n/2  & n \text{ is even} \\"
+                r"3n+1 & n \text{ is odd}"
+                r"\end{cases}"
+        )
+        self.play(Write(tex1))
+
+        # manim -pqh discord.py cases_ex
+
+
+
+class impli_fun_area(Scene):
+    def construct(self):
+        ax = Axes(
+            x_range=[-5,5],
+            y_range=[-5,5]
+        )          
+        ax.add_coordinates()
+
+        curve_pos = ax.plot_implicit_curve(
+            lambda x,y: (x*y - 1)*(x>0),   # f(x,y) = 0 
+        )
+        points_pos = curve_pos.get_all_points()
+        points_pos = np.append(points_pos, [ax.c2p(x,5) for x in np.linspace(points_pos[-1][0],5,100)], axis=0)
+
+        area_pos = Polygon(
+            *points_pos 
+        ).set_fill(color=YELLOW,opacity=1)
+
+        curve_neg = ax.plot_implicit_curve(
+            lambda x,y: (x*y - 1)*(x<0),   # f(x,y) = 0 
+        )
+        points_neg = curve_neg.get_all_points()
+        points_neg = np.append(points_neg, [ax.c2p(x,-5) for x in np.linspace(points_neg[-1][0],-5,100)], axis=0)
+
+        area_neg = Polygon(
+            *points_neg 
+        ).set_fill(color=YELLOW,opacity=1)
+
+        self.play(Create(ax))        
+        self.play(Create(curve_pos))
+        self.play(Create(area_pos))
+        self.play(Create(curve_neg))
+        self.play(Create(area_neg))
+        self.wait(2)
+
+
+        # manim -pqh discord.py impli_fun_area
+
+
+
+class case_tex_ex(Scene):
+    def construct(self):
+        
+        case_tex_1= MathTex(r"\lambda v' + \gamma v = 0 \longrightarrow \begin{cases}"
+                r"n/2  & n \text{ is even} \\"
+                r"3n+1 & n \text{ is odd}"
+                r"\end{cases}"
+        )
+
+        self.wait()
+        self.play(
+            Write(case_tex_1)
+        )
+
+        self.wait(2)
+
+        # manim -pqh discord.py case_tex_ex
+
+        # manim -sqk discord.py case_tex_ex
+
+
+
+
+class Derivative(Scene):
+    def construct(self):
+        k = ValueTracker(0)
+        dx = ValueTracker(2)
+        axes = Axes(
+
+            x_range=[-1,10,1],
+            y_range=[-1,6,1],
+            axis_config={"include_numbers":True}
+            )
+        func = lambda x: -0.1*(x-5)**2 +2
+        plot = axes.plot(func,x_range=[-1,9,0.01],color=RED)
+
+        dot = always_redraw(
+            lambda: Dot(
+                axes.c2p(
+                    k.get_value(),
+                    func(k.get_value())
+                ),
+                color=YELLOW
+            )
+        )
+        lines = always_redraw(
+            lambda: VGroup(
+                axes.get_lines_to_point(dot.get_center())  
+            )
+        )        
+        secant = always_redraw(
+            lambda: axes.get_secant_slope_group(
+                x=k.get_value(),
+                graph = plot,
+                dx=dx.get_value(),
+            )
+        )        
+
+        # Change the line to an arrow
+        def upd_line(line):
+            arrow = Arrow(
+                dot.get_center(),
+                secant[1].get_end(),
+                buff=0,
+                tip_length=0.25,
+                color=YELLOW,
+            )
+            line.become(arrow)
+        secant[2][0].add_updater(upd_line)
+
+        velo = Line()
+        velolength = 2
+        def veloUpdater(mobj):
+            x = k.get_value()
+            y1 = func(x)
+            y2 = func(x + 1e-6)
+            mobj.become(
+                Line(
+                    start=axes.c2p(x,y1),
+                    end=axes.c2p(x+velolength,y1 + velolength*1e6*(y2-y1)),
+                    color=GREEN
+                ).add_tip(at_start=False)
+            )
+        velo.add_updater(veloUpdater)
+        velo.update()
+
+        # Animations
+        self.add(axes,plot,dot,secant,lines,velo)
+        self.play(
+            k.animate.set_value(8),
+            run_time=3
+        ) 
+
+
+        # manim -pqh discord.py Derivative
+
          
 ###################################################################################################################
 

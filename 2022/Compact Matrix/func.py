@@ -453,6 +453,26 @@ def create_glow(vmobject, rad=1, col=YELLOW):
         glow_group.add(new_circle)
     return glow_group
 
+
+def create_des_tree(stroke_width=3):
+
+    ln_grp=VGroup()
+
+    ln_h_0=Line(start=LEFT, end=.25*LEFT).set_stroke(width=stroke_width, color=[REANLEA_AQUA_GREEN,REANLEA_GREY])
+    ln_grp.add(ln_h_0)
+
+    ln_v_0=Line().rotate(PI/2).shift(.25*LEFT).set_stroke(width=stroke_width, color=[REANLEA_SLATE_BLUE,REANLEA_AQUA_GREEN,REANLEA_PURPLE])
+    ln_grp.add(ln_v_0)
+
+    ln_h_1_0=Line(start=.27*LEFT,end=.75*RIGHT).shift(UP).set_stroke(width=stroke_width, color=[REANLEA_BLUE_SKY,REANLEA_SLATE_BLUE])
+    ln_grp.add(ln_h_1_0)
+
+    ln_h_1_1=Line(start=.27*LEFT,end=.75*RIGHT).shift(DOWN).set_stroke(width=stroke_width, color=[REANLEA_BLUE_SKY,REANLEA_PURPLE])
+    ln_grp.add(ln_h_1_1)
+
+    return ln_grp
+
+
 def square_cloud(
     x_min=0, x_max=2, x_eps=0.1,
     y_min=0, y_max=2, y_eps=0.1,
@@ -516,6 +536,9 @@ def line_highlight(
         c.set_stroke(color,width=k*line.get_stroke_width())     # line.stroke_width=0.04 , default
 #opacity=1-i/n
     return stripe.rotate(PI/2).move_to(ORIGIN).set_z_index(-10).scale(length_factor)
+
+
+
 
 class EmojiImageMobject(ImageMobject):
     def __init__(self, emoji, **kwargs):

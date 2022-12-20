@@ -953,6 +953,8 @@ class Scene2(Scene):
         )
         self.wait(2)
 
+        ## emoji ##
+
         '''em = EmojiImageMobject("🚀").scale(.15).move_to(ax_1.c2p(0,0)).rotate(-20*DEGREES)
         self.play(
             FadeIn(em)
@@ -978,6 +980,8 @@ class Scene2(Scene):
             ).shift(.05*LEFT+.05*DOWN)
         )'''
 
+        ## emoji_end ##
+
         arr_5_1=Arrow(start=ax_1.c2p(0,0),end=dt_1_dummy_1.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color(REANLEA_TXT_COL)
 
         arr_5_1_lbl=MathTex("v").scale(.675).set_color(REANLEA_TXT_COL).move_to(ax_1.c2p(1.85,.65)).set_stroke(width=1.025).set_z_index(5)
@@ -985,16 +989,38 @@ class Scene2(Scene):
         arr_5_2=Arrow(start=dt_1_dummy_1.get_center(), end=dt_4.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color(dt_4.get_color())
 
         arr_5_2_lbl=MathTex("w").scale(.675).next_to(arr_5_2, RIGHT).set_color(dt_4.get_color()).set_stroke(width=1.025).shift(.6*LEFT+.1*UP)        # .move_to(ax_1.c2p(2.65,2.65))
+
+        em = EmojiImageMobject("🚀").scale(.15).move_to(ax_1.c2p(0,0)).rotate(-20*DEGREES).set_z_index(5)
+        self.play(
+            FadeIn(em)
+        )
         
 
         self.play(
-            Create(arr_5_1),
-            Write(arr_5_1_lbl)
+            Create(arr_5_1, run_time=2),
+            Write(arr_5_1_lbl),
+            em.animate.move_to(
+                dt_1_dummy_1.get_center()+.1*UP
+            )
+        )
+        
+        ln_3_dummy=Line(start=dt_1_dummy_1.get_center(), end=dt_4.get_center())
+        self.play(
+            em.animate.rotate(ln_3_dummy.get_angle()-ln_2.get_angle()).shift(.1*LEFT+.1*DOWN)
         )
         
         self.play(
-            Create(arr_5_2),
-            Write(arr_5_2_lbl)
+            Create(arr_5_2, run_time=2),
+            Write(arr_5_2_lbl),
+            em.animate.move_to(
+                dt_4.get_center()
+            ).shift(.05*LEFT+.05*DOWN)
+        )
+
+        self.wait(3)
+
+        self.play(
+            FadeOut(em)
         )
 
         d_arr_5_1=DashedArrow(start=ax_1.c2p(0,0),end=dt_1_dummy_1.get_center(),
@@ -1078,6 +1104,8 @@ class Scene2(Scene):
 
         arr_6_2_lbl=MathTex(r"w_{1}").scale(.675).next_to(arr_6_2, RIGHT).set_color(dt_4.get_color()).set_stroke(width=1.025).shift(.6*LEFT+.1*UP)
 
+        arr_6_lbl_grp=VGroup(arr_6_1_lbl,arr_6_2_lbl)
+
         x_d=dt_6_dummy.get_center()
 
         arr_5_2_dummy=arr_5_2.copy().shift((x_d[0]-x_b[0])*RIGHT+(x_d[1]-x_b[1])*UP)
@@ -1095,6 +1123,33 @@ class Scene2(Scene):
         )
 
         self.wait(2)
+
+        dt_5_lbl_1=MathTex("=",r"v_{1}","+",r"w_{1}").scale(.675).set_color(REANLEA_PINK).next_to(dt_5_lbl,RIGHT).set_stroke(width=1.025).shift(.1*LEFT)
+        dt_5_lbl_1[1].set_color(REANLEA_TXT_COL)
+        dt_5_lbl_1[3].set_color(REANLEA_WARM_BLUE)
+
+        self.play(
+            TransformMatchingShapes(arr_6_lbl_grp,dt_5_lbl_1)
+        )
+        self.wait(2)
+
+        dt_5_lbl_2=MathTex("=",r"\lambda_{1} v","+",r"\lambda_{2} w").scale(.675).set_color(REANLEA_PINK).next_to(dt_5_lbl,RIGHT).set_stroke(width=1.025).shift(.1*LEFT)
+        dt_5_lbl_2[1][-1].set_color(REANLEA_TXT_COL)
+        dt_5_lbl_2[3][-1].set_color(REANLEA_WARM_BLUE)
+
+        self.play(
+            ReplacementTransform(dt_5_lbl_1,dt_5_lbl_2)
+        )
+        self.wait()
+
+        dt_5_lbl_3=MathTex("=",r"(\lambda_{1}",",",r"\lambda_{2})").scale(.675).set_color(REANLEA_PINK).next_to(dt_5_lbl,RIGHT).set_stroke(width=1.025).shift(.1*LEFT)
+
+        self.play(
+            ReplacementTransform(dt_5_lbl_2,dt_5_lbl_3)
+        )
+
+        self.wait(2)
+
 
         ## test ##
 
@@ -1140,6 +1195,95 @@ class Scene2(Scene):
             Create(r_tot),
             run_time=2
         )
+        self.wait(2)
+
+        eqn_12=MathTex(r"v' - \zeta v","=","0").set_color(REANLEA_BLUE_LAVENDER).shift(2.75*DOWN)
+        eqn_12[0][0:2].set_stroke(width=1.025).set_color(REANLEA_GREEN)
+        eqn_12[0][-1].set_stroke(width=1.025).set_color(REANLEA_PURPLE)
+
+        self.play(
+            Write(eqn_12)
+        )
+        self.wait()
+
+        ln_3=Line().rotate(PI/2).next_to(eqn_12,RIGHT).shift(RIGHT).scale(.25).set_stroke(width=4, color=[REANLEA_BLUE_SKY,REANLEA_AQUA_GREEN])
+        eqn_12_1=MathTex(r"\zeta \neq 0").set_color(REANLEA_BLUE_LAVENDER).next_to(eqn_12,RIGHT).shift(2.5*RIGHT)
+
+        eqn_12_0_3=eqn_12[0][3]
+
+        self.play(
+            Indicate(eqn_12[0][3]),
+            Write(ln_3),
+            ReplacementTransform(eqn_12_0_3.copy(), eqn_12_1)
+        )
+        self.wait(2)
+
+        eqn_13=MathTex(r"\lambda v' + \gamma v","=","0").set_color(REANLEA_BLUE_LAVENDER).shift(2.75*DOWN)
+        eqn_13[0][1:3].set_stroke(width=1.025).set_color(REANLEA_GREEN)
+        eqn_13[0][-1].set_stroke(width=1.025).set_color(REANLEA_PURPLE)
+
+        eqn_13_1=MathTex(r"(\lambda, \gamma) \neq (0,0)").set_color(REANLEA_BLUE_LAVENDER).next_to(eqn_12,RIGHT).shift(2*RIGHT)
+
+        self.play(
+            ReplacementTransform(eqn_12,eqn_13),
+            ReplacementTransform(eqn_12_1,eqn_13_1)
+        )
+        self.wait()
+
+        self.play(
+            Indicate(eqn_13[0][0]),
+            Indicate(eqn_13[0][4])        
+        )
+
+        self.wait(2)
+
+        eqn_14=eqn_13.copy().scale(.625).move_to(6*LEFT+2.75*UP)
+
+        des_tree=create_des_tree().scale(.75).next_to(eqn_14)        
+
+        self.play(
+            Write(eqn_14)
+        )
+
+        self.play(
+            Write(des_tree)
+        )
+
+
+        with RegisterFont("Nanum Pen Script") as fonts:
+            lin_dep_indep = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "for some",
+                "only for",
+            )]).scale(0.35).arrange_submobjects(DOWN).shift(4.5*LEFT+2.5*UP)
+            lin_dep_indep[0].next_to(des_tree).shift(.75*UP)
+
+
+        self.play(
+            Write(lin_dep_indep[0])
+        )
+
+        eqn_15_1=MathTex(r"(\lambda, \gamma) \neq (0,0)").scale(.5).next_to(lin_dep_indep[0])
+
+        self.play(
+            Write(eqn_15_1)
+        )
+
+        arr_7=MathTex(r"\longrightarrow").scale(.5).rotate(-PI/2).set_stroke(width=2, color=[REANLEA_BLUE,REANLEA_BLUE_SKY]).next_to(lin_dep_indep[0],DOWN).shift(.75*RIGHT)
+
+
+        with RegisterFont("Homemade Apple") as fonts:
+            txt_2=Text("Linearly Dependent", font=fonts[0]).scale(.35)
+            txt_2.set_color_by_gradient(REANLEA_TXT_COL)
+            txt_2.next_to(lin_dep_indep[0],DOWN).shift(.5*RIGHT)
+
+        self.play(
+            Write(txt_2)
+        )
+
+        
+
+
+        
 
         self.wait(2)
 
