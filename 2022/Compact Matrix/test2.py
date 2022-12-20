@@ -4164,6 +4164,43 @@ class des_tree_ex_1(Scene):
 
         # manim -sqk test2.py des_tree_ex_1
 
+
+class box_opa(Scene):
+    def construct(self):
+
+        with RegisterFont("Nanum Pen Script") as fonts:
+            lin_dep_indep = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "for some",
+                "only for",
+            )]).scale(0.35).arrange_submobjects(DOWN).shift(4.5*LEFT+2.5*UP)
+            lin_dep_indep[0].shift(.75*UP)
+            lin_dep_indep[1].shift(.75*DOWN)
+
+        with RegisterFont("Homemade Apple") as fonts:
+            txt_3=Text("Linearly Dependent", font=fonts[0]).scale(.3)
+            txt_3.set_color_by_gradient(REANLEA_TXT_COL)
+            txt_3.shift(.75*RIGHT+.2*DOWN).next_to(lin_dep_indep[0],DOWN)
+
+        self.play(
+            Write(lin_dep_indep)
+        )
+
+        self.play(
+            Write(txt_3)
+        )
+
+        grp=VGroup(txt_3,lin_dep_indep[0])
+
+        sr_txt_3=SurroundingRectangle(grp, buff=.25, corner_radius=.05).set_stroke(width=0).set_fill(color=REANLEA_MAGENTA, opacity=.25).set_z_index(-1)
+
+        self.play(
+            Create(sr_txt_3)
+        )
+
+        # manim -pqh test2.py  box_opa
+
+        # manim -sqk test2.py  box_opa
+
 ###################################################################################################################
 
 

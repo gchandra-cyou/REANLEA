@@ -1105,6 +1105,7 @@ class Scene2(Scene):
         arr_6_2_lbl=MathTex(r"w_{1}").scale(.675).next_to(arr_6_2, RIGHT).set_color(dt_4.get_color()).set_stroke(width=1.025).shift(.6*LEFT+.1*UP)
 
         arr_6_lbl_grp=VGroup(arr_6_1_lbl,arr_6_2_lbl)
+        arr_6_grp=VGroup(arr_6_1,arr_6_2)
 
         x_d=dt_6_dummy.get_center()
 
@@ -1113,7 +1114,7 @@ class Scene2(Scene):
         self.play(
             ReplacementTransform(arr_5_1,arr_6_1),
             ReplacementTransform(arr_5_2,arr_5_2_dummy),
-            Transform(arr_5_1_lbl,arr_6_1_lbl),
+            TransformMatchingShapes(arr_5_1_lbl,arr_6_1_lbl),
             run_time=2
         )
 
@@ -1129,7 +1130,7 @@ class Scene2(Scene):
         dt_5_lbl_1[3].set_color(REANLEA_WARM_BLUE)
 
         self.play(
-            TransformMatchingShapes(arr_6_lbl_grp,dt_5_lbl_1)
+            TransformMatchingShapes(arr_6_lbl_grp.copy(),dt_5_lbl_1)
         )
         self.wait(2)
 
@@ -1193,9 +1194,12 @@ class Scene2(Scene):
         r_tot=Rectangle(width=16, height=9, color=REANLEA_BLUE_DARKEST).set_opacity(.65).set_z_index(-8)
         self.play(
             Create(r_tot),
+            FadeOut(arr_6_lbl_grp),
+            FadeOut(arr_6_grp),
             run_time=2
         )
         self.wait(2)
+
 
         eqn_12=MathTex(r"v' - \zeta v","=","0").set_color(REANLEA_BLUE_LAVENDER).shift(2.75*DOWN)
         eqn_12[0][0:2].set_stroke(width=1.025).set_color(REANLEA_GREEN)
@@ -1237,12 +1241,14 @@ class Scene2(Scene):
 
         self.wait(2)
 
+        eqn_13_grp=VGroup(eqn_13,eqn_13_1,ln_3)
+
         eqn_14=eqn_13.copy().scale(.625).move_to(6*LEFT+2.75*UP)
 
         des_tree=create_des_tree().scale(.75).next_to(eqn_14)        
 
         self.play(
-            Write(eqn_14)
+            ReplacementTransform(eqn_13_grp,eqn_14)
         )
 
         self.play(
@@ -1256,29 +1262,67 @@ class Scene2(Scene):
                 "only for",
             )]).scale(0.35).arrange_submobjects(DOWN).shift(4.5*LEFT+2.5*UP)
             lin_dep_indep[0].next_to(des_tree).shift(.75*UP)
+            lin_dep_indep[1].next_to(des_tree).shift(.75*DOWN)
 
 
         self.play(
             Write(lin_dep_indep[0])
         )
 
-        eqn_15_1=MathTex(r"(\lambda, \gamma) \neq (0,0)").scale(.5).next_to(lin_dep_indep[0])
+        eqn_15_1=MathTex(r"(\lambda, \gamma) \neq (0,0)").set_color(REANLEA_BLUE_SKY).set_stroke(width=1.1, color=REANLEA_BLUE_SKY).scale(.5).next_to(lin_dep_indep[0])
 
         self.play(
             Write(eqn_15_1)
         )
 
-        arr_7=MathTex(r"\longrightarrow").scale(.5).rotate(-PI/2).set_stroke(width=2, color=[REANLEA_BLUE,REANLEA_BLUE_SKY]).next_to(lin_dep_indep[0],DOWN).shift(.75*RIGHT)
-
 
         with RegisterFont("Homemade Apple") as fonts:
-            txt_2=Text("Linearly Dependent", font=fonts[0]).scale(.35)
+            txt_2=Text("Linearly Dependent", font=fonts[0]).scale(.3)
             txt_2.set_color_by_gradient(REANLEA_TXT_COL)
-            txt_2.next_to(lin_dep_indep[0],DOWN).shift(.5*RIGHT)
+            txt_2.next_to(lin_dep_indep[0],DOWN).shift(.75*RIGHT+.1*UP)
 
         self.play(
             Write(txt_2)
         )
+
+        lin_grp_0=VGroup(txt_2,lin_dep_indep[0],eqn_15_1)
+
+        sr_lin_grp_0=SurroundingRectangle(lin_grp_0, buff=.125, corner_radius=.05).set_stroke(width=0).set_fill(color=REANLEA_MAGENTA, opacity=.25).set_z_index(-1)
+
+        self.play(
+            Create(sr_lin_grp_0)
+        )
+
+
+        with RegisterFont("Homemade Apple") as fonts:
+            txt_3=Text("Linearly Independent", font=fonts[0]).scale(.25)
+            txt_3.set_color_by_gradient(REANLEA_TXT_COL)
+            txt_3.next_to(lin_dep_indep[1],UP).shift(.75*RIGHT+.2*DOWN)
+
+        eqn_15_2=MathTex(r"(\lambda, \gamma) = (0,0)").set_color(REANLEA_BLUE_SKY).set_stroke(width=1.1, color=REANLEA_BLUE_SKY).scale(.5).next_to(lin_dep_indep[1])
+
+        
+        lin_grp_1=VGroup(txt_3,lin_dep_indep[1],eqn_15_2)
+
+        sr_lin_grp_1=SurroundingRectangle(lin_grp_1, buff=.125, corner_radius=.05).set_stroke(width=0).set_fill(color=REANLEA_MAGENTA, opacity=.25).set_z_index(-1)
+
+        self.play(
+            Create(sr_lin_grp_1)
+        )
+
+        self.play(
+            Write(txt_3)
+        )
+
+        self.play(
+            Write(lin_dep_indep[1])
+        )
+
+        self.play(
+            Write(eqn_15_2)
+        )
+
+        
 
         
 
