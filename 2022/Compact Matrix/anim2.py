@@ -1517,7 +1517,7 @@ class Scene2(Scene):
 
 
         self.play(
-            Create(arr_10, run_time=.75)
+            Create(arr_10, run_time=.75),
             Write(mtxt_1)
         )
 
