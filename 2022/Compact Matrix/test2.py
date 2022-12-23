@@ -4201,6 +4201,45 @@ class box_opa(Scene):
 
         # manim -sqk test2.py  box_opa
 
+
+class txt_test_1(Scene):
+    def construct(self):
+        
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_3=Text("Basis", font=fonts[0]).scale(.6)
+
+        self.play(
+            Write(txt_3)
+        )
+
+        eqn_r2_1 = MathTex(
+            r"\mathbb{R}^2&",r"= \{ (a,b)= a(1,0)+b(0,1) \mid a , b \in \mathbb{R} \} \\ &",r"= span \{ (1,0) , (0,1) \}",
+        ).shift(3*DOWN).scale(.6).set_color(REANLEA_AQUA)
+
+        self.play(
+            AnimationGroup(
+                *[Write(eq) for eq in eqn_r2_1],
+                lag_ratio=2
+            )
+        )
+            
+        self.wait(2)
+
+        # manim -pqh test2.py txt_test_1
+
+        # manim -sqk test2.py txt_test_1
+
+
+class bez_test_1(Scene):
+    def construct(self):
+        b1=bend_bezier_arrow().scale(.7).set_color(PURE_RED).flip().rotate(-PI/4)
+        b2=underline_bez_curve()
+
+        self.add(b1,b2)
+
+        # manim -pqh test2.py bez_test_1
+
+
 ###################################################################################################################
 
 

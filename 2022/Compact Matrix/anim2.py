@@ -930,7 +930,7 @@ class Scene2(Scene):
             vsp_ruls = VGroup(*[Text(x, font=fonts[0]) for x in (
                 "I. Scalar Multiplication",
                 "II. Vector Addition",
-            )]).scale(0.65).arrange_submobjects(DOWN).shift(4.5*LEFT+2.5*UP)
+            )]).scale(0.65).arrange_submobjects(DOWN).shift(4.5*LEFT+2.25*UP)
             vsp_ruls[1].shift(.4*LEFT)
 
         self.play(
@@ -983,6 +983,8 @@ class Scene2(Scene):
         ## emoji_end ##
 
         arr_5_1=Arrow(start=ax_1.c2p(0,0),end=dt_1_dummy_1.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color(REANLEA_TXT_COL)
+
+        arr_5_1_1=arr_5_1.copy().set_color(REANLEA_YELLOW_CREAM).set_z_index(2)
 
         arr_5_1_lbl=MathTex("v").scale(.675).set_color(REANLEA_TXT_COL).move_to(ax_1.c2p(1.85,.65)).set_stroke(width=1.025).set_z_index(5)
 
@@ -1152,7 +1154,7 @@ class Scene2(Scene):
         self.wait(2)
 
 
-        ## test ##
+        ## vector field ##
 
         func = lambda x: x - ax_1.c2p(0,0)
         colors = [REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE,REANLEA_AQUA,REANLEA_GREY]
@@ -1161,12 +1163,12 @@ class Scene2(Scene):
             func, min_color_scheme_value=2, 
             max_color_scheme_value=10, 
             colors=colors
-        ).set_z_index(-10)
+        ).set_z_index(-102)
        
         dots=VGroup()          
         for obj in vf:
             dots += Dot().move_to(obj.get_end()).set_color(obj.get_color()).scale(.75).set_sheen(-.4,DOWN)
-        dots.set_z_index(-10)
+        dots.set_z_index(-102)
         
         self.wait(2)
 
@@ -1191,14 +1193,15 @@ class Scene2(Scene):
 
         self.wait(2)
         
-        r_tot=Rectangle(width=16, height=9, color=REANLEA_BLUE_DARKEST).set_opacity(.65).set_z_index(-8)
+        r_tot=Rectangle(width=16, height=9, color=REANLEA_BLUE_DARKEST).set_opacity(.65).set_z_index(-101)
         self.play(
             Create(r_tot),
             FadeOut(arr_6_lbl_grp),
-            FadeOut(arr_6_grp),
             run_time=2
         )
         self.wait(2)
+
+        ## vector field end ##
 
 
         eqn_12=MathTex(r"v' - \zeta v","=","0").set_color(REANLEA_BLUE_LAVENDER).shift(2.75*DOWN)
@@ -1206,6 +1209,7 @@ class Scene2(Scene):
         eqn_12[0][-1].set_stroke(width=1.025).set_color(REANLEA_PURPLE)
 
         self.play(
+            Create(arr_5_1_1),
             Write(eqn_12)
         )
         self.wait()
@@ -1322,14 +1326,256 @@ class Scene2(Scene):
             Write(eqn_15_2)
         )
 
-        
+        self.wait(2)
 
-        
+        arr_7_1=arr_5_1_1.copy()
 
+        self.play(
+            arr_7_1.animate.shift(DOWN+RIGHT)
+        )
 
-        
+        arr_7_2=arr_7_1.copy()
+
+        self.play(
+            arr_7_2.animate.shift(.5*DOWN+RIGHT)
+        )
+
+        arr_7_3=arr_7_2.copy()
+
+        self.play(
+            arr_7_3.animate.shift(.25*DOWN+1.25*RIGHT)
+        )
+
+        arr_7_4=arr_7_3.copy()
+
+        self.play(
+            arr_7_4.animate.shift(.125*UP+2.25*RIGHT)
+        )
 
         self.wait(2)
+
+        self.play(
+            arr_7_3.animate.rotate(PI).set_color(REANLEA_YELLOW_DARKER)
+        )
+
+        self.wait(3)
+
+
+        self.play(
+            arr_7_1.animate.move_to(arr_5_1_1.get_center()),
+            arr_7_2.animate.move_to(arr_5_1_1.get_center()),
+            arr_7_3.animate.move_to(arr_5_1_1.get_center()).shift((dt_1_dummy_1.get_center()[0]-ax_1.c2p(0,0)[0])*LEFT+(dt_1_dummy_1.get_center()[1]-ax_1.c2p(0,0)[1])*DOWN),
+            arr_7_4.animate.move_to(arr_5_1_1.get_center())
+        )
+
+        self.wait(2)
+
+        self.play(
+            FadeOut(arr_5_1_1),
+            FadeOut(arr_7_2),
+            FadeOut(arr_7_4),
+        )
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_4 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "Pair of Vectors",
+                "parallel to each",
+                "other are linearly",
+                "D E P E N D E N T"
+            )]).arrange_submobjects(DOWN).scale(0.4).set_color(REANLEA_GREY)
+            txt_4.move_to(5*RIGHT + 2.25*DOWN)
+
+            txt_5 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "Pair of Vectors not",
+                "parallel to each",
+                "other are linearly",
+                "I N D E P E N D E N T"
+            )]).arrange_submobjects(DOWN).scale(0.4).set_color(REANLEA_GREY)
+            txt_5.move_to(5*RIGHT + 2.25*DOWN)
+
+            txt_6_1 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "there are atmost two ",
+                "linearly independent ",
+                "vectors on , based on",
+                "them we can generate",
+                "all the vectors of"
+            )]).arrange_submobjects(DOWN).scale(0.4).set_color(REANLEA_GREY)
+            txt_6_1.move_to(4.85*RIGHT + 2.25*DOWN)
+            txt_6_1[2][9:].shift(.35*RIGHT)
+        
+        txt_6_2=MathTex(r"\mathbb{R}^2").scale(0.6).set_color(REANLEA_GREY).next_to(txt_6_1[2][9]).shift(.65*LEFT+.1*UP)
+
+        txt_6_3=MathTex(r"\mathbb{R}^2").scale(0.6).set_color(REANLEA_GREY).next_to(txt_6_1[4]).shift(.1*LEFT+.025*UP)
+
+        txt_6=VGroup(txt_6_1,txt_6_2,txt_6_3)
+
+        
+
+        
+
+
+        self.wait()
+        self.play(
+            Write(txt_4)
+        )
+        self.wait()
+        self.play(
+            dt_1.animate.set_z_index(4),
+            dt_2.animate.set_z_index(4),
+            dt_1_dummy_1.animate.set_z_index(2),
+            arr_7_1.animate.set_z_index(3),
+            dt_3.animate.set_z_index(4),
+            d_ln_2_y.animate.set_z_index(5),
+            d_ln_3_y.animate.set_z_index(5),
+            ReplacementTransform(txt_4,txt_5)
+        )
+        self.wait()
+        self.play(
+            FadeOut(txt_5)
+        )
+        self.wait(3)
+
+        self.play(
+            FadeIn(txt_6)
+        )
+        self.wait(2)
+
+        arr_8_1=Arrow(start=ax_1.c2p(0,0),end=ax_1.c2p(1,0),tip_length=.125,stroke_width=4, buff=0).set_color(REANLEA_CYAN_LIGHT)
+
+        arr_8_2=Arrow(start=ax_1.c2p(0,0),end=ax_1.c2p(0,1),tip_length=.125,stroke_width=4, buff=0).set_color(REANLEA_CYAN_LIGHT)
+
+        arr_ax=VGroup(arr_8_1,arr_8_2).set_z_index(2)
+
+        self.play(
+            Create(arr_ax)
+        )
+
+        self.wait(2)
+
+        arr_9=MathTex(r"\longrightarrow").move_to(5*RIGHT+DOWN).rotate(PI/3).set_stroke(width=2, color=[REANLEA_WARM_BLUE,REANLEA_PURPLE])
+
+        self.play(
+            Write(arr_9)
+        )
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_7=Text("Basis", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(arr_9).shift(.65*UP+.65*LEFT)
+
+        self.play(
+            Write(txt_7)
+        )
+
+        self.wait(2)
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_8=Text("Standard Basis", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(arr_9).shift(.65*UP+1.65*LEFT)
+
+
+        self.play(
+            ReplacementTransform(arr_ax.copy(),txt_8),
+            TransformMatchingShapes(txt_7,txt_8),
+        )
+
+        undrln_txt_8=underline_bez_curve().scale(.7).next_to(txt_8,DOWN).shift(.185*UP).set_color(REANLEA_YELLOW_GREEN)
+
+        self.play(
+            Create(undrln_txt_8)
+        )
+
+
+        d_ln_4_x=DashedLine(start=ax_1.c2p(0,0), end=[dt_2.get_center()[0], ax_1.c2p(0,0)[1],0]).set_stroke(width=2, color=REANLEA_CYAN_LIGHT)
+
+        d_ln_4_y=DashedLine(start=[dt_2.get_center()[0], ax_1.c2p(0,0)[1],0], end=dt_2.get_center()).set_stroke(width=2, color=REANLEA_CYAN_LIGHT)
+
+        d_ln_4=VGroup(d_ln_4_x,d_ln_4_y).set_z_index(5)
+
+        self.play(
+            Create(d_ln_4),
+            lag_ratio=1
+        )
+
+        self.wait(1.25)
+
+        d_ln_4_x_lbl=MathTex("a").set_color(REANLEA_BLUE_SKY).scale(.45).move_to(ax_1.c2p(3.5,-.28))
+        d_ln_4_y_lbl=MathTex("b").set_color(REANLEA_BLUE_SKY).scale(.45).move_to(ax_1.c2p(4.3,1))
+
+        d_ln_4_lbl=VGroup(d_ln_4_x_lbl,d_ln_4_y_lbl)
+
+        self.play(
+            Write(d_ln_4_lbl),
+            lag_ratio=1
+        )
+
+        self.wait(2)
+
+        arr_10=bend_bezier_arrow().scale(.55).set_color(REANLEA_SAFRON_DARKER).flip().rotate(-PI/4).next_to(txt_8,LEFT).shift(.225*RIGHT +.1*UP)
+
+        mtxt_1=MathTex("=","a","(1,0)","+","b","(0,1)").scale(.5).next_to(dt_2_lbl_1).set_color(REANLEA_CYAN_LIGHT)
+        mtxt_1[1:].shift(.15*RIGHT)
+        mtxt_1[1].set_color(REANLEA_BLUE_SKY)
+        mtxt_1[4].set_color(REANLEA_BLUE_SKY)
+
+
+        self.play(
+            Write(arr_10)
+        )
+        self.play(
+            Write(mtxt_1)
+        )
+
+        eqn_r2_1 = MathTex(
+            r"\mathbb{R}^2&",r" := \{ (a,b)= a(1,0)+b(0,1) \mid a , b \in \mathbb{R} \} \\ &",r"= span \{ (1,0) , (0,1) \}",
+        ).shift(3.15*DOWN).scale(.55).set_color(REANLEA_TXT_COL_LIGHTER)
+
+        eqn_r2_1[1][2].set_color(REANLEA_TXT_COL).scale(1.2)
+        eqn_r2_1[1][28].set_color(REANLEA_TXT_COL).scale(1.2)
+        eqn_r2_1[1][4].set_color(REANLEA_BLUE_SKY)
+        eqn_r2_1[1][23].set_color(REANLEA_BLUE_SKY)
+        eqn_r2_1[1][25].set_color(REANLEA_BLUE_SKY)
+        eqn_r2_1[1][6].set_color(REANLEA_BLUE_SKY)
+        eqn_r2_1[1][9].set_color(REANLEA_BLUE_SKY)
+        eqn_r2_1[1][16].set_color(REANLEA_BLUE_SKY)
+        eqn_r2_1[1][10:15].set_color(REANLEA_CYAN_LIGHT)
+        eqn_r2_1[1][17:22].set_color(REANLEA_CYAN_LIGHT)
+        eqn_r2_1[1][22].set_color(PURE_GREEN).scale(1.5)
+
+        eqn_r2_1[2][1:5].set_color(REANLEA_GREEN_AUQA).scale(.8)
+        eqn_r2_1[2][6:11].set_color(REANLEA_CYAN_LIGHT)
+        eqn_r2_1[2][12:17].set_color(REANLEA_CYAN_LIGHT)
+        eqn_r2_1[2][5].set_color(REANLEA_TXT_COL).scale(1.2)
+        eqn_r2_1[2][17].set_color(REANLEA_TXT_COL).scale(1.2)
+
+        self.play(
+            AnimationGroup(
+                *[Write(eq) for eq in eqn_r2_1],
+                lag_ratio=2
+            )
+        )
+
+        self.wait(2)
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_9 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "if a vector space is",
+                "generated by a basis",
+                "having finite number of",
+                "elements, then all the",
+                "basis of that vector space",
+                "contains the same number",
+                "of vectors."
+            )]).arrange_submobjects(DOWN).scale(0.35).set_color(REANLEA_GREY)
+            txt_9.move_to(5*RIGHT + 2.25*DOWN)
+
+        self.play(
+            arr_9.animate.rotate(PI),
+            TransformMatchingShapes(txt_6, txt_9)
+        )
+        
+
+
+        
+
+        self.wait(4)
 
 
 

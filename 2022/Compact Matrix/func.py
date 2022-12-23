@@ -386,6 +386,28 @@ def bend_bezier_arrow():
 
         return grp3
 
+
+def underline_bez_curve():
+
+        grp=VGroup()
+
+        under_line_bezier = ParametricFunction(
+            lambda t: bezier(np.array([
+                [.34,.84,0],
+                [.75, .70, 0],
+                [1.82, 0.52, 0],
+                [2.33, 0.88, 0],  
+            ]))(t),
+            [0, 1],
+            color=PURE_RED,
+        ).flip(RIGHT).scale(1.25).rotate(3*DEGREES)
+
+        grp += under_line_bezier
+    
+        return grp
+
+    
+
 def bend_bezier_arrow_indicate():
 
         grp3=VGroup()
@@ -550,13 +572,3 @@ class EmojiImageMobject(ImageMobject):
         ImageMobject.__init__(self, emoji_img, **kwargs)
 
 
-
-
-'''class EmojiImageMobject(ImageMobject):
-    def __init__(self, emoji, **kwargs):
-        emoji_code = "-".join(f"{ord(c):x}" for c in emoji)
-        emoji_code = emoji_code.upper()  # <-  needed for openmojis
-        url = f"https://raw.githubusercontent.com/hfg-gmuend/openmoji/master/color/618x618/{emoji_code}.png"
-        im = Image.open(requests.get(url, stream=True).raw)
-        emoji_img = np.array(im.convert("RGBA"))
-        ImageMobject.__init__(self, emoji_img, **kwargs)'''
