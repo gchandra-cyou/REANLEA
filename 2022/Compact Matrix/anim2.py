@@ -1517,9 +1517,7 @@ class Scene2(Scene):
 
 
         self.play(
-            Write(arr_10)
-        )
-        self.play(
+            Create(arr_10, run_time=.75)
             Write(mtxt_1)
         )
 
@@ -1568,7 +1566,7 @@ class Scene2(Scene):
 
         self.play(
             arr_9.animate.rotate(PI),
-            TransformMatchingShapes(txt_6, txt_9)
+            ReplacementTransform(txt_6, txt_9)
         )
         
 
