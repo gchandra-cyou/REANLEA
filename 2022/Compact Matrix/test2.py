@@ -4235,9 +4235,27 @@ class bez_test_1(Scene):
         b1=bend_bezier_arrow().scale(.7).set_color(PURE_RED).flip().rotate(-PI/4)
         b2=underline_bez_curve()
 
-        self.add(b1,b2)
+        t1=MathTex(
+            "dim",r"(\mathbb{R}^2)","=","2"
+        ).scale(2).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_MAGENTA)
+        t1[1:].shift(.1*RIGHT)
+
+        self.add(b1,b2,t1)
 
         # manim -pqh test2.py bez_test_1
+
+class dim2_ex(Scene):
+    def construct(self):
+        t1=MathTex(
+            "dim",r"(\mathbb{R}^2)","=","2"
+        ).scale(2).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_MAGENTA)
+        t1[1:].shift(.1*RIGHT)
+        b2=underline_bez_curve().next_to(t1,DOWN).scale(2)
+
+        self.add(t1,b2)
+
+        # manim -pqh test2.py dim2_ex
+        
 
 
 ###################################################################################################################

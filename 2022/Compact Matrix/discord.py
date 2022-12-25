@@ -5292,6 +5292,20 @@ class Derivative(Scene):
 
         # manim -pqh discord.py Derivative
 
+
+
+class Hue_Test(Scene):
+    def construct(self):
+        square = Square().set_stroke(width=25)
+        self.add(square)        
+        def upd_square(square, dt):  
+            hue = (square.get_color().get_hue() + dt/3) % 1     
+            square.set_color(Color(hsl=(hue, 1, 0.5)))
+        square.add_updater(upd_square)
+        self.wait(3)
+
+
+        # manim -pqh discord.py Hue_Test
          
 ###################################################################################################################
 

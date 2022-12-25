@@ -1568,6 +1568,29 @@ class Scene2(Scene):
             arr_9.animate.rotate(PI),
             ReplacementTransform(txt_6, txt_9)
         )
+
+        self.wait(2)
+
+        dim_r2=MathTex(
+            "dim",r"(\mathbb{R}^2)","=","2"
+        ).set_z_index(16).scale(2).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_MAGENTA)
+        dim_r2[1:].shift(.1*RIGHT)
+
+        r_tot_1=Rectangle(width=16, height=9, color=REANLEA_BACKGROUND_COLOR).set_opacity(.8).set_z_index(15)
+        self.play(
+            FadeIn(r_tot_1),
+            water_mark.animate.set_z_index(14),
+            Write(dim_r2),
+            lag_ratio=.7,
+            run_time=2
+        )
+
+        b2=underline_bez_curve().next_to(dim_r2,DOWN).scale(2).set_z_index(16)
+        self.play(
+            Create(b2)
+        )
+
+        self.wait(2)
         
 
 
