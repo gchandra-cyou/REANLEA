@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "./common",
+        "./2023/common"
+    ]
+}

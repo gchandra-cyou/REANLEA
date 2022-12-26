@@ -4258,6 +4258,56 @@ class dim2_ex(Scene):
         
 
 
+
+class Mandelbrot(Scene):
+    def construct(self):
+
+
+        # Set up the bounds of the Mandelbrot set
+        xmin, xmax = -2, 1
+        ymin, ymax = -1, 1
+
+        # Set the number of pixels for the image
+        pixels_x = 1000
+        pixels_y = 1000
+
+        # Create a blank image
+        image = Image.new("RGB", (pixels_x, pixels_y))
+
+        # Iterate over the pixels in the image
+        for x in range(pixels_x):
+            for y in range(pixels_y):
+                # Map the pixel coordinates to the complex plane
+                z = complex(xmin + (xmax - xmin) * x / pixels_x,
+                            ymin + (ymax - ymin) * y / pixels_y)
+
+                # Compute the value of the Mandelbrot function at this point
+                c = z
+                for i in range(255):
+                    if abs(z) > 2:
+                        break
+                    z = z**2 + c
+
+                # Color the pixel based on the number of iterations
+                # required for the function to diverge
+                image.putpixel((x, y), (i % 8 * 32, i % 16 * 16, i % 32 * 8))
+
+        # Create a image object from the image and add it to the scene
+        mandelbrot_image = ImageMobject(image)
+        mandelbrot_image.scale(1.5)
+        self.add(mandelbrot_image)
+
+        '''self.wait()
+        self.play(
+            FadeIn(mandelbrot_image),
+            run_time=4
+        )
+        self.wait(2)'''
+
+        # manim -pqh test2.py Mandelbrot
+
+
+
 ###################################################################################################################
 
 
