@@ -1578,8 +1578,10 @@ class Scene2(Scene):
 
         r_tot_1=Rectangle(width=16, height=9, color=REANLEA_BACKGROUND_COLOR).set_opacity(.75).set_z_index(15)
         self.play(
+            water_mark.animate.set_z_index(16),
+        )
+        self.play(
             FadeIn(r_tot_1),
-            water_mark.animate.set_z_index(17),
             run_time=2
         )
         self.play(
@@ -1593,12 +1595,26 @@ class Scene2(Scene):
         )
 
         self.wait(2)
-        
 
+
+        '''self.play(
+            *[FadeOut(mobj) for mobj in self.mobjects],
+            run_time=3
+        ) '''
+
+        self.play(
+            r_tot_1.animate.set_opacity(1)
+        )
 
         
 
         self.wait(4)
+        
+
+
+        
+
+        #self.wait(4)
 
 
 
@@ -1612,7 +1628,46 @@ class Scene2(Scene):
 
         # manim -sql anim2.py Scene2
 
+        # manim -o myscene --format=gif -n 178,186 anim2.py Scene2
 
+
+
+class Scene2_1(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        self.wait()
+
+        ## PREVIOUS LAST SCENE  ##
+
+
+        dim_r2=MathTex(
+            "dim",r"(\mathbb{R}^2)","=","2"
+        ).set_z_index(16).scale(2).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_MAGENTA)
+        dim_r2[1:].shift(.1*RIGHT)
+        
+        b2=underline_bez_curve().next_to(dim_r2,DOWN).scale(2).set_z_index(16)
+
+        grp_prv_scn=VGroup(dim_r2,b2)
+
+        self.add(grp_prv_scn)
+
+
+
+        # manim -pqh anim2.py Scene2_1
+
+        # manim -pql anim2.py Scene2_1
+
+        # manim -sqk anim2.py Scene2_1
+
+        # manim -sql anim2.py Scene2_1
+
+        
+
+        
 
 
 ###################################################################################################################

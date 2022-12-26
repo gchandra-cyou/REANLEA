@@ -98,7 +98,7 @@ class Mandelbrot(Scene):
 
                 # Color the pixel based on the number of iterations
                 # required for the function to diverge
-                image.putpixel((x, y), (i % 8 * 32, i % 16 * 16, i % 32 * 8))
+                image.putpixel((x, y), (i % 16 * 16,0, 0))
 
         # Create a image object from the image and add it to the scene
         mandelbrot_image = ImageMobject(image)
@@ -108,6 +108,8 @@ class Mandelbrot(Scene):
         
 
         # manim -pqh open_ai.py Mandelbrot
+
+        # manim -sqk open_ai.py Mandelbrot
 
 
 

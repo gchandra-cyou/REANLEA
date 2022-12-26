@@ -75,7 +75,17 @@ class dim2_ex(Scene):
         t1[1:].shift(.1*RIGHT)
         b2=underline_bez_curve().next_to(t1,DOWN).scale(2)
 
-        self.add(t1,b2)
+        #self.add(t1,b2)
+
+        self.wait()
+        self.play(
+            Write(t1),
+            run_time=2
+        )
+        self.play(
+            Create(b2)
+        )
+        self.wait(2)
 
         # manim -pqh test.py dim2_ex
 
