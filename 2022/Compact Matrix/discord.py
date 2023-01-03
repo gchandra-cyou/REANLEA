@@ -5370,7 +5370,7 @@ class FourierDraw(Scene):
         for i, c in enumerate(circles[1:]):
             c.add_updater(lambda x, i=i: x.move_to(circles[i].get_attachment_point()))
         path = TracedPath(
-            circles[-1].get_attachment_point, stroke_width=2, dissipating_time=1
+            circles[-1].get_attachment_point, stroke_width=2, #dissipating_time=1
         )
 
         self.add(*circles, path)
@@ -5379,7 +5379,72 @@ class FourierDraw(Scene):
 
 
         # manim -pqh discord.py FourierDraw
-         
+
+
+
+
+class LineGraphExample(Scene):
+    def construct(self):
+        x_values = [0, 1, 2, 3, 4, 5]
+        y_values = [1, 1.25, 1.5, 2, 2.5, 3.5]
+        plane = NumberPlane(
+            x_range=(0, 10),
+            y_range=(0, 10),
+            x_length=5,
+            y_length=5,
+            axis_config={"include_numbers": True},
+        )
+        line_graph = plane.plot_line_graph(
+            x_values=[0, 1, 2, 3, 4, 5],
+            y_values=[1, 1.25, 1.5, 2, 2.5, 3.5],
+            line_color=GOLD_E,
+            vertex_dot_style=dict(stroke_width=3, fill_color=PURPLE),
+            stroke_width=4,
+        )
+        plane.center()
+        self.play(Write(plane))
+        line = line_graph.submobjects[0]
+        dots = line_graph.submobjects[1:]
+        for dot in dots:
+            self.play(Write(dot))
+        self.play(Write(line))
+
+
+        # manim -pqh discord.py LineGraphExample
+
+
+
+class Focus2Dto3D(ThreeDScene):
+    def construct(self):
+        axes = ThreeDAxes()
+        x_label = axes.get_x_axis_label(Tex("x"))
+        y_label = axes.get_y_axis_label(Tex("y"))
+        z_label = axes.get_z_axis_label(Tex("z"))
+
+        p1 = axes.coords_to_point(2,2,2)
+        proyection = axes.coords_to_point(2,2,0)
+
+        dot = Dot3D(p1,color=MAROON, fill_opacity = 0.5)
+        dashed_line = DashedLine(p1, proyection)
+        dashed_line.set_color(MAROON_D)
+        dashed_line_1 = DashedLine(proyection, p1)
+        arrow = Arrow3D(start=axes.coords_to_point(0,0,0), end = p1, resolution = 8,color = ORANGE)
+        hipotenusa2 = Line3D(start = axes.coords_to_point(0,0,0), end = proyection, color = PURPLE_D)
+        hipotenusa1 = Line3D(start = axes.coords_to_point(0,0,2), end = p1, color = PURPLE_D)
+        # Here
+        self.set_camera_orientation(focal_distance=500)
+        self.move_camera(phi = 75*DEGREES, theta = 25*DEGREES)
+        self.add(axes, dashed_line, hipotenusa2, hipotenusa1, arrow, x_label, y_label,z_label)
+        self.move_camera(phi = 90*DEGREES, theta = 0*DEGREES)
+        self.wait()
+
+
+        # manim -pqh discord.py Focus2Dto3D
+
+
+
+
+
 ###################################################################################################################
 
 # NOTE :-
