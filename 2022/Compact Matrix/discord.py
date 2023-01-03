@@ -5306,6 +5306,79 @@ class Hue_Test(Scene):
 
 
         # manim -pqh discord.py Hue_Test
+
+
+class FunctionParts(Scene):
+    def construct(self):
+        ax = Axes(
+            x_range=[0,10,1],
+            y_range=[0,10,1],
+            tips=False,
+        ).add_coordinates()
+        def func(x):
+            return x**2 if 0 <= x < 1 else x
+        graph = ax.plot(func)
+        #self.add(ax, graph)
+
+        self.wait()
+        self.play(
+            Create(ax)
+        )
+        self.play(
+            Create(graph)
+        )
+        self.wait(2)
+
+        # manim -pqh discord.py FunctionParts
+
+
+
+class VecCirc(VGroup):
+    def __init__(self, vt, factor, scale, **kwargs):
+        super().__init__(**kwargs)
+        self.factor = factor
+        self.vt = vt
+        self.circle = Circle(stroke_opacity=0.3).scale(scale)
+        self.vec = Vector(UP)
+        self.add(self.circle, self.vec)
+        self.add_updater(self.update_state)
+        self.set_value = self.vt.set_value
+        self.get_value = self.vt.get_value
+
+    @staticmethod
+    def update_state(instance: "VecCirc", dt):
+        instance.vec.put_start_and_end_on(
+            instance.circle.get_center(),
+            instance.circle.point_from_proportion(instance.get_current_t()),
+        )
+
+    def get_attachment_point(self):
+        return self.circle.point_from_proportion(self.get_current_t())
+
+    def get_current_t(self):
+        return self.vt.get_value() * self.factor % 1
+
+
+class FourierDraw(Scene):
+    def construct(self):
+        k = ValueTracker(0)
+        degree = 10
+        circles = [
+            VecCirc(k, np.sin(i), (i + 1) / degree) for i in range(degree)
+        ]
+        circles.reverse()
+        for i, c in enumerate(circles[1:]):
+            c.add_updater(lambda x, i=i: x.move_to(circles[i].get_attachment_point()))
+        path = TracedPath(
+            circles[-1].get_attachment_point, stroke_width=2, dissipating_time=1
+        )
+
+        self.add(*circles, path)
+
+        self.play(k.animate.set_value(4), run_time=10)
+
+
+        # manim -pqh discord.py FourierDraw
          
 ###################################################################################################################
 
