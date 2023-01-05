@@ -4308,6 +4308,58 @@ class Mandelbrot(Scene):
 
 
 
+
+class PythagoreanIdentity(Scene):
+    def construct(self):
+        
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        self.wait()
+
+
+        # SCENE
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(-2)
+
+        
+
+
+        dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(0,0))
+        dt_2=Dot().set_color(REANLEA_PURPLE).move_to(ax_1.c2p(3,2))
+        ln_1=Line(start=dt_1.get_center(), end=dt_2.get_center()).set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA])
+        
+        
+        self.wait()
+        self.play(
+            Write(ln_1)
+        )
+        self.wait(3)
+
+        self.play(
+            Write(dt_1)
+        )
+        self.play(
+            Write(dt_2)
+        )
+
+        self.wait(2)
+
+
+        # manim -pqh test2.py PythagoreanIdentity
+
+        # manim -sqk test2.py PythagoreanIdentity
+
 ###################################################################################################################
 
 
