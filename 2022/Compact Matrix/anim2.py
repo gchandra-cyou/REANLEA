@@ -1697,12 +1697,15 @@ class Scene3(Scene):
 
         dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(0,0))
         dt_2=Dot().set_color(REANLEA_PURPLE).move_to(ax_1.c2p(3,2))
-        ln_1=Line(start=dt_1.get_center(), end=dt_2.get_center()).set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA])
+        dt_3=Dot().set_color(REANLEA_SLATE_BLUE).move_to(ax_1.c2p(3,0))
+        ln_1=Line(start=dt_1.get_center(), end=dt_2.get_center()).set_stroke(width=5, color=[REANLEA_PURPLE,REANLEA_AQUA])
+        ln_2=Line(start=dt_1.get_center(), end=dt_3.get_center()).set_stroke(width=5, color=[REANLEA_SLATE_BLUE,REANLEA_AQUA])
+        ln_3=Line(start=dt_3.get_center(), end=dt_2.get_center()).set_stroke(width=5, color=[REANLEA_SLATE_BLUE,REANLEA_VIOLET])
         
         
         self.wait()
         self.play(
-            Create(ln_1)
+            Create(ln_1),
         )
         self.wait(3)
 
@@ -1716,10 +1719,86 @@ class Scene3(Scene):
         self.wait(2)
 
 
+        r_tot_1=Rectangle(width=16, height=9, color=REANLEA_BACKGROUND_COLOR).set_opacity(.75).set_z_index(2)
+        self.play(
+            water_mark.animate.set_z_index(3),
+        )
+        self.play(
+            FadeIn(r_tot_1),
+            run_time=2
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            txt_1=Text("Pythagoras Theorem", font=fonts[0])
+            txt_1.set_color_by_gradient(REANLEA_TXT_COL_LIGHTER).set_z_index(4)
+
+        self.play(
+            Create(txt_1)
+        )
+        self.wait()
+
+        self.play(
+            txt_1.animate.scale(.5).shift(3*UP)
+        )
+
+        undr_bez=underline_bez_curve().scale(1.25).next_to(txt_1, DOWN).shift(.2*UP).set_z_index(4)
+
+        self.play(
+            Write(undr_bez)
+        )
+    
+
+        sym_1=Text("\" ").scale(3).set_color_by_gradient(REANLEA_SLATE_BLUE).set_z_index(4).move_to(5*LEFT+.75*UP).rotate(PI)
+        self.play(
+            Create(sym_1)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            txt_2 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "In a right-angled triangle, the square of the hypotenuse ",
+                "side is equal to the sum of squares of the other two sides."
+            )]).arrange_submobjects(DOWN).scale(0.4).set_color(REANLEA_GREY).set_z_index(4)
+            txt_2.move_to(ORIGIN)
+        
+        self.play(
+            AddTextWordByWord(txt_2),
+            run_time=6
+        )
+        self.wait(3)
+
+        self.play(
+            FadeOut(r_tot_1),
+            FadeOut(txt_2),
+            FadeOut(sym_1),
+            water_mark.animate.set_z_index(-100)
+        )
+        self.wait(2)
+
+        self.play(
+            Create(ln_3.reverse_direction().set_z_index(-1))
+        )
+        self.play(
+            Write(dt_3)
+        )
+        self.play(
+            Create(ln_2)
+        )
+
+        self.wait(4)
+
         # manim -pqh anim2.py Scene3
 
         # manim -sqk anim2.py Scene3
-        
+
+
+###################################################################################################################
+
+# Changing FONTS : import any font from Google
+# some of my fav fonts: Cinzel,Kalam,Prata,Kaushan Script,Cormorant, Handlee,Monoton, Bad Script, Reenie Beanie, 
+# Poiret One,Merienda,Julius Sans One,Merienda One,Cinzel Decorative, Montserrat, Cousine, Courier Prime , The Nautigal
+# Marcellus SC,Contrail One,Thasadith,Spectral SC,Dongle,Cormorant SC,Comfortaa, Josefin Sans (LOVE), Fuzzy Bubbles
+
+###################################################################################################################
 
 
 ###################################################################################################################
