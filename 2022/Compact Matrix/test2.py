@@ -4328,16 +4328,24 @@ class PythagoreanIdentity(Scene):
             tips=False, 
             axis_config={
                 "font_size": 24,
-                "include_ticks": False,
+                #"include_ticks": False,
             }, 
         ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(-2)
+        
+        
 
         
 
 
         dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(0,0))
         dt_2=Dot().set_color(REANLEA_PURPLE).move_to(ax_1.c2p(3,2))
+        dt_3=Dot().set_color(REANLEA_PURPLE).move_to(ax_1.c2p(3,0))
         ln_1=Line(start=dt_1.get_center(), end=dt_2.get_center()).set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA])
+        ln_2=Line(start=dt_1.get_center(), end=dt_3.get_center()).set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA])
+        ln_3=Line(start=dt_3.get_center(), end=dt_2.get_center()).set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA])
+
+        a_len=ax_1.c2p(3,0)[0]-ax_1.c2p(0,0)[0]
+        b_len=ax_1.c2p(3,2)[1]-ax_1.c2p(3,0)[1]
         
         
         self.wait()
@@ -4352,13 +4360,332 @@ class PythagoreanIdentity(Scene):
         self.play(
             Write(dt_2)
         )
+        self.play(
+            Create(ln_2)
+        )
+        self.play(
+            Write(dt_3)
+        )
+        self.play(
+            Create(ln_3.set_z_index(-1))
+        )
 
         self.wait(2)
+
+        tr_angl=Polygon(dt_1.get_center(),dt_2.get_center(),dt_3.get_center()).set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA, REANLEA_SLATE_BLUE]).set_z_index(-1)
+
+        self.play(
+            FadeIn(tr_angl)
+        )
+
+        self.play(
+            FadeOut(ln_1),
+            FadeOut(ln_2),
+            FadeOut(ln_3),
+        )
+
+        self.wait()
+
+        self.play(
+            tr_angl.animate.set_fill(opacity=1, color=REANLEA_BLUE)
+        )
+        '''self.play(
+            tr_angl.animate.set_stroke(width=2, color=REANLEA_WHITE)
+        )'''
+
+        self.play(
+            FadeOut(dt_1),
+            FadeOut(dt_2),
+            FadeOut(dt_3),
+        )
+
+        a_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=PURE_GREEN).save_state()
+        b_len_ln=DashedLine(start=ax_1.c2p(3,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=PURE_GREEN).save_state()
+        c_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=PURE_GREEN).save_state()
+
+        self.play(
+            Create(c_len_ln)
+        )
+        self.play(
+            Create(a_len_ln)
+        )
+        self.play(
+            Create(b_len_ln)
+        )
+
+        a_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=PURE_GREEN).move_to(4*RIGHT+2.5*DOWN)
+        b_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(2,0)).set_stroke(width=3, color=PURE_GREEN).move_to(4*RIGHT+2.75*DOWN)
+        c_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3.61,0)).set_stroke(width=3, color=PURE_GREEN).move_to(4*RIGHT+2.25*DOWN)
+
+        self.play(
+            ReplacementTransform(c_len_ln,c_len_ln_1)
+        )
+        self.play(
+            ReplacementTransform(a_len_ln,a_len_ln_1)
+        )
+        self.play(
+            ReplacementTransform(b_len_ln,b_len_ln_1)
+        )
+        
+        
+        tr_angl_0=tr_angl.copy().set_z_index(-2)
+        tr_angl_1=tr_angl.copy().set_z_index(-2)
+        
+
+        self.add(tr_angl_1)
+
+        self.play(
+            tr_angl_1.animate.shift(3.5*RIGHT)
+        )
+
+        tr_angl_1_ref=tr_angl_1.copy()
+
+        tr_angl_2=tr_angl_1.copy().rotate(PI/2,about_point=ax_1.c2p(4,0))
+        
+
+        rot_tracker=ValueTracker(0)
+
+        tr_angl_1.add_updater(
+            lambda x : x.become(tr_angl_1_ref.copy()).rotate(
+                rot_tracker.get_value(), about_point=ax_1.c2p(4,0)
+            )
+        )
+        self.play(
+            rot_tracker.animate.set_value(PI/2)
+        )
+        
+        self.play(
+            FadeOut(tr_angl_1),
+            FadeIn(tr_angl_2)
+        )
+        
+        self.play(
+            tr_angl_2.animate.shift((ax_1.c2p(4,0)-ax_1.c2p(3,0))[0]*LEFT)
+        )
+        self.play(
+            tr_angl_2.animate.shift((ax_1.c2p(3,2)-ax_1.c2p(3,0))[1]*UP)
+        )
+
+        tr_angl_grp_1=VGroup(tr_angl,tr_angl_2)
+        tr_angl_grp_2=tr_angl_grp_1.copy().set_z_index(-3)
+        self.add(tr_angl_grp_2)
+
+        self.play(
+            tr_angl_grp_2.animate.rotate(PI).shift((ax_1.c2p(2,0)-ax_1.c2p(0,0))[0]*LEFT)
+        )
+
+        sq_grp_1=VGroup(tr_angl_grp_1,tr_angl_grp_2)
+
+        
+        sq_2=Square(side_length=(ax_1.c2p(1,0)[0]-ax_1.c2p(0,0)[0])*5).set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA, REANLEA_SLATE_BLUE]).set_fill(color=REANLEA_BLUE_LAVENDER, opacity=1).set_z_index(-5)
+
+        sq_2.move_to(ax_1.c2p(6.5,2.5))
+
+        sq_2_ref=sq_2.copy()
+
+
+        triangles = [tr_angl_2.copy() for i in range(0, 8)]
+        time = 0.3
+
+        triangles[0].next_to(sq_2.get_corner(UR), DL, buff=0)
+        triangles[1].rotate(PI/2).next_to(sq_2.get_corner(UL), DR, buff=0)
+        triangles[2].rotate(PI).next_to(sq_2.get_corner(DL), UR, buff=0)
+        triangles[3].rotate(-PI/2).next_to(sq_2.get_corner(DR), UL, buff=0)
+
+
+        sq_2_grp=VGroup(triangles[0],triangles[1],triangles[2],triangles[3])
+
+        self.play(
+            TransformMatchingShapes(sq_grp_1,sq_2_grp)
+        )
+
+        self.play(
+            FadeIn(sq_2)
+        )
+
+        '''self.play(
+            Unwrite(sq_2),
+            Unwrite(sq_2_grp)
+        )'''
+
+        
+        sq_2_grp_ref=VGroup(sq_2_ref, triangles[4].become(triangles[0]), triangles[5].become(triangles[1]), triangles[6].become(triangles[2])
+        , triangles[7].become(triangles[3]))
+
+        equal = MathTex("=").scale(1.5).move_to(ax_1.c2p(2,2.5)).set_color_by_gradient(REANLEA_AQUA)
+
+        self.play(
+            sq_2_grp_ref.animate.move_to(ax_1.c2p(-2.5,2.5))
+        )
+
+        self.play(
+            Write(equal)
+        )
+
+        self.play(triangles[7].animate.move_to(Line(triangles[5].get_corner(DL), triangles[5].get_corner(UR)).get_center()))
+        self.play(triangles[4].animate.next_to(sq_2_ref.get_corner(DR), UL, buff=0))
+        self.play(triangles[6].animate.next_to(sq_2_ref.get_corner(DR), UL, buff=0))
+        self.wait(0.5)
+
+        c_square = Difference(sq_2, Union(triangles[0], triangles[1], triangles[2], triangles[3]), fill_color=REANLEA_BLUE_LAVENDER, fill_opacity=1)
+        a_square = Square(side_length=a_len, fill_color=REANLEA_BLUE_LAVENDER, fill_opacity=1).next_to(sq_2_ref.get_corner(DL), UR, buff=0)
+        b_square = Square(side_length=b_len, fill_color=REANLEA_BLUE_LAVENDER, fill_opacity=1).next_to(sq_2_ref.get_corner(UR), DL, buff=0)
+
+        c_square.set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA, REANLEA_SLATE_BLUE]).set_z_index(-1)
+        b_square.set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA, REANLEA_SLATE_BLUE]).set_z_index(-1)
+        a_square.set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA, REANLEA_SLATE_BLUE]).set_z_index(-1)
+
+        
+        self.add(c_square)
+        #sq_2_ref.set_fill(opacity=0)
+        a_b_sq=VGroup(a_square,b_square)
+        self.add(a_b_sq)
+
+        triangles_grp=VGroup()
+        for i in range(0,8):
+            triangles_grp.add(triangles[i])
+
+        self.play(
+            Unwrite(triangles_grp),
+            Unwrite(sq_2),
+            Unwrite(sq_2_ref)
+        )
+        
+
+
+
+        
+
+        self.wait(4)
+
+
+        
 
 
         # manim -pqh test2.py PythagoreanIdentity
 
         # manim -sqk test2.py PythagoreanIdentity
+
+
+
+class PythagoreanIdentity_1(Scene):
+    def construct(self):
+        
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        self.wait()
+
+
+        # SCENE
+
+        triangle = Polygon(2 * LEFT, 2 * RIGHT, 2 * LEFT + 3 * UP, stroke_color=WHITE, fill_color=REANLEA_BLUE, fill_opacity=1
+        , stroke_width=DEFAULT_STROKE_WIDTH/2).scale(0.5).move_to(ORIGIN)
+        self.play(DrawBorderThenFill(triangle), run_time=0.8)
+        a = MathTex("a").next_to(triangle, direction=LEFT, buff=0.1)
+        b = MathTex("b").next_to(triangle, direction=DOWN, buff=0.08)
+        c = MathTex("c").next_to(Line(triangle.get_corner(DR), triangle.get_corner(UL)).get_center(), direction=UR, buff=0.05)
+        labels = VGroup(a, b, c)
+        self.play(Write(labels))
+
+        square = Square(side_length=0.2, stroke_width=DEFAULT_STROKE_WIDTH/2).next_to(triangle.get_corner(DL), UR, buff=0)
+        self.play(FadeIn(square), run_time=0.6)
+        self.play(FadeOut(square), run_time=0.4)
+
+        square = Square(side_length=3+4, fill_color=REANLEA_BLUE_LAVENDER, fill_opacity=1).scale(0.5)
+        self.play(FadeOut(triangle), Unwrite(labels))
+        self.play(Write(square))
+        self.play(square.animate.move_to(2.5*RIGHT))
+
+        triangles = [triangle.copy() for i in range(0, 8)]
+        time = 0.3
+        self.play(Write(triangles[0].next_to(square.get_corner(DL), UR, buff=0)), run_time=time)
+        self.play(Write(triangles[1].rotate(-PI/2).next_to(square.get_corner(UL), DR, buff=0)), run_time=time)
+        self.play(Write(triangles[2].rotate(PI).next_to(square.get_corner(UR), DL, buff=0)), run_time=time)
+        self.play(Write(triangles[3].rotate(PI/2).next_to(square.get_corner(DR), UL, buff=0)), run_time=time)
+
+        c_1 = MathTex("c").next_to(Line(triangles[0].get_corner(DR), triangles[0].get_corner(UL)).get_center(), direction=UR, buff=0.05)
+        c_2 = MathTex("c").next_to(Line(triangles[1].get_corner(DL), triangles[1].get_corner(UR)).get_center(), direction=DR, buff=0.05)
+        labels = VGroup(c_1, c_2)
+        self.play(Write(labels))
+        c2 = MathTex(r"c^2").move_to(square.get_center())
+        self.play(ReplacementTransform(labels, c2))
+        self.add_foreground_mobject(c2)
+
+        square2 = square.copy()
+        dupelicate = VGroup(square2, triangles[4].become(triangles[0]), triangles[5].become(triangles[1]), triangles[6].become(triangles[2])
+        , triangles[7].become(triangles[3]))
+        self.play(dupelicate.animate.move_to(2.5*LEFT))
+        equal = MathTex("=")
+        self.play(Write(equal))
+
+        self.play(triangles[7].animate.move_to(Line(triangles[5].get_corner(DL), triangles[5].get_corner(UR)).get_center()))
+        self.play(triangles[4].animate.next_to(square2.get_corner(DR), UL, buff=0))
+        self.play(triangles[6].animate.next_to(square2.get_corner(DR), UL, buff=0))
+        self.wait(0.5)
+
+        a_1 = MathTex("a").next_to(triangles[7], direction=DOWN, buff=0.1)
+        a_2 = MathTex("a").next_to(triangles[4], direction=LEFT, buff=0.1)
+        b_1 = MathTex("b").next_to(triangles[7], direction=RIGHT, buff=0.1)
+        b_2 = MathTex("b").next_to(triangles[6], direction=UP, buff=0.1)
+        labels = VGroup(a_1, a_2, b_1, b_2)
+        self.play(Write(labels))
+        self.wait(0.5)
+
+        c_square = Difference(square, Union(triangles[0], triangles[1], triangles[2], triangles[3]), fill_color=REANLEA_BLUE_LAVENDER, fill_opacity=1)
+        a_square = Square(side_length=3, fill_color=REANLEA_BLUE_LAVENDER, fill_opacity=1).scale(0.5).next_to(square2.get_corner(DL), UR, buff=0)
+        b_square = Square(side_length=4, fill_color=REANLEA_BLUE_LAVENDER, fill_opacity=1).scale(0.5).next_to(square2.get_corner(UR), DL, buff=0)
+        c_square.set_stroke(width=DEFAULT_STROKE_WIDTH / 2)
+        a_square.set_stroke(width=DEFAULT_STROKE_WIDTH / 2)
+        b_square.set_stroke(width=DEFAULT_STROKE_WIDTH / 2)
+
+        a2 = MathTex(r"a^2").move_to(a_square.get_center())
+        b2 = MathTex(r"b^2").move_to(b_square.get_center())
+        new_labels = VGroup(a2, b2)
+        self.play(ReplacementTransform(labels, new_labels))
+        self.add_foreground_mobject(a2)
+        self.add_foreground_mobject(b2)
+        self.wait(0.5)
+
+        square.set_fill(opacity=0)
+        self.add(c_square)
+        square2.set_fill(opacity=0)
+        left_over = VGroup(a_square, b_square)
+        self.add(left_over)
+        
+        triangles_group = VGroup(triangles[0])
+        for i in range(1, 8):
+            triangles_group.add(triangles[i])
+        self.play(Unwrite(triangles_group), Unwrite(square), Unwrite(square2))
+        self.play(c_square.animate.set_stroke(width=DEFAULT_STROKE_WIDTH), a_square.animate.set_stroke(width=DEFAULT_STROKE_WIDTH), 
+        b_square.animate.set_stroke(width=DEFAULT_STROKE_WIDTH))
+
+        identity = MathTex("a^2", "+", "b^2", "=", "c^2").move_to(3.5 * DOWN)
+        self.play(GrowFromCenter(triangle),
+        c_square.animate.move_to(ORIGIN).shift(0.75 * RIGHT + 1 * UP),
+        a_square.animate.next_to(triangle, LEFT, buff=0),
+        b_square.animate.next_to(triangle, DOWN, buff=0),
+        ReplacementTransform(a2, identity[0]),
+        ReplacementTransform(b2, identity[2]),
+        ReplacementTransform(equal, identity[3]),
+        ReplacementTransform(c2, identity[4]),
+        GrowFromCenter(identity[1]))
+
+        a = MathTex("a").next_to(triangle, direction=LEFT, buff=0.1)
+        b = MathTex("b").next_to(triangle, direction=DOWN, buff=0.08)
+        c = MathTex("c").next_to(Line(triangle.get_corner(DR), triangle.get_corner(UL)).get_center(), direction=UR, buff=0.05)
+        labels = VGroup(a, b, c)
+        self.play(Write(labels))
+        square = Square(side_length=0.2, stroke_width=DEFAULT_STROKE_WIDTH/2).next_to(triangle.get_corner(DL), UR, buff=0)
+        self.play(FadeIn(square), run_time=0.6)
+        
+        self.wait()
+
+
+        # manim -pqh test2.py PythagoreanIdentity_1
+
+        # manim -sqk test2.py PythagoreanIdentity_1
 
 ###################################################################################################################
 
