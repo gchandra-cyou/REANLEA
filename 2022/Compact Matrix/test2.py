@@ -4399,9 +4399,11 @@ class PythagoreanIdentity(Scene):
             FadeOut(dt_3),
         )
 
-        a_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=PURE_GREEN).save_state()
-        b_len_ln=DashedLine(start=ax_1.c2p(3,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=PURE_GREEN).save_state()
-        c_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=PURE_GREEN).save_state()
+        a_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=REANLEA_YELLOW).save_state()
+        b_len_ln=DashedLine(start=ax_1.c2p(3,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=PURE_RED).save_state()
+        c_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=REANLEA_BLUE_DARKER)
+
+        
 
         self.play(
             Create(c_len_ln)
@@ -4412,10 +4414,13 @@ class PythagoreanIdentity(Scene):
         self.play(
             Create(b_len_ln)
         )
+        self.wait(2)
 
-        a_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=PURE_GREEN).move_to(4*RIGHT+2.5*DOWN)
-        b_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(2,0)).set_stroke(width=3, color=PURE_GREEN).move_to(4*RIGHT+2.75*DOWN)
-        c_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3.61,0)).set_stroke(width=3, color=PURE_GREEN).move_to(4*RIGHT+2.25*DOWN)
+        a_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=REANLEA_YELLOW).move_to(3.74*RIGHT+2.5*DOWN)
+        b_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(2,0)).set_stroke(width=3, color=PURE_RED).move_to(3.31*RIGHT+2.75*DOWN)
+        c_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3.61,0)).set_stroke(width=3, color=REANLEA_BLUE_SKY).move_to(4*RIGHT+2.25*DOWN)
+
+        c_len_ln.set_stroke(width=3, color=REANLEA_BLUE_SKY).save_state()
 
         self.play(
             ReplacementTransform(c_len_ln,c_len_ln_1)
@@ -4426,9 +4431,11 @@ class PythagoreanIdentity(Scene):
         self.play(
             ReplacementTransform(b_len_ln,b_len_ln_1)
         )
+
+        self.wait(2)
         
         
-        tr_angl_0=tr_angl.copy().set_z_index(-2)
+        tr_angl_0=tr_angl.copy().set_stroke(width=1).set_z_index(-6)
         tr_angl_1=tr_angl.copy().set_z_index(-2)
         
 
@@ -4550,6 +4557,43 @@ class PythagoreanIdentity(Scene):
             Unwrite(sq_2),
             Unwrite(sq_2_ref)
         )
+
+        self.wait(2)
+
+
+        self.play(
+            Restore(a_len_ln),
+            Restore(b_len_ln),
+            Restore(c_len_ln)
+        )
+
+        self.play(
+            c_len_ln.animate.set_stroke(width=3, color=REANLEA_BLUE_SKY)
+        )
+
+        self.wait(2)
+
+        
+        self.play(
+            FadeOut(equal),
+            c_square.animate.shift((ax_1.c2p(6,0)[0]-ax_1.c2p(0,0)[0])*LEFT)
+        )
+        self.play(
+            b_square.animate.shift((ax_1.c2p(3,0)[0]-ax_1.c2p(-2,3)[0])*RIGHT+(ax_1.c2p(-2,3)[1]-ax_1.c2p(3,0)[1])*DOWN)
+        )
+        self.play(
+            a_square.animate.shift((ax_1.c2p(0,0)[0]-ax_1.c2p(-5,3)[0])*RIGHT+(ax_1.c2p(-5,3)[1]-ax_1.c2p(0,0)[1])*DOWN)
+        )
+        self.wait(2)
+
+        '''self.play(
+            FadeIn(tr_angl_0)
+        )
+        self.play(
+            FadeOut(a_len_ln),
+            FadeOut(b_len_ln),
+            FadeOut(c_len_ln)
+        )'''
         
 
 
@@ -4686,6 +4730,149 @@ class PythagoreanIdentity_1(Scene):
         # manim -pqh test2.py PythagoreanIdentity_1
 
         # manim -sqk test2.py PythagoreanIdentity_1
+
+
+class PythagoreanIdentity_2(Scene):
+    def construct(self):
+        
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        self.wait()
+
+
+        # SCENE
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(-2)
+        
+        
+
+        
+
+
+        dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(0,0))
+        dt_2=Dot().set_color(REANLEA_PURPLE).move_to(ax_1.c2p(3,2))
+        dt_3=Dot().set_color(REANLEA_PURPLE).move_to(ax_1.c2p(3,0))
+        ln_1=Line(start=dt_1.get_center(), end=dt_2.get_center()).set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA])
+        ln_2=Line(start=dt_1.get_center(), end=dt_3.get_center()).set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA])
+        ln_3=Line(start=dt_3.get_center(), end=dt_2.get_center()).set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA])
+
+        a_len=ax_1.c2p(3,0)[0]-ax_1.c2p(0,0)[0]
+        b_len=ax_1.c2p(3,2)[1]-ax_1.c2p(3,0)[1]
+        
+        
+        self.wait()
+        self.play(
+            Write(ln_1)
+        )
+        self.wait(3)
+
+        self.play(
+            Write(dt_1)
+        )
+        self.play(
+            Write(dt_2)
+        )
+        self.play(
+            Create(ln_2)
+        )
+        self.play(
+            Write(dt_3)
+        )
+        self.play(
+            Create(ln_3.set_z_index(-1))
+        )
+
+        self.wait(2)
+
+        tr_angl=Polygon(dt_1.get_center(),dt_2.get_center(),dt_3.get_center()).set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA, REANLEA_SLATE_BLUE]).set_z_index(-1)
+
+        self.play(
+            FadeIn(tr_angl)
+        )
+
+        self.play(
+            FadeOut(ln_1),
+            FadeOut(ln_2),
+            FadeOut(ln_3),
+        )
+
+        self.wait()
+
+        self.play(
+            tr_angl.animate.set_fill(opacity=1, color=REANLEA_BLUE)
+        )
+        '''self.play(
+            tr_angl.animate.set_stroke(width=2, color=REANLEA_WHITE)
+        )'''
+
+        self.play(
+            FadeOut(dt_1),
+            FadeOut(dt_2),
+            FadeOut(dt_3),
+        )
+
+        a_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=REANLEA_YELLOW).save_state()
+        b_len_ln=DashedLine(start=ax_1.c2p(3,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=PURE_RED).save_state()
+        c_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=REANLEA_BLUE_DARKER).save_state()
+
+        self.play(
+            Create(c_len_ln)
+        )
+        self.play(
+            Create(a_len_ln)
+        )
+        self.play(
+            Create(b_len_ln)
+        )
+        self.wait(2)
+
+        a_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=REANLEA_YELLOW).move_to(3.74*RIGHT+2.5*DOWN)
+        b_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(2,0)).set_stroke(width=3, color=PURE_RED).move_to(3.31*RIGHT+2.75*DOWN)
+        c_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3.61,0)).set_stroke(width=3, color=REANLEA_BLUE_SKY).move_to(4*RIGHT+2.25*DOWN)
+
+        self.play(
+            ReplacementTransform(c_len_ln,c_len_ln_1)
+        )
+        self.play(
+            ReplacementTransform(a_len_ln,a_len_ln_1)
+        )
+        self.play(
+            ReplacementTransform(b_len_ln,b_len_ln_1)
+        )
+
+        self.wait(2)
+
+        self.play(
+            Restore(a_len_ln),
+            Restore(b_len_ln),
+            Restore(c_len_ln)
+        )
+        
+        
+        
+        
+
+        self.wait(4)
+
+
+        
+
+
+        # manim -pqh test2.py PythagoreanIdentity_2
+
+        # manim -sqk test2.py PythagoreanIdentity_2
+
 
 ###################################################################################################################
 
