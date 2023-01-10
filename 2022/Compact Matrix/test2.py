@@ -4941,6 +4941,14 @@ class PythagoreanIdentity_2(Scene):
             Restore(c_len_ln)
         )
         
+        pythagoras_thm=MathTex(r"c^2","=",r"a^2","+",r"b^2").to_corner(UR, buff=1)
+
+        sr_pythagoras_thm=SurroundingRectangle(pythagoras_thm, color=REANLEA_WELDON_BLUE, corner_radius=.125, buff=.25)
+
+        self.play(
+            Write(pythagoras_thm)
+        )
+        
         
         
         

@@ -1847,8 +1847,8 @@ class Scene3(Scene):
         )
         self.wait(2)
 
-        a_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=PURE_GREEN).move_to(4.24*RIGHT+3*DOWN)
-        b_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(2,0)).set_stroke(width=3, color=PURE_RED).move_to(3.81*RIGHT+3.25*DOWN)
+        a_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=PURE_GREEN).move_to(4.24*RIGHT+3.05*DOWN)
+        b_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(2,0)).set_stroke(width=3, color=PURE_RED).move_to(3.81*RIGHT+3.35*DOWN)
         c_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3.61,0)).set_stroke(width=3, color=REANLEA_BLUE_SKY).move_to(4.5*RIGHT+2.75*DOWN)
 
         a_ln_lab_1=MathTex("a").scale(.6).set_color(PURE_GREEN).next_to(a_len_ln_1,LEFT)
@@ -2150,6 +2150,37 @@ class Scene3(Scene):
         self.play(
             FadeIn(tr_angl_0)
         )
+
+        a_sq_lbl_2=MathTex(r"a^2").scale(.6).set_color(REANLEA_GREEN_DARKEST).move_to(a_square
+        .get_center())
+        b_sq_lbl_2=MathTex(r"b^2").scale(.6).set_color(PURE_RED).move_to(b_square.get_center())
+        c_sq_lbl_2=MathTex(r"c^2").scale(.6).set_color(REANLEA_BLUE_DARKER).move_to(c_square.get_center())
+
+        sqr_lbl_grp=VGroup(a_sq_lbl_2,b_sq_lbl_2,c_sq_lbl_2)
+
+        pythagoras_thm=MathTex(r"c^2","=",r"a^2","+",r"b^2").to_corner(UR, buff=1)
+        pythagoras_thm[0].set_color(REANLEA_BLUE_SKY)
+        pythagoras_thm[2].set_color(PURE_GREEN)
+        pythagoras_thm[4].set_color(PURE_RED)
+
+        self.play(
+            ReplacementTransform(sqr_lbl_grp,pythagoras_thm)
+        )
+
+        self.wait(2)
+
+        pythagoras_thm_1=MathTex(r"c","=",r"\sqrt{a^2 + b^2}").to_corner(UR, buff=1)
+        pythagoras_thm_1[0].set_color(REANLEA_BLUE_SKY)
+        pythagoras_thm_1[2][2:4].set_color(PURE_GREEN)
+        pythagoras_thm_1[2][5:7].set_color(PURE_RED)
+        
+
+        self.play(
+            TransformMatchingShapes(pythagoras_thm,pythagoras_thm_1)
+        )
+
+
+
 
         
         '''self.play(
