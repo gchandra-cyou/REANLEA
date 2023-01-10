@@ -4436,7 +4436,7 @@ class PythagoreanIdentity(Scene):
         
         
         tr_angl_0=tr_angl.copy().set_stroke(width=1).set_z_index(-6)
-        tr_angl_1=tr_angl.copy().set_z_index(-2)
+        tr_angl_1=tr_angl.copy().set_z_index(-2).save_state()
         
 
         self.add(tr_angl_1)
@@ -4444,10 +4444,20 @@ class PythagoreanIdentity(Scene):
         self.play(
             tr_angl_1.animate.shift(3.5*RIGHT)
         )
+        
+        tr_angl_1_0=tr_angl_1.copy()
+        self.add(tr_angl_1_0)
 
-        tr_angl_1_ref=tr_angl_1.copy()
+        tr_angl_1_ref=tr_angl_1.copy().save_state()
 
         tr_angl_2=tr_angl_1.copy().rotate(PI/2,about_point=ax_1.c2p(4,0))
+        tr_angl_3=tr_angl_1.copy().rotate(PI,about_point=ax_1.c2p(4,0))
+        tr_angl_4=tr_angl_1.copy().rotate(3*PI/2,about_point=ax_1.c2p(4,0))
+
+        #self.add(tr_angl_3,tr_angl_4)
+        
+
+
         
 
         rot_tracker=ValueTracker(0)
@@ -4465,6 +4475,7 @@ class PythagoreanIdentity(Scene):
             FadeOut(tr_angl_1),
             FadeIn(tr_angl_2)
         )
+
         
         self.play(
             tr_angl_2.animate.shift((ax_1.c2p(4,0)-ax_1.c2p(3,0))[0]*LEFT)
@@ -4472,16 +4483,58 @@ class PythagoreanIdentity(Scene):
         self.play(
             tr_angl_2.animate.shift((ax_1.c2p(3,2)-ax_1.c2p(3,0))[1]*UP)
         )
+        self.wait(2)
 
-        tr_angl_grp_1=VGroup(tr_angl,tr_angl_2)
-        tr_angl_grp_2=tr_angl_grp_1.copy().set_z_index(-3)
-        self.add(tr_angl_grp_2)
-
+        rot_tracker.set_value(0)
         self.play(
-            tr_angl_grp_2.animate.rotate(PI).shift((ax_1.c2p(2,0)-ax_1.c2p(0,0))[0]*LEFT)
+            FadeIn(tr_angl_1)
+        )
+        
+        self.wait()
+        
+        self.play(
+            rot_tracker.animate.set_value(PI),
+            run_time=1.5
+        )
+        self.play(
+            FadeIn(tr_angl_3),
+            FadeOut(tr_angl_1)
+        )
+        
+        self.play(
+            tr_angl_3.animate.shift((ax_1.c2p(1,5.0825)-ax_1.c2p(1,0))[1]*UP)
+        )
+        self.play(
+            tr_angl_3.animate.shift((ax_1.c2p(4,0)-ax_1.c2p(1,0))[0]*LEFT)
+        )
+        
+        self.wait(2)
+
+        rot_tracker.set_value(0)
+        self.play(
+            FadeIn(tr_angl_1),
+            FadeOut(tr_angl_1_0)
+        )
+        
+        self.wait()
+        
+        self.play(
+            rot_tracker.animate.set_value(-PI/2)
+        )
+        self.play(
+            FadeIn(tr_angl_4),
+            FadeOut(tr_angl_1)
         )
 
-        sq_grp_1=VGroup(tr_angl_grp_1,tr_angl_grp_2)
+        self.play(
+            tr_angl_4.animate.shift((ax_1.c2p(-2,3.0825)-ax_1.c2p(-2,0))[1]*UP)
+        )
+        self.play(
+            tr_angl_4.animate.shift((ax_1.c2p(4,0)-ax_1.c2p(-2.0825,0))[0]*LEFT)
+        )
+
+        tr_angl_grp_1=VGroup(tr_angl,tr_angl_2,tr_angl_3,tr_angl_4)
+
 
         
         sq_2=Square(side_length=(ax_1.c2p(1,0)[0]-ax_1.c2p(0,0)[0])*5).set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA, REANLEA_SLATE_BLUE]).set_fill(color=REANLEA_BLUE_LAVENDER, opacity=1).set_z_index(-5)
@@ -4503,7 +4556,7 @@ class PythagoreanIdentity(Scene):
         sq_2_grp=VGroup(triangles[0],triangles[1],triangles[2],triangles[3])
 
         self.play(
-            TransformMatchingShapes(sq_grp_1,sq_2_grp)
+            TransformMatchingShapes(tr_angl_grp_1,sq_2_grp)
         )
 
         self.play(
@@ -4528,6 +4581,15 @@ class PythagoreanIdentity(Scene):
         self.play(
             Write(equal)
         )
+
+        sq_eras=Square(side_length=.125).set_fill(color=REANLEA_BACKGROUND_COLOR, opacity=1).set_stroke(color=REANLEA_BACKGROUND_COLOR).set_z_index(7)
+
+        sq_eras_1=sq_eras.copy().move_to(ax_1.c2p(-5.1265,3))
+        sq_eras_2=sq_eras.copy().move_to(ax_1.c2p(0,-.126))
+        sq_eras_3=sq_eras.copy().move_to(ax_1.c2p(.126,0))
+        sq_eras_4=sq_eras.copy().move_to(ax_1.c2p(-2,5.1265))
+        sq_eras_grp=VGroup(sq_eras_1,sq_eras_2,sq_eras_3,sq_eras_4)
+        self.add(sq_eras_grp)
 
         self.play(triangles[7].animate.move_to(Line(triangles[5].get_corner(DL), triangles[5].get_corner(UR)).get_center()))
         self.play(triangles[4].animate.next_to(sq_2_ref.get_corner(DR), UL, buff=0))
@@ -4555,10 +4617,13 @@ class PythagoreanIdentity(Scene):
         self.play(
             Unwrite(triangles_grp),
             Unwrite(sq_2),
-            Unwrite(sq_2_ref)
+            Unwrite(sq_2_ref),
+        )
+        self.play(
+            FadeOut(sq_eras_grp)
         )
 
-        self.wait(2)
+        self.wait()
 
 
         self.play(
@@ -4873,6 +4938,19 @@ class PythagoreanIdentity_2(Scene):
 
         # manim -sqk test2.py PythagoreanIdentity_2
 
+
+class SquareFill(Scene):
+    def construct(self):
+        
+        sq=Square().set_fill(color=PURE_GREEN, opacity=1).set_stroke(color=PURE_GREEN)
+        
+        self.play(
+            FadeIn(sq)
+        )
+
+        self.wait(2)
+
+        # manim -sqk test2.py SquareFill
 
 ###################################################################################################################
 

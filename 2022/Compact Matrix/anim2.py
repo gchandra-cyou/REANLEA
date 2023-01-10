@@ -1701,6 +1701,9 @@ class Scene3(Scene):
         ln_1=Line(start=dt_1.get_center(), end=dt_2.get_center()).set_stroke(width=5, color=[REANLEA_PURPLE,REANLEA_AQUA])
         ln_2=Line(start=dt_1.get_center(), end=dt_3.get_center()).set_stroke(width=5, color=[REANLEA_SLATE_BLUE,REANLEA_AQUA])
         ln_3=Line(start=dt_3.get_center(), end=dt_2.get_center()).set_stroke(width=5, color=[REANLEA_SLATE_BLUE,REANLEA_VIOLET])
+
+        a_len=ax_1.c2p(3,0)[0]-ax_1.c2p(0,0)[0]
+        b_len=ax_1.c2p(3,2)[1]-ax_1.c2p(3,0)[1]
         
         
         self.wait()
@@ -1746,6 +1749,8 @@ class Scene3(Scene):
         self.play(
             Write(undr_bez)
         )
+
+        hed_txt_bez=VGroup(txt_1,undr_bez)
     
 
         sym_1=Text("\" ").scale(3).set_color_by_gradient(REANLEA_SLATE_BLUE).set_z_index(4).move_to(5*LEFT+.75*UP).rotate(PI)
@@ -1770,6 +1775,7 @@ class Scene3(Scene):
             FadeOut(r_tot_1),
             FadeOut(txt_2),
             FadeOut(sym_1),
+            hed_txt_bez.animate.scale(.6).move_to(5*LEFT+3*DOWN),
             water_mark.animate.set_z_index(-100)
         )
         self.wait(2)
@@ -1784,7 +1790,299 @@ class Scene3(Scene):
             Create(ln_2)
         )
 
+        self.wait(2)
+
+        tr_angl=Polygon(dt_1.get_center(),dt_2.get_center(),dt_3.get_center()).set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA, REANLEA_SLATE_BLUE]).set_z_index(-1)
+
+        self.play(
+            FadeIn(tr_angl)
+        )
+
+        self.play(
+            FadeOut(ln_1),
+            FadeOut(ln_2),
+            FadeOut(ln_3),
+        )
+
+        self.wait()
+
+        self.play(
+            tr_angl.animate.set_fill(opacity=1, color=REANLEA_BLUE)
+        )
+        '''self.play(
+            tr_angl.animate.set_stroke(width=2, color=REANLEA_WHITE)
+        )'''
+
+        self.play(
+            FadeOut(dt_1),
+            FadeOut(dt_2),
+            FadeOut(dt_3),
+        )
+
+        a_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=REANLEA_YELLOW).save_state()
+        b_len_ln=DashedLine(start=ax_1.c2p(3,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=PURE_RED).save_state()
+        c_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=REANLEA_BLUE_DARKER)
+
+        
+
+        self.play(
+            Create(c_len_ln)
+        )
+        self.play(
+            Create(a_len_ln)
+        )
+        self.play(
+            Create(b_len_ln)
+        )
+        self.wait(2)
+
+        a_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=REANLEA_YELLOW).move_to(4.24*RIGHT+3*DOWN)
+        b_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(2,0)).set_stroke(width=3, color=PURE_RED).move_to(3.81*RIGHT+3.25*DOWN)
+        c_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3.61,0)).set_stroke(width=3, color=REANLEA_BLUE_SKY).move_to(4.5*RIGHT+2.75*DOWN)
+
+        c_len_ln.set_stroke(width=3, color=REANLEA_BLUE_SKY).save_state()
+
+        self.play(
+            ReplacementTransform(c_len_ln,c_len_ln_1)
+        )
+        self.play(
+            ReplacementTransform(a_len_ln,a_len_ln_1)
+        )
+        self.play(
+            ReplacementTransform(b_len_ln,b_len_ln_1)
+        )
+
+        self.wait(2)
+        
+        
+        tr_angl_0=tr_angl.copy().set_stroke(width=1).set_z_index(-6)
+        tr_angl_1=tr_angl.copy().set_z_index(-2).save_state()
+        
+
+        self.add(tr_angl_1)
+
+        self.play(
+            tr_angl_1.animate.shift(3.5*RIGHT)
+        )
+        
+        tr_angl_1_0=tr_angl_1.copy()
+        self.add(tr_angl_1_0)
+
+        tr_angl_1_ref=tr_angl_1.copy().save_state()
+
+        tr_angl_2=tr_angl_1.copy().rotate(PI/2,about_point=ax_1.c2p(4,0))
+        tr_angl_3=tr_angl_1.copy().rotate(PI,about_point=ax_1.c2p(4,0))
+        tr_angl_4=tr_angl_1.copy().rotate(3*PI/2,about_point=ax_1.c2p(4,0))
+
+        #self.add(tr_angl_3,tr_angl_4)
+        
+
+
+        
+
+        rot_tracker=ValueTracker(0)
+
+        tr_angl_1.add_updater(
+            lambda x : x.become(tr_angl_1_ref.copy()).rotate(
+                rot_tracker.get_value(), about_point=ax_1.c2p(4,0)
+            )
+        )
+        self.play(
+            rot_tracker.animate.set_value(PI/2)
+        )
+        
+        self.play(
+            FadeOut(tr_angl_1),
+            FadeIn(tr_angl_2)
+        )
+
+        
+        self.play(
+            tr_angl_2.animate.shift((ax_1.c2p(4,0)-ax_1.c2p(3,0))[0]*LEFT)
+        )
+        self.play(
+            tr_angl_2.animate.shift((ax_1.c2p(3,2)-ax_1.c2p(3,0))[1]*UP)
+        )
+        
+
+        rot_tracker.set_value(0)
+        self.play(
+            FadeIn(tr_angl_1)
+        )
+        
+        
+        
+        self.play(
+            rot_tracker.animate.set_value(PI),
+            run_time=1.5
+        )
+        self.play(
+            FadeIn(tr_angl_3),
+            FadeOut(tr_angl_1)
+        )
+        
+        self.play(
+            tr_angl_3.animate.shift((ax_1.c2p(1,5.0825)-ax_1.c2p(1,0))[1]*UP)
+        )
+        self.play(
+            tr_angl_3.animate.shift((ax_1.c2p(4,0)-ax_1.c2p(1,0))[0]*LEFT)
+        )
+        
+        
+
+        rot_tracker.set_value(0)
+        self.play(
+            FadeIn(tr_angl_1),
+            FadeOut(tr_angl_1_0)
+        )
+        
+        
+        
+        self.play(
+            rot_tracker.animate.set_value(-PI/2)
+        )
+        self.play(
+            FadeIn(tr_angl_4),
+            FadeOut(tr_angl_1)
+        )
+
+        self.play(
+            tr_angl_4.animate.shift((ax_1.c2p(-2,3.0825)-ax_1.c2p(-2,0))[1]*UP)
+        )
+        self.play(
+            tr_angl_4.animate.shift((ax_1.c2p(4,0)-ax_1.c2p(-2.0825,0))[0]*LEFT)
+        )
+
+        tr_angl_grp_1=VGroup(tr_angl,tr_angl_2,tr_angl_3,tr_angl_4)
+
+        self.wait(1.5)
+        
+        sq_2=Square(side_length=(ax_1.c2p(1,0)[0]-ax_1.c2p(0,0)[0])*5).set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA, REANLEA_SLATE_BLUE]).set_fill(color=REANLEA_BLUE_LAVENDER, opacity=1).set_z_index(-5)
+
+        sq_2.move_to(ax_1.c2p(6.5,2.5))
+
+        sq_2_ref=sq_2.copy()
+
+
+        triangles = [tr_angl_2.copy() for i in range(0, 8)]
+        time = 0.3
+
+        triangles[0].next_to(sq_2.get_corner(UR), DL, buff=0)
+        triangles[1].rotate(PI/2).next_to(sq_2.get_corner(UL), DR, buff=0)
+        triangles[2].rotate(PI).next_to(sq_2.get_corner(DL), UR, buff=0)
+        triangles[3].rotate(-PI/2).next_to(sq_2.get_corner(DR), UL, buff=0)
+
+
+        sq_2_grp=VGroup(triangles[0],triangles[1],triangles[2],triangles[3])
+
+        self.play(
+            TransformMatchingShapes(tr_angl_grp_1,sq_2_grp)
+        )
+
+        self.play(
+            FadeIn(sq_2)
+        )
+
+        '''self.play(
+            Unwrite(sq_2),
+            Unwrite(sq_2_grp)
+        )'''
+
+        
+        sq_2_grp_ref=VGroup(sq_2_ref, triangles[4].become(triangles[0]), triangles[5].become(triangles[1]), triangles[6].become(triangles[2])
+        , triangles[7].become(triangles[3]))
+
+        equal = MathTex("=").scale(1.5).move_to(ax_1.c2p(2,2.5)).set_color_by_gradient(REANLEA_AQUA)
+
+        self.play(
+            sq_2_grp_ref.animate.move_to(ax_1.c2p(-2.5,2.5))
+        )
+
+        self.play(
+            Write(equal)
+        )
+
+        sq_eras=Square(side_length=.125).set_fill(color=REANLEA_BACKGROUND_COLOR, opacity=1).set_stroke(color=REANLEA_BACKGROUND_COLOR).set_z_index(7)
+
+        sq_eras_1=sq_eras.copy().move_to(ax_1.c2p(-5.1265,3))
+        sq_eras_2=sq_eras.copy().move_to(ax_1.c2p(0,-.126))
+        sq_eras_3=sq_eras.copy().move_to(ax_1.c2p(.126,0))
+        sq_eras_4=sq_eras.copy().move_to(ax_1.c2p(-2,5.1265))
+        sq_eras_grp=VGroup(sq_eras_1,sq_eras_2,sq_eras_3,sq_eras_4)
+        self.add(sq_eras_grp)
+
+        self.play(triangles[7].animate.move_to(Line(triangles[5].get_corner(DL), triangles[5].get_corner(UR)).get_center()))
+        self.play(triangles[4].animate.next_to(sq_2_ref.get_corner(DR), UL, buff=0))
+        self.play(triangles[6].animate.next_to(sq_2_ref.get_corner(DR), UL, buff=0))
+        self.wait(0.5)
+
+        c_square = Difference(sq_2, Union(triangles[0], triangles[1], triangles[2], triangles[3]), fill_color=REANLEA_BLUE_LAVENDER, fill_opacity=1)
+        a_square = Square(side_length=a_len, fill_color=REANLEA_BLUE_LAVENDER, fill_opacity=1).next_to(sq_2_ref.get_corner(DL), UR, buff=0)
+        b_square = Square(side_length=b_len, fill_color=REANLEA_BLUE_LAVENDER, fill_opacity=1).next_to(sq_2_ref.get_corner(UR), DL, buff=0)
+
+        c_square.set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA, REANLEA_SLATE_BLUE]).set_z_index(-1)
+        b_square.set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA, REANLEA_SLATE_BLUE]).set_z_index(-1)
+        a_square.set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA, REANLEA_SLATE_BLUE]).set_z_index(-1)
+
+        
+        self.add(c_square)
+        #sq_2_ref.set_fill(opacity=0)
+        a_b_sq=VGroup(a_square,b_square)
+        self.add(a_b_sq)
+
+        triangles_grp=VGroup()
+        for i in range(0,8):
+            triangles_grp.add(triangles[i])
+
+        self.play(
+            Unwrite(triangles_grp),
+            Unwrite(sq_2),
+            Unwrite(sq_2_ref),
+        )
+        self.play(
+            FadeOut(sq_eras_grp)
+        )
+
+        self.wait()
+
+
+        self.play(
+            Restore(a_len_ln),
+            Restore(b_len_ln),
+            Restore(c_len_ln)
+        )
+
+        self.play(
+            c_len_ln.animate.set_stroke(width=3, color=REANLEA_BLUE_SKY)
+        )
+
+        self.wait(2)
+
+        
+        self.play(
+            FadeOut(equal),
+            c_square.animate.shift((ax_1.c2p(6,0)[0]-ax_1.c2p(0,0)[0])*LEFT)
+        )
+        self.play(
+            b_square.animate.shift((ax_1.c2p(3,0)[0]-ax_1.c2p(-2,3)[0])*RIGHT+(ax_1.c2p(-2,3)[1]-ax_1.c2p(3,0)[1])*DOWN)
+        )
+        self.play(
+            a_square.animate.shift((ax_1.c2p(0,0)[0]-ax_1.c2p(-5,3)[0])*RIGHT+(ax_1.c2p(-5,3)[1]-ax_1.c2p(0,0)[1])*DOWN)
+        )
+        self.wait(2)
+
+        '''self.play(
+            FadeIn(tr_angl_0)
+        )
+        self.play(
+            FadeOut(a_len_ln),
+            FadeOut(b_len_ln),
+            FadeOut(c_len_ln)
+        )'''
+
         self.wait(4)
+
+
 
         # manim -pqh anim2.py Scene3
 
