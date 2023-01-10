@@ -1823,16 +1823,24 @@ class Scene3(Scene):
         b_len_ln=DashedLine(start=ax_1.c2p(3,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=PURE_RED).save_state()
         c_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=REANLEA_BLUE_DARKER)
 
+        a_ln_lab=MathTex("a").scale(.5).set_color(REANLEA_YELLOW).next_to(a_len_ln,DOWN)
+        b_ln_lab=MathTex("b").scale(.5).set_color(PURE_RED).next_to(b_len_ln,RIGHT)
+        c_ln_lab=MathTex("c").scale(.5).set_color(REANLEA_BLUE_SKY).move_to(ax_1.c2p(1.35,1.35))
+        
+
         
 
         self.play(
-            Create(c_len_ln)
+            Create(c_len_ln),
+            Write(c_ln_lab)
         )
         self.play(
-            Create(a_len_ln)
+            Create(a_len_ln),
+            Write(a_ln_lab)
         )
         self.play(
-            Create(b_len_ln)
+            Create(b_len_ln),
+            Write(b_ln_lab)
         )
         self.wait(2)
 
@@ -1840,16 +1848,23 @@ class Scene3(Scene):
         b_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(2,0)).set_stroke(width=3, color=PURE_RED).move_to(3.81*RIGHT+3.25*DOWN)
         c_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3.61,0)).set_stroke(width=3, color=REANLEA_BLUE_SKY).move_to(4.5*RIGHT+2.75*DOWN)
 
+        a_ln_lab_1=MathTex("a").scale(.5).set_color(REANLEA_YELLOW).next_to(a_len_ln_1,LEFT)
+        b_ln_lab_1=MathTex("b").scale(.5).set_color(PURE_RED).next_to(b_len_ln_1,LEFT)
+        c_ln_lab_1=MathTex("c").scale(.5).set_color(REANLEA_BLUE_SKY).next_to(c_len_ln_1,LEFT)
+
         c_len_ln.set_stroke(width=3, color=REANLEA_BLUE_SKY).save_state()
 
         self.play(
-            ReplacementTransform(c_len_ln,c_len_ln_1)
+            ReplacementTransform(c_len_ln,c_len_ln_1),
+            ReplacementTransform(c_ln_lab,c_ln_lab_1)
         )
         self.play(
-            ReplacementTransform(a_len_ln,a_len_ln_1)
+            ReplacementTransform(a_len_ln,a_len_ln_1),
+            ReplacementTransform(a_ln_lab,a_ln_lab_1)
         )
         self.play(
-            ReplacementTransform(b_len_ln,b_len_ln_1)
+            ReplacementTransform(b_len_ln,b_len_ln_1),
+            ReplacementTransform(b_ln_lab,b_ln_lab_1)
         )
 
         self.wait(2)
