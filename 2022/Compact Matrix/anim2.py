@@ -1688,9 +1688,9 @@ class Scene3(Scene):
             tips=False, 
             axis_config={
                 "font_size": 24,
-                "include_ticks": False,
+                #"include_ticks": False,
             }, 
-        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(-2)
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(2)
 
         
 
@@ -1819,38 +1819,41 @@ class Scene3(Scene):
             FadeOut(dt_3),
         )
 
-        a_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=REANLEA_YELLOW).save_state()
+        a_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=PURE_GREEN).save_state()
         b_len_ln=DashedLine(start=ax_1.c2p(3,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=PURE_RED).save_state()
         c_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=REANLEA_BLUE_DARKER)
 
-        a_ln_lab=MathTex("a").scale(.5).set_color(REANLEA_YELLOW).next_to(a_len_ln,DOWN)
-        b_ln_lab=MathTex("b").scale(.5).set_color(PURE_RED).next_to(b_len_ln,RIGHT)
-        c_ln_lab=MathTex("c").scale(.5).set_color(REANLEA_BLUE_SKY).move_to(ax_1.c2p(1.35,1.35))
+        a_ln_lab=MathTex("a").scale(.65).set_color(PURE_GREEN).next_to(a_len_ln,DOWN)
+        b_ln_lab=MathTex("b").scale(.65).set_color(PURE_RED).next_to(b_len_ln,RIGHT)
+        c_ln_lab=MathTex("c").scale(.65).set_color(REANLEA_BLUE_SKY).move_to(ax_1.c2p(1.35,1.35))
         
 
         
 
         self.play(
             Create(c_len_ln),
-            Write(c_ln_lab)
+            Write(c_ln_lab),
+            lag_ratio=.95
         )
         self.play(
             Create(a_len_ln),
-            Write(a_ln_lab)
+            Write(a_ln_lab),
+            lag_ratio=.95
         )
         self.play(
             Create(b_len_ln),
-            Write(b_ln_lab)
+            Write(b_ln_lab),
+            lag_ratio=.95
         )
         self.wait(2)
 
-        a_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=REANLEA_YELLOW).move_to(4.24*RIGHT+3*DOWN)
+        a_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=PURE_GREEN).move_to(4.24*RIGHT+3*DOWN)
         b_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(2,0)).set_stroke(width=3, color=PURE_RED).move_to(3.81*RIGHT+3.25*DOWN)
         c_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3.61,0)).set_stroke(width=3, color=REANLEA_BLUE_SKY).move_to(4.5*RIGHT+2.75*DOWN)
 
-        a_ln_lab_1=MathTex("a").scale(.5).set_color(REANLEA_YELLOW).next_to(a_len_ln_1,LEFT)
-        b_ln_lab_1=MathTex("b").scale(.5).set_color(PURE_RED).next_to(b_len_ln_1,LEFT)
-        c_ln_lab_1=MathTex("c").scale(.5).set_color(REANLEA_BLUE_SKY).next_to(c_len_ln_1,LEFT)
+        a_ln_lab_1=MathTex("a").scale(.6).set_color(PURE_GREEN).next_to(a_len_ln_1,LEFT)
+        b_ln_lab_1=MathTex("b").scale(.6).set_color(PURE_RED).next_to(b_len_ln_1,LEFT)
+        c_ln_lab_1=MathTex("c").scale(.6).set_color(REANLEA_BLUE_SKY).next_to(c_len_ln_1,LEFT)
 
         c_len_ln.set_stroke(width=3, color=REANLEA_BLUE_SKY).save_state()
 
@@ -2039,11 +2042,68 @@ class Scene3(Scene):
         b_square.set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA, REANLEA_SLATE_BLUE]).set_z_index(-1)
         a_square.set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA, REANLEA_SLATE_BLUE]).set_z_index(-1)
 
+        a_sq_lbl_0_1=MathTex("a").scale(.6).set_color(REANLEA_GREEN_DARKEST).move_to(ax_1.c2p(-2.3,1.5))
+        a_sq_lbl_0_2=MathTex("a").scale(.6).set_color(REANLEA_GREEN_DARKEST).move_to(ax_1.c2p(-3.5,2.7))
+        a_sq_lbl_0=VGroup(a_sq_lbl_0_1,a_sq_lbl_0_2)
+        a_sq_lbl_1=MathTex(r"a^2").scale(.6).set_color(REANLEA_GREEN_DARKEST).move_to(a_square
+        .get_center())
+
+        b_sq_lbl_0_1=MathTex("b").scale(.6).set_color(PURE_RED).move_to(ax_1.c2p(-1,3.3))
+        b_sq_lbl_0_2=MathTex("b").scale(.6).set_color(PURE_RED).move_to(ax_1.c2p(-1.7,4))
+        b_sq_lbl_0=VGroup(b_sq_lbl_0_1,b_sq_lbl_0_2)
+        b_sq_lbl_1=MathTex(r"b^2").scale(.6).set_color(PURE_RED).move_to(b_square.get_center())
+
+
+        c_sq_lbl_0_1=MathTex("c").scale(.6).set_color(REANLEA_BLUE_DARKER).move_to(ax_1.c2p(5.25,1.8))
+        c_sq_lbl_0_2=MathTex("c").scale(.6).set_color(REANLEA_BLUE_DARKER).move_to(ax_1.c2p(7.4,1.3))
+        c_sq_lbl_0=VGroup(c_sq_lbl_0_1,c_sq_lbl_0_2)
+        c_sq_lbl_1=MathTex(r"c^2").scale(.6).set_color(REANLEA_BLUE_DARKER).move_to(c_square.get_center())
+
+
+        self.play(
+            ReplacementTransform(a_ln_lab_1.copy(), a_sq_lbl_0)
+        )
+
+        self.play(
+            ReplacementTransform(b_ln_lab_1.copy(), b_sq_lbl_0)
+        )
+
+        self.play(
+            ReplacementTransform(c_ln_lab_1.copy(), c_sq_lbl_0)
+        )
+
+
+
         
-        self.add(c_square)
+        #self.add(c_square)
         #sq_2_ref.set_fill(opacity=0)
-        a_b_sq=VGroup(a_square,b_square)
-        self.add(a_b_sq)
+        a_b_c_sq=VGroup(a_square,b_square,c_square)
+        #self.add(a_b_c_sq)
+
+        self.play(
+            FadeIn(a_b_c_sq),
+            ReplacementTransform(a_sq_lbl_0,a_sq_lbl_1),
+            ReplacementTransform(b_sq_lbl_0,b_sq_lbl_1),
+            ReplacementTransform(c_sq_lbl_0,c_sq_lbl_1),
+        )
+
+        c_sq_lbl_1.add_updater(
+            lambda z : z.become(
+                MathTex(r"c^2").scale(.6).set_color(REANLEA_BLUE_DARKER).move_to(c_square.get_center())
+            )
+        )
+
+        b_sq_lbl_1.add_updater(
+            lambda z : z.become(
+                MathTex(r"b^2").scale(.6).set_color(PURE_RED).move_to(b_square.get_center())
+            )
+        )
+
+        a_sq_lbl_1.add_updater(
+            lambda z : z.become(
+                MathTex(r"a^2").scale(.6).set_color(REANLEA_GREEN_DARKEST).move_to(a_square.get_center())
+            )
+        )
 
         triangles_grp=VGroup()
         for i in range(0,8):
@@ -2071,6 +2131,7 @@ class Scene3(Scene):
             c_len_ln.animate.set_stroke(width=3, color=REANLEA_BLUE_SKY)
         )
 
+
         self.wait(2)
 
         
@@ -2086,10 +2147,12 @@ class Scene3(Scene):
         )
         self.wait(2)
 
-        '''self.play(
+        self.play(
             FadeIn(tr_angl_0)
         )
-        self.play(
+
+        
+        '''self.play(
             FadeOut(a_len_ln),
             FadeOut(b_len_ln),
             FadeOut(c_len_ln)
