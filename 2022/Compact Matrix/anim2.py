@@ -1692,6 +1692,8 @@ class Scene3(Scene):
             }, 
         ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(2)
 
+        ax_2=ax_1.copy().set_z_index(-2)
+
         
 
 
@@ -1710,6 +1712,7 @@ class Scene3(Scene):
         self.play(
             Create(ln_1),
         )
+        
         self.wait(3)
 
         self.play(
@@ -1717,6 +1720,13 @@ class Scene3(Scene):
         )
         self.play(
             Write(dt_2)
+        )
+
+        self.wait(.5)
+
+        self.play(
+            Write(ax_2),
+            run_time=2
         )
 
         self.wait(2)
@@ -1801,8 +1811,9 @@ class Scene3(Scene):
         self.play(
             FadeOut(ln_1),
             FadeOut(ln_2),
-            FadeOut(ln_3),
+            FadeOut(ln_3)
         )
+        
 
         self.wait()
 
@@ -1816,7 +1827,7 @@ class Scene3(Scene):
         self.play(
             FadeOut(dt_1),
             FadeOut(dt_2),
-            FadeOut(dt_3),
+            FadeOut(dt_3)
         )
 
         a_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=PURE_GREEN).save_state()
@@ -1844,6 +1855,11 @@ class Scene3(Scene):
             Create(b_len_ln),
             Write(b_ln_lab),
             lag_ratio=.95
+        )
+
+        self.wait()
+        self.play(
+            Unwrite(ax_2)
         )
         self.wait(2)
 
@@ -2120,6 +2136,25 @@ class Scene3(Scene):
 
         self.wait()
 
+        a_sq_lbl_2=MathTex(r"a^2").scale(.6).set_color(REANLEA_GREEN_DARKEST).move_to(a_square
+        .get_center())
+        b_sq_lbl_2=MathTex(r"b^2").scale(.6).set_color(PURE_RED).move_to(b_square.get_center())
+        c_sq_lbl_2=MathTex(r"c^2").scale(.6).set_color(REANLEA_BLUE_DARKER).move_to(c_square.get_center())
+
+        sqr_lbl_grp_0=VGroup(a_sq_lbl_1,b_sq_lbl_1,c_sq_lbl_1)
+        sqr_lbl_grp=VGroup(a_sq_lbl_2,b_sq_lbl_2,c_sq_lbl_2)
+
+        pythagoras_thm=MathTex(r"c^2","=",r"a^2","+",r"b^2").shift(2.25*DOWN)
+        pythagoras_thm[0].set_color(REANLEA_BLUE_SKY)
+        pythagoras_thm[2].set_color(PURE_GREEN)
+        pythagoras_thm[4].set_color(PURE_RED)
+
+        self.play(
+            ReplacementTransform(sqr_lbl_grp,pythagoras_thm)
+        )
+
+        self.wait()
+
 
         self.play(
             Restore(a_len_ln),
@@ -2137,7 +2172,8 @@ class Scene3(Scene):
         
         self.play(
             FadeOut(equal),
-            c_square.animate.shift((ax_1.c2p(6,0)[0]-ax_1.c2p(0,0)[0])*LEFT)
+            c_square.animate.shift((ax_1.c2p(6,0)[0]-ax_1.c2p(0,0)[0])*LEFT),
+            pythagoras_thm.animate.to_corner(UR, buff=1)
         )
         self.play(
             b_square.animate.shift((ax_1.c2p(3,0)[0]-ax_1.c2p(-2,3)[0])*RIGHT+(ax_1.c2p(-2,3)[1]-ax_1.c2p(3,0)[1])*DOWN)
@@ -2151,22 +2187,6 @@ class Scene3(Scene):
             FadeIn(tr_angl_0)
         )
 
-        a_sq_lbl_2=MathTex(r"a^2").scale(.6).set_color(REANLEA_GREEN_DARKEST).move_to(a_square
-        .get_center())
-        b_sq_lbl_2=MathTex(r"b^2").scale(.6).set_color(PURE_RED).move_to(b_square.get_center())
-        c_sq_lbl_2=MathTex(r"c^2").scale(.6).set_color(REANLEA_BLUE_DARKER).move_to(c_square.get_center())
-
-        sqr_lbl_grp=VGroup(a_sq_lbl_2,b_sq_lbl_2,c_sq_lbl_2)
-
-        pythagoras_thm=MathTex(r"c^2","=",r"a^2","+",r"b^2").to_corner(UR, buff=1)
-        pythagoras_thm[0].set_color(REANLEA_BLUE_SKY)
-        pythagoras_thm[2].set_color(PURE_GREEN)
-        pythagoras_thm[4].set_color(PURE_RED)
-
-        self.play(
-            ReplacementTransform(sqr_lbl_grp,pythagoras_thm)
-        )
-
         self.wait(2)
 
         pythagoras_thm_1=MathTex(r"c","=",r"\sqrt{a^2 + b^2}").to_corner(UR, buff=1)
@@ -2176,10 +2196,83 @@ class Scene3(Scene):
         
 
         self.play(
-            TransformMatchingShapes(pythagoras_thm,pythagoras_thm_1)
+            TransformMatchingShapes(pythagoras_thm,pythagoras_thm_1),
+            Indicate(c_len_ln),
+            Indicate(c_len_ln_1),
+            Indicate(c_ln_lab_1)
         )
 
+        self.wait()
 
+        dt_1_ref=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(0,0)).set_z_index(-1)
+        dt_2_ref=Dot().set_color(REANLEA_PURPLE).move_to(ax_1.c2p(3,2)).set_z_index(-1)
+        
+        ln_1_ref=Line(start=dt_1_ref.get_center(), end=dt_2_ref.get_center()).set_stroke(width=5, color=[REANLEA_PURPLE,REANLEA_AQUA]).set_z_index(-3)
+
+        self.add(ln_1_ref)
+
+        self.play(
+            Unwrite(a_b_c_sq),
+            FadeIn(dt_1_ref),
+            FadeIn(dt_2_ref),
+            FadeOut(a_sq_lbl_1),
+            Uncreate(b_sq_lbl_1),
+            FadeOut(c_sq_lbl_1),
+        )
+        self.wait(2)
+
+        a_ln_lab_ref=MathTex("a").scale(.65).set_color(PURE_GREEN).next_to(a_len_ln,DOWN)
+        b_ln_lab_ref=MathTex("b").scale(.65).set_color(PURE_RED).next_to(b_len_ln,RIGHT)
+        c_ln_lab_ref=MathTex("c").scale(.65).set_color(REANLEA_BLUE_SKY).move_to(ax_1.c2p(1.35,1.35))
+
+        
+
+        self.play(
+            ReplacementTransform(c_ln_lab_1, c_ln_lab_ref),
+            ReplacementTransform(b_ln_lab_1, b_ln_lab_ref),
+            ReplacementTransform(a_ln_lab_1, a_ln_lab_ref),
+            Uncreate(c_len_ln_1),
+            Uncreate(b_len_ln_1),
+            Uncreate(a_len_ln_1)
+        )
+        self.wait()
+
+        pythagoras_thm_1_ref=pythagoras_thm_1.copy().move_to(ax_1.c2p(1.35,1.35)).rotate(ln_1_ref.get_angle()).scale(.5)
+
+        pythagoras_thm_grp=VGroup(c_ln_lab_ref,pythagoras_thm_1)
+
+        self.play(
+            ReplacementTransform(pythagoras_thm_grp, pythagoras_thm_1_ref)
+        )
+        self.wait()
+
+        ax_3=ax_1.copy().set_z_index(-4)
+
+        self.play(
+            Write(ax_3),
+            run_time=2
+        )
+
+        self.play(
+            FadeOut(tr_angl_0),
+            FadeOut(c_len_ln),
+            FadeOut(hed_txt_bez)
+        )
+
+        dt_2_lbl_0=MathTex("v").set_color(REANLEA_SLATE_BLUE_LIGHTEST).scale(.85).next_to(dt_2_ref,UR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+
+        self.play(
+            Write(dt_2_lbl_0)
+        )
+
+        dt_2_lbl_1=MathTex("=","(","a",",","b",")").scale(.65).next_to(dt_2_lbl_0,RIGHT, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+        dt_2_lbl_1[2].set_color(PURE_GREEN)
+        dt_2_lbl_1[4].set_color(PURE_RED)
+
+        self.play(
+            Create(dt_2_lbl_1)
+        )
+        
 
 
         
@@ -2197,6 +2290,73 @@ class Scene3(Scene):
 
         # manim -sqk anim2.py Scene3
 
+
+class Scene3_1(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        self.wait()
+
+
+        # SCENE
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(2)
+
+        ax_2=ax_1.copy().set_z_index(-5)
+
+        self.add(ax_2)
+
+        dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(0,0))
+        dt_2=Dot().set_color(REANLEA_PURPLE).move_to(ax_1.c2p(3,2))
+        
+        ln_1=Line(start=dt_1.get_center(), end=dt_2.get_center()).set_stroke(width=5, color=[REANLEA_PURPLE,REANLEA_AQUA]).set_z_index(-1)
+
+        self.add(dt_1,dt_2,ln_1)
+
+        dt_2_lbl_0=MathTex("v").set_color(REANLEA_SLATE_BLUE_LIGHTEST).scale(.85).next_to(dt_2,UR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+
+        dt_2_lbl_1=MathTex("=","(","a",",","b",")").scale(.65).next_to(dt_2_lbl_0,RIGHT, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+        dt_2_lbl_1[2].set_color(PURE_GREEN)
+        dt_2_lbl_1[4].set_color(PURE_RED)
+
+        self.add(dt_2_lbl_0,dt_2_lbl_1)
+
+        pythagoras_thm_1=MathTex(r"c","=",r"\sqrt{a^2 + b^2}").move_to(ax_1.c2p(1.35,1.35)).rotate(ln_1.get_angle()).scale(.5)
+        pythagoras_thm_1[0].set_color(REANLEA_BLUE_SKY)
+        pythagoras_thm_1[2][2:4].set_color(PURE_GREEN)
+        pythagoras_thm_1[2][5:7].set_color(PURE_RED)
+
+
+        self.add(pythagoras_thm_1)
+
+        a_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=PURE_GREEN).save_state()
+        b_len_ln=DashedLine(start=ax_1.c2p(3,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=PURE_RED).save_state()
+        
+
+        a_ln_lab=MathTex("a").scale(.65).set_color(PURE_GREEN).next_to(a_len_ln,DOWN)
+        b_ln_lab=MathTex("b").scale(.65).set_color(PURE_RED).next_to(b_len_ln,RIGHT)
+        
+
+        self.add(a_len_ln,b_len_ln,a_ln_lab,b_ln_lab)
+
+
+
+        # manim -pqh anim2.py Scene3_1
+
+        # manim -sqk anim2.py Scene3_1
+ 
 
 ###################################################################################################################
 

@@ -4840,6 +4840,11 @@ class PythagoreanIdentity_2(Scene):
         self.play(
             Write(ln_1)
         )
+        self.wait()
+
+        self.play(
+            Create(ax_1)
+        )
         self.wait(3)
 
         self.play(
@@ -4885,6 +4890,7 @@ class PythagoreanIdentity_2(Scene):
             FadeOut(dt_1),
             FadeOut(dt_2),
             FadeOut(dt_3),
+            Unwrite(ax_1)
         )
 
         a_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=REANLEA_YELLOW).save_state()
@@ -4948,6 +4954,12 @@ class PythagoreanIdentity_2(Scene):
         self.play(
             Write(pythagoras_thm)
         )
+
+        self.wait()
+
+        self.play(
+            Unwrite()
+        )
         
         
         
@@ -4973,25 +4985,40 @@ class SquareFill(Scene):
             FadeIn(sq)
         )
 
-        pythagoras_thm=MathTex(r"c^2","=",r"a^2","+",r"b^2").to_corner(UR, buff=1)
-        pythagoras_thm[0].set_color(REANLEA_BLUE_SKY)
-        pythagoras_thm[2].set_color(PURE_GREEN)
-        pythagoras_thm[4].set_color(PURE_RED)
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(2)
+
+        ax_2=ax_1.copy()
 
         self.play(
-            Write(pythagoras_thm)
+            Write(ax_1),
+            run_time=2
         )
 
-        self.wait(2)
-
-        pythagoras_thm_1=MathTex(r"c","=",r"\sqrt{a^2 + b^2}").to_corner(UR, buff=1)
-        pythagoras_thm_1[0].set_color(REANLEA_BLUE_SKY)
-        pythagoras_thm_1[2][2:4].set_color(PURE_GREEN)
-        pythagoras_thm_1[2][5:7].set_color(PURE_RED)
-        
+        self.wait()
 
         self.play(
-            TransformMatchingShapes(pythagoras_thm,pythagoras_thm_1)
+            Unwrite(ax_1)
+        )
+        self.wait(2)
+
+
+        self.play(
+            Create(ax_2),
+            run_time=2
+        )
+        self.wait()
+
+        self.play(
+            Uncreate(ax_2)
         )
 
         self.wait(2)
