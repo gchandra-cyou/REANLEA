@@ -4973,9 +4973,34 @@ class SquareFill(Scene):
             FadeIn(sq)
         )
 
+        pythagoras_thm=MathTex(r"c^2","=",r"a^2","+",r"b^2").to_corner(UR, buff=1)
+        pythagoras_thm[0].set_color(REANLEA_BLUE_SKY)
+        pythagoras_thm[2].set_color(PURE_GREEN)
+        pythagoras_thm[4].set_color(PURE_RED)
+
+        self.play(
+            Write(pythagoras_thm)
+        )
+
         self.wait(2)
 
+        pythagoras_thm_1=MathTex(r"c","=",r"\sqrt{a^2 + b^2}").to_corner(UR, buff=1)
+        pythagoras_thm_1[0].set_color(REANLEA_BLUE_SKY)
+        pythagoras_thm_1[2][2:4].set_color(PURE_GREEN)
+        pythagoras_thm_1[2][5:7].set_color(PURE_RED)
+        
+
+        self.play(
+            TransformMatchingShapes(pythagoras_thm,pythagoras_thm_1)
+        )
+
+        self.wait(2)
+
+
+
         # manim -sqk test2.py SquareFill
+
+        # manim -pqh test2.py SquareFill
 
 ###################################################################################################################
 
