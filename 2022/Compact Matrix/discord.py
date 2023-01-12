@@ -5443,8 +5443,195 @@ class Focus2Dto3D(ThreeDScene):
 
 
 
+class Project_Condition(Scene):
+    def construct(self):
+        ax = Axes(
+            x_range=[-1,5],
+            y_range=[-1,5]
+        )
+        self.add(ax)
+
+        NUMPOINTS = 5
+
+        alpha = ValueTracker(70*DEGREES)
+        line = always_redraw(lambda:
+            Line(
+                start=ax.c2p(0,0),
+                end=ax.c2p(10*np.cos(alpha.get_value()),10*np.sin(alpha.get_value()))
+            )
+        )
+        points = VGroup(
+            *[Dot().move_to(ax.c2p(np.random.uniform(0,5),np.random.uniform(0,5))) for i in range(NUMPOINTS)],
+            *[Line() for i in range(NUMPOINTS)]
+        )
+        def pointsUpdater(mobj):
+            for i in range(NUMPOINTS):
+                end = line.get_projection(mobj[i].get_center())
+                mobj[NUMPOINTS+i].become(
+                    Line(
+                        start = mobj[i].get_center(),
+                        end = end
+                    )
+                )
+        points.add_updater(pointsUpdater)
+        self.add(line, points)
+        self.play(
+            alpha.animate.set_value(90*DEGREES)
+        )
 
 
+        # manim -pqh discord.py Project_Condition
+
+
+
+
+class rollOut(Scene):                
+    def construct(self):
+        ang = ValueTracker(0)
+        circumferenceDifference = 3
+        radiusDifference = circumferenceDifference/(2*PI)
+        rad1 = 1
+        rad2 = rad1 + radiusDifference
+
+        arc1 = Circle(radius=rad1).move_to([-4,0,0], aligned_edge=DOWN)
+        def arcUpdater1(mobj): 
+            arc = Arc(
+                    radius = rad1,
+                    start_angle=ang.get_value(),
+                    angle=2*PI-ang.get_value()
+            ).rotate(1.5*PI-ang.get_value())
+            arc.shift((rad1*ang.get_value() - arc.get_start()[0] - 4)*RIGHT - arc.get_start()[1]*UP)
+            mobj.become(arc)
+        arc1.add_updater(arcUpdater1)
+        line1 = always_redraw(lambda:
+                Line(
+                    start=[-4,0,0],
+                    end=[rad1*ang.get_value() - 4,0,0]
+                )
+        )
+
+        arc2 = Circle(radius=rad2).move_to([-4,-radiusDifference,0], aligned_edge=DOWN)
+        def arcUpdater2(mobj): 
+            arc2 = Arc(
+                    radius = rad2,
+                    start_angle=ang.get_value(),
+                    angle=2*PI-ang.get_value()
+            ).rotate(1.5*PI-ang.get_value())
+            arc2.shift((rad2*ang.get_value() - arc2.get_start()[0] - 4)*RIGHT - (arc2.get_start()[1]+radiusDifference)*UP)
+            mobj.become(arc2)
+        arc2.add_updater(arcUpdater2)
+        line2 = always_redraw(lambda:
+                Line(
+                    start=[-4,-radiusDifference,0],
+                    end=[rad2*ang.get_value() - 4,-radiusDifference,0]
+                )
+        )
+
+        self.add(arc1,line1,arc2,line2)
+
+        self.play(
+            ang.animate.set_value(2*PI),
+            rate_func = rate_functions.linear,
+            run_time = 2
+        )
+        self.wait(1)
+
+        self.play(
+            ang.animate.set_value(0),
+            run_time = 2
+        )
+
+
+        # manim -pqh discord.py rollOut
+
+
+
+
+
+class InwardVector(Scene):
+    #config.background_color = WHITE
+    #Mobject.set_default(color=BLACK)
+    #Tex.set_default(color=BLACK)
+    def construct(self):
+
+        ax = Axes(   
+            x_range=[-7,7,2],         
+            y_range=[-7,7,2],         
+            x_length=7,
+            y_length=7,
+        )
+        labels = ax.get_axis_labels(
+            x_label=Tex("$x_1$"), 
+            y_label=MathTex("x_2")
+        )
+        
+        self.play(FadeIn(ax))
+        self.play(Write(labels))
+
+        eigenv1=VGroup()
+        eigenv2=VGroup()
+
+        for i in np.arange(0,6): 
+            x=1
+            y=1
+
+            vec1=Arrow(ax.c2p(x*(i),y*(i)),ax.c2p(x*(i+1),y*(i+1)),buff=0)
+            eigenv1.add(vec1)
+
+            vec1=Arrow(ax.c2p(x*(-i),y*(-i)),ax.c2p(x*(-i-1),y*(-i-1)),buff=0)
+            eigenv1.add(vec1)
+
+            x=-1
+            y=2
+
+            vec2=Arrow(ax.c2p(x*(i+1),y*((i+1)/2)),ax.c2p(x*i,y*(i/2)),buff=0)
+            eigenv2.add(vec2)
+
+            vec2=Arrow(ax.c2p(x*(-i-1),y*((-i-1)/2)),ax.c2p(-x*i,-y*(i/2)),buff=0)
+            eigenv2.add(vec2)
+
+
+        self.play(Create(eigenv1))    
+        self.play(Create(eigenv2))
+
+        self.wait(2)  
+
+
+        # manim -pqh discord.py InwardVector
+
+
+
+
+
+class SortAlgorithm(Scene):
+    def construct(self):
+        arr = [1, 3, 4, 5, 7, 8]
+        group = VGroup()        
+        for s in arr:
+            group.add(Square(1).add(Text(str(s))))
+        group.arrange()     
+        self.play(Write(group), run_time=2)
+        self.wait()    
+        box = SurroundingRectangle(group[:2], color=YELLOW)
+        self.play(DrawBorderThenFill(box))    
+        for i in range(4):
+            self.play(box.animate.shift(1.25 * RIGHT))
+            self.wait(0.25)
+        
+        # Use move_to
+        self.play(box.animate.move_to(group[2:4]))
+        self.wait()
+        self.play(box.animate.move_to(group[:2]))
+        self.wait()
+
+        # Use strech
+        self.play(box.animate.stretch(1.5, 0).move_to(group[3:6]))
+        self.wait(3)
+
+
+        # manim -pqh discord.py SortAlgorithm
+
+        
 ###################################################################################################################
 
 # NOTE :-

@@ -2325,6 +2325,8 @@ class Scene3_1(Scene):
 
         self.add(dt_1,dt_2,ln_1)
 
+        dt_1_lbl_0=MathTex("o").set_color(REANLEA_SLATE_BLUE_LIGHTEST).scale(.85).next_to(dt_1,DL, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+
         dt_2_lbl_0=MathTex("v").set_color(REANLEA_SLATE_BLUE_LIGHTEST).scale(.85).next_to(dt_2,UR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
 
         dt_2_lbl_1=MathTex("=","(","a",",","b",")").scale(.65).next_to(dt_2_lbl_0,RIGHT, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
@@ -2350,6 +2352,28 @@ class Scene3_1(Scene):
         
 
         self.add(a_len_ln,b_len_ln,a_ln_lab,b_ln_lab)
+
+        ### MAIN SCENE
+
+        self.play(
+            Write(dt_1_lbl_0)
+        )
+        self.wait()
+
+        pythagoras_thm_2=MathTex(r"d(v,o)","=",r"\sqrt{a^2 + b^2}").move_to(ax_1.c2p(1.35,1.35)).rotate(ln_1.get_angle()).scale(.5)
+        pythagoras_thm_2[0].set_color(REANLEA_BLUE_SKY)
+        pythagoras_thm_2[2][2:4].set_color(PURE_GREEN)
+        pythagoras_thm_2[2][5:7].set_color(PURE_RED)
+
+        self.play(
+            ReplacementTransform(pythagoras_thm_1,pythagoras_thm_2)
+        )
+
+        self.wait()
+
+        
+
+        self.wait(4)
 
 
 
