@@ -2298,7 +2298,7 @@ class Scene3_1(Scene):
 
         water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
         self.add(water_mark)
-        self.wait()
+        
 
 
         # SCENE
@@ -2370,6 +2370,82 @@ class Scene3_1(Scene):
         )
 
         self.wait()
+
+        arr_1=Arrow(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_CYAN_LIGHT)
+
+        self.play(
+            Write(arr_1)
+        )
+        self.play(
+            Indicate(dt_2,color=PURE_RED),
+            Flash(dt_2,color=PURE_GREEN),
+            run_time=1.75            
+        )
+        self.wait()
+
+        pythagoras_thm_3=MathTex(r"\lVert v \rVert","=",r"\sqrt{a^2 + b^2}").move_to(ax_1.c2p(1.35,1.35)).rotate(ln_1.get_angle()).scale(.5)
+        pythagoras_thm_3[0].set_color(REANLEA_CYAN_LIGHT)
+        pythagoras_thm_3[2][2:4].set_color(PURE_GREEN)
+        pythagoras_thm_3[2][5:7].set_color(PURE_RED)
+
+        self.play(
+            ReplacementTransform(pythagoras_thm_2,pythagoras_thm_3)
+        )
+        self.wait(2)
+
+        pythagoras_thm_3_0=pythagoras_thm_3.copy()
+
+        norm_v_0=MathTex(r"\lVert v \rVert").move_to(ax_1.c2p(1.35,1.35)).rotate(ln_1.get_angle()).scale(.5).set_color(REANLEA_CYAN_LIGHT)
+        
+        norm_v_1=MathTex(r"\lVert v \rVert","=",r"\sqrt{a^2 + b^2}").scale(.8).to_corner(UR)
+        norm_v_1[0].set_color(REANLEA_CYAN_LIGHT)
+        norm_v_1[2][2:4].set_color(PURE_GREEN)
+        norm_v_1[2][5:7].set_color(PURE_RED)
+
+        self.play(
+            ReplacementTransform(pythagoras_thm_3,norm_v_0),
+            ReplacementTransform(pythagoras_thm_3_0,norm_v_1)
+        )
+        self.wait(2)
+
+        dot_1=Dot(radius=0.15, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(0,0)).set_sheen(-0.4,DOWN)
+        self.play(
+            Write(dot_1)
+        )
+
+        ln_1_length=ln_1.get_length()
+
+        push_arr=Arrow(start=ax_1.c2p(-.8,0),end=ax_1.c2p(-.4,0),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6)
+
+        self.play(
+            FadeIn(push_arr)
+        )
+        self.play(
+            push_arr.animate.move_to(ax_1.c2p(-.35,0)),
+            run_time=.35
+        )
+        self.play(
+            dot_1.animate.shift(ln_1_length*RIGHT)
+        )
+        self.play(
+            FadeOut(push_arr)
+        )
+
+        dot_1_lbl=MathTex("(",r"\lVert v \rVert",",","0",")").scale(.45).next_to(dot_1,DR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+        self.wait(1.25)
+        
+        self.play(
+            Write(dot_1_lbl)
+        )
+        self.wait(2)
+
+        circ=DashedVMobject(Circle(radius=ln_1_length), dashed_ratio=0.5, num_dashes=100).move_to(dt_1.get_center()).set_stroke(width=0.65)
+        circ.set_color_by_gradient(REANLEA_WHITE,REANLEA_WARM_BLUE,REANLEA_YELLOW_CREAM)
+        
+
+        self.play(
+            Write(circ)
+        )
 
         
 
