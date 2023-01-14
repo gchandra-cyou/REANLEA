@@ -5029,6 +5029,19 @@ class SquareFill(Scene):
 
         # manim -pqh test2.py SquareFill
 
+
+class arr_tst_0(Scene):
+    def construct(self):
+        bez_arr_1=bend_bezier_arrow().flip(UP).rotate(-45*DEGREES)
+
+        self.add(bez_arr_1)
+
+
+        # manim -sqk test2.py arr_tst_0
+
+        # manim -pqh test2.py arr_tst_0
+
+
 ###################################################################################################################
 
 

@@ -371,13 +371,13 @@ def bend_bezier_arrow():
         p1.move_to(ORIGIN).rotate(50*DEGREES)
 
         p=CurvesAsSubmobjects(p1)
-        p.set_color_by_gradient(REANLEA_YELLOW_CREAM,REANLEA_CHARM).set_stroke(width=3)
+        p.set_color_by_gradient(REANLEA_CYAN_LIGHT,REANLEA_BLUE_LAVENDER).set_stroke(width=3)
 
         grp3 += p
 
 
         ar= Arrow(max_stroke_width_to_length_ratio=0,max_tip_length_to_length_ratio=0.09).move_to(p1.get_end()+.7*DOWN).rotate(PI/2)
-        ar.set_color(REANLEA_CHARM)
+        ar.set_color(REANLEA_BLUE_LAVENDER)
 
         
         grp3 += ar

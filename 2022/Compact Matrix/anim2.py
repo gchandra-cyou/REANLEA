@@ -2408,7 +2408,7 @@ class Scene3_1(Scene):
         )
         self.wait(2)
 
-        dot_1=Dot(radius=0.15, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(0,0)).set_sheen(-0.4,DOWN)
+        dot_1=Dot(radius=0.15, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(0,0)).set_sheen(-0.4,DOWN).save_state()
         self.play(
             Write(dot_1)
         )
@@ -2417,8 +2417,18 @@ class Scene3_1(Scene):
 
         push_arr=Arrow(start=ax_1.c2p(-.8,0),end=ax_1.c2p(-.4,0),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6)
 
+        push_arr_lbl=Text("F").scale(.5).set_color(REANLEA_YELLOW_GREEN).next_to(push_arr,UP)
+        push_arr_lbl.add_updater(
+            lambda z : z.become(
+                Text("F").scale(.5).set_color(REANLEA_YELLOW_GREEN).next_to(push_arr,UP)
+            )
+        )
+
         self.play(
             FadeIn(push_arr)
+        )
+        self.play(
+            Write(push_arr_lbl)
         )
         self.play(
             push_arr.animate.move_to(ax_1.c2p(-.35,0)),
@@ -2427,16 +2437,17 @@ class Scene3_1(Scene):
         self.play(
             dot_1.animate.shift(ln_1_length*RIGHT)
         )
+        
+        self.play(
+            FadeOut(push_arr_lbl),
+            run_time=.35
+        )
         self.play(
             FadeOut(push_arr)
         )
-
-        dot_1_lbl=MathTex("(",r"\lVert v \rVert",",","0",")").scale(.45).next_to(dot_1,DR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
-        self.wait(1.25)
         
-        self.play(
-            Write(dot_1_lbl)
-        )
+
+        
         self.wait(2)
 
         circ=DashedVMobject(Circle(radius=ln_1_length), dashed_ratio=0.5, num_dashes=100).move_to(dt_1.get_center()).set_stroke(width=0.65)
@@ -2446,6 +2457,151 @@ class Scene3_1(Scene):
         self.play(
             Write(circ)
         )
+        
+
+        dot_1_lbl_1=MathTex("(",r"\lVert v \rVert",",","0",")").scale(.45).next_to(dot_1,DR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+        self.wait(1.25)
+        
+        self.play(
+            Write(dot_1_lbl_1)
+        )
+        self.wait(2)
+
+        self.play(
+            Restore(dot_1),
+            FadeOut(dot_1_lbl_1)
+        )
+        self.wait(2)
+
+        push_arr_1=Arrow(start=ax_1.c2p(0,-.8),end=ax_1.c2p(0,-.4),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6)
+
+        push_arr_1_lbl=Text("F").scale(.5).set_color(REANLEA_YELLOW_GREEN).next_to(push_arr_1,RIGHT)
+        push_arr_1_lbl.add_updater(
+            lambda z : z.become(
+                Text("F").scale(.5).set_color(REANLEA_YELLOW_GREEN).next_to(push_arr_1,RIGHT)
+            )
+        )
+
+        self.play(
+            FadeIn(push_arr_1)
+        )
+        self.play(
+            Write(push_arr_1_lbl)
+        )
+        self.play(
+            push_arr_1.animate.move_to(ax_1.c2p(0,-.35)),
+            run_time=.35
+        )
+        self.play(
+            dot_1.animate.shift(ln_1_length*UP)
+        )
+        
+        self.play(
+            FadeOut(push_arr_1_lbl),
+            run_time=.35
+        )
+        self.play(
+            FadeOut(push_arr_1)
+        )
+        
+
+
+
+        dot_1_lbl_2=MathTex("(","0",",",r"\lVert v \rVert",")").scale(.45).next_to(dot_1,UR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+        self.wait(1.25)
+        
+        self.play(
+            Write(dot_1_lbl_2)
+        )
+        
+        self.wait(2)
+
+        self.play(
+            Restore(dot_1),
+            FadeOut(dot_1_lbl_2)
+        )
+
+        self.wait()
+
+
+
+
+        push_arr_2=Arrow(start=ax_1.c2p(-.78,-.52),end=ax_1.c2p(-.45,-.3),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6)
+
+        push_arr_2_lbl=Text("F").scale(.5).set_color(REANLEA_YELLOW_GREEN).next_to(push_arr_2,UP)
+        push_arr_2_lbl.add_updater(
+            lambda z : z.become(
+                Text("F").scale(.5).set_color(REANLEA_YELLOW_GREEN).next_to(push_arr_2,UP)
+            )
+        )
+
+        self.play(
+            FadeIn(push_arr_2)
+        )
+        self.play(
+            Write(push_arr_2_lbl)
+        )
+        self.play(
+            push_arr_2.animate.move_to(ax_1.c2p(-.27,-.18)),
+            run_time=.35
+        )
+        self.play(
+            dot_1.animate.move_to(dt_2.get_center())
+        )
+        
+        self.play(
+            FadeOut(push_arr_2_lbl),
+            run_time=.35
+        )
+        self.play(
+            FadeOut(push_arr_2)           
+        )
+
+        self.wait(2)
+
+        sr_a_len_ln=SurroundingRectangle(a_len_ln, stroke_width=1, color=REANLEA_YELLOW_CREAM)
+
+        self.play(
+            Circumscribe(a_len_ln,stroke_width=1.5, color=REANLEA_GOLD),
+            Create(sr_a_len_ln),
+            run_time=2
+        )
+
+        bez_arr_1=bend_bezier_arrow().flip(UP).rotate(-45*DEGREES).scale(.65).next_to(a_len_ln,DOWN,buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2).shift(1.2*RIGHT+.075*UP)
+
+        with RegisterFont("Fuzzy Bubbles") as fonts:
+            txt_1=Text("projection along x-axis", font=fonts[0]).scale(0.4)
+            txt_1.set_color_by_gradient(REANLEA_TXT_COL).move_to(bez_arr_1,DR)
+        
+
+        self.play(
+            Write(bez_arr_1)
+        )
+        self.play(
+            Write(txt_1)
+        )
+
+
+        self.wait()
+
+        '''self.play(
+            Uncreate(sr_a_len_ln.reverse_direction())
+        )
+
+        sr_b_len_ln=SurroundingRectangle(b_len_ln, stroke_width=1, color=REANLEA_YELLOW_CREAM)
+
+        self.play(
+            Circumscribe(b_len_ln,stroke_width=1.5, color=REANLEA_GOLD),
+            Create(sr_b_len_ln),
+            run_time=2
+        )
+        self.wait()
+
+        self.play(
+            Uncreate(sr_b_len_ln.reverse_direction())
+        )'''
+
+
 
         
 
