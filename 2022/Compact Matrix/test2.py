@@ -5042,6 +5042,62 @@ class arr_tst_0(Scene):
         # manim -pqh test2.py arr_tst_0
 
 
+class VMobject(VMobject):
+    def pfp(self, alpha):
+        return self.point_from_proportion(alpha)
+
+
+class Dot_move_on_curve_set_point_smoothly(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        
+        #c = Circle()
+        c = VMobject(stroke_color=GREEN).set_points_smoothly([
+                LEFT*2+UP*1.2, LEFT+UP*(-3), RIGHT*2+DOWN*1.7,
+                DOWN*2+LEFT*2.5
+            ])
+        c1=VMobject().set_points_as_corners(points=[ORIGIN,2*UP,2*UP+3*RIGHT]) 
+        a = Dot(color = YELLOW)
+
+        self.add(a)
+
+        self.play(UpdateFromAlphaFunc(a, lambda x, alpha: x.move_to(c1.pfp(alpha))), run_time = 3, rate_func= smooth)
+        self.wait()
+
+
+        # manim -pqh test2.py Dot_move_on_curve_set_point_smoothly
+
+
+
+class Vx(VMobject):
+    def pfp(self, alpha):
+        return self.point_from_proportion(alpha)
+
+
+class Dot_move_on_curve_set_point_smoothly_1(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        
+        
+        c1=Vx().set_points_as_corners(points=[ORIGIN,2*UP,2*UP+3*RIGHT]) 
+        a = Dot(color = YELLOW)
+
+        self.add(a)
+
+        self.play(UpdateFromAlphaFunc(a, lambda x, alpha: x.move_to(c1.pfp(alpha))), run_time = 3, rate_func= smooth)
+        self.wait()
+
+
+        # manim -pqh test2.py Dot_move_on_curve_set_point_smoothly_1
+
 ###################################################################################################################
 
 

@@ -2291,6 +2291,10 @@ class Scene3(Scene):
         # manim -sqk anim2.py Scene3
 
 
+class VMoveMob(VMobject):
+    def pfp(self, alpha):
+        return self.point_from_proportion(alpha)
+
 class Scene3_1(Scene):
     def construct(self):
 
@@ -2735,7 +2739,7 @@ class Scene3_1(Scene):
         )
         self.wait()
 
-        push_arr_3=Arrow(start=ax_1.c2p(-.78,-.52),end=ax_1.c2p(-.45,-.3),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6)
+        push_arr_3=Arrow(start=ax_1.c2p(-.78,-.52),end=ax_1.c2p(-.45,-.3),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6).save_state()
 
         push_arr_3_lbl=Text("F").scale(.5).set_color(REANLEA_YELLOW_GREEN).next_to(push_arr_3,UP)
         push_arr_3_lbl.add_updater(
@@ -2755,7 +2759,8 @@ class Scene3_1(Scene):
         )
         self.play(
             dot_1.animate.move_to(ax_1.c2p(3,0)),
-            Indicate(force_1)
+            Indicate(force_1),
+            Circumscribe(force_final[2:5])
         )
         
         self.play(
@@ -2765,6 +2770,91 @@ class Scene3_1(Scene):
         self.play(
             FadeOut(push_arr_3)           
         )
+        self.wait()
+
+        self.play(
+            Restore(dot_1)
+        )
+        self.play(
+            Restore(push_arr_3),
+            Write(push_arr_3_lbl)
+        )
+
+        self.play(
+            push_arr_3.animate.move_to(ax_1.c2p(-.27,-.18)),
+            run_time=.35
+        )
+        self.play(
+            dot_1.animate.move_to(ax_1.c2p(0,2)),
+            Indicate(force_2),
+            Circumscribe(force_final[6:])
+        )
+        
+        self.play(
+            FadeOut(push_arr_3_lbl),
+            run_time=.35
+        )
+        self.play(
+            FadeOut(push_arr_3)           
+        )
+        self.wait()
+
+
+        self.play(
+            Restore(dot_1)
+        )
+
+        dot_1_0=dot_1.copy().save_state()
+        dot_1_1=dot_1.copy().save_state()
+        self.add(dot_1_0,dot_1_1)
+
+        self.play(
+            Restore(push_arr_3)
+        )
+        self.play(
+            Write(push_arr_3_lbl)
+        )
+
+        self.play(
+            push_arr_3.animate.move_to(ax_1.c2p(-.27,-.18)),
+            run_time=.35
+        )
+        self.play(
+            dot_1.animate.move_to(ax_1.c2p(3,2)),
+            dot_1_0.animate.move_to(ax_1.c2p(3,0)),
+            dot_1_1.animate.move_to(ax_1.c2p(0,2)),
+            Indicate(force_1),
+            Indicate(force_2),
+            Circumscribe(force_final[2:5]),
+            Circumscribe(force_final[6:])
+        )
+        
+        self.play(
+            FadeOut(push_arr_3_lbl),
+            run_time=.35
+        )
+        self.play(
+            FadeOut(push_arr_3)           
+        )
+        self.wait(2)
+
+        self.play(
+            Restore(dot_1),
+            Restore(dot_1_0),
+            Restore(dot_1_1)
+        )
+        self.wait(2)
+
+        c1=VMoveMob().set_points_as_corners(points=[ax_1.c2p(0,0),ax_1.c2p(3,0),ax_1.c2p(3,2)]) 
+        c2=VMoveMob().set_points_as_corners(points=[ax_1.c2p(0,0),ax_1.c2p(0,2),ax_1.c2p(3,2)]) 
+
+        self.play(
+            dot_1.animate.move_to(ax_1.c2p(3,2)),
+            UpdateFromAlphaFunc(dot_1_0, lambda x, alpha: x.move_to(c1.pfp(alpha))),
+            UpdateFromAlphaFunc(dot_1_1, lambda x, alpha: x.move_to(c2.pfp(alpha))),
+            run_time = 3, rate_func= smooth
+        )
+
 
 
         
@@ -2776,7 +2866,31 @@ class Scene3_1(Scene):
         # manim -pqh anim2.py Scene3_1
 
         # manim -sqk anim2.py Scene3_1
- 
+
+
+###################################################################################################################
+
+
+class Scene4(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        
+
+
+        # SCENE
+
+
+
+        self.wait(4)
+
+        # manim -pqh anim2.py Scene4
+
+        # manim -sqk anim2.py Scene4
+        
 
 ###################################################################################################################
 

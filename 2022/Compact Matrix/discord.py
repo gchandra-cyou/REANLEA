@@ -1310,11 +1310,12 @@ class Dot_move_on_curve_set_point_smoothly(Scene):
                 LEFT*2+UP*1.2, LEFT+UP*(-3), RIGHT*2+DOWN*1.7,
                 DOWN*2+LEFT*2.5
             ])
+        c1=Circle()    
         a = Dot(color = YELLOW)
 
-        self.add(c, a)
+        self.add(c1, a)
 
-        self.play(UpdateFromAlphaFunc(a, lambda x, alpha: x.move_to(c.pfp(alpha))), run_time = 3, rate_func= smooth)
+        self.play(UpdateFromAlphaFunc(a, lambda x, alpha: x.move_to(c1.pfp(alpha))), run_time = 3, rate_func= smooth)
         self.wait()
 
 
