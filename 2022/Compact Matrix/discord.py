@@ -5632,6 +5632,143 @@ class SortAlgorithm(Scene):
 
         # manim -pqh discord.py SortAlgorithm
 
+
+
+
+class SecantAnimation(Scene):
+    def construct(self):  
+        axes = Axes([-5, 5, 1], [-100, 100, 25], 12, 6)
+        axis_labels = axes.get_axis_labels(x_label="x", y_label="y")        
+        def curve(x):
+            return x ** 3 - 3 * x + 1        
+        graph = axes.plot(curve, [-5, 5], color=BLUE)
+        x = ValueTracker(2.5)
+        dx = ValueTracker(2)        
+
+        secant = always_redraw(
+            lambda: axes.get_secant_slope_group(   
+                x.get_value(),
+                graph,             
+                dx.get_value(),                
+                YELLOW,
+                ORANGE,
+                "dx",                
+                "dy",
+                GREEN, 
+                secant_line_length=axes.height * 0.9,                
+            )
+        )
+
+        dot1 = always_redraw(
+            lambda: Dot()
+            .move_to(axes.c2p(x.get_value(), graph.underlying_function(x.get_value())))
+        )
+        dot2 = always_redraw(
+            lambda: Dot()
+                .move_to(axes.c2p(x.get_value() + dx.get_value(),
+                graph.underlying_function(x.get_value() + dx.get_value())))
+        )
+        scn = VGroup(axes, axis_labels, graph, secant, dot1, dot2)        
+        
+        # Animations           
+        self.add(scn)
+        self.play(dx.animate.set_value(0.001), run_time=2)
+        self.play(FadeOut(dot2), run_time=0.5)
+        self.play(x.animate.set_value(-2.5), run_time=3)
+        self.wait()
+        self.play(x.animate.set_value(4.5), run_time=2)       
+        
+        secant = None
+        dot1 = lambda: Dot().move_to(axes.c2p(x.get_value(), graph.underlying_function(x.get_value())))
+        dot2 = None
+        self.play(scn.animate.scale(0.25))
+        self.wait()
+
+        box = SurroundingRectangle(scn, buff=SMALL_BUFF)
+        boxedScn = VGroup(scn, box)        
+        self.play(Create(box))
+        self.play(boxedScn.animate.to_edge(DL))
+
+        self.wait(3)
+
+
+        # manim -pqh discord.py SecantAnimation
+
+
+
+class sincircle(ThreeDScene):
+    def construct(self):
+        k=0.6
+        cr = ParametricFunction(
+            lambda t: np.array([
+                2*k*np.cos(t),
+                2*k*np.sin(t),
+                k*t
+            ]), color=RED, t_range = np.array([-TAU, TAU, k])
+        ).set_shade_in_3d(True)
+        ax = ThreeDAxes()
+        self.set_camera_orientation(phi=TAU/4, theta=-TAU/4)
+        self.add(ax)
+        self.play(Create(cr))
+        self.wait()
+        self.move_camera(phi=TAU/6, theta=-TAU/6, run_time=2)
+        self.move_camera(phi=0, theta=-TAU/4, run_time=2)
+        self.wait(2)
+
+
+        # manim -pqh discord.py sincircle
+
+
+
+
+class ExpEx01(Scene):
+    def construct(self):
+
+        def SternsDiatomicSeries(n:int):
+          DP = [0]*(n+2)
+          DP[0] = 0
+          DP[1] = 1
+
+          for i in range(2, n+1):
+            if int(i % 2) == 0:
+              DP[i] = DP[int(i/2)]
+            else:
+              DP[i] = DP[int((i-1)/2)] + DP[int((i+1)/2)]
+
+          return DP[n]
+
+        ax = Axes(
+            x_range = [0, 1024, 256],
+            y_range = [0, 84, 21],
+            tips = False,
+            axis_config = {
+                "include_numbers": True,
+                "decimal_number_config": {
+                    "group_with_commas": False,
+                    "num_decimal_places": 0,
+                    },
+            }          
+        )
+        
+        lab = ax.get_axis_labels(
+            x_label = MathTex("n"),
+            y_label = MathTex("a_n")
+        )
+
+        SDSg = VGroup(*[
+            Dot(ax.coords_to_point(n, SternsDiatomicSeries(n)), radius = 0.02, color = BLUE)
+            for n in range(1024)
+        ])
+
+        #self.add(SDSg, ax, lab)
+
+        self.play(
+            Write(SDSg),
+            run_time=6
+        )
+
+
+        # manim -pqh discord.py ExpEx01
         
 ###################################################################################################################
 

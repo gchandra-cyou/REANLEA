@@ -2413,7 +2413,7 @@ class Scene3_1(Scene):
         )
         self.wait(2)
 
-        dot_1=Dot(radius=0.15, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(0,0)).set_sheen(-0.4,DOWN).save_state()
+        dot_1=Dot(radius=0.15, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(2).save_state()
         self.play(
             Write(dot_1)
         )
@@ -2826,7 +2826,8 @@ class Scene3_1(Scene):
             Indicate(force_1),
             Indicate(force_2),
             Circumscribe(force_final[2:5]),
-            Circumscribe(force_final[6:])
+            Circumscribe(force_final[6:]),
+            run_time=1.75
         )
         
         self.play(
@@ -2841,7 +2842,8 @@ class Scene3_1(Scene):
         self.play(
             Restore(dot_1),
             Restore(dot_1_0),
-            Restore(dot_1_1)
+            Restore(dot_1_1),
+            run_time=1.25
         )
         self.wait(2)
 
