@@ -5769,7 +5769,92 @@ class ExpEx01(Scene):
 
 
         # manim -pqh discord.py ExpEx01
+
+
+class Optics(Scene):
+    def construct(self):
+
+        line = Line()
+        dot_1, dot_2 = Dot(LEFT), Dot(RIGHT)        
         
+        self.add(line, dot_1, dot_2)
+        self.play(
+            AnimationGroup(
+                Flash(dot_1),
+                *[MoveAlongPath(dot_1.copy(), line) for _ in range(10)],
+                Flash(dot_2, rate_func=lambda t: smooth(1-t)),
+                lag_ratio=0.1,
+            )
+        )
+
+
+        # manim -pqh discord.py Optics
+
+
+
+class Sin1byx(Scene):
+    def construct(self):
+        continuousAxes=Axes(
+            x_range=[-10, 10, 2],
+            x_length=5,
+            color=BLUE,
+            y_range=[-5, 5, 1],
+            y_length=3.5,
+            axis_config={
+                "tip_width" :0.15,
+                "tip_height": 0.15
+            })
+        wobbly = continuousAxes.plot(
+            lambda x: 6*math.sin(3/x),
+            x_range=[-10, 10, 0.001],
+            color=PURPLE_B,
+        )
+        self.add(continuousAxes)
+        self.play(Create(wobbly))     
+        self.wait(2) 
+
+
+        # manim -pqh discord.py Sin1byx
+
+
+class boxMove(Scene):
+    def construct(self):
+        boxes = VGroup()
+        for y in range(24):
+            for x in range(25):
+                sq = Square(side_length=0.2, fill_opacity=1).move_to([-6+0.2*x,3.5-0.2*y,0])
+                boxes.add(sq)
+        self.play(Create(boxes),run_time=6)
+        self.wait(6)
+        a =[11]*24+[12]*28
+        
+        b = np.random.permutation(a)
+
+        index = 0
+        rows = VGroup()
+        for row in range(len(b)):
+            color = random_bright_color()
+            rowOfBoxes = VGroup()
+            for i in range(b[row]):
+                boxes[index].set_color(color)
+                rowOfBoxes.add(boxes[index])
+                index += 1
+            rows += rowOfBoxes
+        self.wait(2)
+
+        ycount = int(len(rows)/2)
+        for col in range(2):
+            for y in range(ycount):
+                self.play(
+                    rows[col*ycount+y].copy().animate.arrange(RIGHT,buff=0).move_to([col*3+0,3.5-0.2*y,0],aligned_edge=LEFT)
+                )
+
+
+        
+        # manim -pqh discord.py boxMove
+
+
+
 ###################################################################################################################
 
 # NOTE :-

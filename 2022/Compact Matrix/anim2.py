@@ -2885,9 +2885,93 @@ class Scene4(Scene):
 
         # SCENE
 
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(2) 
+
+        self.wait()
+
+        self.play(
+            Write(ax_1),
+            run_time=2
+        )
+
+        dot_1=Dot(radius=0.15, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(2).save_state()
+
+        self.play(
+            Write(dot_1)
+        )
+
+
+        push_arr=Arrow(start=ax_1.c2p(-.8,0),end=ax_1.c2p(-.4,0),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6)
+
+        push_arr_lbl=Text("F").scale(.5).set_color(REANLEA_YELLOW_GREEN).next_to(push_arr,UP)
+        push_arr_lbl.add_updater(
+            lambda z : z.become(
+                Text("F").scale(.5).set_color(REANLEA_YELLOW_GREEN).next_to(push_arr,UP)
+            )
+        )
+
+        self.play(
+            FadeIn(push_arr)
+        )
+        
+        self.play(
+            push_arr.animate.move_to(ax_1.c2p(-.35,0)),
+            run_time=.35
+        )
+        self.play(
+            dot_1.animate.move_to(ax_1.c2p(1,0))
+        )  
+
+
+        lbl_i=MathTex("1").scale(.55).set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,-.5))  
+        dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0))
+        dt_2=Dot().set_color(REANLEA_PURPLE).move_to(ax_1.c2p(3,2))
+
+        self.play(
+            FadeOut(push_arr),
+            Write(lbl_i),
+            Create(dt_1)
+        )
+        
+        self.wait(2)
+
+        self.play(
+            Restore(dot_1)
+        )
+
+        push_arr_1=Arrow(start=ax_1.c2p(-.78,-.52),end=ax_1.c2p(-.45,-.3),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6)
+        
+        self.play(
+            FadeIn(push_arr_1)
+        )
+        
+        self.play(
+            push_arr_1.animate.move_to(ax_1.c2p(-.27,-.18)),
+            run_time=.35
+        )
+        self.play(
+            dot_1.animate.move_to(ax_1.c2p(3,2))
+        )
+
+
+
+        
+
 
 
         self.wait(4)
+
+
+        
 
         # manim -pqh anim2.py Scene4
 
