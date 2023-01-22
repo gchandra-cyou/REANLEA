@@ -2894,7 +2894,19 @@ class Scene4(Scene):
                 "font_size": 24,
                 #"include_ticks": False,
             }, 
-        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(2) 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1) 
+
+        rot_tracker=ValueTracker(0)
+
+        ax_2=ax_1.copy()
+
+        ax_2_ref=ax_2.copy()
+
+        ax_2.add_updater(
+            lambda x : x.become(ax_2_ref.copy()).rotate(
+                rot_tracker.get_value(), about_point=ax_1.c2p(0,0)
+            )
+        )
 
         self.wait()
 
@@ -2903,7 +2915,7 @@ class Scene4(Scene):
             run_time=2
         )
 
-        dot_1=Dot(radius=0.15, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(2).save_state()
+        dot_1=Dot(radius=0.15, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(3).save_state()
 
         self.play(
             Write(dot_1)
@@ -2933,8 +2945,8 @@ class Scene4(Scene):
 
 
         lbl_i=MathTex("1").scale(.55).set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,-.5))  
-        dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0))
-        dt_2=Dot().set_color(REANLEA_PURPLE).move_to(ax_1.c2p(3,2))
+        dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0)).set_z_index(2)
+        dt_2=Dot().set_color(REANLEA_PURPLE).move_to(ax_1.c2p(3,2)).set_z_index(2)
 
         self.play(
             FadeOut(push_arr),
@@ -2948,7 +2960,7 @@ class Scene4(Scene):
             Restore(dot_1)
         )
 
-        push_arr_1=Arrow(start=ax_1.c2p(-.78,-.52),end=ax_1.c2p(-.45,-.3),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6)
+        push_arr_1=Arrow(start=ax_1.c2p(-.78,-.52),end=ax_1.c2p(-.45,-.3),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6).save_state()
         
         self.play(
             FadeIn(push_arr_1)
@@ -2961,10 +2973,36 @@ class Scene4(Scene):
         self.play(
             dot_1.animate.move_to(ax_1.c2p(3,2))
         )
+        self.play(
+            FadeOut(push_arr_1)
+        )
+        self.wait(2)
 
+        self.add(dt_2)
 
+        self.play(
+            Restore(dot_1)
+        )
+
+        self.add(ax_2)        
+
+        self.play(
+            rot_tracker.animate.set_value(PI/4),
+            run_time=4
+        )
 
         
+
+        push_arr_2=Arrow(start=ax_1.c2p(-.78,-.52),end=ax_1.c2p(-.45,-.3),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6).save_state()
+        
+        self.play(
+            FadeIn(push_arr_2)
+        )
+        
+        self.play(
+            push_arr_2.animate.move_to(ax_1.c2p(-.27,-.18)),
+            run_time=.35
+        )        
 
 
 
