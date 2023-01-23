@@ -2984,14 +2984,6 @@ class Scene4(Scene):
             Restore(dot_1)
         )
 
-        self.add(ax_2)        
-
-        self.play(
-            rot_tracker.animate.set_value(PI/4),
-            run_time=4
-        )
-
-        
 
         push_arr_2=Arrow(start=ax_1.c2p(-.78,-.52),end=ax_1.c2p(-.45,-.3),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6).save_state()
         
@@ -3002,7 +2994,15 @@ class Scene4(Scene):
         self.play(
             push_arr_2.animate.move_to(ax_1.c2p(-.27,-.18)),
             run_time=.35
-        )        
+        )   
+        self.play(
+            dot_1.animate.move_to(ax_1.c2p(3,0))
+        ) 
+
+        self.wait(2)
+
+        
+                
 
 
 

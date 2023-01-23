@@ -5244,6 +5244,468 @@ class Scene4(Scene):
 
 
 
+class weier(Scene):
+    def construct(self):
+        n = 300
+        a = ValueTracker(0.5)
+        b = ValueTracker(0.6)
+        xrng = ValueTracker(4)
+
+        ax = Axes()
+        func = VMobject()
+        def axUpdater(mobj):
+            xmin = -xrng.get_value()
+            xmax = +xrng.get_value()
+            newax =Axes(x_range=[xmin,xmax,10**int(np.log10(xmax)-1)],y_range=[-1,4])
+            newax.add_coordinates()
+            newfunc = newax.plot(
+                lambda x: sum([a.get_value()**k*np.cos(b.get_value()**k*PI*x) for k in range(n)]),
+                x_range=[xmin,xmax,xrng.get_value()/200],
+                use_smoothing=False,
+                ).set_color(RED).set_stroke(width=3)
+            mobj.become(newax)
+            func.become(newfunc)            
+        ax.add_updater(axUpdater)
+
+        self.add(ax,func)
+
+        self.play(
+            b.animate.set_value(7),
+            run_time=2
+        )        
+        self.wait(2)
+        self.play(
+            xrng.animate.set_value(0.01),
+            run_time=10
+        ) 
+
+
+        # manim -pqh test2.py weier
+
+
+
+class AxesScale(Scene):
+    def construct(self):
+
+        xrng = ValueTracker(4)
+
+        ax = Axes()
+
+        def axUpdater(mobj):
+            xmin = -xrng.get_value()
+            xmax = +xrng.get_value()
+            newax =Axes(x_range=[xmin,xmax,2**int(np.log10(xmax)-1)],y_range=[-1,4])
+            newax.add_coordinates()
+            mobj.become(newax)          
+        ax.add_updater(axUpdater)
+
+        self.add(ax)
+
+               
+        self.wait(2)
+        self.play(
+            xrng.animate.set_value(1),
+            run_time=4
+        ) 
+
+
+        # manim -pqh test2.py AxesScale
+
+
+
+class AxesScale_1(Scene):
+    def construct(self):
+
+        xrng_max = ValueTracker(5.5)
+        xrng_min = ValueTracker(-1.5)
+
+        ax=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+
+        def axUpdater(mobj):
+            xmin = xrng_min.get_value()
+            xmax = xrng_max.get_value()
+            newax =Axes(
+                    x_range=[xmin,xmax,2**int(np.log10(xmax)-1)],
+                    y_range=[-1.5,4.5],
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False, 
+                    axis_config={
+                        "font_size": 24,
+                        #"include_ticks": False,
+                    }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+            newax.add_coordinates()
+            mobj.become(newax)          
+        ax.add_updater(axUpdater)
+
+        self.add(ax)
+
+               
+        self.wait(2)
+        self.play(
+            xrng_max.animate.set_value(1),
+            xrng_min.animate.set_value(1),
+            run_time=4
+        ) 
+
+
+        # manim -pqh test2.py AxesScale_1
+
+
+
+class AxesScale_2(Scene):
+    def construct(self):
+
+        xrng= ValueTracker(5.5)
+        
+
+        ax=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+
+        def axUpdater(mobj):
+            xmin = -xrng.get_value()
+            xmax = xrng.get_value()
+            newax =Axes(
+                    x_range=[xmin,xmax,2**int(np.log10(xmax)-1)],
+                    y_range=[-1.5,4.5],
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False, 
+                    axis_config={
+                        "font_size": 24,
+                    }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+            newax.add_coordinates()
+            mobj.become(newax)          
+        ax.add_updater(axUpdater)
+
+        self.add(ax)
+
+               
+        self.wait(2)
+        self.play(
+            xrng.animate.set_value(1),
+            run_time=4
+        ) 
+
+
+        # manim -pqh test2.py AxesScale_2
+
+
+
+class LogScalingExample(Scene):
+    def construct(self):
+        ax = Axes(
+            x_range=[0, 10, 1],
+            y_range=[-2, 6, 1],
+            tips=False,
+            axis_config={"include_numbers": True},
+            y_axis_config={"scaling": LogBase(custom_labels=True)},
+        )
+
+        ax_1 = Axes(
+            x_range=[0, 10, 1],
+            y_range=[-2, 6, 1],
+            tips=False,
+            axis_config={"include_numbers": True},
+            x_axis_config={"scaling": LinearBase(.5)},
+            y_axis_config={"scaling": LogBase(custom_labels=True)},
+        )
+
+        # x_min must be > 0 because log is undefined at 0.
+        graph = ax.plot(lambda x: x ** 2, x_range=[0.001, 10], use_smoothing=False)
+        self.add(ax)
+
+        self.play(
+            Create(graph)
+        )
+        self.wait()
+
+        self.play(
+            Transform(ax,ax_1)
+        )
+        self.wait()
+
+
+        # manim -pqh test2.py LogScalingExample
+
+
+
+class scale_ax(Scene):
+    def construct(self):
+
+        xrng = ValueTracker(4)
+
+        ax = Axes(x_range=[-4,4,2**int(np.log10(4)-1)])
+        ax.add_coordinates()
+
+        ax_1 = Axes(x_range=[-4,4,2**int(np.log10(1)-1)]).set_color(RED).set_z_index(-1).shift(UP)
+
+        def axUpdater(mobj):
+            xmin = -xrng.get_value()
+            xmax = +xrng.get_value()
+            newax =Axes(x_range=[xmin,xmax,2**int(np.log10(xmax)-1)])
+            newax.add_coordinates()
+            mobj.become(newax)          
+        ax.add_updater(axUpdater)
+
+        self.add(ax)
+        self.add(ax_1)        
+        self.wait()
+
+        self.play(
+            xrng.animate.set_value(2),
+            run_time=4
+        )
+        self.wait(2)
+
+
+        # manim -pqh test2.py scale_ax
+
+
+class scAx(Scene):
+    def construct(self):
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+
+        ax_2_pre=Axes(
+            x_range=[-5.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        )
+        ax_2=Axes(
+            x_range=[-5.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL).scale(.5).set_z_index(1)
+        #.shift((ax_2_pre.c2p(0,0)[0]-ax_1.c2p(0,0)[0])*LEFT)
+
+        self.wait()
+        self.play(
+            Create(ax_1)
+        )
+        self.wait()
+        self.play(
+            Create(ax_2),
+            run_time=2
+        )
+        self.wait()
+
+        # manim -pqh test2.py scAx
+
+        # manim -sqk test2.py scAx
+
+
+
+class weier(Scene):
+    def construct(self):
+        n = 300
+        a = ValueTracker(0.5)
+        b = ValueTracker(0.6)
+        xrng = ValueTracker(4)
+
+        ax = Axes()
+        func = VMobject()
+        def axUpdater(mobj):
+            xmin = -xrng.get_value()
+            xmax = +xrng.get_value()
+            newax =Axes(x_range=[xmin,xmax,10**int(np.log10(xmax)-1)],y_range=[-1,4])
+            newax.add_coordinates()
+            newfunc = newax.plot(
+                lambda x: sum([a.get_value()**k*np.cos(b.get_value()**k*PI*x) for k in range(n)]),
+                x_range=[xmin,xmax,xrng.get_value()/200],
+                use_smoothing=False,
+                ).set_color(RED).set_stroke(width=3)
+            mobj.become(newax)
+            func.become(newfunc)            
+        ax.add_updater(axUpdater)
+
+        self.add(ax,func)
+
+        self.play(
+            b.animate.set_value(7),
+            run_time=2
+        )        
+        self.wait(2)
+        self.play(
+            xrng.animate.set_value(0.01),
+            run_time=10
+        ) 
+
+
+        # manim -pqh test2.py weier
+
+
+
+class scale_ax_1(Scene):
+    def construct(self):
+
+        xrng_min = ValueTracker(1.5)
+        xrng = ValueTracker(5.5)
+        n=10
+        
+
+        ax = Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+        ax.add_coordinates()
+        func=VGroup()
+
+        def axUpdater(mobj):
+            xmin = -xrng_min.get_value()
+            xmax = +xrng.get_value()
+            newax=Axes(
+                    x_range=[xmin,xmax,2**int(np.log10(xmax)-1)],
+                    y_range=[-1.5,4.5],
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False, 
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+            newax.add_coordinates()
+            newfunc=newax.plot(
+                lambda z : z**k for k in range(n)
+                )
+            mobj.become(newax)
+            func.become(newfunc)            
+        ax.add_updater(axUpdater)
+                
+
+        self.add(ax,func)     
+        self.wait()
+
+        self.play(
+            xrng.animate.set_value(2.75),
+            xrng_min.animate.set_value(.75),
+            run_time=4
+        )
+        self.wait(2)
+
+
+        # manim -pqh test2.py scale_ax_1
+
+
+
+class weier_1(Scene):
+    def construct(self):
+    
+        xrng = ValueTracker(5.5)
+        xrng_min = ValueTracker(1.5)
+
+        ax_ref = Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(3)
+        self.play(
+            Write(ax_ref)
+        )
+        func_ref=ax_ref.plot(
+                lambda x: x,
+                x_range=[0,2],
+                use_smoothing=False,
+                ).set_color(PURE_GREEN).set_stroke(width=5).set_z_index(3)
+        
+        self.play(
+            Create(func_ref)
+        )
+        
+
+
+        ax=VGroup()
+        
+
+        func = VMobject()
+        def axUpdater(mobj):
+            xmin = -xrng_min.get_value()
+            xmax = +xrng.get_value()
+            #newax =Axes(x_range=[xmin,xmax,10**int(np.log10(xmax)-1)],y_range=[-1,4])
+            newax=Axes(
+                    x_range=[xmin,xmax,2**int(np.log10(xmax)-1)],
+                    y_range=[-1.5,4.5],
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False, 
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+            newfunc = newax.plot(
+                lambda x: x,
+                x_range=[0,2],
+                use_smoothing=False,
+                ).set_color(PURE_GREEN).set_stroke(width=5)
+            mobj.become(newax)
+            func.become(newfunc)            
+        ax.add_updater(axUpdater)
+
+        self.add(ax,func)
+        
+        self.wait()
+
+        self.play(
+            FadeOut(ax_ref)
+        )
+        
+
+               
+        self.wait(2)
+        self.play(
+            xrng.animate.set_value(2.75),
+            xrng_min.animate.set_value(.75),
+            run_time=4
+        ) 
+
+
+        # manim -pqh test2.py weier_1
+
 ###################################################################################################################
 
 
