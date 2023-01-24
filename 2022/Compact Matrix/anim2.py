@@ -2922,6 +2922,9 @@ class Scene4(Scene):
             Write(dot_1)
         )
 
+        dt_0=Dot().set_color(REANLEA_YELLOW).move_to(ax_1.c2p(0,0)).set_z_index(2)
+        self.add(dt_0)
+
 
         push_arr=Arrow(start=ax_1.c2p(-.8,0),end=ax_1.c2p(-.4,0),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6)
 
@@ -2948,6 +2951,8 @@ class Scene4(Scene):
         lbl_i=MathTex("1").scale(.55).set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,-.5))  
         dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0)).set_z_index(2)
         dt_2=Dot().set_color(REANLEA_PURPLE).move_to(ax_1.c2p(3,2)).set_z_index(2)
+
+        dt_2_lbl=MathTex("v").scale(.7).set_color(REANLEA_PURPLE_LIGHTER).next_to(dt_2,RIGHT)
 
         self.play(
             FadeOut(push_arr),
@@ -2980,10 +2985,17 @@ class Scene4(Scene):
         self.wait(2)
 
         self.add(dt_2)
+        self.play(
+            Write(dt_2_lbl)
+        )
 
         self.play(
             Restore(dot_1)
         )
+
+        dissipating_dt_1=Dot().move_to(ax_1.c2p(3,2)).set_opacity(opacity=0)
+        dissipating_path_1 = TracedPath(dissipating_dt_1.get_center, dissipating_time=0.5, stroke_color=[REANLEA_AQUA,PURE_GREEN],stroke_opacity=[1, 0])
+        self.add(dissipating_dt_1,dissipating_path_1)
 
 
         push_arr_2=Arrow(start=ax_1.c2p(-.78,-.52),end=ax_1.c2p(-.45,-.3),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6).save_state()
@@ -2996,8 +3008,10 @@ class Scene4(Scene):
             push_arr_2.animate.move_to(ax_1.c2p(-.27,-.18)),
             run_time=.35
         )   
+        tst_dt_1=Dot().move_to(ax_1.c2p(3,0)).set_opacity(opacity=0)
         self.play(
-            dot_1.animate.move_to(ax_1.c2p(3,0))
+            dot_1.animate.move_to(ax_1.c2p(3,0)),
+            dissipating_dt_1.animate.move_to(ax_1.c2p(3,0))
         ) 
 
         self.wait(2)
