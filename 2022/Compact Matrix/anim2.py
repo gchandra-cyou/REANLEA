@@ -3008,7 +3008,6 @@ class Scene4(Scene):
             push_arr_2.animate.move_to(ax_1.c2p(-.27,-.18)),
             run_time=.35
         )   
-        tst_dt_1=Dot().move_to(ax_1.c2p(3,0)).set_opacity(opacity=0)
         self.play(
             dot_1.animate.move_to(ax_1.c2p(3,0)),
             dissipating_dt_1.animate.move_to(ax_1.c2p(3,0))
