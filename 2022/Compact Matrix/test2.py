@@ -5706,6 +5706,54 @@ class weier_1(Scene):
 
         # manim -pqh test2.py weier_1
 
+
+class flash_disp_ex(Scene):
+    def construct(self):
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+
+        dot_1=Dot(radius=0.15, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(3).save_state()
+
+        dt_0=Dot().set_color(REANLEA_YELLOW).move_to(ax_1.c2p(0,0)).set_z_index(2)
+        self.add(dt_0)
+
+        x_proj_ln=DashedLine(start=dt_0.get_center(),end=dot_1.get_center()).set_stroke(width=3, color=REANLEA_YELLOW_CREAM).set_z_index(2)
+        
+        x_proj_ln.add_updater(
+            lambda z : z.become(
+                DashedLine(start=dt_0.get_center(),end=dot_1.get_center()).set_stroke(width=3, color=REANLEA_YELLOW_CREAM).set_z_index(2)
+            )
+        )
+
+        dissipating_dt_1=Dot().move_to(ax_1.c2p(3,2)).set_opacity(opacity=0)
+        dissipating_path_1 = TracedPath(dissipating_dt_1.get_center, dissipating_time=0.5, stroke_color=[REANLEA_AQUA,PURE_GREEN],stroke_opacity=[1, 0])
+        self.add(dissipating_dt_1,dissipating_path_1)
+
+        self.wait()
+
+        self.add(ax_1,dt_0,dot_1,x_proj_ln,dissipating_dt_1)
+
+        self.play(
+            dot_1.animate.move_to(ax_1.c2p(3,0)),
+            dissipating_dt_1.animate.move_to(ax_1.c2p(3,0)),
+            Flash(point=Dot().move_to(ax_1.c2p(3,0)), color=REANLEA_GREEN_AUQA),
+        )
+
+        self.wait(2)
+
+
+
+        # manim -pqh test2.py flash_disp_ex
+        
 ###################################################################################################################
 
 

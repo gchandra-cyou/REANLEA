@@ -2999,6 +2999,14 @@ class Scene4(Scene):
 
 
         push_arr_2=Arrow(start=ax_1.c2p(-.78,-.52),end=ax_1.c2p(-.45,-.3),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6).save_state()
+
+        x_proj_ln=DashedLine(start=dt_0.get_center(),end=dot_1.get_center()).set_stroke(width=3, color=REANLEA_YELLOW_CREAM).set_z_index(2)
+        self.add(x_proj_ln)
+        x_proj_ln.add_updater(
+            lambda z : z.become(
+                DashedLine(start=dt_0.get_center(),end=dot_1.get_center()).set_stroke(width=3, color=REANLEA_YELLOW_CREAM).set_z_index(2)
+            )
+        )
         
         self.play(
             FadeIn(push_arr_2)
@@ -3010,8 +3018,10 @@ class Scene4(Scene):
         )   
         self.play(
             dot_1.animate.move_to(ax_1.c2p(3,0)),
-            dissipating_dt_1.animate.move_to(ax_1.c2p(3,0))
+            dissipating_dt_1.animate.move_to(ax_1.c2p(3,0)),
+            Flash(point=Dot().move_to(ax_1.c2p(3,0)), color=REANLEA_GREEN_AUQA),
         ) 
+        
 
         self.wait(2)
 
