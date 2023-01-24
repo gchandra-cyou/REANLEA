@@ -2597,14 +2597,15 @@ class Scene3_1(Scene):
         )
 
 
-        x_proj_lbl=MathTex("=",r"\lVert v \rVert",".",r"cos\theta").scale(.65).next_to(a_ln_lab,RIGHT, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+        x_proj_lbl=MathTex("=",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.65).next_to(a_ln_lab,RIGHT, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
         x_proj_lbl[1].set_color(REANLEA_CYAN_LIGHT)
         x_proj_lbl[3][3].set_color(REANLEA_YELLOW_GREEN)
         self.play(
             ReplacementTransform(angl_1_lbl.copy(),x_proj_lbl)
         )
+        self.wait()
 
-        x_proj_lbl_1=MathTex("a","=",r"\lVert v \rVert",".",r"cos\theta").scale(.8).next_to(norm_v_1,DOWN, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER)
+        x_proj_lbl_1=MathTex("a","=",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.8).next_to(norm_v_1,DOWN, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER)
         x_proj_lbl_1[0].set_color(PURE_GREEN)
         x_proj_lbl_1[2].set_color(REANLEA_CYAN_LIGHT)
         x_proj_lbl_1[4][3].set_color(REANLEA_YELLOW_GREEN)
@@ -2633,7 +2634,7 @@ class Scene3_1(Scene):
             run_time=2
         )
         self.wait()
-        y_proj_lbl=MathTex("=",r"\lVert v \rVert",".",r"sin\theta").scale(.65).next_to(b_ln_lab,RIGHT, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+        y_proj_lbl=MathTex("=",r"\lVert v \rVert",r"\cdot",r"sin\theta").scale(.65).next_to(b_ln_lab,RIGHT, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
         y_proj_lbl[1].set_color(REANLEA_CYAN_LIGHT)
         y_proj_lbl[3][3].set_color(REANLEA_YELLOW_GREEN)
 
@@ -2642,7 +2643,7 @@ class Scene3_1(Scene):
         )
         self.wait()
 
-        y_proj_lbl_1=MathTex("b","=",r"\lVert v \rVert",".",r"sin\theta").scale(.8).next_to(x_proj_lbl_1,DOWN, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER)
+        y_proj_lbl_1=MathTex("b","=",r"\lVert v \rVert",r"\cdot",r"sin\theta").scale(.8).next_to(x_proj_lbl_1,DOWN, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER)
         y_proj_lbl_1[0].set_color(PURE_RED)
         y_proj_lbl_1[2].set_color(REANLEA_CYAN_LIGHT)
         y_proj_lbl_1[4][3].set_color(REANLEA_YELLOW_GREEN)
@@ -2705,7 +2706,7 @@ class Scene3_1(Scene):
             Write(force_0)
         )
 
-        force_1=MathTex(r"F",".",r"cos\theta").next_to(a_len_ln,UP, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/3).scale(.5).set_color(PURE_GREEN)
+        force_1=MathTex(r"F",r"\cdot",r"cos\theta").next_to(a_len_ln,UP, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/3).scale(.5).set_color(PURE_GREEN)
         force_1[0].set_color(REANLEA_CYAN_LIGHT)
         force_1[2][3].set_color(REANLEA_YELLOW_GREEN)
 
@@ -2713,7 +2714,7 @@ class Scene3_1(Scene):
             Write(force_1)
         )
 
-        force_2=MathTex(r"F",".",r"sin\theta").next_to(arr_3,LEFT, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/3).rotate(PI/2).scale(.5).set_color(REANLEA_CHARM).shift(.5*RIGHT)
+        force_2=MathTex(r"F",r"\cdot",r"sin\theta").next_to(arr_3,LEFT, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/3).rotate(PI/2).scale(.5).set_color(REANLEA_CHARM).shift(.5*RIGHT)
         force_2[0].set_color(REANLEA_CYAN_LIGHT)
         force_2[2][3].set_color(REANLEA_YELLOW_GREEN)
         self.play(
@@ -2721,7 +2722,7 @@ class Scene3_1(Scene):
         )
         self.wait(2)
 
-        force_final=MathTex("F","=",r"F",".",r"cos\theta","+",r"F",".",r"sin\theta").to_corner(UL, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/3).scale(.75).set_color(REANLEA_TXT_COL).shift(1.5*DOWN)
+        force_final=MathTex("F","=",r"F",r"\cdot",r"cos\theta","+",r"F",r"\cdot",r"sin\theta").to_corner(UL, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/3).scale(.75).set_color(REANLEA_TXT_COL).shift(1.5*DOWN)
         force_final[0].set_color(REANLEA_CYAN_LIGHT)
         force_final[2].set_color(REANLEA_CYAN_LIGHT)
         force_final[4][3].set_color(REANLEA_YELLOW_GREEN)
