@@ -3154,9 +3154,6 @@ class Scene4(Scene):
         ax_3_ref=ax_3.copy()
         ax_3.shift((ax_1.c2p(0,0)[0]-ax_3_ref.c2p(0,0)[0])*RIGHT)
 
-        self.play(
-            Write(ax_3)
-        )
 
         push_arr_4=Arrow(start=ax_1.c2p(-.78,-.52),end=ax_1.c2p(-.45,-.3),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6).save_state()
 
@@ -3169,7 +3166,9 @@ class Scene4(Scene):
 
         self.play(
             dot_1_1.animate.move_to(ax_1.c2p(6,0)),
-            ReplacementTransform(ln_2_lbl,ln_3_lbl)
+            ReplacementTransform(ln_2_lbl,ln_3_lbl),
+            FadeIn(ax_3),
+            run_time=2
         )
 
 
