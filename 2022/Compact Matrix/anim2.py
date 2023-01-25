@@ -2922,7 +2922,7 @@ class Scene4(Scene):
             Write(dot_1)
         )
 
-        dt_0=Dot().set_color(REANLEA_YELLOW).move_to(ax_1.c2p(0,0)).set_z_index(2)
+        dt_0=Dot().set_color(REANLEA_YELLOW).move_to(ax_1.c2p(0,0)).set_z_index(3)
         self.add(dt_0)
 
 
@@ -2948,9 +2948,9 @@ class Scene4(Scene):
         )  
 
 
-        lbl_i=MathTex("1").scale(.55).set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,-.5))  
+        lbl_i=MathTex("1").scale(.45).set_color(REANLEA_AQUA).move_to(ax_1.c2p(1.15,.2))  
         dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0)).set_z_index(3)
-        dt_2=Dot().set_color(REANLEA_PINK).move_to(ax_1.c2p(3,2)).set_z_index(2)
+        dt_2=Dot().set_color(REANLEA_PINK).move_to(ax_1.c2p(3,2)).set_z_index(1)
 
         dt_2_lbl=MathTex("v").scale(.7).set_color(REANLEA_PINK_LIGHTER).next_to(dt_2,RIGHT)
 
@@ -3002,6 +3002,7 @@ class Scene4(Scene):
 
         x_proj_ln=DashedLine(start=dt_0.get_center(),end=dot_1.get_center()).set_stroke(width=3, color=REANLEA_YELLOW_CREAM).set_z_index(2)
         self.add(x_proj_ln)
+
         x_proj_ln.add_updater(
             lambda z : z.become(
                 DashedLine(start=dt_0.get_center(),end=dot_1.get_center()).set_stroke(width=3, color=REANLEA_YELLOW_CREAM).set_z_index(2)
@@ -3039,9 +3040,59 @@ class Scene4(Scene):
             dissipating_dt_1.animate.move_to(ax_1.c2p(3,0)),
             Flash(point=Dot().move_to(ax_1.c2p(3,0)), color=REANLEA_GREEN_AUQA),
         )''' 
-        
-
+    
         self.wait(2)
+
+        arr_1=Arrow(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_CYAN_LIGHT).set_z_index(1)
+
+        self.play(
+            Write(arr_1)
+        )
+        self.wait(2)
+
+
+        ln_1=Line(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+
+        ln_2=Line(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+
+        ln_1_lbl=MathTex(r"\lVert v \rVert").scale(.5).set_color(REANLEA_CYAN_LIGHT).move_to(ax_1.c2p(1.35,1.45)).rotate(ln_1.get_angle())
+
+        self.play(
+            Unwrite(arr_1),
+            Write(ln_1)
+        )
+
+        self.play(
+            Create(ln_1_lbl)
+        )
+        self.wait(2)
+
+        angl_1=Angle(ln_2,ln_1).set_color(REANLEA_YELLOW_GREEN).set_stroke(width=3.5).set_z_index(-1)
+        self.play(
+            Create(angl_1)
+        )
+        angl_1_lbl=MathTex(r"\theta").scale(.4).set_color(REANLEA_YELLOW_GREEN).next_to(angl_1,UR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2).shift(.25*DOWN)
+        self.play(
+            Write(angl_1_lbl)
+        )
+        self.wait(2)
+
+        ln_2_lbl=MathTex(r"\lVert 1 \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_YELLOW_CREAM).move_to(ax_1.c2p(1.75,-.375))
+
+        self.play(
+            Write(ln_2_lbl)
+        )
+
+        dot_2=Dot(radius=0.1, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(3,0)).set_sheen(-0.4,DOWN).set_z_index(3)
+
+        self.add(dot_2)
+
+        x_proj_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=REANLEA_YELLOW_CREAM).set_z_index(2)
+        self.add(x_proj_ln_1)
+
+        self.play(
+            Restore(dot_1)
+        )
 
 
         self.wait(4)
