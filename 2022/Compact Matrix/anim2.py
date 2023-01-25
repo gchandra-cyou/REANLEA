@@ -2918,7 +2918,7 @@ class Scene4(Scene):
 
         dot_1=Dot(radius=0.15, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(4).save_state()
 
-        dot_1_1=dot_1.copy()
+        dot_1_1=dot_1.copy().save_state()
 
         self.play(
             Write(dot_1)
@@ -3079,11 +3079,21 @@ class Scene4(Scene):
         )
         self.wait(2)
 
-        ln_2_lbl=MathTex(r"\lVert 1 \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_YELLOW_CREAM).move_to(ax_1.c2p(1.75,-.375))
+        ln_2_lbl_0=MathTex(r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_YELLOW_CREAM).move_to(ax_1.c2p(1.75,-.375))
 
         self.play(
-            Write(ln_2_lbl)
+            Write(ln_2_lbl_0)
         )
+        self.wait(1.5)
+
+        ln_2_lbl_1=MathTex(r"\lVert 1 \rVert",r"\cdot").scale(.5).set_color(REANLEA_YELLOW_CREAM).next_to(ln_2_lbl_0,LEFT, buff=.125)
+
+        ln_2_lbl=VGroup(ln_2_lbl_0,ln_2_lbl_1)
+
+        self.play(
+            TransformMatchingShapes(lbl_i.copy(),ln_2_lbl_1)
+        )
+
 
         dot_2=Dot(radius=0.1, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(3,0)).set_sheen(-0.4,DOWN).set_z_index(3)
 
@@ -3113,8 +3123,54 @@ class Scene4(Scene):
             run_time=.35
         )
         self.play(
-            dot_1_1.animate.move_to(ax_1.c2p(1,0))
-        ) 
+            dot_1_1.animate.move_to(ax_1.c2p(2,0))
+        )
+        self.play(
+            FadeOut(push_arr_3)
+        )
+        self.wait()
+
+        dt_3=Dot().set_color(REANLEA_GOLDENROD).move_to(ax_1.c2p(2,0)).set_z_index(3)
+        self.add(dt_3)
+
+        self.play(
+            Restore(dot_1_1)
+        )
+
+        self.wait()
+
+        ax_3=Axes(
+            x_range=[-1.5,6.5],
+            y_range=[-1.5,4.5],
+            x_length=(round(config.frame_width)-2)*8/7,
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+
+        ax_3_ref=ax_3.copy()
+        ax_3.shift((ax_1.c2p(0,0)[0]-ax_3_ref.c2p(0,0)[0])*RIGHT)
+
+        self.play(
+            Write(ax_3)
+        )
+
+        push_arr_4=Arrow(start=ax_1.c2p(-.78,-.52),end=ax_1.c2p(-.45,-.3),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6).save_state()
+
+        self.play(
+            push_arr_4.animate.move_to(ax_1.c2p(-.27,-.18)),
+            run_time=.35
+        )
+
+        ln_3_lbl=MathTex(r"\lVert 2 \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_YELLOW_CREAM).move_to(ax_1.c2p(3.75,-.375))
+
+        self.play(
+            dot_1_1.animate.move_to(ax_1.c2p(6,0)),
+            ReplacementTransform(ln_2_lbl,ln_3_lbl)
+        )
 
 
         self.wait(4)
