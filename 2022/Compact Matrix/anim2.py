@@ -2916,7 +2916,7 @@ class Scene4(Scene):
             run_time=2
         )
 
-        dot_1=Dot(radius=0.15, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(3).save_state()
+        dot_1=Dot(radius=0.15, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(4).save_state()
 
         self.play(
             Write(dot_1)
@@ -2949,10 +2949,10 @@ class Scene4(Scene):
 
 
         lbl_i=MathTex("1").scale(.55).set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,-.5))  
-        dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0)).set_z_index(2)
-        dt_2=Dot().set_color(REANLEA_PURPLE).move_to(ax_1.c2p(3,2)).set_z_index(2)
+        dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0)).set_z_index(3)
+        dt_2=Dot().set_color(REANLEA_PINK).move_to(ax_1.c2p(3,2)).set_z_index(2)
 
-        dt_2_lbl=MathTex("v").scale(.7).set_color(REANLEA_PURPLE_LIGHTER).next_to(dt_2,RIGHT)
+        dt_2_lbl=MathTex("v").scale(.7).set_color(REANLEA_PINK_LIGHTER).next_to(dt_2,RIGHT)
 
         self.play(
             FadeOut(push_arr),
@@ -3010,24 +3010,38 @@ class Scene4(Scene):
         
         self.play(
             FadeIn(push_arr_2)
-        )
-        
+        )  
+
+        ln_x=Line(ax_1.c2p(0,0),ax_1.c2p(3,0))
+        ln_y=Line(ax_1.c2p(3,2),ax_1.c2p(3,0))
+
         self.play(
             push_arr_2.animate.move_to(ax_1.c2p(-.27,-.18)),
             run_time=.35
-        )   
+        )
+
         self.play(
+            AnimationGroup(
+                MoveAlongPath(dissipating_dt_1,ln_y),
+                Flash(point=Dot().move_to(ax_1.c2p(3,0)), color=REANLEA_GREEN_AUQA),
+                #MoveAlongPath(dot_1,ln_x),
+                lag_ratio=0.5
+            ),
+            dot_1.animate(run_time=1.25).move_to(ax_1.c2p(3,0))
+        )
+
+        self.play(
+            FadeOut(push_arr_2)
+        )
+
+        '''self.play(
             dot_1.animate.move_to(ax_1.c2p(3,0)),
             dissipating_dt_1.animate.move_to(ax_1.c2p(3,0)),
             Flash(point=Dot().move_to(ax_1.c2p(3,0)), color=REANLEA_GREEN_AUQA),
-        ) 
+        )''' 
         
 
         self.wait(2)
-
-        
-                
-
 
 
         self.wait(4)
