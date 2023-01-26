@@ -3169,20 +3169,23 @@ class Scene4(Scene):
             run_time=.35
         )
 
-
-        ln_3_lbl=MathTex(r"\lVert 2 \cdot i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_GOLD).move_to(ax_1.c2p(3,-.375))
-
         self.play(
             dot_1.animate.move_to(ax_1.c2p(6,0)),
             Create(ax_3, run_time=2),
             lag_ratio=.08
         )
+        self.play(
+            FadeOut(push_arr_4)
+        )
+        self.wait()
         
         self.play(
             ln_2_lbl.animate.move_to(ax_1.c2p(3.2,-.375)).set_color(REANLEA_GOLD)
         )
 
         ln_3_lbl_0=MathTex(r"2 \cdot ").scale(.5).set_color(REANLEA_GOLD).next_to(ln_2_lbl, LEFT, buff=.1)
+
+        ln_3_lbl=MathTex(r"\lVert 2 \cdot i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_GOLD).move_to(ax_1.c2p(3,-.375))
 
         self.play(
             Write(ln_3_lbl_0)
@@ -3193,6 +3196,15 @@ class Scene4(Scene):
 
         self.play(
             TransformMatchingShapes(ln_2_lbl_ref,ln_3_lbl)
+        )
+        self.wait(2)
+
+        dot_3=Dot(radius=0.1, color=REANLEA_BLUE_LAVENDER).move_to(ax_1.c2p(6,0)).set_sheen(-0.4,DOWN).set_z_index(3)
+        self.add(dot_3)
+
+        self.play(
+            dot_1.animate.move_to(ax_1.c2p(0,0)).set_opacity(0),
+            run_time=1.25
         )
 
 
