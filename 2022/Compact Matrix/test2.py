@@ -5861,7 +5861,77 @@ class flash_disp_ex_1(Scene):
 
 
         # manim -pqh test2.py flash_disp_ex_1
+
+
+
+class weier_2(Scene):
+    def construct(self):
+    
+        xrng = ValueTracker(5.5)
+        xrng_min = ValueTracker(1.5)
+
+        ax_ref = Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(3)
+    
+        func_ref=Line(start=ax_ref.c2p(0,0),end=ax_ref.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+
+        dt_3_ref=Dot().set_color(REANLEA_PINK).move_to(ax_ref.c2p(3,2)).set_z_index(3)
+
+        self.add(ax_ref, func_ref, dt_3_ref)
         
+
+
+        ax=VGroup()
+        dt_3=VMobject()
+        func = VMobject()
+
+        def axUpdater(mobj):
+            xmin = -xrng_min.get_value()
+            xmax = +xrng.get_value()
+            #newax =Axes(x_range=[xmin,xmax,10**int(np.log10(xmax)-1)],y_range=[-1,4])
+            newax=Axes(
+                    x_range=[xmin,xmax,2**int(np.log10(xmax)-1)],
+                    y_range=[-1.5,4.5],
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False, 
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+            newfunc = Line(start=newax.c2p(0,0),end=newax.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+            new_dt_3=Dot().set_color(REANLEA_PINK).move_to(newax.c2p(3,2)).set_z_index(3)
+            mobj.become(newax)
+            func.become(newfunc)   
+            dt_3.become(new_dt_3)         
+        ax.add_updater(axUpdater)
+
+        self.add(ax,func,dt_3)
+        
+        self.play(
+            FadeOut(ax_ref)
+        )
+        
+
+        self.play(
+            xrng.animate.set_value(2.75),
+            xrng_min.animate.set_value(.75),
+            run_time=2
+        ) 
+        self.wait(2)
+
+
+        # manim -pqh test2.py weier_2
+
+
+
 ###################################################################################################################
 
 

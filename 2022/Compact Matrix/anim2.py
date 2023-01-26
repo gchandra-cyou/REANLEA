@@ -3209,6 +3209,12 @@ class Scene4(Scene):
             run_time=1.25
         )
 
+        self.wait(2)
+
+        self.play(
+            ax_3.animate.add_coordinates()
+        )
+
 
         self.wait(4)
 
@@ -3262,6 +3268,7 @@ class Scene4_1(Scene):
 
         ax_2_ref=ax_2.copy()
         ax_2.shift((ax_1.c2p(0,0)[0]-ax_2_ref.c2p(0,0)[0])*RIGHT)
+        ax_3=ax_2.copy()
 
         dt_0=Dot().set_color(REANLEA_YELLOW).move_to(ax_1.c2p(0,0)).set_z_index(3)
         dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0)).set_z_index(3)
@@ -3280,7 +3287,7 @@ class Scene4_1(Scene):
 
         angl_1=Angle(ln_0010,ln_0032).set_color(REANLEA_YELLOW_GREEN).set_stroke(width=3.5).set_z_index(-1)
         
-        angl_1_lbl=MathTex(r"\theta").scale(.4).set_color(REANLEA_YELLOW_GREEN).next_to(angl_1,UR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2).shift(.25*DOWN)
+        angl_1_lbl=MathTex(r"\theta").scale(.4).set_color(REANLEA_YELLOW_GREEN).next_to(angl_1,UR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2).shift(.25*DOWN).set_z_index(2)
         
         
 
@@ -3290,6 +3297,70 @@ class Scene4_1(Scene):
 
         # MAIN SCENE
 
+        xrng = ValueTracker(6.5)
+        xrng_min = ValueTracker(1.5)
+
+
+        ax_2_x=VGroup()
+        dt_1_x=VMobject()
+        dt_3_x=VMobject()
+        ln_0032_x = VMobject()
+
+
+        def axUpdater(mobj):
+            xmin = -xrng_min.get_value()
+            xmax = +xrng.get_value()
+            #newax =Axes(x_range=[xmin,xmax,10**int(np.log10(xmax)-1)],y_range=[-1,4])
+            newax=Axes(
+                    x_range=[xmin,xmax,2**int(np.log10(xmax)-1)],
+                    y_range=[-1.5,4.5],
+                    x_length=(round(config.frame_width)-2)*8/7,
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False, 
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+            newax.add_coordinates()
+            newax_ref=newax.copy()
+            newax.shift((ax_1.c2p(0,0)[0]-newax_ref.c2p(0,0)[0])*RIGHT)
+
+            newfunc = Line(start=newax.c2p(0,0),end=newax.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+            
+            new_dt_1=Dot().set_color(REANLEA_AQUA).move_to(newax.c2p(1,0)).set_z_index(3)
+
+            new_dt_3=Dot().set_color(REANLEA_PINK).move_to(newax.c2p(3,2)).set_z_index(3)
+
+            mobj.become(newax)
+            ln_0032_x.become(newfunc)  
+            dt_1_x.become(new_dt_1).set_z_index(3)
+            dt_3_x.become(new_dt_3)  
+
+        ax_2_x.add_updater(axUpdater)
+
+        self.add(ax_2_x,ln_0032_x,dt_1_x,dt_3_x)
+        self.play(
+            FadeOut(ax_2),
+            FadeOut(dt_1)
+        )
+        
+        self.play(
+            AnimationGroup(
+                AnimationGroup(
+                    xrng.animate.set_value(3.25),
+                    xrng_min.animate.set_value(.75),
+                ),
+                AnimationGroup(
+                    Flash(point=Dot().move_to(ax_1.c2p(2,0)), color=REANLEA_BLUE_LAVENDER),
+                    dt_2.animate.set_color(REANLEA_AQUA)
+                ),
+                lag_ratio=.5
+            )
+        )
+        
+
+        
+        
         
 
         self.wait(4)
