@@ -3202,8 +3202,10 @@ class Scene4(Scene):
         dot_3=Dot(radius=0.1, color=REANLEA_BLUE_LAVENDER).move_to(ax_1.c2p(6,0)).set_sheen(-0.4,DOWN).set_z_index(3)
         self.add(dot_3)
 
+        fade_out_grp=VGroup(lbl_i,dt_3_lbl,ln_3_lbl,ln_1_lbl)
         self.play(
             dot_1.animate.move_to(ax_1.c2p(0,0)).set_opacity(0),
+            FadeOut(fade_out_grp),
             run_time=1.25
         )
 
@@ -3216,6 +3218,88 @@ class Scene4(Scene):
         # manim -pqh anim2.py Scene4
 
         # manim -sqk anim2.py Scene4
+        
+
+
+###################################################################################################################
+
+
+class Scene4_1(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        
+
+
+        # PREVIOUS SCENE
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1) 
+
+
+        ax_2=Axes(
+            x_range=[-1.5,6.5],
+            y_range=[-1.5,4.5],
+            x_length=(round(config.frame_width)-2)*8/7,
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+
+        ax_2_ref=ax_2.copy()
+        ax_2.shift((ax_1.c2p(0,0)[0]-ax_2_ref.c2p(0,0)[0])*RIGHT)
+
+        dt_0=Dot().set_color(REANLEA_YELLOW).move_to(ax_1.c2p(0,0)).set_z_index(3)
+        dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0)).set_z_index(3)
+        dt_2=Dot().set_color(REANLEA_GOLDENROD).move_to(ax_1.c2p(2,0)).set_z_index(3)
+        dt_3=Dot().set_color(REANLEA_PINK).move_to(ax_1.c2p(3,2)).set_z_index(3)
+
+        dt_3_lbl=MathTex("v").scale(.7).set_color(REANLEA_PINK_LIGHTER).next_to(dt_3,RIGHT)
+
+        ln_0010=Line(start=ax_1.c2p(0,0),end=ax_1.c2p(1,0)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+
+        ln_0032=Line(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+
+        dot_0=Dot(radius=0.1, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(3,0)).set_sheen(-0.4,DOWN).set_z_index(3)
+
+        dot_1=Dot(radius=0.1, color=REANLEA_BLUE_LAVENDER).move_to(ax_1.c2p(6,0)).set_sheen(-0.4,DOWN).set_z_index(3)
+
+        angl_1=Angle(ln_0010,ln_0032).set_color(REANLEA_YELLOW_GREEN).set_stroke(width=3.5).set_z_index(-1)
+        
+        angl_1_lbl=MathTex(r"\theta").scale(.4).set_color(REANLEA_YELLOW_GREEN).next_to(angl_1,UR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2).shift(.25*DOWN)
+        
+        
+
+        self.add(ax_2, dt_0,dt_1,dt_2,dt_3,dt_3_lbl,ln_0032,dot_0,dot_1,angl_1,angl_1_lbl)
+
+
+
+        # MAIN SCENE
+
+        
+
+        self.wait(4)
+
+
+        
+
+        # manim -pqh anim2.py Scene4_1
+
+        # manim -sqk anim2.py Scene4_1
         
 
 ###################################################################################################################
