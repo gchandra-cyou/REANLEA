@@ -5785,6 +5785,8 @@ class flash_disp_ex_1(Scene):
 
         dot_1=Dot(radius=0.15, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(3).save_state()
 
+        dot_2=dot_1.copy()
+
         dt_0=Dot().set_color(REANLEA_YELLOW).move_to(ax_1.c2p(0,0)).set_z_index(2)
         self.add(dt_0)
 
@@ -5821,6 +5823,35 @@ class flash_disp_ex_1(Scene):
                 lag_ratio=0.5
             ),
             dot_1.animate(run_time=1.25).move_to(ax_1.c2p(3,0))
+        )
+        self.wait()
+
+        self.play(
+            Restore(dot_1)
+        )
+        self.add(dot_2)
+        self.play(
+            FadeOut(dot_1)
+        )
+
+        ax_2=Axes(
+            x_range=[-1.5,6.5],
+            y_range=[-1.5,4.5],
+            x_length=(round(config.frame_width)-2)*8/7,
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+        ax_2_ref=ax_2.copy()
+        ax_2.shift((ax_1.c2p(0,0)[0]-ax_2_ref.c2p(0,0)[0])*RIGHT)
+
+        self.play(
+            dot_2.animate.move_to(ax_1.c2p(6,0)),
+            Create(ax_2, run_time=2),
+            lag_ratio=.08
         )
 
 

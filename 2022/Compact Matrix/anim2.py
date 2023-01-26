@@ -2950,7 +2950,7 @@ class Scene4(Scene):
         )  
 
 
-        lbl_i=MathTex("1").scale(.45).set_color(REANLEA_AQUA).move_to(ax_1.c2p(1.2,.2))  
+        lbl_i=MathTex("i").scale(.45).set_color(REANLEA_AQUA).move_to(ax_1.c2p(1.2,.2))  
         dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0)).set_z_index(3)
         dt_2=Dot().set_color(REANLEA_PINK).move_to(ax_1.c2p(3,2)).set_z_index(1)
 
@@ -3086,7 +3086,7 @@ class Scene4(Scene):
         )
         self.wait(1.5)
 
-        ln_2_lbl_1=MathTex(r"\lVert 1 \rVert",r"\cdot").scale(.5).set_color(REANLEA_YELLOW_CREAM).next_to(ln_2_lbl_0,LEFT, buff=.125)
+        ln_2_lbl_1=MathTex(r"\lVert i \rVert",r"\cdot").scale(.5).set_color(REANLEA_YELLOW_CREAM).next_to(ln_2_lbl_0,LEFT, buff=.125)
 
         ln_2_lbl=VGroup(ln_2_lbl_0,ln_2_lbl_1)
 
@@ -3098,9 +3098,6 @@ class Scene4(Scene):
         dot_2=Dot(radius=0.1, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(3,0)).set_sheen(-0.4,DOWN).set_z_index(3)
 
         self.add(dot_2)
-
-        x_proj_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=REANLEA_YELLOW_CREAM).set_z_index(2)
-        self.add(x_proj_ln_1)
 
         self.play(
             Restore(dot_1)
@@ -3122,23 +3119,25 @@ class Scene4(Scene):
             push_arr_3.animate.move_to(ax_1.c2p(-.35,0)),
             run_time=.35
         )
-        self.play(
-            dot_1_1.animate.move_to(ax_1.c2p(2,0))
-        )
-        self.play(
-            FadeOut(push_arr_3)
-        )
-        self.wait()
 
         dt_3=Dot().set_color(REANLEA_GOLDENROD).move_to(ax_1.c2p(2,0)).set_z_index(3)
         self.add(dt_3)
 
+        dt_3_lbl=MathTex("2 \cdot i").scale(.45).set_color(REANLEA_GOLDENROD).move_to(ax_1.c2p(2.35,.2)) 
+
         self.play(
-            Restore(dot_1_1)
+            dot_1_1.animate.move_to(ax_1.c2p(2,0))
+        )
+        self.play(
+            Write(dt_3_lbl)
         )
 
-        self.wait()
+        self.play(
+            FadeOut(push_arr_3)
+        )
+        self.wait(2) 
 
+        
         ax_3=Axes(
             x_range=[-1.5,6.5],
             y_range=[-1.5,4.5],
@@ -3154,6 +3153,14 @@ class Scene4(Scene):
         ax_3_ref=ax_3.copy()
         ax_3.shift((ax_1.c2p(0,0)[0]-ax_3_ref.c2p(0,0)[0])*RIGHT)
 
+        self.play(
+            Restore(dot_1_1)
+        )
+        self.add(dot_1)
+        self.play(
+            FadeOut(dot_1_1)
+        )
+
 
         push_arr_4=Arrow(start=ax_1.c2p(-.78,-.52),end=ax_1.c2p(-.45,-.3),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6).save_state()
 
@@ -3165,10 +3172,9 @@ class Scene4(Scene):
         ln_3_lbl=MathTex(r"\lVert 2 \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_YELLOW_CREAM).move_to(ax_1.c2p(3.75,-.375))
 
         self.play(
-            dot_1_1.animate.move_to(ax_1.c2p(6,0)),
-            ReplacementTransform(ln_2_lbl,ln_3_lbl),
-            FadeIn(ax_3),
-            run_time=2
+            dot_1.animate.move_to(ax_1.c2p(6,0)),
+            Create(ax_3, run_time=2),
+            lag_ratio=.08
         )
 
 
