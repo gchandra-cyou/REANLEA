@@ -3169,7 +3169,6 @@ class Scene4(Scene):
             run_time=.35
         )
 
-        ln_3_lbl_0=MathTex(r"2 \cdot \lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_GOLD).move_to(ax_1.c2p(3,-.375))
 
         ln_3_lbl=MathTex(r"\lVert 2 \cdot i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_GOLD).move_to(ax_1.c2p(3,-.375))
 
@@ -3178,25 +3177,19 @@ class Scene4(Scene):
             Create(ax_3, run_time=2),
             lag_ratio=.08
         )
-
-        #ln_2_lbl.move_to(ax_1.c2p(3.2,-.375))
         
         self.play(
             ln_2_lbl.animate.move_to(ax_1.c2p(3.2,-.375)).set_color(REANLEA_GOLD)
         )
 
-        ln_2_lbl_2=MathTex(r"2 \cdot ").scale(.5).set_color(REANLEA_GOLD).next_to(ln_2_lbl, LEFT, buff=.1)
+        ln_3_lbl_0=MathTex(r"2 \cdot ").scale(.5).set_color(REANLEA_GOLD).next_to(ln_2_lbl, LEFT, buff=.1)
 
         self.play(
-            Write(ln_2_lbl_2)
+            Write(ln_3_lbl_0)
         )
+        self.wait()
 
-        ln_2_lbl_ref=VGroup(ln_2_lbl_2,ln_2_lbl)
-
-        '''self.play(
-            TransformMatchingShapes(ln_2_lbl_ref,ln_3_lbl_0)
-        )
-        self.wait()'''
+        ln_2_lbl_ref=VGroup(ln_3_lbl_0,ln_2_lbl)
 
         self.play(
             TransformMatchingShapes(ln_2_lbl_ref,ln_3_lbl)
