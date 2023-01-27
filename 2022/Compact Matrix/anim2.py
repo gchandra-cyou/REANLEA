@@ -3355,6 +3355,35 @@ class Scene4_1(Scene):
                     dt_2.animate.set_color(REANLEA_AQUA)
                 ),
                 lag_ratio=.5
+            ),
+            run_time=2
+        )
+
+        self.wait(2)
+
+        ln_dis_1=Line(ax_1.c2p(6,2),ax_1.c2p(6,0))
+        ln_dis_2=Line(ax_1.c2p(3,2),ax_1.c2p(3,0))
+
+
+        dissipating_dt_1=Dot().move_to(ax_1.c2p(3,2)).set_opacity(opacity=0)
+        dissipating_path_1 = TracedPath(dissipating_dt_1.get_center, dissipating_time=0.5, stroke_color=[REANLEA_AQUA,PURE_GREEN],stroke_opacity=[1, 0])
+        self.add(dissipating_dt_1,dissipating_path_1)
+
+        dissipating_dt_2=Dot().move_to(ax_1.c2p(6,2)).set_opacity(opacity=0)
+        dissipating_path_2 = TracedPath(dissipating_dt_2.get_center, dissipating_time=0.5, stroke_color=[REANLEA_BLUE_LAVENDER],stroke_opacity=[1, 0])
+        self.add(dissipating_dt_2,dissipating_path_2)
+
+
+        self.play(
+            AnimationGroup(
+                MoveAlongPath(dissipating_dt_1,ln_dis_1),
+                Flash(point=Dot().move_to(ax_1.c2p(3,0)), color=REANLEA_GREEN_AUQA),
+                lag_ratio=0.5
+            ),
+            AnimationGroup(
+                MoveAlongPath(dissipating_dt_2,ln_dis_2),
+                Flash(point=Dot().move_to(ax_1.c2p(6,0)), color=REANLEA_BLUE_LAVENDER),
+                lag_ratio=0.5
             )
         )
         
