@@ -3366,11 +3366,11 @@ class Scene4_1(Scene):
 
 
         dissipating_dt_1=Dot().move_to(ax_1.c2p(3,2)).set_opacity(opacity=0)
-        dissipating_path_1 = TracedPath(dissipating_dt_1.get_center, dissipating_time=0.5, stroke_color=[REANLEA_AQUA,PURE_GREEN],stroke_opacity=[1, 0])
+        dissipating_path_1 = TracedPath(dissipating_dt_1.get_center, dissipating_time=0.5, stroke_color=[REANLEA_BLUE_LAVENDER],stroke_opacity=[1, 0])
         self.add(dissipating_dt_1,dissipating_path_1)
 
         dissipating_dt_2=Dot().move_to(ax_1.c2p(6,2)).set_opacity(opacity=0)
-        dissipating_path_2 = TracedPath(dissipating_dt_2.get_center, dissipating_time=0.5, stroke_color=[REANLEA_BLUE_LAVENDER],stroke_opacity=[1, 0])
+        dissipating_path_2 = TracedPath(dissipating_dt_2.get_center, dissipating_time=0.5, stroke_color=[REANLEA_AQUA],stroke_opacity=[1, 0])
         self.add(dissipating_dt_2,dissipating_path_2)
 
 
