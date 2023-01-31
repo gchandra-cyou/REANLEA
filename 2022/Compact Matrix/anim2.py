@@ -3272,6 +3272,7 @@ class Scene4_1(Scene):
 
         dt_0=Dot().set_color(REANLEA_YELLOW).move_to(ax_1.c2p(0,0)).set_z_index(3)
         dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0)).set_z_index(3)
+        dt_1_ref=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0)).set_z_index(3)
         dt_2=Dot().set_color(REANLEA_GOLDENROD).move_to(ax_1.c2p(2,0)).set_z_index(3)
         dt_3=Dot().set_color(REANLEA_PINK).move_to(ax_1.c2p(3,2)).set_z_index(3)
 
@@ -3291,7 +3292,7 @@ class Scene4_1(Scene):
         
         
 
-        self.add(ax_2, dt_0,dt_1,dt_2,dt_3,dt_3_lbl,ln_0032,dot_0,dot_1,angl_1,angl_1_lbl)
+        self.add(ax_2, dt_0,dt_1,dt_1_ref,dt_2,dt_3,dt_3_lbl,ln_0032,dot_0,dot_1,angl_1,angl_1_lbl)
 
 
 
@@ -3385,6 +3386,36 @@ class Scene4_1(Scene):
                 Flash(point=Dot().move_to(ax_1.c2p(6,0)), color=REANLEA_BLUE_LAVENDER),
                 lag_ratio=0.5
             )
+        )
+
+        self.wait(2)
+
+        d_d_line_1=DashedDoubleArrow(
+            start=ax_1.c2p(0,-1), end=ax_1.c2p(3,-1), dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).set_color_by_gradient(REANLEA_YELLOW_LIGHTER,REANLEA_GREEN_AUQA)
+
+        d_d_line_1_lbl=MathTex(r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_AQUA_GREEN).next_to(d_d_line_1,RIGHT)
+
+        d_d_line_2=DashedDoubleArrow(
+            start=ax_1.c2p(0,-1.35), end=ax_1.c2p(6,-1.35), dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.01, buff=10
+        ).set_color_by_gradient(REANLEA_YELLOW_LIGHTER,REANLEA_BLUE_LAVENDER)
+
+        d_d_line_2_lbl=MathTex(r"\lVert 2 \cdot i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_BLUE_LAVENDER).next_to(d_d_line_2,RIGHT)
+
+        self.play(
+            Create(d_d_line_1)
+        )
+        self.play(
+            Create(d_d_line_1_lbl)
+        )
+
+        self.play(
+            Create(d_d_line_2)
+        )
+        self.play(
+            Create(d_d_line_2_lbl)
         )
         
 
