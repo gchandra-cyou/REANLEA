@@ -3265,7 +3265,8 @@ class Scene4_1(Scene):
                 #"include_ticks": False,
             }, 
         ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
-
+        
+        ax_1_ref=ax_1.copy()
         ax_2_ref=ax_2.copy()
         ax_2.shift((ax_1.c2p(0,0)[0]-ax_2_ref.c2p(0,0)[0])*RIGHT)
         ax_3=ax_2.copy()
@@ -3278,7 +3279,7 @@ class Scene4_1(Scene):
 
         dt_3_lbl=MathTex("v").scale(.7).set_color(REANLEA_PINK_LIGHTER).next_to(dt_3,RIGHT)
 
-        ln_0010=Line(start=ax_1.c2p(0,0),end=ax_1.c2p(1,0)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+        ln_0010=Line(start=ax_1.c2p(0,0),end=ax_1.c2p(1,0)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
 
         ln_0032=Line(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
 
@@ -3292,11 +3293,25 @@ class Scene4_1(Scene):
         
         
 
-        self.add(ax_2, dt_0,dt_1,dt_1_ref,dt_2,dt_3,dt_3_lbl,ln_0032,dot_0,dot_1,angl_1,angl_1_lbl)
+        self.add(ax_2, dt_0,dt_1,dt_2,dt_3,dt_3_lbl,ln_0032,dot_0,dot_1,angl_1,angl_1_lbl)
 
 
 
         # MAIN SCENE
+
+        self.wait(3)
+
+        self.play(
+            Create(ln_0010)
+        )
+
+        self.wait(2)
+
+        self.play(
+            ax_1_ref.animate.add_coordinates()
+        )
+        self.wait(2)
+
 
         xrng = ValueTracker(6.5)
         xrng_min = ValueTracker(1.5)
@@ -3340,6 +3355,9 @@ class Scene4_1(Scene):
         ax_2_x.add_updater(axUpdater)
 
         self.add(ax_2_x,ln_0032_x,dt_1_x,dt_3_x)
+        self.play(
+            FadeOut(ax_1_ref)
+        )
         self.play(
             FadeOut(ax_2),
             FadeOut(dt_1)

@@ -5931,6 +5931,42 @@ class weier_2(Scene):
         # manim -pqh test2.py weier_2
 
 
+class ax_coordinates_ex(Scene):
+    def construct(self):
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+
+        self.wait()
+
+        self.play(
+            FadeIn(ax_1)
+        )
+        self.wait()
+
+        self.play(
+            ax_1.animate.add_coordinates()
+        )
+        self.wait()
+
+        self.play(
+            FadeOut(ax_1)
+        )
+
+        self.wait(2)
+
+
+
+        # manim -pqh test2.py ax_coordinates_ex
+
+
 
 ###################################################################################################################
 
