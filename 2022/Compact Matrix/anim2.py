@@ -3209,6 +3209,36 @@ class Scene4(Scene):
             run_time=1.25
         )
 
+        d_d_line_1=DashedDoubleArrow(
+            start=ax_1.c2p(0,-.9), end=ax_1.c2p(3,-.9), dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).set_color_by_gradient(REANLEA_YELLOW_LIGHTER,REANLEA_GREEN_AUQA)
+
+        d_d_line_1_lbl=MathTex(r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_AQUA_GREEN).next_to(d_d_line_1,RIGHT)
+
+        d_d_line_2=DashedDoubleArrow(
+            start=ax_1.c2p(0,-1.35), end=ax_1.c2p(6,-1.35), dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.01, buff=10
+        ).set_color_by_gradient(REANLEA_YELLOW_LIGHTER,REANLEA_BLUE_LAVENDER)
+
+        d_d_line_2_lbl=MathTex(r"\lVert 2 \cdot i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_BLUE_LAVENDER).next_to(d_d_line_2,RIGHT)
+
+        self.play(
+            Create(d_d_line_1)
+        )
+        self.play(
+            Create(d_d_line_1_lbl)
+        )
+
+        self.play(
+            Create(d_d_line_2)
+        )
+        self.play(
+            Create(d_d_line_2_lbl)
+        )
+        
+        self.wait(2)
+
         self.wait(2)
 
         self.play(
@@ -3265,6 +3295,7 @@ class Scene4_1(Scene):
                 #"include_ticks": False,
             }, 
         ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+        ax_2.add_coordinates()
         
         ax_1_ref=ax_1.copy()
         ax_2_ref=ax_2.copy()
@@ -3290,10 +3321,24 @@ class Scene4_1(Scene):
         angl_1=Angle(ln_0010,ln_0032).set_color(REANLEA_YELLOW_GREEN).set_stroke(width=3.5).set_z_index(-1)
         
         angl_1_lbl=MathTex(r"\theta").scale(.4).set_color(REANLEA_YELLOW_GREEN).next_to(angl_1,UR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2).shift(.25*DOWN).set_z_index(2)
-        
-        
 
-        self.add(ax_2, dt_0,dt_1,dt_1_ref,dt_2,dt_3,dt_3_lbl,ln_0032,dot_0,dot_1,angl_1,angl_1_lbl)
+
+        d_d_line_1=DashedDoubleArrow(
+            start=ax_1.c2p(0,-.9), end=ax_1.c2p(3,-.9), dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).set_color_by_gradient(REANLEA_YELLOW_LIGHTER,REANLEA_GREEN_AUQA)
+
+        d_d_line_1_lbl=MathTex(r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_AQUA_GREEN).next_to(d_d_line_1,RIGHT)
+
+        d_d_line_2=DashedDoubleArrow(
+            start=ax_1.c2p(0,-1.35), end=ax_1.c2p(6,-1.35), dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.01, buff=10
+        ).set_color_by_gradient(REANLEA_YELLOW_LIGHTER,REANLEA_BLUE_LAVENDER)
+
+        d_d_line_2_lbl=MathTex(r"\lVert 2 \cdot i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_BLUE_LAVENDER).next_to(d_d_line_2,RIGHT)
+        
+        
+        self.add(ax_2, dt_0,dt_1,dt_1_ref,dt_2,dt_3,dt_3_lbl,ln_0032,dot_0,dot_1,angl_1,angl_1_lbl,d_d_line_1,d_d_line_1_lbl,d_d_line_2,d_d_line_2_lbl)
 
 
 
@@ -3307,10 +3352,6 @@ class Scene4_1(Scene):
 
         self.wait(2)
 
-        self.play(
-            ax_2.animate.add_coordinates()
-        )
-        self.wait(2)
 
 
         xrng = ValueTracker(6.5)
@@ -3406,35 +3447,7 @@ class Scene4_1(Scene):
 
         self.wait(2)
 
-        d_d_line_1=DashedDoubleArrow(
-            start=ax_1.c2p(0,-.9), end=ax_1.c2p(3,-.9), dash_length=2.0,stroke_width=2, 
-            max_tip_length_to_length_ratio=0.015, buff=10
-        ).set_color_by_gradient(REANLEA_YELLOW_LIGHTER,REANLEA_GREEN_AUQA)
-
-        d_d_line_1_lbl=MathTex(r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_AQUA_GREEN).next_to(d_d_line_1,RIGHT)
-
-        d_d_line_2=DashedDoubleArrow(
-            start=ax_1.c2p(0,-1.35), end=ax_1.c2p(6,-1.35), dash_length=2.0,stroke_width=2, 
-            max_tip_length_to_length_ratio=0.01, buff=10
-        ).set_color_by_gradient(REANLEA_YELLOW_LIGHTER,REANLEA_BLUE_LAVENDER)
-
-        d_d_line_2_lbl=MathTex(r"\lVert 2 \cdot i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_BLUE_LAVENDER).next_to(d_d_line_2,RIGHT)
-
-        self.play(
-            Create(d_d_line_1)
-        )
-        self.play(
-            Create(d_d_line_1_lbl)
-        )
-
-        self.play(
-            Create(d_d_line_2)
-        )
-        self.play(
-            Create(d_d_line_2_lbl)
-        )
         
-        self.wait(2)
 
         self.play(
             Indicate(dt_3),
@@ -3454,7 +3467,102 @@ class Scene4_1(Scene):
         txt_com_0=MathTex(",").set_color(REANLEA_TXT_COL).next_to(txt_i_0,RIGHT, buff=.1).shift(.18*DOWN)
         txt_th_0=MathTex(r"\theta").set_color(REANLEA_YELLOW).move_to(4.45*LEFT+2.1*UP)
 
-        self.add(txt_v_0,txt_i_0,txt_com_0,txt_th_0)
+        txt_v_1=txt_v_0.copy()
+        txt_i_1=txt_i_0.copy()
+
+        txt_lbl_grp_0=VGroup(txt_v_0,txt_i_0,txt_com_0,txt_th_0).scale(1.5).move_to(4.9*LEFT+2.1*UP)
+        txt_lbl_grp_1=VGroup(txt_v_1,txt_i_1).scale(1.5).move_to(4.9*LEFT+2.1*UP)
+    
+        self.play(           
+            AnimationGroup(
+                Indicate(dt_3),
+            ReplacementTransform(dt_3.copy(),txt_v_0[0]),
+            lag_ratio=.1
+            )
+        )
+        self.play(           
+            AnimationGroup(
+                Indicate(dt_1_ref),
+            ReplacementTransform(dt_1_ref.copy(),txt_i_0[0]),
+            lag_ratio=.1
+            )
+        )
+        self.play(           
+            AnimationGroup(
+                Indicate(angl_1_lbl),
+            ReplacementTransform(angl_1_lbl.copy(),txt_th_0),
+            lag_ratio=.1
+            )
+        )
+        self.play(
+            FadeIn(txt_v_0[1]),
+            FadeIn(txt_com_0)
+        )
+        self.wait()
+        
+
+        arr_1=Arrow(max_tip_length_to_length_ratio=.1, color=REANLEA_BLUE).rotate(-90*DEGREES).next_to(txt_i_0,DOWN).set_stroke(width=2, color=[REANLEA_BLUE,REANLEA_BLUE_SKY]).shift(.35*DOWN).scale(.85)
+
+        self.play(
+            Indicate(txt_lbl_grp_0),
+            Create(arr_1),
+            run_time=2
+        )
+        self.wait()
+
+        txt_scl_1=MathTex(r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").set_color(REANLEA_AQUA_GREEN).next_to(arr_1,DOWN, buff=.1).shift(.35*DOWN)
+
+        self.play(
+            ReplacementTransform(d_d_line_1_lbl.copy(),txt_scl_1)
+        )
+        self.wait(2)
+
+
+        self.play(
+            ReplacementTransform(txt_lbl_grp_0,txt_lbl_grp_1)
+        )
+        self.wait(2)
+
+        indct_ln_1=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.25).rotate(PI/6).next_to(txt_lbl_grp_1, RIGHT).shift(.2*UP).set_z_index(2)
+
+        self.play(
+            Write(indct_ln_1)
+        )
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_1=Text("Vectors", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(indct_ln_1).shift(.35*UP)
+
+        
+        self.play(
+            Create(txt_1)
+        )
+
+        indct_ln_2=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.25).rotate(-PI/6).next_to(txt_scl_1, DOWN).shift(.2*RIGHT).set_z_index(2)
+
+        self.play(
+            Create(indct_ln_2)
+        )
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_2=Text("Scalars", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(indct_ln_2).shift(.25*DOWN)
+
+        
+        self.play(
+            Create(txt_2)
+        )
+        self.wait(2)
+
+        innr_prdct_sym=MathTex(r"\langle ,\rangle").set_color(REANLEA_BLUE_LAVENDER).next_to(arr_1,RIGHT)
+
+        self.play(
+            Create(innr_prdct_sym)
+        )
+
+
+
+
+
+        #self.add(arr_1,txt_scl_1)
 
         
         
