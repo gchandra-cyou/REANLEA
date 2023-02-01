@@ -3293,7 +3293,7 @@ class Scene4_1(Scene):
         
         
 
-        self.add(ax_2, dt_0,dt_1,dt_2,dt_3,dt_3_lbl,ln_0032,dot_0,dot_1,angl_1,angl_1_lbl)
+        self.add(ax_2, dt_0,dt_1,dt_1_ref,dt_2,dt_3,dt_3_lbl,ln_0032,dot_0,dot_1,angl_1,angl_1_lbl)
 
 
 
@@ -3308,7 +3308,7 @@ class Scene4_1(Scene):
         self.wait(2)
 
         self.play(
-            ax_1_ref.animate.add_coordinates()
+            ax_2.animate.add_coordinates()
         )
         self.wait(2)
 
@@ -3355,9 +3355,7 @@ class Scene4_1(Scene):
         ax_2_x.add_updater(axUpdater)
 
         self.add(ax_2_x,ln_0032_x,dt_1_x,dt_3_x)
-        self.play(
-            FadeOut(ax_1_ref)
-        )
+        
         self.play(
             FadeOut(ax_2),
             FadeOut(dt_1)
@@ -3371,7 +3369,7 @@ class Scene4_1(Scene):
                 ),
                 AnimationGroup(
                     Flash(point=Dot().move_to(ax_1.c2p(2,0)), color=REANLEA_BLUE_LAVENDER),
-                    dt_2.animate.set_color(REANLEA_AQUA)
+                    dt_2.animate.set_color(REANLEA_CYAN_LIGHT)
                 ),
                 lag_ratio=.5
             ),
@@ -3409,7 +3407,7 @@ class Scene4_1(Scene):
         self.wait(2)
 
         d_d_line_1=DashedDoubleArrow(
-            start=ax_1.c2p(0,-1), end=ax_1.c2p(3,-1), dash_length=2.0,stroke_width=2, 
+            start=ax_1.c2p(0,-.9), end=ax_1.c2p(3,-.9), dash_length=2.0,stroke_width=2, 
             max_tip_length_to_length_ratio=0.015, buff=10
         ).set_color_by_gradient(REANLEA_YELLOW_LIGHTER,REANLEA_GREEN_AUQA)
 
@@ -3436,6 +3434,27 @@ class Scene4_1(Scene):
             Create(d_d_line_2_lbl)
         )
         
+        self.wait(2)
+
+        self.play(
+            Indicate(dt_3),
+            Indicate(dt_1_ref),
+            Wiggle(angl_1),
+            Indicate(angl_1_lbl),            
+        )
+
+        self.play(
+            Circumscribe(VGroup(d_d_line_1,d_d_line_1_lbl))
+        )
+        self.wait(2)
+
+        txt_v_0=MathTex("v",",").set_color(REANLEA_PINK_LIGHTER).move_to(5.25*LEFT+2*UP)
+        txt_v_0[1].set_color(REANLEA_TXT_COL)
+        txt_i_0=MathTex("i").set_color(REANLEA_AQUA).move_to(4.9*LEFT+2.1*UP)
+        txt_com_0=MathTex(",").set_color(REANLEA_TXT_COL).next_to(txt_i_0,RIGHT, buff=.1).shift(.18*DOWN)
+        txt_th_0=MathTex(r"\theta").set_color(REANLEA_YELLOW).move_to(4.45*LEFT+2.1*UP)
+
+        self.add(txt_v_0,txt_i_0,txt_com_0,txt_th_0)
 
         
         
