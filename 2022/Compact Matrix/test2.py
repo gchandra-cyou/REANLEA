@@ -5981,6 +5981,19 @@ class ax_coordinates_ex(Scene):
         )
         self.wait(2)
 
+        innr_prdct_dfn_2=MathTex(r"\langle v,u \rangle","=",r"\lVert v \rVert",r"\cdot",r"\lVert u \rVert",r"\cdot",r"cos\theta")
+
+        self.play(
+            Write(innr_prdct_dfn_2)
+        )
+        self.wait(2)
+
+        self.play(
+            Indicate(innr_prdct_dfn_2[2]),
+            Indicate(innr_prdct_dfn_2[4]),
+            Indicate(innr_prdct_dfn_2[6][3])
+        )
+
         self.wait(2)
 
 
@@ -5988,6 +6001,82 @@ class ax_coordinates_ex(Scene):
         # manim -pqh test2.py ax_coordinates_ex
 
 
+class rotate_copy_ex(Scene):
+    def construct(self):
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1) 
+
+        ax_2=Axes(
+            x_range=[-1.5,6.5],
+            y_range=[-1.5,4.5],
+            x_length=(round(config.frame_width)-2)*8/7,
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+        ax_2.add_coordinates()
+
+        dt_0=Dot().set_color(REANLEA_YELLOW).move_to(ax_1.c2p(0,0)).set_z_index(3)
+        dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0)).set_z_index(3)
+        dt_2=Dot().set_color(REANLEA_GOLDENROD).move_to(ax_1.c2p(2,0)).set_z_index(3)
+        dt_3=Dot().set_color(REANLEA_PINK).move_to(ax_1.c2p(3,2)).set_z_index(3)
+
+
+        ln_0010=Line(start=ax_1.c2p(0,0),end=ax_1.c2p(1,0)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
+
+        ln_0032=Line(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+
+        self.add(ax_2,dt_0,dt_1,dt_2,dt_3,ln_0010,ln_0032)
+
+        self.wait(2)
+        
+        rot_tracker=ValueTracker(0)
+        ln_grp_x=VGroup(ln_0010,ln_0032).copy()
+        ln_grp=ln_grp_x.copy().save_state()
+        ln_grp_ref=ln_grp.copy()
+
+        ln_grp.add_updater(
+            lambda x : x.become(ln_grp_ref.copy()).rotate(
+                rot_tracker.get_value(), about_point=ax_1.c2p(0,0)
+            )
+        )
+        self.add(ln_grp)
+        self.play(
+            rot_tracker.animate.set_value(PI/2)
+        )
+        self.wait(2)
+
+        self.play(
+            rot_tracker.animate.set_value(2*PI)
+        )
+        self.wait(2)
+
+        self.play(
+            FadeOut(ln_grp)
+        )
+        self.wait()
+
+        self.play(
+            FadeOut(ln_0032)
+        )
+
+        self.wait(4)
+
+
+        # manim -pqh test2.py rotate_copy_ex
+        
 
 ###################################################################################################################
 

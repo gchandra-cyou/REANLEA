@@ -3573,12 +3573,12 @@ class Scene4_1(Scene):
         )
 
         innr_prdct_dfn_0=MathTex(r"\langle , \rangle",":",r"V \times V","\longrightarrow",r"\mathbb{R").scale(.65).set_color_by_gradient(REANLEA_CYAN_LIGHT).move_to(3*UP+3*RIGHT)
-        innr_prdct_dfn_0_0=innr_prdct_dfn_0[0].copy()
+        innr_prdct_dfn_0_0=innr_prdct_dfn_0[0].copy().set_z_index(-1)
 
         with RegisterFont("Courier Prime") as fonts:
             innr_prdct_dfn_1=Text("by", font=fonts[0]).scale(.35).set_color(REANLEA_CYAN_LIGHT).next_to(innr_prdct_dfn_0, RIGHT).shift(.1*RIGHT+.02*DOWN)
         
-        innr_prdct_dfn_2=MathTex(r"\langle v,i \rangle","=",r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.7).set_color_by_gradient(REANLEA_CYAN_LIGHT).move_to(2.5*UP+3.25*RIGHT)
+        innr_prdct_dfn_2=MathTex(r"\langle v,u \rangle","=",r"\lVert v \rVert",r"\cdot",r"\lVert u \rVert",r"\cdot",r"cos\theta").scale(.7).set_color_by_gradient(REANLEA_CYAN_LIGHT).move_to(2.5*UP+3.25*RIGHT)
 
         
         innr_prdct_dfn_grp_1=VGroup(innr_prdct_dfn_0,innr_prdct_dfn_1)
@@ -3596,6 +3596,43 @@ class Scene4_1(Scene):
 
         self.play(
             FadeOut(innr_prdct_dfn_0_0)
+        )
+        self.wait(2)
+
+        d_d_line_1_ref=d_d_line_1.copy().set_z_index(4).save_state()
+
+        self.play(
+            d_d_line_1_ref.animate.shift(
+                (
+                    ax_1.c2p(0,0)[1]-ax_1.c2p(0,-.9)[1]
+                )*UP
+            )
+        )
+
+        self.play(
+            Indicate(innr_prdct_dfn_2[2], color=PURE_RED)
+        )
+        self.play(
+            Indicate(innr_prdct_dfn_2[4], color=PURE_RED)
+        )
+        self.play(
+            Indicate(innr_prdct_dfn_2[6][3], color=PURE_RED)
+        )
+
+        self.wait(2)
+
+        rot_tracker=ValueTracker(0)
+        ln_grp=VGroup(ln_0010,ln_0032,dt_1,dt_3,d_d_line_1_ref).copy()
+        ln_grp_ref=ln_grp.copy()
+
+        ln_grp.add_updater(
+            lambda x : x.become(ln_grp_ref.copy()).rotate(
+                rot_tracker.get_value(), about_point=ax_1.c2p(0,0)
+            )
+        )
+        self.add(ln_grp)
+        self.play(
+            rot_tracker.animate.set_value(PI/2)
         )
 
 
