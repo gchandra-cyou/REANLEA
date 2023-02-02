@@ -3519,7 +3519,7 @@ class Scene4_1(Scene):
 
 
         self.play(
-            ReplacementTransform(txt_lbl_grp_0,txt_lbl_grp_1)
+            TransformMatchingShapes(txt_lbl_grp_0,txt_lbl_grp_1)
         )
         self.wait(2)
 
@@ -3558,11 +3558,49 @@ class Scene4_1(Scene):
             Create(innr_prdct_sym)
         )
 
+        self.wait(2)
+
+        innr_prdct_grp_0=VGroup(txt_lbl_grp_1,arr_1,txt_scl_1,innr_prdct_sym,indct_ln_1,indct_ln_2,txt_1,txt_2)
+
+        self.play(
+            innr_prdct_grp_0.animate.scale(.5).shift(.5*LEFT+.5*UP),
+        )
+
+        sr_innr_prdct_grp_0=SurroundingRectangle(innr_prdct_grp_0, color=REANLEA_PURPLE_LIGHTER, buff=.25, corner_radius=.125).set_opacity(.25)
+
+        self.play(
+            Write(sr_innr_prdct_grp_0)
+        )
+
+        innr_prdct_dfn_0=MathTex(r"\langle , \rangle",":",r"V \times V","\longrightarrow",r"\mathbb{R").scale(.65).set_color_by_gradient(REANLEA_CYAN_LIGHT).move_to(3*UP+3*RIGHT)
+        innr_prdct_dfn_0_0=innr_prdct_dfn_0[0].copy()
+
+        with RegisterFont("Courier Prime") as fonts:
+            innr_prdct_dfn_1=Text("by", font=fonts[0]).scale(.35).set_color(REANLEA_CYAN_LIGHT).next_to(innr_prdct_dfn_0, RIGHT).shift(.1*RIGHT+.02*DOWN)
+        
+        innr_prdct_dfn_2=MathTex(r"\langle v,i \rangle","=",r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.7).set_color_by_gradient(REANLEA_CYAN_LIGHT).move_to(2.5*UP+3.25*RIGHT)
+
+        
+        innr_prdct_dfn_grp_1=VGroup(innr_prdct_dfn_0,innr_prdct_dfn_1)
+
+        innr_prdct_dfn_grp_2=VGroup(innr_prdct_dfn_grp_1,innr_prdct_dfn_2).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_AQUA)
+
+        self.play(
+            ReplacementTransform(innr_prdct_sym.copy(),innr_prdct_dfn_0_0),
+            Write(innr_prdct_dfn_grp_1)
+        )
+
+        self.play(
+            Write(innr_prdct_dfn_2)
+        )
+
+        self.play(
+            FadeOut(innr_prdct_dfn_0_0)
+        )
 
 
 
 
-        #self.add(arr_1,txt_scl_1)
 
         
         

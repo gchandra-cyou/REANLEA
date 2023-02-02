@@ -5960,6 +5960,27 @@ class ax_coordinates_ex(Scene):
             FadeOut(ax_1)
         )
 
+        txt_v_0=MathTex("v",",").set_color(REANLEA_PINK_LIGHTER).move_to(5.25*LEFT+2*UP)
+        txt_v_0[1].set_color(REANLEA_TXT_COL)
+        txt_i_0=MathTex("i").set_color(REANLEA_AQUA).move_to(4.9*LEFT+2.1*UP)
+        txt_com_0=MathTex(",").set_color(REANLEA_TXT_COL).next_to(txt_i_0,RIGHT, buff=.1).shift(.18*DOWN)
+        txt_th_0=MathTex(r"\theta").set_color(REANLEA_YELLOW).move_to(4.45*LEFT+2.1*UP)
+
+        txt_v_1=txt_v_0.copy()
+        txt_i_1=txt_i_0.copy()
+
+        txt_lbl_grp_0=VGroup(txt_v_0,txt_i_0,txt_com_0,txt_th_0).scale(1.5).move_to(4.9*LEFT+2.1*UP)
+        txt_lbl_grp_1=VGroup(txt_v_1,txt_i_1).scale(1.5).move_to(4.9*LEFT+2.1*UP)
+
+        self.play(
+            Write(txt_lbl_grp_0)
+        )
+
+        self.play(
+            TransformMatchingShapes(txt_lbl_grp_0,txt_lbl_grp_1)
+        )
+        self.wait(2)
+
         self.wait(2)
 
 
