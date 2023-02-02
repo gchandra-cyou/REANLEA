@@ -6046,6 +6046,7 @@ class rotate_copy_ex(Scene):
         ln_grp_x=VGroup(ln_0010,ln_0032).copy()
         ln_grp=ln_grp_x.copy().save_state()
         ln_grp_ref=ln_grp.copy()
+        ln_grp_2=ln_grp_x.copy().rotate(PI/2, about_point=ax_1.c2p(0,0))
 
         ln_grp.add_updater(
             lambda x : x.become(ln_grp_ref.copy()).rotate(
@@ -6057,19 +6058,14 @@ class rotate_copy_ex(Scene):
             rot_tracker.animate.set_value(PI/2)
         )
         self.wait(2)
-
-        self.play(
-            rot_tracker.animate.set_value(2*PI)
-        )
-        self.wait(2)
-
+        self.add(ln_grp_2)
         self.play(
             FadeOut(ln_grp)
         )
-        self.wait()
+
 
         self.play(
-            FadeOut(ln_0032)
+            ln_grp_2.animate.flip(UP, about_point=ax_1.c2p(0,0))
         )
 
         self.wait(4)

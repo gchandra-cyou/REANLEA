@@ -3632,6 +3632,9 @@ class Scene4_1(Scene):
         )
         self.add(ln_grp)
         self.play(
+            FadeOut(d_d_line_1_ref)
+        )
+        self.play(
             rot_tracker.animate.set_value(PI/2),
             run_time=2
         )
