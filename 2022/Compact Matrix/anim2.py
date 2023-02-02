@@ -3632,7 +3632,14 @@ class Scene4_1(Scene):
         )
         self.add(ln_grp)
         self.play(
-            rot_tracker.animate.set_value(PI/2)
+            rot_tracker.animate.set_value(PI/2),
+            run_time=2
+        )
+        self.wait()
+
+        self.play(
+            rot_tracker.animate.set_value(PI*2),
+            run_time=8
         )
 
 
