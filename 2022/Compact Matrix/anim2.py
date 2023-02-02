@@ -3623,6 +3623,7 @@ class Scene4_1(Scene):
 
         rot_tracker=ValueTracker(0)
         ln_grp=VGroup(ln_0010,ln_0032,dt_1,dt_3,d_d_line_1_ref).copy()
+        ln_grp_x=ln_grp.copy()
         ln_grp_ref=ln_grp.copy()
 
         ln_grp.add_updater(
@@ -3643,6 +3644,44 @@ class Scene4_1(Scene):
         self.play(
             rot_tracker.animate.set_value(PI*2),
             run_time=8
+        )
+
+        self.wait()
+        self.add(ln_grp_x)
+        self.play(
+            FadeOut(ln_grp)
+        )
+
+        self.play(
+            ln_grp_x.animate.flip(RIGHT, about_point=ax_1.c2p(0,0))
+        )
+
+        self.wait(2)
+
+        ln_dis_3=Line(ax_1.c2p(3,-2),ax_1.c2p(3,2))
+        ln_dis_4=Line(ax_1.c2p(3,-2),ax_1.c2p(3,0))
+
+
+        dissipating_dt_3=Dot().move_to(ax_1.c2p(3,-2)).set_opacity(opacity=0)
+        dissipating_path_3 = TracedPath(dissipating_dt_3.get_center, dissipating_time=0.5, stroke_color=[REANLEA_PINK_LIGHTER],stroke_opacity=[1, 0])
+        self.add(dissipating_dt_3,dissipating_path_3)
+
+        dissipating_dt_4=Dot().move_to(ax_1.c2p(3,-2)).set_opacity(opacity=0)
+        dissipating_path_4 = TracedPath(dissipating_dt_4.get_center, dissipating_time=0.5, stroke_color=[REANLEA_AQUA],stroke_opacity=[1, 0])
+        self.add(dissipating_dt_4,dissipating_path_4)
+
+
+        self.play(
+            AnimationGroup(
+                MoveAlongPath(dissipating_dt_3,ln_dis_3),
+                Flash(point=Dot().move_to(ax_1.c2p(3,2)), color=REANLEA_PINK_LIGHTER),
+                lag_ratio=0.5
+            ),
+            AnimationGroup(
+                MoveAlongPath(dissipating_dt_4,ln_dis_4),
+                Flash(point=Dot().move_to(ax_1.c2p(3,0)), color=REANLEA_GREEN_AUQA),
+                lag_ratio=0.5
+            )
         )
 
 
