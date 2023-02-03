@@ -3580,10 +3580,12 @@ class Scene4_1(Scene):
         
         innr_prdct_dfn_2=MathTex(r"\langle v,u \rangle","=",r"\lVert v \rVert",r"\cdot",r"\lVert u \rVert",r"\cdot",r"cos\theta").scale(.7).set_color_by_gradient(REANLEA_CYAN_LIGHT).move_to(2.5*UP+3.25*RIGHT)
 
+        innr_prdct_dfn_3=MathTex(r"\langle v,i \rangle","=",r"\lVert v \rVert",r"\cdot",r"\lVert i \rVert",r"\cdot",r"cos\theta").scale(.7).set_color_by_gradient(REANLEA_CYAN_LIGHT).move_to(2.5*UP+3.25*RIGHT)
+
         
         innr_prdct_dfn_grp_1=VGroup(innr_prdct_dfn_0,innr_prdct_dfn_1)
 
-        innr_prdct_dfn_grp_2=VGroup(innr_prdct_dfn_grp_1,innr_prdct_dfn_2).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_AQUA)
+        innr_prdct_dfn_grp_2=VGroup(innr_prdct_dfn_grp_1,innr_prdct_dfn_2,innr_prdct_dfn_3).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_AQUA)
 
         self.play(
             ReplacementTransform(innr_prdct_sym.copy(),innr_prdct_dfn_0_0),
@@ -3596,6 +3598,11 @@ class Scene4_1(Scene):
 
         self.play(
             FadeOut(innr_prdct_dfn_0_0)
+        )
+        self.wait(2)
+
+        self.play(
+            ReplacementTransform(innr_prdct_dfn_2,innr_prdct_dfn_3)
         )
         self.wait(2)
 
@@ -3622,7 +3629,7 @@ class Scene4_1(Scene):
         self.wait(2)
 
         rot_tracker=ValueTracker(0)
-        ln_grp=VGroup(ln_0010,ln_0032,dt_1,dt_3,d_d_line_1_ref).copy()
+        ln_grp=VGroup(ln_0010,ln_0032,dt_1,dt_3).copy()
         ln_grp_x=ln_grp.copy()
         ln_grp_ref=ln_grp.copy()
 
@@ -3683,6 +3690,8 @@ class Scene4_1(Scene):
                 lag_ratio=0.5
             )
         )
+        self.wait()
+
 
 
 
