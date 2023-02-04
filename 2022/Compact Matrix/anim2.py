@@ -3302,7 +3302,7 @@ class Scene4_1(Scene):
         ax_2.shift((ax_1.c2p(0,0)[0]-ax_2_ref.c2p(0,0)[0])*RIGHT)
         ax_3=ax_2.copy()
 
-        dt_0=Dot().set_color(REANLEA_YELLOW).move_to(ax_1.c2p(0,0)).set_z_index(3)
+        dt_0=Dot().set_color(REANLEA_YELLOW).move_to(ax_1.c2p(0,0)).set_z_index(5)
         dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0)).set_z_index(3)
         dt_1_ref=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0)).set_z_index(3)
         dt_2=Dot().set_color(REANLEA_GOLDENROD).move_to(ax_1.c2p(2,0)).set_z_index(3)
@@ -3607,6 +3607,7 @@ class Scene4_1(Scene):
         self.wait(2)
 
         d_d_line_1_ref=d_d_line_1.copy().set_z_index(4).save_state()
+        d_d_line_1_ref_1=d_d_line_1.copy().shift((ax_1.c2p(0,0)[1]-ax_1.c2p(0,-.9)[1])*UP)
 
         self.play(
             d_d_line_1_ref.animate.shift(
@@ -3630,7 +3631,12 @@ class Scene4_1(Scene):
 
         rot_tracker=ValueTracker(0)
         ln_grp=VGroup(ln_0010,ln_0032,dt_1,dt_3).copy()
+
         ln_grp_x=ln_grp.copy()
+        
+        ln_grp_0=VGroup(d_d_line_1_ref).copy()
+        ln_grp += ln_grp_0
+
         ln_grp_ref=ln_grp.copy()
 
         ln_grp.add_updater(
@@ -3638,7 +3644,10 @@ class Scene4_1(Scene):
                 rot_tracker.get_value(), about_point=ax_1.c2p(0,0)
             )
         )
+
+
         self.add(ln_grp)
+
         self.play(
             FadeOut(d_d_line_1_ref)
         )
@@ -3654,7 +3663,10 @@ class Scene4_1(Scene):
         )
 
         self.wait()
-        self.add(ln_grp_x)
+
+        self.add(ln_grp_x, d_d_line_1_ref_1)
+        
+        
         self.play(
             FadeOut(ln_grp)
         )
@@ -3691,6 +3703,29 @@ class Scene4_1(Scene):
             )
         )
         self.wait()
+        
+
+        dt_3_neg=Dot().set_color(REANLEA_PINK).move_to(ax_1.c2p(3,-2)).set_z_index(3)
+
+        ln_0032_neg=Line(start=ax_1.c2p(0,0),end=ax_1.c2p(3,-2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+
+
+        rot_tracker_neg=ValueTracker(0)
+
+        ln_neg_grp=VGroup(dt_1,dt_3_neg,ln_0010,ln_0032_neg).copy()
+
+        ln_neg_grp_ref=ln_neg_grp.copy()
+
+        ln_neg_grp.add_updater(
+            lambda x : x.become(ln_neg_grp_ref.copy()).rotate(
+                rot_tracker_neg.get_value(), about_point=ax_1.c2p(0,0)
+            )
+        )
+
+        self.add(ln_neg_grp)
+        self.play(
+            FadeOut(ln_grp_x)
+        )
 
 
 
@@ -3707,6 +3742,8 @@ class Scene4_1(Scene):
         
 
         # manim -pqh anim2.py Scene4_1
+
+        # manim -pql anim2.py Scene4_1
 
         # manim -sqk anim2.py Scene4_1
         
