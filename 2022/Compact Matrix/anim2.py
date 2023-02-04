@@ -3607,6 +3607,7 @@ class Scene4_1(Scene):
         self.wait(2)
 
         d_d_line_1_ref=d_d_line_1.copy().set_z_index(4).save_state()
+
         d_d_line_1_ref_1=d_d_line_1.copy().shift((ax_1.c2p(0,0)[1]-ax_1.c2p(0,-.9)[1])*UP)
 
         self.play(
@@ -3742,12 +3743,10 @@ class Scene4_1(Scene):
                     xrng_min.animate.set_value(1.5),
                 ),
                 AnimationGroup(
-                    FocusOn(ax_1.c2p(2,0), color=REANLEA_PURPLE),
                     dt_2.animate.set_color(REANLEA_PURPLE)
                 ),
-                lag_ratio=.5
             ),
-            Uncreate(d_d_line_1_ref_1.reverse_direction()),
+            Uncreate(d_d_line_1_ref_1),
             run_time=2
         )
 
@@ -3760,14 +3759,14 @@ class Scene4_1(Scene):
         self.wait()
 
         self.play(
-            Uncreate(ln_0032_neg.reverse_direction())
+            Uncreate(ln_0032_neg)
         )
         self.wait(2)
 
-        circ=DashedVMobject(Circle(radius=ln_0032.get_length()), dashed_ratio=0.5, num_dashes=100).move_to(dt_0.get_center()).set_stroke(width=0.65)
+        '''circ=DashedVMobject(Circle(radius=ln_0032.get_length()), dashed_ratio=0.5, num_dashes=100).move_to(dt_0.get_center()).set_stroke(width=0.65)
         circ.set_color_by_gradient(REANLEA_WHITE,REANLEA_WARM_BLUE,REANLEA_YELLOW_CREAM)
 
-        self.add(circ)
+        self.add(circ)'''
 
         '''self.play(
             AnimationGroup(
@@ -3786,19 +3785,17 @@ class Scene4_1(Scene):
 
 
 
-        '''xrng = ValueTracker(6.5)
-        xrng_min = ValueTracker(1.5)
+        ax_2_y=VGroup()
+        dt_1_y=VMobject()
+        dt_1_neg_y=VMobject()
+        ln_0010_neg_y = VMobject()
 
-
-        ax_2_x=VGroup()
-        dt_1_x=VMobject()
-        dt_1_neg_x=VMobject()
-        ln_0010_neg_x = VMobject()
-
+        xrng_1 = ValueTracker(6.5)
+        xrng_min_1 = ValueTracker(1.5)
 
         def axUpdater_1(mobj):
-            xmin = -xrng_min.get_value()
-            xmax = +xrng.get_value()
+            xmin = -xrng_min_1.get_value()
+            xmax = +xrng_1.get_value()
             #newax =Axes(x_range=[xmin,xmax,10**int(np.log10(xmax)-1)],y_range=[-1,4])
             newax=Axes(
                     x_range=[xmin,xmax,2**int(np.log10(xmax)-1)],
@@ -3814,41 +3811,88 @@ class Scene4_1(Scene):
             newax_ref=newax.copy()
             newax.shift((ax_1.c2p(0,0)[0]-newax_ref.c2p(0,0)[0])*RIGHT)
 
-            newfunc = Line(start=newax.c2p(0,0),end=newax.c2p(3,2)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER])
+            newfunc = Line(start=newax.c2p(0,0),end=newax.c2p(.8321,.5547)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER])
             
             new_dt_1=Dot().set_color(REANLEA_AQUA).move_to(newax.c2p(1,0)).set_z_index(3)
 
-            new_dt_1_neg=Dot().set_color(REANLEA_PINK).move_to(newax.c2p(dt_1_neg.get_center())).set_z_index(3)
+            new_dt_1_neg=Dot().set_color(REANLEA_AQUA).move_to(newax.c2p(.8321,.5547)).set_z_index(3)
 
             mobj.become(newax)
-            ln_0010_neg_x.become(newfunc)  
-            dt_1_x.become(new_dt_1).set_z_index(3)
-            dt_1_neg_x.become(new_dt_1_neg)  
+            ln_0010_neg_y.become(newfunc)  
+            dt_1_y.become(new_dt_1).set_z_index(3)
+            dt_1_neg_y.become(new_dt_1_neg)  
 
-        ax_2_x.add_updater(axUpdater_1)
+        ax_2_y.add_updater(axUpdater_1)
 
-        self.add(ax_2_x,ln_0010_neg_x,dt_1_x,dt_1_neg_x)
+        self.add(ln_0010_neg_y,dt_1_y,dt_1_neg_y)
+
+        self.play(
+            FadeIn(ax_2_y),
+            FadeOut(ax_2_x)
+        )
         
         
         
         self.play(
             AnimationGroup(
                 AnimationGroup(
-                    xrng.animate.set_value(3.25),
-                    xrng_min.animate.set_value(.75),
+                    xrng_1.animate.set_value(6.5/np.sqrt(13)),
+                    xrng_min_1.animate.set_value(1.5/np.sqrt(13)),
                 ),
                 AnimationGroup(
-                    Flash(point=Dot().move_to(ax_1.c2p(2,0)), color=REANLEA_BLUE_LAVENDER),
-                    dt_2.animate.set_color(REANLEA_CYAN_LIGHT)
+                    Flash(point=Dot().move_to(ax_1.c2p(np.sqrt(13),0)), color=REANLEA_BLUE_LAVENDER),
+                    dt_3_neg.animate.set_color(REANLEA_CYAN_LIGHT)
                 ),
                 lag_ratio=.5
             ),
             run_time=2
-        )'''
+        )
 
         self.wait(2)
 
+        
 
+        ln_dis_5=Line(ax_1.c2p(3,2),ax_1.c2p(3,0))
+        ln_dis_6=Line(ax_1.c2p(3,.5547),ax_1.c2p(3,0))
+
+
+        dissipating_dt_5=Dot().move_to(ax_1.c2p(3,2)).set_opacity(opacity=0)
+        dissipating_path_5 = TracedPath(dissipating_dt_5.get_center, dissipating_time=0.5, stroke_color=[REANLEA_PINK_LIGHTER],stroke_opacity=[1, 0])
+        self.add(dissipating_dt_5,dissipating_path_5)
+
+        dissipating_dt_6=Dot().move_to(ax_1.c2p(3,.5547)).set_opacity(opacity=0)
+        dissipating_path_6 = TracedPath(dissipating_dt_6.get_center, dissipating_time=0.5, stroke_color=[REANLEA_AQUA],stroke_opacity=[1, 0])
+        self.add(dissipating_dt_6,dissipating_path_6)
+
+
+        self.play(
+            AnimationGroup(
+                MoveAlongPath(dissipating_dt_5,ln_dis_5),
+                Flash(point=Dot().move_to(ax_1.c2p(3,0)), color=REANLEA_PINK_LIGHTER),
+                lag_ratio=0.5
+            ),
+            AnimationGroup(
+                MoveAlongPath(dissipating_dt_6,ln_dis_6),
+                Flash(point=Dot().move_to(ax_1.c2p(3,0)), color=REANLEA_GREEN_AUQA),
+                lag_ratio=0.5
+            )
+        )
+        self.wait()
+
+        d_line_1=DashedLine(
+            start=ax_1.c2p(3,2), end=ax_1.c2p(3,0),stroke_width=2
+        ).set_color_by_gradient(REANLEA_AQUA,REANLEA_BLUE_SKY).set_z_index(5)
+
+        self.play(
+            Write(d_line_1)
+        )
+
+        d_d_line_1_ref_2=d_d_line_1_ref_1=d_d_line_1.copy().shift((ax_1.c2p(0,0)[1]-ax_1.c2p(0,-.9)[1])*UP)
+
+
+        self.play(
+            Write(d_d_line_1_ref_2)
+        )
 
 
 
