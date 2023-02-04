@@ -6072,7 +6072,22 @@ class rotate_copy_ex(Scene):
 
 
         # manim -pqh test2.py rotate_copy_ex
+
+
+class div_by_sqrt_ex(Scene):
+    def construct(self):
         
+        line=Line()
+        self.add(line)
+
+        self.wait()
+
+        self.play(
+            line.animate.scale(np.sqrt(13))
+        )
+        self.wait(2)
+
+        # manim -pqh test2.py div_by_sqrt_ex
 
 ###################################################################################################################
 

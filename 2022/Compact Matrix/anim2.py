@@ -3703,7 +3703,13 @@ class Scene4_1(Scene):
             )
         )
         self.wait()
+
+
         
+
+        dt_1_neg=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0)).set_z_index(3)
+
+        ln_0010_neg=Line(start=ax_1.c2p(0,0),end=ax_1.c2p(1,0)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
 
         dt_3_neg=Dot().set_color(REANLEA_PINK).move_to(ax_1.c2p(3,-2)).set_z_index(3)
 
@@ -3712,7 +3718,7 @@ class Scene4_1(Scene):
 
         rot_tracker_neg=ValueTracker(0)
 
-        ln_neg_grp=VGroup(dt_1,dt_3_neg,ln_0010,ln_0032_neg).copy()
+        ln_neg_grp=VGroup(dt_1_neg,dt_3_neg,ln_0010_neg,ln_0032_neg)
 
         ln_neg_grp_ref=ln_neg_grp.copy()
 
@@ -3726,6 +3732,121 @@ class Scene4_1(Scene):
         self.play(
             FadeOut(ln_grp_x)
         )
+        self.wait(2)
+
+        
+        self.play(
+            AnimationGroup(
+                AnimationGroup(
+                    xrng.animate.set_value(6.5),
+                    xrng_min.animate.set_value(1.5),
+                ),
+                AnimationGroup(
+                    FocusOn(ax_1.c2p(2,0), color=REANLEA_PURPLE),
+                    dt_2.animate.set_color(REANLEA_PURPLE)
+                ),
+                lag_ratio=.5
+            ),
+            Uncreate(d_d_line_1_ref_1.reverse_direction()),
+            run_time=2
+        )
+
+        self.wait(2)
+
+        self.play(
+            rot_tracker_neg.animate.set_value(ln_0032.get_angle()),
+            run_time=2
+        )
+        self.wait()
+
+        self.play(
+            Uncreate(ln_0032_neg.reverse_direction())
+        )
+        self.wait(2)
+
+        circ=DashedVMobject(Circle(radius=ln_0032.get_length()), dashed_ratio=0.5, num_dashes=100).move_to(dt_0.get_center()).set_stroke(width=0.65)
+        circ.set_color_by_gradient(REANLEA_WHITE,REANLEA_WARM_BLUE,REANLEA_YELLOW_CREAM)
+
+        self.add(circ)
+
+        '''self.play(
+            AnimationGroup(
+                AnimationGroup(
+                    xrng.animate.set_value(6.5/np.sqrt(13)),
+                    xrng_min.animate.set_value(1.5/np.sqrt(13)),
+                ),
+                AnimationGroup(
+                    Flash(point=Dot().move_to(ax_1.c2p(0,0)), color=REANLEA_BLUE_LAVENDER),
+                    #dt_2.animate.set_color(REANLEA_CYAN_LIGHT)
+                ),
+                lag_ratio=.5
+            ),
+            run_time=2
+        )'''
+
+
+
+        '''xrng = ValueTracker(6.5)
+        xrng_min = ValueTracker(1.5)
+
+
+        ax_2_x=VGroup()
+        dt_1_x=VMobject()
+        dt_1_neg_x=VMobject()
+        ln_0010_neg_x = VMobject()
+
+
+        def axUpdater_1(mobj):
+            xmin = -xrng_min.get_value()
+            xmax = +xrng.get_value()
+            #newax =Axes(x_range=[xmin,xmax,10**int(np.log10(xmax)-1)],y_range=[-1,4])
+            newax=Axes(
+                    x_range=[xmin,xmax,2**int(np.log10(xmax)-1)],
+                    y_range=[-1.5,4.5],
+                    x_length=(round(config.frame_width)-2)*8/7,
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False, 
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+            newax.add_coordinates()
+            newax_ref=newax.copy()
+            newax.shift((ax_1.c2p(0,0)[0]-newax_ref.c2p(0,0)[0])*RIGHT)
+
+            newfunc = Line(start=newax.c2p(0,0),end=newax.c2p(3,2)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER])
+            
+            new_dt_1=Dot().set_color(REANLEA_AQUA).move_to(newax.c2p(1,0)).set_z_index(3)
+
+            new_dt_1_neg=Dot().set_color(REANLEA_PINK).move_to(newax.c2p(dt_1_neg.get_center())).set_z_index(3)
+
+            mobj.become(newax)
+            ln_0010_neg_x.become(newfunc)  
+            dt_1_x.become(new_dt_1).set_z_index(3)
+            dt_1_neg_x.become(new_dt_1_neg)  
+
+        ax_2_x.add_updater(axUpdater_1)
+
+        self.add(ax_2_x,ln_0010_neg_x,dt_1_x,dt_1_neg_x)
+        
+        
+        
+        self.play(
+            AnimationGroup(
+                AnimationGroup(
+                    xrng.animate.set_value(3.25),
+                    xrng_min.animate.set_value(.75),
+                ),
+                AnimationGroup(
+                    Flash(point=Dot().move_to(ax_1.c2p(2,0)), color=REANLEA_BLUE_LAVENDER),
+                    dt_2.animate.set_color(REANLEA_CYAN_LIGHT)
+                ),
+                lag_ratio=.5
+            ),
+            run_time=2
+        )'''
+
+        self.wait(2)
 
 
 
