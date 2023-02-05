@@ -3578,9 +3578,9 @@ class Scene4_1(Scene):
         with RegisterFont("Courier Prime") as fonts:
             innr_prdct_dfn_1=Text("by", font=fonts[0]).scale(.35).set_color(REANLEA_CYAN_LIGHT).next_to(innr_prdct_dfn_0, RIGHT).shift(.1*RIGHT+.02*DOWN)
         
-        innr_prdct_dfn_2=MathTex(r"\langle v,u \rangle","=",r"\lVert v \rVert",r"\cdot",r"\lVert u \rVert",r"\cdot",r"cos\theta").scale(.7).set_color_by_gradient(REANLEA_CYAN_LIGHT).move_to(2.5*UP+3.25*RIGHT)
+        innr_prdct_dfn_2=MathTex(r"\langle u,v \rangle","=",r"\lVert u \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.7).set_color_by_gradient(REANLEA_CYAN_LIGHT).move_to(2.5*UP+3.25*RIGHT)
 
-        innr_prdct_dfn_3=MathTex(r"\langle v,i \rangle","=",r"\lVert v \rVert",r"\cdot",r"\lVert i \rVert",r"\cdot",r"cos\theta").scale(.7).set_color_by_gradient(REANLEA_CYAN_LIGHT).move_to(2.5*UP+3.25*RIGHT)
+        innr_prdct_dfn_3=MathTex(r"\langle i,v \rangle","=",r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.7).set_color_by_gradient(REANLEA_CYAN_LIGHT).move_to(2.5*UP+3.25*RIGHT)
 
         
         innr_prdct_dfn_grp_1=VGroup(innr_prdct_dfn_0,innr_prdct_dfn_1)
@@ -3743,7 +3743,7 @@ class Scene4_1(Scene):
                     xrng_min.animate.set_value(1.5),
                 ),
                 AnimationGroup(
-                    dt_2.animate.set_color(REANLEA_PURPLE)
+                    dt_2.animate.set_color(REANLEA_GOLDENROD)
                 ),
             ),
             Unwrite(d_d_line_1_ref_1.reverse_direction()),
