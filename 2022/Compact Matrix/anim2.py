@@ -3765,7 +3765,7 @@ class Scene4_1(Scene):
             FadeOut(ln_0032_neg)
         )
         self.play(
-            Unwrite(ln_0032_neg_ref.reverse_direction())
+            Uncreate(ln_0032_neg_ref)
         )
         self.wait(2)
 
