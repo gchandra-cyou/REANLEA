@@ -3746,7 +3746,7 @@ class Scene4_1(Scene):
                     dt_2.animate.set_color(REANLEA_PURPLE)
                 ),
             ),
-            Uncreate(d_d_line_1_ref_1.reverse_direction()),
+            Unwrite(d_d_line_1_ref_1.reverse_direction()),
             run_time=2
         )
 
@@ -3758,8 +3758,14 @@ class Scene4_1(Scene):
         )
         self.wait()
 
+        ln_0032_neg_ref=ln_0032_neg.copy()
+        self.add(ln_0032_neg_ref)
+
         self.play(
-            Uncreate(ln_0032_neg.reverse_direction())
+            FadeOut(ln_0032_neg)
+        )
+        self.play(
+            Unwrite(ln_0032_neg_ref.reverse_direction())
         )
         self.wait(2)
 
@@ -3892,7 +3898,7 @@ class Scene4_1(Scene):
         self.add(d_d_line_1_ref_2)
 
         self.play(
-            d_d_line_1_ref_2.animate.shift((ax_1.c2p(0,0)[1]-ax_1.c2p(0,-.9)[1])*UP).set_color(REANLEA_GREY_DARKER)         
+            d_d_line_1_ref_2.animate.shift((ax_1.c2p(0,0)[1]-ax_1.c2p(0,-.9)[1])*UP).set_color(REANLEA_RED)         
         )
 
 

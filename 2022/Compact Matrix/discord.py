@@ -6077,6 +6077,203 @@ class GraphAlgorithm(Scene):
         # manim -pqh discord.py GraphAlgorithm
 
 
+
+class GoursatCurve(ThreeDScene):
+    def construct(self):
+        
+        title = Tex("Goursat Curve").to_edge(UP)
+        
+        a = ValueTracker(1.12)
+        b = ValueTracker(0.74)
+        c = ValueTracker(-0.86)             
+        d = ValueTracker(0.06)  
+        k = ValueTracker(6)
+        
+        id_to_label = {0:'a', 1:'b',2:'c',3:'d',4:'k'}
+        label_to_tracker = {0:a,1:b,2:c,3:d,4:k}
+        
+        labels = []
+        labels_number = []
+        
+        labels.append(Tex(id_to_label[0]+"= ").to_edge(UL))
+        for i in range(1,5):
+            labels.append(Tex(id_to_label[i]+"= ").next_to(labels[i-1], DOWN))
+            
+        for i in range(5):
+            labels_number.append(DecimalNumber(label_to_tracker[i].get_value(), color=WHITE, num_decimal_places=2).next_to(labels[i], RIGHT))
+            labels_number[i].add_updater(lambda mob,i=i: mob.set_value(label_to_tracker[i].get_value()))
+        
+        ax = ThreeDAxes(x_range=[-6,6,1], y_range=[-6,6,1])
+        self.set_camera_orientation(phi=60*DEGREES)
+        
+        #self.add(ax)
+        
+        def func(t):
+            x = (np.cos(t) * (a.get_value() + b.get_value() *                        np.cos(k.get_value()*t) + c.get_value() *                                np.cos(2*k.get_value()*t) + d.get_value() *                              np.cos(3*k.get_value()*t)) - np.sin(t) * (b.get_value() *                np.sin(k.get_value()*t) + c.get_value() *         np.sin(2*k.get_value()*t) + d.get_value() * np.sin(3*k.get_value()*t)))
+
+            y = (np.sin(t) * (a.get_value() + b.get_value() * np.cos(k.get_value()*t) + c.get_value() * np.cos(2*k.get_value()*t) + d.get_value() * np.cos(3*k.get_value()*t)) + np.cos(t) * (b.get_value() * np.sin(k.get_value()*t) + c.get_value() * np.sin(2*k.get_value()*t) + d.get_value() * np.sin(3*k.get_value()*t)))
+            return [x,y,0]
+        
+        fplot=ax.plot_parametric_curve(func, t_range=[0,10,0.01], color=ORANGE)
+        
+        fplot.add_updater(lambda mob:mob.become(ax.plot_parametric_curve(func, t_range=[0,10,0.01], color=ORANGE)))
+        self.begin_ambient_camera_rotation(rate = 0.5)   
+        
+        self.play(Create(fplot, run_time=10,rate_function=linear))
+        self.move_camera(phi=0 * DEGREES, theta=-90 * DEGREES)
+        self.stop_ambient_camera_rotation()
+        #self.move_camera(phi=75 * DEGREES, theta=-30 * DEGREES)
+        self.play(Write(title))
+        self.play(Write(VGroup(*labels, *labels_number)))
+        self.play(a.animate.set_value(2),run_time=5)
+
+
+
+        # manim -pqh discord.py GoursatCurve
+
+
+
+class GraphTest_01(Scene):
+    def construct(self):
+        vertices = [1, 2, 3]
+        edges = [(2, 1), (3, 1), (3, 2)]
+        g = Graph(vertices, edges,
+                  # edge_type=Arrow,
+                  # labels=True
+                  )
+        self.play(Create(g))
+        self.wait()
+        for _ in range(3):
+            vertices = g.vertices
+            print(vertices)
+            for _ in range(len(vertices)):
+                new_edges = [(len(g.vertices)+1, vertex) for vertex in g.vertices]
+                print(new_edges)
+                g.add_vertices(len(g.vertices)+1, positions={len(g.vertices)+1:[np.random.uniform(-1,1),np.random.uniform(-1,1),0]})
+                g.add_edges(*new_edges)
+            self.play(g.animate.change_layout("circular"))
+            self.wait()
+
+
+            # manim -pqh discord.py GraphTest_01
+
+
+
+
+
+class manyNumbers2(Scene):
+    def construct(self):
+        cols = 20
+        rows = 10
+        numsize = 30
+
+        numbers = VGroup(
+            *[DecimalNumber(
+                i+1, 
+                font_size=numsize,
+                num_decimal_places=0,
+            ) for i in range(200)]
+        )
+        numbers.arrange_in_grid(rows=rows, cols=cols)
+
+        self.play(Create(numbers))
+        self.wait()    
+        for num in numbers:
+            if num.get_value() % 28 == 0:
+                self.play(Wiggle(num))
+                num.set_color(YELLOW) 
+        self.wait() 
+
+
+        # manim -pqh discord.py manyNumbers2
+
+
+
+
+def disc_func(x):
+    return np.cos(x) + 1
+
+class Disc_Func_test(Scene):
+    def construct(self):
+        disc = (2, -2)
+        axes = Axes(x_range=[-5, 5, 1], y_range=[-3, 3, 1]).add_coordinates()
+        plot = axes.plot(lambda x: disc_func(x))
+        disc_point = VGroup(
+            Dot(
+                axes.c2p(disc[0], disc_func(disc[0])), fill_color=BLACK, stroke_width=1
+            ),
+            Dot(axes.c2p(disc[0], disc[1])),
+        )
+
+        #self.add(axes, plot, disc_point)
+
+        self.play(
+            Write(axes)
+        )
+        self.play(
+            Create(plot),
+            Write(disc_point)
+        )
+
+        self.wait(2)
+
+
+        # manim -pqh discord.py Disc_Func_test
+
+
+
+class SampleSpaceLabelEx(Scene):
+    def construct(self):
+        number = 7
+        list_num = [1 / number] * number
+        geo = SampleSpace(4, 4, stroke_width=2, fill_opacity=0.5)
+        geo.divide_horizontally(p_list=np.array(list_num), colors=[TEAL, TEAL])
+
+        for i in range(number):
+            geo[i].set_opacity(0)
+            geo[i].divide_vertically(p_list=np.array(list_num), colors=[GREEN_D, GREEN])
+            geo[i].label = MathTex(f"{i + 1}").next_to(geo[i], LEFT)     
+            self.add(geo[i].label)       
+            for j in range(0, i+1): 
+                geo[i][j].set_opacity(0.1) 
+        self.add(geo)
+
+        self.play(
+            Write(geo)
+        )
+
+        self.wait(2)
+
+
+        # manim -pqh discord.py  SampleSpaceLabelEx
+
+
+
+
+class Moving_Triangle_ex(Scene):
+    def construct(self):
+
+        circ = Circle(radius=2)
+        alpha = ValueTracker(110)
+
+        dotB = Dot(circ.point_at_angle(-160*DEGREES))
+        dotC = Dot(circ.point_at_angle(-20*DEGREES))
+
+        dotA =always_redraw(lambda:
+        Dot(circ.point_at_angle(alpha.get_value()*DEGREES)))
+
+        tri = always_redraw(lambda: 
+        Polygon(dotA.get_center(), dotB.get_center(), dotC.get_center()))
+        move = VGroup(dotA, tri)
+
+        self.add(circ,move,dotB,dotC)
+        self.play(alpha.animate.set_value(30),run_time=3)
+        self.play(alpha.animate.set_value(160),run_time=3)
+        self.wait()
+
+
+        # manim -pqh discord.py Moving_Triangle_ex
+
 ###################################################################################################################
 
 # NOTE :-

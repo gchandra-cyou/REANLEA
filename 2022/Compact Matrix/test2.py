@@ -6089,6 +6089,69 @@ class div_by_sqrt_ex(Scene):
 
         # manim -pqh test2.py div_by_sqrt_ex
 
+
+class graph_cosx(Scene):
+    def construct(self):
+        
+        ax_1=Axes(
+            x_range=[-4.5,4.5],
+            y_range=[-2.5,2.5],
+            y_length=(round(config.frame_width)-2)*5/9,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).set_z_index(1) 
+
+        self.play(
+            Create(ax_1)
+        )
+
+        fun = "np.cos(x)" 
+        cosx = ax_1.plot(lambda x:eval(fun))
+        self.play(Create(cosx))
+
+        self.wait(2)
+
+
+        # manim -pqh test2.py graph_cosx
+
+        # manim -sqk test2.py graph_cosx
+
+class Uncrt_tst(Scene):
+    def construct(self):
+        
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1) 
+
+        d_d_line_1=DashedDoubleArrow(
+            start=ax_1.c2p(0,-.9), end=ax_1.c2p(3,-.9), dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).set_color_by_gradient(REANLEA_YELLOW_LIGHTER,REANLEA_GREEN_AUQA)
+
+        self.play(
+            Create(d_d_line_1)
+        )
+        self.wait()
+
+
+        self.play(
+            Unwrite(d_d_line_1.reverse_direction())
+        )
+        self.wait()
+
+        # manim -pqh test2.py Uncrt_tst
+
+
 ###################################################################################################################
 
 

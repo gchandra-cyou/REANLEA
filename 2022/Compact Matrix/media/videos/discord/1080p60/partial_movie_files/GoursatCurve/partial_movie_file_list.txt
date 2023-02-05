@@ -1,0 +1,6 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1080p60/partial_movie_files/GoursatCurve/2866733583_1009746199_729892282.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1080p60/partial_movie_files/GoursatCurve/2606169768_2225870134_4246517706.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1080p60/partial_movie_files/GoursatCurve/1930559118_1407741805_3704145250.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1080p60/partial_movie_files/GoursatCurve/3714948244_226693773_4241807306.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2022/Compact Matrix/media/videos/discord/1080p60/partial_movie_files/GoursatCurve/3714948244_2210016706_2184135181.mp4'
