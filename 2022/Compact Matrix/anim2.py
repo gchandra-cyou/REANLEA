@@ -3674,12 +3674,166 @@ class Scene4_1(Scene):
 
         # sided rectangle appear
 
-        rect_overlap=Rectangle(width=10.25, height=9, color=REANLEA_BLUE_DARKEST).to_edge(RIGHT, buff=0).set_opacity(.65).set_z_index(10)
+        rect_overlap=Rectangle(width=10.25, height=9, color=REANLEA_BLUE_DARKEST).to_edge(RIGHT, buff=0).set_opacity(.85).set_z_index(10)
 
         #self.add(rect_overlap)
         self.play(
             Create(rect_overlap)
         )
+
+        ax_4=Axes(
+            x_range=[-3.5,3.5],
+            y_range=[-1.5,3.5],
+            y_length=(round(config.frame_width)-2)*5/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).move_to(rect_overlap.get_center()).set_z_index(11)
+
+        self.play(
+            Write(ax_4)
+        )
+
+        self.wait(2)
+
+        sgn_pos_1=MathTex("+").scale(.75).set_color(PURE_GREEN)#.move_to(6.5*RIGHT)
+        sgn_pos_2=Circle(radius=0.2, color=PURE_GREEN).move_to(sgn_pos_1.get_center()).set_stroke(width= 1)
+        sgn_pos=VGroup(sgn_pos_1,sgn_pos_2).move_to(ax_4.c2p(3.25,1.25)).scale(.6).set_z_index(11)
+
+        sgn_neg_1=MathTex("-").scale(.75).set_color(REANLEA_YELLOW)#.move_to(6.5*LEFT)
+        sgn_neg_2=Circle(radius=0.2, color=REANLEA_YELLOW).move_to(sgn_neg_1.get_center()).set_stroke(width= 1)
+        sgn_neg=VGroup(sgn_neg_1,sgn_neg_2).move_to(ax_4.c2p(-3.25,1.25)).scale(.6).set_z_index(11)
+
+        sgn_grp=VGroup(sgn_pos,sgn_neg)
+
+        tracker = ValueTracker(0.5)
+
+        graph_ref = always_redraw(lambda: ax_4.plot(
+            lambda t,tracker=tracker: np.cos(tracker.get_value() * t),
+            
+        ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE,REANLEA_AQUA])).set_z_index(11)
+
+        graph_ref_lbl=MathTex(r"cos(\theta)").set_color_by_gradient(REANLEA_BLUE,REANLEA_AQUA).scale(.75).move_to(ax_4.c2p(2,1.5)).set_z_index(11)
+
+
+
+        self.play(
+            Create(graph_ref),
+            Write(graph_ref_lbl)
+        )
+
+        self.play(
+            Write(sgn_grp)
+        )
+
+        self.play(tracker.animate(run_time=6).set_value(5))
+
+        graph=ax_4.plot(
+            lambda x: np.cos(5*x)
+        ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE,REANLEA_AQUA]).set_z_index(11)
+
+
+        self.add(graph)
+        self.play(
+            FadeOut(graph_ref)
+        )
+
+        self.wait(2)
+
+        xt_l=ValueTracker(-3.5)
+        xt_r=ValueTracker(3.5)
+
+        initial_point_l= [ax_4.coords_to_point(xt_l.get_value(), np.cos(xt_l.get_value()*5))]
+        dot_l = Dot(point=initial_point_l, color=graph.get_color()).set_z_index(11)
+
+        initial_point_r= [ax_4.coords_to_point(xt_r.get_value(), np.cos(xt_r.get_value()*5))]
+        dot_r = Dot(point=initial_point_r, color=graph.get_color()).set_z_index(11)
+
+
+        self.play(
+            FadeIn(dot_l),
+            FadeIn(dot_r)
+        )
+        self.wait()
+
+        d_line=DashedLine(
+            start=dot_l.get_center(), end=dot_r.get_center(),stroke_width=2
+        ).set_color_by_gradient(dot_l.get_color()).set_z_index(11)
+
+        dot_c=Dot(point=(dot_l.get_center()+dot_r.get_center())/2, color=PURE_RED).set_z_index(14)
+
+        self.play(
+            AnimationGroup(
+                Create(d_line),
+                Flash(point=(dot_l.get_center()+dot_r.get_center())/2, color=REANLEA_GOLD),
+                lag_ratio=.4
+            ),
+            AnimationGroup(                
+                FadeIn(dot_c)
+            ),
+            lag_ratio=.05,
+            run_time=2.5
+        )
+        
+        value=DecimalNumber(np.cos(xt_r.get_value()*5)).set_color_by_gradient(PURE_RED).set_sheen(-0.1,LEFT).scale(.75).move_to(ax_4.c2p(5,np.cos(xt_r.get_value()*5))).set_z_index(11)
+
+        self.play(
+            Write(value)
+        )
+
+        self.wait(2)
+
+        dot_l.add_updater(lambda x: x.move_to(ax_4.c2p(xt_l.get_value(), np.cos(xt_l.get_value()*5))).set_z_index(11))
+
+        dot_r.add_updater(lambda x: x.move_to(ax_4.c2p(xt_r.get_value(), np.cos(xt_r.get_value()*5))).set_z_index(11))
+
+        d_line.add_updater(
+            lambda z : z.become(
+                DashedLine(
+                    start=dot_l.get_center(), end=dot_r.get_center(),stroke_width=2
+                ).set_color_by_gradient(dot_l.get_color()).set_z_index(11)
+            )
+        )
+
+        dot_c.add_updater(lambda x: x.move_to((dot_l.get_center()+dot_r.get_center())/2).set_z_index(11))
+
+        value.add_updater(
+            lambda x : x.set_value(np.cos(xt_r.get_value()*5)).move_to(ax_4.c2p(5,np.cos(xt_r.get_value()*5))).set_color(PURE_RED).set_z_index(11))
+
+        self.play(
+            xt_l.animate.set_value(0),
+            xt_r.animate.set_value(0),
+            run_time=10
+        )
+        self.wait(2)
+
+        graph_l=ax_4.plot(
+            lambda x: np.cos(5*x) , x_range=[-3.5,0]
+        ).set_stroke(width=7, color=[REANLEA_BLUE,REANLEA_AQUA]).set_z_index(11)
+
+        graph_r=ax_4.plot(
+            lambda x: np.cos(5*x) , x_range=[0,3.5]
+        ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE]).set_z_index(11)
+        
+        dot_c.set_z_index(15)
+        self.add(graph_l,graph_r)
+
+        self.play(
+            AnimationGroup(
+                FadeOut(graph),
+                graph_l.animate.flip(about_point=ax_4.c2p(0,.5)),
+                lag_ratio=.5
+            )
+        )
+
+
+
+
+        
+
+        self.wait(2)
 
         '''self.play(
             ln_grp_x.animate.flip(RIGHT, about_point=ax_1.c2p(0,0))

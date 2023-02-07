@@ -6260,10 +6260,13 @@ class Cosine_graph_tst(Scene):
         #self.add(ax)
         #self.add(graph)
 
+        graph_ref_lbl=MathTex(r"cos(\theta)").set_color_by_gradient(REANLEA_BLUE,REANLEA_AQUA).scale(.75).move_to(ax_1.c2p(2,1.5))
+
 
 
         self.play(
-            Create(graph_ref)
+            Create(graph_ref),
+            Write(graph_ref_lbl)
         )
 
         self.play(
@@ -6496,6 +6499,72 @@ class ArgMinEx99(Scene):
 
 
         # manim -pqh test2.py ArgMinEx99
+
+
+
+
+class layer_flash(Scene):
+    def construct(self):
+        
+        rect_overlap=Rectangle(width=10.25, height=9, color=REANLEA_BLUE_DARKEST).to_edge(RIGHT, buff=0).set_opacity(.85).set_z_index(10)
+
+        #self.add(rect_overlap)
+        self.play(
+            Create(rect_overlap)
+        )
+
+        ax_4=Axes(
+            x_range=[-3.5,3.5],
+            y_range=[-1.5,3.5],
+            y_length=(round(config.frame_width)-2)*5/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).move_to(rect_overlap.get_center()).set_z_index(11)
+
+
+        xt_l=ValueTracker(-3.5)
+        xt_r=ValueTracker(3.5)
+
+        initial_point_l= [ax_4.coords_to_point(xt_l.get_value(), np.cos(xt_l.get_value()*5))]
+        dot_l = Dot(point=initial_point_l).set_z_index(11)
+
+        initial_point_r= [ax_4.coords_to_point(xt_r.get_value(), np.cos(xt_r.get_value()*5))]
+        dot_r = Dot(point=initial_point_r).set_z_index(11)
+
+
+        self.play(
+            FadeIn(dot_l),
+            FadeIn(dot_r)
+        )
+        self.wait()
+
+        d_line=DashedLine(
+            start=dot_l.get_center(), end=dot_r.get_center(),stroke_width=2
+        ).set_color_by_gradient(dot_l.get_color()).set_z_index(11)
+
+        dot_c=Dot(point=(dot_l.get_center()+dot_r.get_center())/2, color=PURE_RED).set_z_index(14)
+
+        dot_x=dot_c.copy().set_z_index(16)
+
+        self.play(
+            AnimationGroup(
+                Create(d_line),
+                Flash(point=dot_x, color=REANLEA_GOLD),
+                lag_ratio=.4
+            ),
+            AnimationGroup(                
+                FadeIn(dot_c)
+            ),
+            lag_ratio=.05,
+            run_time=2.5
+        )
+
+        self.wait(2)
+
+        # manim -pqh test2.py layer_flash
 
 
 
