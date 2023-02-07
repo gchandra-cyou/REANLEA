@@ -6274,6 +6274,58 @@ class Moving_Triangle_ex(Scene):
 
         # manim -pqh discord.py Moving_Triangle_ex
 
+
+
+class FluidFlowScene(Scene):
+    def construct(self):
+        k = 1
+
+        title = Text("Idealized Flow Around an Infinite Cylinder")
+        eq = MathTex( r"\vec{V}(x,y)=U\left(1-r^2\frac{x^2-y^2}{(x^2+y^2)^2}\right)\hat{i}-2U^2r^2\frac{xy}{(x^2+y^2)^2}\hat{j}")
+
+        self.play(Write(title))
+        self.wait(2)
+        self.play(FadeOut(title), run_time=2)
+
+        div_func = lambda pos: (1-1*((pos[0]*pos[0]-pos[1]*pos[1])/((pos[0]*pos[0]+pos[1]*pos[1])*(pos[0]*pos[0]+pos[1]*pos[1]))))*k*RIGHT+(-2*1*((pos[0]*pos[1])/(((pos[0]*pos[0]+pos[1]*pos[1])*(pos[0]*pos[0]+pos[1]*pos[1])))))*UP*k*k
+        
+        stream_lines = StreamLines(div_func, stroke_width=4, max_anchors_per_line=100, padding=1, dt=.00001, noise_factor=2, y_range=[-4,3,.5])
+        vf = VectorField(div_func)
+        self.add(stream_lines)
+        stream_lines.start_animation(warm_up=False, flow_speed=1)
+
+        circ1 = Circle(radius=1,color=BLUE)
+        circ1.set_fill(BLACK, opacity=1)
+        self.add(circ1)
+        squr = Square(side_length=.25).shift(LEFT*3+UP*.5)
+        dsqur = squr.copy().set_color(WHITE)
+        dx = Text('dx', color=WHITE).scale(.5).next_to(dsqur, DOWN)
+        dy = Text('dy', color=WHITE).scale(.5).next_to(dsqur, RIGHT)
+        self.add(dsqur,dx,dy)
+        
+        dot = Dot().move_to(squr)
+        self.wait(stream_lines.virtual_time / stream_lines.flow_speed)
+
+
+        vf.nudge(squr, -2, 60, True)
+        vf.nudge(dot, -2, 60)
+
+        squr.add_updater(vf.get_nudge_updater(pointwise=True))
+        dot.add_updater(vf.get_nudge_updater())
+        self.add(squr, dot)
+
+        self.wait(12)
+        self.play(FadeOut(stream_lines,circ1,squr,dsqur,dx,dy))
+        self.play(Write(eq))
+        self.wait(2)
+
+        # not run
+
+
+        # manim -pqh discord.py FluidFlowScene
+
+
+
 ###################################################################################################################
 
 # NOTE :-
