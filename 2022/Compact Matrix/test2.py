@@ -6149,7 +6149,115 @@ class Uncrt_tst(Scene):
         )
         self.wait()
 
+        rect_overlap=Rectangle(width=10.25, height=9, color=REANLEA_BLUE_DARKEST).to_edge(RIGHT, buff=0).set_opacity(.65).set_z_index(10)
+
+        self.play(
+            Create(rect_overlap)
+        )
+
+        ax_1.move_to(rect_overlap.get_center()).set_z_index(10)
+
+        self.play(
+            Write(ax_1)
+        )
+
+        self.wait(2)
+
+        g = ax_1.plot(
+            lambda x: np.sin(x), x_range=[0,6*PI,PI/2], color=BLUE
+        ).set_stroke(width=15, color=[PURE_GREEN,BLUE_C,PURE_RED]).set_z_index(10)
+
+
+        self.play(
+            Create(g)
+        )
+
+        self.wait(2)
+
         # manim -pqh test2.py Uncrt_tst
+
+
+
+
+class defFun(Scene):
+    def construct(self):
+        def f(x):
+            if x < 0.5:
+                return 0
+            else:
+                return 2*(x-0.5)
+
+        ax = Axes(
+            x_range = [0, 1, 1],
+            y_range = [0, 1, 1],
+            tips=False
+        )
+
+        plt = ax.plot(f, discontinuities = [0.5]).set_stroke(width=15, color=[PURE_GREEN,BLUE_C,PURE_RED])
+
+
+        self.play(
+            Create(plt)
+        )
+
+        self.wait(3)
+
+
+        # manim -pqh test2.py defFun
+
+
+
+class Cosine_graph_tst(Scene):
+    def construct(self):
+        
+        ax_1=Axes(
+            x_range=[-3.5,3.5],
+            y_range=[-1.5,3.5],
+            y_length=(round(config.frame_width)-2)*5/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1) 
+
+        self.play(
+            Write(ax_1)
+        )
+
+        self.wait(2)
+
+        g = ax_1.plot(
+            lambda x: np.cos(x), x_range=[-3*PI/2,3*PI/2,PI/2], color=BLUE
+        ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE,REANLEA_AQUA]).set_z_index(10)
+
+
+        self.play(
+            Create(g)
+        )
+
+        tracker = ValueTracker(0.5)
+
+        graph = always_redraw(lambda: ax_1.plot(
+            lambda t,tracker=tracker: np.cos(tracker.get_value() * t),
+            
+        ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE,REANLEA_AQUA]))
+        # Below mentioned two lines also work, and give the same output.
+        # graph=ax.plot(lambda t: np.sin(t*tracker.get_value()),x_range=[-5*PI,2*PI],color=BLUE)
+        # graph.add_updater(lambda m: m.become(ax.plot(lambda t: np.sin(t*tracker.get_value()),x_range=[-5*PI,2*PI],color=BLUE)))
+
+        #self.add(ax)
+        self.add(graph)
+
+        self.play(tracker.animate(run_time=6).set_value(5))
+        self.wait(3)
+
+
+        self.wait(2)
+
+        # manim -pqh test2.py Cosine_graph_tst
+
+        # manim -sqk test2.py Cosine_graph_tst
 
 
 ###################################################################################################################

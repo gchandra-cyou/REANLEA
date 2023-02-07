@@ -3672,7 +3672,16 @@ class Scene4_1(Scene):
             FadeOut(ln_grp)
         )
 
+        # sided rectangle appear
+
+        rect_overlap=Rectangle(width=10.25, height=9, color=REANLEA_BLUE_DARKEST).to_edge(RIGHT, buff=0).set_opacity(.65).set_z_index(10)
+
+        #self.add(rect_overlap)
         self.play(
+            Create(rect_overlap)
+        )
+
+        '''self.play(
             ln_grp_x.animate.flip(RIGHT, about_point=ax_1.c2p(0,0))
         )
 
@@ -3767,7 +3776,7 @@ class Scene4_1(Scene):
         self.play(
             Uncreate(ln_0032_neg_ref)
         )
-        self.wait(2)
+        self.wait(2)'''
 
         '''circ=DashedVMobject(Circle(radius=ln_0032.get_length()), dashed_ratio=0.5, num_dashes=100).move_to(dt_0.get_center()).set_stroke(width=0.65)
         circ.set_color_by_gradient(REANLEA_WHITE,REANLEA_WARM_BLUE,REANLEA_YELLOW_CREAM)
@@ -3791,7 +3800,7 @@ class Scene4_1(Scene):
 
 
 
-        ax_2_y=VGroup()
+        '''ax_2_y=VGroup()
         dt_1_y=VMobject()
         dt_1_neg_y=VMobject()
         ln_0010_neg_y = VMobject()
@@ -3899,7 +3908,10 @@ class Scene4_1(Scene):
 
         self.play(
             d_d_line_1_ref_2.animate.shift((ax_1.c2p(0,0)[1]-ax_1.c2p(0,-.9)[1])*UP).set_color(REANLEA_RED)         
-        )
+        )'''
+
+
+        
 
 
 
