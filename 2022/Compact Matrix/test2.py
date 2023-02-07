@@ -6312,9 +6312,17 @@ class Cosine_graph_tst(Scene):
 
         self.wait(2)
 
-        dot_l.add_updater(lambda x: x.move_to(ax_1.c2p(xt_l.get_value(), np.cos(xt_l.get_value()*5))))
+        dot_l.add_updater(lambda x: x.move_to(ax_1.c2p(xt_l.get_value(), np.cos(xt_l.get_value()*5))).set_color(graph.get_color()))
 
-        dot_r.add_updater(lambda x: x.move_to(ax_1.c2p(xt_r.get_value(), np.cos(xt_r.get_value()*5))))
+        dot_r.add_updater(lambda x: x.move_to(ax_1.c2p(xt_r.get_value(), np.cos(xt_r.get_value()*5))).set_color(graph.get_color()))
+
+        d_line.add_updater(
+            lambda z : z.become(
+                DashedLine(
+                    start=dot_l.get_center(), end=dot_r.get_center(),stroke_width=2
+                ).set_color_by_gradient(dot_l.get_color())
+            )
+        )
 
         dot_c.add_updater(lambda x: x.move_to((dot_l.get_center()+dot_r.get_center())/2))
 
