@@ -6238,7 +6238,7 @@ class Cosine_graph_tst(Scene):
 
         tracker = ValueTracker(0.5)
 
-        graph = always_redraw(lambda: ax_1.plot(
+        graph_ref = always_redraw(lambda: ax_1.plot(
             lambda t,tracker=tracker: np.cos(tracker.get_value() * t),
             
         ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE,REANLEA_AQUA]))
@@ -6248,11 +6248,86 @@ class Cosine_graph_tst(Scene):
 
         #self.add(ax)
         #self.add(graph)
+
+
+
         self.play(
-            Create(graph)
+            Create(graph_ref)
         )
 
         self.play(tracker.animate(run_time=6).set_value(5))
+
+        graph=ax_1.plot(
+            lambda x: np.cos(5*x)
+        ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE,REANLEA_AQUA])
+
+
+        self.add(graph)
+        self.play(
+            FadeOut(graph_ref)
+        )
+
+        self.wait(2)
+
+        xt_l=ValueTracker(-3.5)
+        xt_r=ValueTracker(3.5)
+
+        initial_point_l= [ax_1.coords_to_point(xt_l.get_value(), np.cos(xt_l.get_value()*5))]
+        dot_l = Dot(point=initial_point_l, color=graph.get_color())
+
+        initial_point_r= [ax_1.coords_to_point(xt_r.get_value(), np.cos(xt_r.get_value()*5))]
+        dot_r = Dot(point=initial_point_r, color=graph.get_color())
+
+
+        self.play(
+            FadeIn(dot_l),
+            FadeIn(dot_r)
+        )
+        self.wait()
+
+        d_line=DashedLine(
+            start=dot_l.get_center(), end=dot_r.get_center(),stroke_width=2
+        ).set_color_by_gradient(dot_l.get_color())
+
+        dot_c=Dot(point=(dot_l.get_center()+dot_r.get_center())/2, color=PURE_RED)
+
+        self.play(
+            AnimationGroup(
+                Create(d_line),
+                Flash(point=(dot_l.get_center()+dot_r.get_center())/2, color=REANLEA_GOLD),
+                lag_ratio=.4
+            ),
+            AnimationGroup(                
+                FadeIn(dot_c)
+            ),
+            lag_ratio=.05,
+            run_time=2.5
+        )
+        
+        value=DecimalNumber().set_color_by_gradient(REANLEA_SLATE_BLUE_LIGHTER).set_sheen(-0.1,LEFT).next_to(dot_c)
+
+        self.play(
+            Write(value)
+        )
+
+        self.wait(2)
+
+        dot_l.add_updater(lambda x: x.move_to(ax_1.c2p(xt_l.get_value(), np.cos(xt_l.get_value()*5))))
+
+        dot_r.add_updater(lambda x: x.move_to(ax_1.c2p(xt_r.get_value(), np.cos(xt_r.get_value()*5))))
+
+        dot_c.add_updater(lambda x: x.move_to((dot_l.get_center()+dot_r.get_center())/2))
+
+        value.add_updater(
+            lambda x : x.set_value(dot_c.get_center()[1]))
+
+        self.play(
+            xt_l.animate.set_value(0),
+            xt_r.animate.set_value(0),
+            run_time=3
+        )
+
+
         
 
         self.wait(2)
@@ -6260,6 +6335,124 @@ class Cosine_graph_tst(Scene):
         # manim -pqh test2.py Cosine_graph_tst
 
         # manim -sqk test2.py Cosine_graph_tst
+
+
+
+
+
+class ArgMinExample(Scene):
+    def construct(self):
+        ax = Axes(
+            x_range=[-4.5, 4.5], y_range=[0, 30, 10], axis_config={"include_tip": False}
+        )
+        labels = ax.get_axis_labels(x_label="x", y_label="f(x)")
+
+
+        def func(x):
+            return (0.1*(x**4)) - (x**2) + .5*x + 9 + 5*np.sin(x)
+        graph = ax.plot(func, x_range=[-4,4], color=REANLEA_BLUE)
+        xt = ValueTracker(-4)
+        yt = ValueTracker(30)
+
+        
+
+        initial_point = [ax.coords_to_point(xt.get_value(), yt.get_value())]
+        dot = Dot(point=initial_point)
+
+        value=DecimalNumber().set_color_by_gradient(REANLEA_MAGENTA).set_sheen(-0.1,LEFT)
+        
+
+        def updater1(mobj):
+            mobj.move_to(ax.c2p(xt.get_value(), yt.get_value()))
+
+        dot.add_updater(updater1)
+        self.add(ax,labels,graph,dot,value)
+        self.wait(1)
+        self.play(yt.animate.set_value(func(xt.get_value())))
+        self.remove_updater(updater1)
+
+        dot.add_updater(lambda x: x.move_to(ax.c2p(xt.get_value(), func(xt.get_value()))))
+        value.add_updater(
+            lambda x : x.set_value(dot.get_center()[1]))
+        #x_space = np.linspace(*ax.x_range[:2],200)
+        x_space=np.linspace(-4,3,200)
+        minimum_index = func(x_space).argmin()
+
+        '''The animation sets the X value of the dot to the X value of the minimum of the function. 
+        This x-index for the minimum is computed and extracted using the .argmin() method.'''
+
+        self.add(ax, labels, graph, dot)
+        self.play(xt.animate.set_value(x_space[minimum_index]))
+        self.wait()
+
+        # manim -pqh test2.py ArgMinExample
+
+
+        # visit : https://towardsdatascience.com/take-your-python-visualizations-to-the-next-level-with-manim-ce9ad7ff66bf
+
+
+
+
+class ArgMinEx99(Scene):
+    def construct(self):
+        ax = Axes(
+            x_range=[-4.5, 4.5], y_range=[0, 30, 10], axis_config={"include_tip": False}
+        )
+        labels = ax.get_axis_labels(x_label="x", y_label="f(x)")
+        def func(x):
+            return (0.1*(x**4)) - (x**2) + .5*x + 9 + 5*np.sin(x)
+        graph = ax.plot(func, x_range=[-4,4], color=REANLEA_BLUE)
+
+        xts = [ValueTracker(i) for i in np.linspace(-4,4,99)]
+        yts = [ValueTracker(30) for i in range (99)]
+
+        points=[[xts[i].get_value(), yts[i].get_value()] for i in range(99)]
+        dots=[Dot(point=ax.c2p(*p)) for p in points]
+        dot_grp=VGroup(*dots)
+
+        def updater_1(mobj, idx):
+            mobj.add_updater(
+                lambda x: x.move_to(ax.c2p(xts[idx].get_value(),yts[idx].get_value()))
+            )
+
+        for i,d in enumerate(dot_grp):
+            updater_1(d,i)
+
+        falling_dots=[y.animate.set_value(func(x.get_value())) for x,y in zip(xts,yts)]
+
+        self.add(ax,labels,graph,dot_grp)
+        self.wait()
+
+        self.play(LaggedStart(*falling_dots, lag_ratio=0.01))
+
+        for dot in dot_grp:
+            dot.remove_updater(updater_1)
+        
+
+        def updater_2(mobj, idx):
+            mobj.add_updater(
+                lambda x: x.move_to(ax.c2p(xts[idx].get_value(), func(xts[idx].get_value())))
+            )
+
+        for i, d in enumerate(dot_grp):
+            updater_2(d,i)
+
+        x_space_left=np.linspace(-4, 1.32, 300)
+        x_space_right=np.linspace(1.32, 4, 150)
+        min_idx_left= func(x_space_left).argmin()
+        min_idx_right= func(x_space_right).argmin()
+
+        rolling_dot_left=[x.animate.set_value(x_space_left[min_idx_left]) for x in xts if x.get_value() < 1.32]
+        rolling_dot_right=[x.animate.set_value(x_space_right[min_idx_right]) for x in xts if x.get_value() >= 1.32]
+
+        rolling_dots=rolling_dot_left+rolling_dot_right
+
+        self.play(LaggedStart(*rolling_dots, lag_ratio=0.003), run_time=2.5)
+        self.wait(2)
+
+
+        # manim -pqh test2.py ArgMinEx99
+
 
 
 ###################################################################################################################
