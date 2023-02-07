@@ -3674,7 +3674,7 @@ class Scene4_1(Scene):
 
         # sided rectangle appear
 
-        rect_overlap=Rectangle(width=10.25, height=9, color=REANLEA_BLUE_DARKEST).to_edge(RIGHT, buff=0).set_opacity(.85).set_z_index(10)
+        rect_overlap=Rectangle(width=10.25, height=9, color=REANLEA_BACKGROUND_COLOR).to_edge(RIGHT, buff=0).set_opacity(.825).set_z_index(10)
 
         #self.add(rect_overlap)
         self.play(
@@ -3715,7 +3715,9 @@ class Scene4_1(Scene):
             
         ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE,REANLEA_AQUA])).set_z_index(11)
 
-        graph_ref_lbl=MathTex(r"cos(\theta)").set_color_by_gradient(REANLEA_BLUE,REANLEA_AQUA).scale(.75).move_to(ax_4.c2p(2,1.5)).set_z_index(11)
+        graph_ref_lbl=MathTex(r"cos(\theta)").set_color_by_gradient(REANLEA_BLUE,REANLEA_AQUA).scale(.75).move_to(ax_4.c2p(1.75,1.65)).set_z_index(11)
+
+        graph_ref_lbl_1=MathTex("=",r"cos(-\theta)").set_color_by_gradient(REANLEA_BLUE,REANLEA_AQUA).scale(.75).next_to(graph_ref_lbl,RIGHT).set_z_index(11)
 
 
 
@@ -3758,6 +3760,11 @@ class Scene4_1(Scene):
         )
         self.wait()
 
+        self.play(
+            Write(graph_ref_lbl_1)
+        )
+        self.wait()
+
         d_line=DashedLine(
             start=dot_l.get_center(), end=dot_r.get_center(),stroke_width=2
         ).set_color_by_gradient(dot_l.get_color()).set_z_index(11)
@@ -3797,7 +3804,7 @@ class Scene4_1(Scene):
             )
         )
 
-        dot_c.add_updater(lambda x: x.move_to((dot_l.get_center()+dot_r.get_center())/2).set_z_index(11))
+        dot_c.add_updater(lambda x: x.move_to((dot_l.get_center()+dot_r.get_center())/2).set_z_index(12))
 
         value.add_updater(
             lambda x : x.set_value(np.cos(xt_r.get_value()*5)).move_to(ax_4.c2p(5,np.cos(xt_r.get_value()*5))).set_color(PURE_RED).set_z_index(11))
@@ -3817,7 +3824,7 @@ class Scene4_1(Scene):
             lambda x: np.cos(5*x) , x_range=[0,3.5]
         ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE]).set_z_index(11)
         
-        dot_c.set_z_index(15)
+
         self.add(graph_l,graph_r)
 
         self.play(
@@ -3828,12 +3835,10 @@ class Scene4_1(Scene):
             )
         )
 
-
-
-
-        
-
         self.wait(2)
+
+
+        # manim -sqk anim2.py Scene4_1
 
         '''self.play(
             ln_grp_x.animate.flip(RIGHT, about_point=ax_1.c2p(0,0))

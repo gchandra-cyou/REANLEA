@@ -6579,12 +6579,13 @@ class flash_discord(Scene):
         )
 
         dot_1=Dot().set_z_index(11)
+
         self.play(
             FadeIn(dot_1)
         )
         self.play(
             Flash(
-                dot_1
+                UP, line_length=1
             )
         )
 
