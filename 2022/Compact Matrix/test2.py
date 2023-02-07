@@ -6227,6 +6227,17 @@ class Cosine_graph_tst(Scene):
 
         self.wait(2)
 
+        sgn_pos_1=MathTex("+").scale(.75).set_color(PURE_GREEN)#.move_to(6.5*RIGHT)
+        sgn_pos_2=Circle(radius=0.2, color=PURE_GREEN).move_to(sgn_pos_1.get_center()).set_stroke(width= 1)
+        sgn_pos=VGroup(sgn_pos_1,sgn_pos_2).move_to(ax_1.c2p(3.25,1.25)).scale(.6)
+
+        sgn_neg_1=MathTex("-").scale(.75).set_color(REANLEA_YELLOW)#.move_to(6.5*LEFT)
+        sgn_neg_2=Circle(radius=0.2, color=REANLEA_YELLOW).move_to(sgn_neg_1.get_center()).set_stroke(width= 1)
+        sgn_neg=VGroup(sgn_neg_1,sgn_neg_2).move_to(ax_1.c2p(-3.25,1.25)).scale(.6)
+
+        sgn_grp=VGroup(sgn_pos,sgn_neg)
+
+
         g = ax_1.plot(
             lambda x: np.cos(x), x_range=[-3*PI/2,3*PI/2,PI/2], color=BLUE
         ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE,REANLEA_AQUA]).set_z_index(10)
@@ -6253,6 +6264,10 @@ class Cosine_graph_tst(Scene):
 
         self.play(
             Create(graph_ref)
+        )
+
+        self.play(
+            Write(sgn_grp)
         )
 
         self.play(tracker.animate(run_time=6).set_value(5))
@@ -6332,7 +6347,7 @@ class Cosine_graph_tst(Scene):
         self.play(
             xt_l.animate.set_value(0),
             xt_r.animate.set_value(0),
-            run_time=2
+            run_time=10
         )
         self.wait(2)
 
