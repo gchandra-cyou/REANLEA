@@ -6217,9 +6217,9 @@ class Cosine_graph_tst(Scene):
             tips=False, 
             axis_config={
                 "font_size": 24,
-                #"include_ticks": False,
+                "include_ticks": False,
             }, 
-        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1) 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5)
 
         self.play(
             Write(ax_1)
@@ -6232,9 +6232,9 @@ class Cosine_graph_tst(Scene):
         ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE,REANLEA_AQUA]).set_z_index(10)
 
 
-        self.play(
+        '''self.play(
             Create(g)
-        )
+        )'''
 
         tracker = ValueTracker(0.5)
 
@@ -6247,11 +6247,13 @@ class Cosine_graph_tst(Scene):
         # graph.add_updater(lambda m: m.become(ax.plot(lambda t: np.sin(t*tracker.get_value()),x_range=[-5*PI,2*PI],color=BLUE)))
 
         #self.add(ax)
-        self.add(graph)
+        #self.add(graph)
+        self.play(
+            Create(graph)
+        )
 
         self.play(tracker.animate(run_time=6).set_value(5))
-        self.wait(3)
-
+        
 
         self.wait(2)
 
