@@ -6548,6 +6548,7 @@ class layer_flash(Scene):
         dot_c=Dot(point=(dot_l.get_center()+dot_r.get_center())/2, color=PURE_RED).set_z_index(14)
 
         dot_x=dot_c.copy().set_z_index(16)
+        self.add(dot_x)
 
         self.play(
             AnimationGroup(
@@ -6556,7 +6557,7 @@ class layer_flash(Scene):
                 lag_ratio=.4
             ),
             AnimationGroup(                
-                FadeIn(dot_c)
+                FadeIn(dot_l)
             ),
             lag_ratio=.05,
             run_time=2.5
@@ -6567,6 +6568,30 @@ class layer_flash(Scene):
         # manim -pqh test2.py layer_flash
 
 
+
+class flash_discord(Scene):
+    def construct(self):
+        
+        rect_overlap=Rectangle(width=10.25, height=9, color='#020347').to_edge(RIGHT, buff=0).set_opacity(.85).set_z_index(10)
+
+        self.play(
+            Create(rect_overlap)
+        )
+
+        dot_1=Dot().set_z_index(11)
+        self.play(
+            FadeIn(dot_1)
+        )
+        self.play(
+            Flash(
+                dot_1
+            )
+        )
+
+        self.wait(2)
+
+
+        # manim -pqh test2.py flash_discord
 
 ###################################################################################################################
 
