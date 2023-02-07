@@ -6338,15 +6338,20 @@ class Cosine_graph_tst(Scene):
 
         graph_l=ax_1.plot(
             lambda x: np.cos(5*x) , x_range=[-3.5,0]
-        ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE,REANLEA_AQUA])
+        ).set_stroke(width=7, color=[REANLEA_BLUE,REANLEA_AQUA])
 
         graph_r=ax_1.plot(
             lambda x: np.cos(5*x) , x_range=[0,3.5]
-        ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE,REANLEA_AQUA])
+        ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE])
 
         self.add(graph_l,graph_r)
+
         self.play(
-            FadeOut(graph)
+            AnimationGroup(
+                FadeOut(graph),
+                graph_l.animate.flip(about_point=ax_1.c2p(0,.5)),
+                lag_ratio=.5
+            )
         )
 
 
