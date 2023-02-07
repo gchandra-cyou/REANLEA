@@ -6289,7 +6289,7 @@ class Cosine_graph_tst(Scene):
             start=dot_l.get_center(), end=dot_r.get_center(),stroke_width=2
         ).set_color_by_gradient(dot_l.get_color())
 
-        dot_c=Dot(point=(dot_l.get_center()+dot_r.get_center())/2, color=PURE_RED)
+        dot_c=Dot(point=(dot_l.get_center()+dot_r.get_center())/2, color=PURE_RED).set_z_index(3)
 
         self.play(
             AnimationGroup(
@@ -6304,7 +6304,7 @@ class Cosine_graph_tst(Scene):
             run_time=2.5
         )
         
-        value=DecimalNumber().set_color_by_gradient(REANLEA_SLATE_BLUE_LIGHTER).set_sheen(-0.1,LEFT).next_to(dot_c)
+        value=DecimalNumber(np.cos(xt_r.get_value()*5)).set_color_by_gradient(PURE_RED).set_sheen(-0.1,LEFT).scale(.75).move_to(ax_1.c2p(5,np.cos(xt_r.get_value()*5)))
 
         self.play(
             Write(value)
@@ -6312,9 +6312,9 @@ class Cosine_graph_tst(Scene):
 
         self.wait(2)
 
-        dot_l.add_updater(lambda x: x.move_to(ax_1.c2p(xt_l.get_value(), np.cos(xt_l.get_value()*5))).set_color(graph.get_color()))
+        dot_l.add_updater(lambda x: x.move_to(ax_1.c2p(xt_l.get_value(), np.cos(xt_l.get_value()*5))))
 
-        dot_r.add_updater(lambda x: x.move_to(ax_1.c2p(xt_r.get_value(), np.cos(xt_r.get_value()*5))).set_color(graph.get_color()))
+        dot_r.add_updater(lambda x: x.move_to(ax_1.c2p(xt_r.get_value(), np.cos(xt_r.get_value()*5))))
 
         d_line.add_updater(
             lambda z : z.become(
@@ -6327,13 +6327,29 @@ class Cosine_graph_tst(Scene):
         dot_c.add_updater(lambda x: x.move_to((dot_l.get_center()+dot_r.get_center())/2))
 
         value.add_updater(
-            lambda x : x.set_value(dot_c.get_center()[1]))
+            lambda x : x.set_value(np.cos(xt_r.get_value()*5)).move_to(ax_1.c2p(5,np.cos(xt_r.get_value()*5))).set_color(PURE_RED))
 
         self.play(
             xt_l.animate.set_value(0),
             xt_r.animate.set_value(0),
-            run_time=3
+            run_time=2
         )
+        self.wait(2)
+
+        graph_l=ax_1.plot(
+            lambda x: np.cos(5*x) , x_range=[-3.5,0]
+        ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE,REANLEA_AQUA])
+
+        graph_r=ax_1.plot(
+            lambda x: np.cos(5*x) , x_range=[0,3.5]
+        ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE,REANLEA_AQUA])
+
+        self.add(graph_l,graph_r)
+        self.play(
+            FadeOut(graph)
+        )
+
+
 
 
         
