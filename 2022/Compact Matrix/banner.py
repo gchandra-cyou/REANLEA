@@ -55,7 +55,7 @@ import itertools as it
 
 
 
-config.background_color= REANLEA_BACKGROUND_COLOR
+config.background_color= '#ffffff'
 config.max_files_cached=500
 
 
@@ -83,3 +83,19 @@ class CoordSysExample(Scene):
                 # manim -pqh banner.py CoordSysExample
 
                 # manim -sqk banner.py CoordSysExample
+
+
+
+###################################################################################################################
+
+# Changing FONTS : import any font from Google
+# some of my fav fonts: Cinzel,Kalam,Prata,Kaushan Script,Cormorant, Handlee,Monoton, Bad Script, Reenie Beanie, 
+# Poiret One,Merienda,Julius Sans One,Merienda One,Cinzel Decorative, Montserrat, Cousine, Courier Prime , The Nautigal
+# Marcellus SC,Contrail One,Thasadith,Spectral SC,Dongle,Cormorant SC,Comfortaa, Josefin Sans (LOVE), Fuzzy Bubbles
+
+###################################################################################################################
+
+
+###################################################################################################################
+
+# cd "C:\Users\gchan\Desktop\REANLEA\2022\Compact Matrix" 

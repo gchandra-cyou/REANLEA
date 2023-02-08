@@ -3715,15 +3715,16 @@ class Scene4_1(Scene):
             
         ).set_stroke(width=7, color=[REANLEA_AQUA,REANLEA_BLUE,REANLEA_AQUA])).set_z_index(11)
 
-        graph_ref_lbl=MathTex(r"cos(\theta)").set_color_by_gradient(REANLEA_BLUE,REANLEA_AQUA).scale(.75).move_to(ax_4.c2p(1.75,1.65)).set_z_index(11)
+        graph_ref_lbl_0=MathTex(r"cos(\theta)").set_color_by_gradient(REANLEA_BLUE,REANLEA_AQUA).scale(.75).move_to(ax_4.c2p(1.75,1.65)).set_z_index(11)
 
-        graph_ref_lbl_1=MathTex("=",r"cos(-\theta)").set_color_by_gradient(REANLEA_BLUE,REANLEA_AQUA).scale(.75).next_to(graph_ref_lbl,RIGHT).set_z_index(11)
+        graph_ref_lbl_1=MathTex("=",r"cos(-\theta)").set_color_by_gradient(REANLEA_BLUE,REANLEA_AQUA).scale(.75).next_to(graph_ref_lbl_0,RIGHT, buff=.1).set_z_index(11)
 
+        graph_ref_lbl=VGroup(graph_ref_lbl_0,graph_ref_lbl_1)
 
 
         self.play(
             Create(graph_ref),
-            Write(graph_ref_lbl)
+            Write(graph_ref_lbl_0)
         )
 
         self.play(
@@ -3764,6 +3765,10 @@ class Scene4_1(Scene):
             Write(graph_ref_lbl_1)
         )
         self.wait()
+
+        self.play(
+            graph_ref_lbl.animate.shift(UP)
+        )
 
         d_line=DashedLine(
             start=dot_l.get_center(), end=dot_r.get_center(),stroke_width=2
@@ -3837,10 +3842,22 @@ class Scene4_1(Scene):
 
         self.wait(2)
 
+        uncrt_grp_0=VGroup(sgn_grp,graph_l,graph_r,ax_4,dot_l,dot_r,dot_c,d_line,value,graph_ref_lbl)
+
+        self.play(
+            AnimationGroup(FadeOut(uncrt_grp_0)),
+            AnimationGroup(
+                Uncreate(rect_overlap)
+            ),
+            lag_ratio=.75
+        )
+
+        self.wait(4)
+
 
         # manim -sqk anim2.py Scene4_1
 
-        '''self.play(
+        self.play(
             ln_grp_x.animate.flip(RIGHT, about_point=ax_1.c2p(0,0))
         )
 
@@ -3935,31 +3952,17 @@ class Scene4_1(Scene):
         self.play(
             Uncreate(ln_0032_neg_ref)
         )
-        self.wait(2)'''
+        self.wait(2)
 
         '''circ=DashedVMobject(Circle(radius=ln_0032.get_length()), dashed_ratio=0.5, num_dashes=100).move_to(dt_0.get_center()).set_stroke(width=0.65)
         circ.set_color_by_gradient(REANLEA_WHITE,REANLEA_WARM_BLUE,REANLEA_YELLOW_CREAM)
 
         self.add(circ)'''
 
-        '''self.play(
-            AnimationGroup(
-                AnimationGroup(
-                    xrng.animate.set_value(6.5/np.sqrt(13)),
-                    xrng_min.animate.set_value(1.5/np.sqrt(13)),
-                ),
-                AnimationGroup(
-                    Flash(point=Dot().move_to(ax_1.c2p(0,0)), color=REANLEA_BLUE_LAVENDER),
-                    #dt_2.animate.set_color(REANLEA_CYAN_LIGHT)
-                ),
-                lag_ratio=.5
-            ),
-            run_time=2
-        )'''
 
 
 
-        '''ax_2_y=VGroup()
+        ax_2_y=VGroup()
         dt_1_y=VMobject()
         dt_1_neg_y=VMobject()
         ln_0010_neg_y = VMobject()
@@ -4067,7 +4070,7 @@ class Scene4_1(Scene):
 
         self.play(
             d_d_line_1_ref_2.animate.shift((ax_1.c2p(0,0)[1]-ax_1.c2p(0,-.9)[1])*UP).set_color(REANLEA_RED)         
-        )'''
+        )
 
 
         
