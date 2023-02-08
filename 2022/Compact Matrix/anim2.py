@@ -3861,11 +3861,7 @@ class Scene4_1(Scene):
         )
 
         self.play(
-            FadeOut(innr_prdct_dfn_4)
-        )
-
-        self.play(
-            FadeOut(innr_prdct_dfn_0)
+            FadeOut(innr_prdct_dfn_4_ref[5])
         )
 
         self.wait(4)
