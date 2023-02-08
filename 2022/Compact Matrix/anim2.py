@@ -3869,7 +3869,7 @@ class Scene4_1(Scene):
 
         # manim -sqk anim2.py Scene4_1
 
-        '''self.play(
+        self.play(
             ln_grp_x.animate.flip(RIGHT, about_point=ax_1.c2p(0,0))
         )
 
@@ -4076,7 +4076,7 @@ class Scene4_1(Scene):
 
         self.play(
             d_d_line_1_ref_2.animate.shift((ax_1.c2p(0,0)[1]-ax_1.c2p(0,-.9)[1])*UP).set_color(REANLEA_RED)         
-        )'''
+        )
 
 
         
