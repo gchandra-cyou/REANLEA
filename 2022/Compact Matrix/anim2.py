@@ -3721,8 +3721,6 @@ class Scene4_1(Scene):
 
         graph_ref_lbl=VGroup(graph_ref_lbl_0,graph_ref_lbl_1)
 
-        graph_ref_lbl_1_copy=graph_ref_lbl_1.copy()
-
 
         self.play(
             Create(graph_ref),
@@ -3849,6 +3847,8 @@ class Scene4_1(Scene):
 
         uncrt_grp_0=VGroup(sgn_grp,graph_l,graph_r,ax_4,dot_l,dot_r,dot_c,d_line,value,graph_ref_lbl)
 
+        graph_ref_lbl_1_copy=graph_ref_lbl_1.copy()[1]
+
         self.play(
             AnimationGroup(
                 FadeOut(uncrt_grp_0),
@@ -3858,6 +3858,14 @@ class Scene4_1(Scene):
               ReplacementTransform(graph_ref_lbl_1_copy,innr_prdct_dfn_4_ref[5]),
               Write(innr_prdct_dfn_4)
             )
+        )
+
+        self.play(
+            FadeOut(innr_prdct_dfn_4)
+        )
+
+        self.play(
+            FadeOut(innr_prdct_dfn_0)
         )
 
         self.wait(4)
