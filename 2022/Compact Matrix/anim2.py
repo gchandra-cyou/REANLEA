@@ -3721,6 +3721,8 @@ class Scene4_1(Scene):
 
         graph_ref_lbl=VGroup(graph_ref_lbl_0,graph_ref_lbl_1)
 
+        graph_ref_lbl_1_copy=graph_ref_lbl_1.copy()
+
 
         self.play(
             Create(graph_ref),
@@ -3842,14 +3844,20 @@ class Scene4_1(Scene):
 
         self.wait(2)
 
+        innr_prdct_dfn_4=MathTex("=",r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos(-\theta)").scale(.7).set_color_by_gradient(REANLEA_AQUA).move_to(2*UP+3.92*RIGHT)
+        innr_prdct_dfn_4_ref=innr_prdct_dfn_4.copy()
+
         uncrt_grp_0=VGroup(sgn_grp,graph_l,graph_r,ax_4,dot_l,dot_r,dot_c,d_line,value,graph_ref_lbl)
 
         self.play(
-            AnimationGroup(FadeOut(uncrt_grp_0)),
             AnimationGroup(
+                FadeOut(uncrt_grp_0),
                 Uncreate(rect_overlap)
             ),
-            lag_ratio=.75
+            AnimationGroup(
+              ReplacementTransform(graph_ref_lbl_1_copy,innr_prdct_dfn_4_ref[5]),
+              Write(innr_prdct_dfn_4)
+            )
         )
 
         self.wait(4)
@@ -3857,7 +3865,7 @@ class Scene4_1(Scene):
 
         # manim -sqk anim2.py Scene4_1
 
-        self.play(
+        '''self.play(
             ln_grp_x.animate.flip(RIGHT, about_point=ax_1.c2p(0,0))
         )
 
@@ -3953,12 +3961,6 @@ class Scene4_1(Scene):
             Uncreate(ln_0032_neg_ref)
         )
         self.wait(2)
-
-        '''circ=DashedVMobject(Circle(radius=ln_0032.get_length()), dashed_ratio=0.5, num_dashes=100).move_to(dt_0.get_center()).set_stroke(width=0.65)
-        circ.set_color_by_gradient(REANLEA_WHITE,REANLEA_WARM_BLUE,REANLEA_YELLOW_CREAM)
-
-        self.add(circ)'''
-
 
 
 
@@ -4070,7 +4072,7 @@ class Scene4_1(Scene):
 
         self.play(
             d_d_line_1_ref_2.animate.shift((ax_1.c2p(0,0)[1]-ax_1.c2p(0,-.9)[1])*UP).set_color(REANLEA_RED)         
-        )
+        )'''
 
 
         
