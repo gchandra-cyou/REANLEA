@@ -3900,7 +3900,24 @@ class Scene4_1(Scene):
                 lag_ratio=0.5
             )
         )
-        self.wait()
+        self.wait(2)
+
+        innr_prdct_dfn_4_1_ref=innr_prdct_dfn_4[1].copy().move_to(innr_prdct_dfn_4[3].get_center())
+
+        innr_prdct_dfn_4_3_ref=innr_prdct_dfn_4[3].copy().move_to(innr_prdct_dfn_4[1].get_center())
+
+        self.play(
+            Transform(innr_prdct_dfn_4[1], innr_prdct_dfn_4_1_ref),
+            Transform(innr_prdct_dfn_4[3],innr_prdct_dfn_4_3_ref, path_arc=-180*DEGREES)
+        )
+
+        self.wait(1.5)
+
+        innr_prdct_dfn_5=MathTex("=",r"\langle v,i \rangle").scale(.7).set_color_by_gradient(REANLEA_AQUA).move_to(1.5*UP+2.93*RIGHT)
+
+        self.play(
+            Write(innr_prdct_dfn_5)
+        )
 
 
         
