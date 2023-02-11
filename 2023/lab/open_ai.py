@@ -59,6 +59,7 @@ from enum import Enum
 from scipy.stats import norm, gamma
 from scipy.optimize import fsolve
 import random
+from manim.opengl import*
 
 
 config.background_color= REANLEA_BACKGROUND_COLOR

@@ -6411,6 +6411,181 @@ class para_ex(Scene):
         # manim -pqh discord.py para_ex
         
 
+
+class streamline_function_ex(Scene):
+    def construct(self):
+        func = lambda pos: ((pos[0]*UR+pos[1]*LEFT) - pos)  
+        mob = StreamLines(func,x_range=[-6,6,1.1], y_range=[-6,6,1.1],stroke_width=3)  
+        self.add(mob) 
+
+        # manim -pqh discord.py streamline_function_ex
+
+
+
+class MovingTextAlongGraph(Scene):
+    def construct(self):
+        ax = Axes(x_range=[0,5], y_range=[0, 10])
+        ax.add_coordinates()
+        
+        def func(x):
+            return 1 / 4 * x ** 2
+        
+        points = [1,2,3,4,5,6]
+        graph = ax.plot(func, color=BLUE)
+        neutral_price = Tex("Neutral Price").scale(0.7)
+        neutral_price.next_to(ax.c2p(0, 0), DOWN)         
+        neutral_price_start = neutral_price.copy()
+        def get_position(text):    
+            text.become(neutral_price_start)         
+            text.next_to(graph.points[-1], DOWN)
+            if graph.get_arc_length() > 0.1:            
+                slope = TangentLine(graph, 1).get_slope()
+            else:
+                slope = 0
+            text.rotate(slope)   
+
+        self.play(Create(ax))
+        self.play(Write(neutral_price))
+        neutral_price.add_updater(get_position)
+        self.play(Create(graph), run_time=3)
+
+
+        # manim -pqh discord.py MovingTextAlongGraph
+
+
+
+
+class StairGraphExample(Scene):
+    def construct(self):
+        ax = Axes(
+            x_range=[0,7], 
+            y_range=[0, 10]
+        )
+        ax.add_coordinates()
+        
+        def func(x):
+            return 1 / 4 * x ** 2
+        graph = ax.plot(func, color=BLUE)
+
+        self.add(ax)  
+
+        self.play(
+            Create(graph)
+        )    
+        self.wait(2)      
+                
+        points =[1,2,3.5,5,6]
+        for i in range(len(points)-1):
+            hline = ax.plot(lambda x: func(points[i+1]), x_range=[points[i],points[i+1]]).set_color(YELLOW)
+            '''self.add(
+                hline,
+                Line(
+                    ax.c2p(points[i],func(points[i])), 
+                    ax.c2p(points[i],func(points[i+1])), 
+                ),
+                ax.get_area(
+                    graph, 
+                    x_range=[points[i],points[i+1]],
+                    opacity=0.4,
+                    bounded_graph=hline,
+                )
+            )'''
+
+            
+            self.play(
+                Create(
+                   Line(
+                    ax.c2p(points[i],func(points[i])), 
+                    ax.c2p(points[i],func(points[i+1])), 
+                    ) 
+                )
+            )
+            self.play(
+                Create(hline)
+            )
+            self.play(
+                ax.animate.get_area(
+                    graph, 
+                    x_range=[points[i],points[i+1]],
+                    opacity=0.4,
+                    bounded_graph=hline,
+                    color=PURE_GREEN
+                )
+            )
+
+        
+        self.wait(2)
+
+        
+
+
+            # manim -pqh discord.py StairGraphExample
+                
+
+
+class Mandala(Scene):
+    def construct(self):
+        n = ValueTracker(4.8)
+        #a = ValueTracker(0.1*PI)
+        a = ValueTracker(31.73)
+
+        plane = PolarPlane()
+        def r(theta):
+            val = 1 / np.cos(theta * n.get_value()) 
+            return np.abs(val) if -4<val<+4 else np.abs(4*np.sign(val))
+        graph = plane.plot_polar_graph(
+            r, 
+            theta_range=[0.1*PI, a.get_value(), 1/500], 
+            use_smoothing=False,
+            color=ORANGE
+        )
+        self.add(plane, graph)   
+        self.play(Rotate(graph,2*PI),run_time=4, rate_func=linear)
+
+
+        # manim -pqh discord.py Mandala
+
+
+
+
+class RectStretch(Scene):
+    def construct(self):  
+        rect = Rectangle(WHITE, 2, 2)
+        self.play(FadeIn(rect))
+        self.play(
+            rect.animate
+                .stretch(3, dim=0, about_point=DL)
+                .stretch(2, dim=1, about_point=DL)
+        )
+        self.wait()
+        
+        rect_2 = Rectangle(WHITE, 1, 4).next_to(DL, UR, buff=0)
+        
+        self.play(Transform(rect, rect_2))
+        self.wait()
+        self.play(FadeOut(rect))
+
+        h, w = ValueTracker(1), ValueTracker(2)
+        polygon = always_redraw(lambda:
+            Polygon(
+                ORIGIN,
+                h.get_value() * UP,
+                h.get_value() * UP + w.get_value() * RIGHT,
+                w.get_value() * RIGHT,
+            )
+        )
+        self.play(FadeIn(polygon))
+        self.play(h.animate.set_value(2))
+        self.play(
+            h.animate.set_value(1.5),
+            w.animate.set_value(7), 
+        )
+        self.play(w.animate.set_value(4))
+
+
+        # manim -pqh discord.py RectStretch
+
+
 ###################################################################################################################
 
 # NOTE :-
