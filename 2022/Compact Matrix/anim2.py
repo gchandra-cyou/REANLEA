@@ -3582,6 +3582,8 @@ class Scene4_1(Scene):
 
         innr_prdct_dfn_3=MathTex(r"\langle i,v \rangle","=",r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.7).set_color_by_gradient(REANLEA_CYAN_LIGHT).move_to(2.5*UP+3.25*RIGHT)
 
+        innr_prdct_dfn_3_ref=innr_prdct_dfn_3[0].copy().set_color(REANLEA_AQUA)
+
         
         innr_prdct_dfn_grp_1=VGroup(innr_prdct_dfn_0,innr_prdct_dfn_1)
 
@@ -4093,6 +4095,41 @@ class Scene4_1(Scene):
 
         self.play(
             d_d_line_1_ref_2.animate.shift((ax_1.c2p(0,0)[1]-ax_1.c2p(0,-.9)[1])*UP).set_color(REANLEA_RED)         
+        )
+
+        self.play(
+            innr_prdct_dfn_3_ref.animate.shift(1*DOWN)
+        )
+
+        self.wait()
+
+        innr_prdct_dfn_5_ref=innr_prdct_dfn_5.copy()
+
+        innr_prdct_dfn_3_ref_5_ref_grp=VGroup(innr_prdct_dfn_3_ref,innr_prdct_dfn_5_ref)
+
+        self.play(
+            innr_prdct_dfn_3_ref_5_ref_grp.animate.shift(1.25*DOWN+1.5*RIGHT).scale(1.25).set_color_by_gradient(REANLEA_AQUA,REANLEA_PURPLE_LIGHTER)
+        )
+
+        sr_innr_prdct_dfn_3_ref_5_ref_grp=SurroundingRectangle(innr_prdct_dfn_3_ref_5_ref_grp, buff=.25,corner_radius=.125, color=REANLEA_WELDON_BLUE)
+
+        self.play(
+            Create(sr_innr_prdct_dfn_3_ref_5_ref_grp)
+        )
+
+
+        indct_ln_3=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.3).rotate(-PI/4).next_to(sr_innr_prdct_dfn_3_ref_5_ref_grp,DOWN).shift(.4*UP).set_z_index(2)
+
+        self.play(
+            Write(indct_ln_3)
+        )
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_3=Text("Symmetric", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(indct_ln_3).shift(.35*DOWN+.75*LEFT)
+
+        
+        self.play(
+            Create(txt_3)
         )
 
 
