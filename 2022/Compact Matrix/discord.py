@@ -6326,6 +6326,91 @@ class FluidFlowScene(Scene):
 
 
 
+class Clock_ex(Scene):
+    def construct(self):
+        body = Circle(radius=3, color=PURE_GREEN)
+        ticks = VGroup()
+        for tick in range(0,360,6):
+            if tick % 30 == 0:
+                self.add(Line(2.5*UP, 2.8*UP, color=PURE_GREEN).rotate(tick, about_point=ORIGIN))
+            else:
+                self.add(Line(2.65*UP, 2.8*UP, color=PURE_GREEN).rotate(tick, about_point=ORIGIN))
+
+            n = VGroup()
+            for num in range(1,13,1):
+                self.add(Tex(r"{}".format(num), color=PURE_GREEN).scale(0.5).shift(2.2*UP))
+        self.play(FadeIn(body), FadeIn(ticks))
+        self.wait(3)
+        self.play(FadeIn(n))
+        self.wait(3)
+
+
+        # manim -pqh discord.py Clock_ex
+
+
+
+class para_ex(Scene):
+    def construct(self):
+        npl = NumberPlane()        
+        self.add(npl)
+        p = ValueTracker(1)
+        pbola = npl.plot_implicit_curve(lambda x, y:y**2 - 2*p.get_value()*x).set_color(RED)
+        self.add(pbola)
+        focus = Dot([p.get_value()/2,0,0]).set_color(YELLOW)
+        
+        negFocus = Line(
+            npl.c2p(-p.get_value()/2, npl.y_range[0]),
+            npl.c2p(-p.get_value()/2, npl.y_range[1]),
+        ).set_color(RED)
+        self.add(negFocus)
+        
+        pos = ValueTracker(0)
+        dot = always_redraw(lambda:
+            Dot(pbola.point_from_proportion(pos.get_value()))
+        )
+        
+        fline = Line()
+        def flineUpdater(mobj):
+            mobj.become(
+                Line(
+                    focus.get_center(),
+                    dot.get_center(),
+                    stroke_width = 2,
+                )
+            )
+        fline.add_updater(flineUpdater)
+        fline.update()
+        
+        hline = Line()
+        def hlineUpdater(mobj):
+            mobj.become(
+                Line(
+                    dot.get_center(),
+                    negFocus.get_projection(dot.get_center()),
+                    stroke_width = 2,
+                )
+            )
+        hline.add_updater(hlineUpdater)
+        hline.update()
+        
+        circle = Circle()
+        def circleUpdater2(mobj):
+            mobj.become(
+                Circle(
+                    radius=fline.get_arc_length(),
+                ).set_color(GREEN).move_to(fline.get_end())
+            )
+
+        circle.add_updater(circleUpdater2)
+        circle.update()
+        
+        self.add(focus, dot, circle, fline, hline)
+        self.play(pos.animate.set_value(1),rate_func=linear,run_time=4)
+
+
+        # manim -pqh discord.py para_ex
+        
+
 ###################################################################################################################
 
 # NOTE :-
