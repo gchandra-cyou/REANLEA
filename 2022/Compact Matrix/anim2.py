@@ -4125,11 +4125,22 @@ class Scene4_1(Scene):
         )
 
         with RegisterFont("Reenie Beanie") as fonts:
-            txt_3=Text("Symmetric", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(indct_ln_3).shift(.35*DOWN+.75*LEFT)
+            txt_3=Text("Symmetric", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(indct_ln_3).shift(.45*DOWN+.75*LEFT)
 
         
         self.play(
             Create(txt_3)
+        )
+
+        self.wait(2)
+
+        txt_4=txt_3.copy()
+
+        bulet_1=Dot(point=[-5.2,-2,0], radius=DEFAULT_DOT_RADIUS/1.25, color=PURE_GREEN).set_sheen(-.4,DOWN)
+
+        self.play(
+            txt_4.animate.move_to(5*LEFT+DOWN),
+            FadeIn(bulet_1)
         )
 
 
