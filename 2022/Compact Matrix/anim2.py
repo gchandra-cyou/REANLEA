@@ -4136,8 +4136,6 @@ class Scene4_1(Scene):
 
         txt_4=txt_3.copy()
 
-        bulet_1=Dot(point=[-5.2,-2,0], radius=DEFAULT_DOT_RADIUS/1.25, color=PURE_GREEN).set_sheen(-.4,DOWN)
-
         self.play(
             txt_4.animate.move_to(5*LEFT+DOWN),
             FadeIn(bulet_1)
