@@ -4191,11 +4191,22 @@ class Scene4_1(Scene):
             AnimationGroup(
                 Uncreate(ln_0010_neg_ref),
                 FadeOut(dt_1_neg_ref)
-            ),
-            AnimationGroup(
-                Uncreate(ln_0010_neg_y),
-                FadeOut(dt_1_neg_y)
             )
+        )
+
+        ln_0010_neg_y_ref=ln_0010_neg_y.copy()
+        dt_1_neg_y_ref=dt_1_neg_y.copy()
+
+        self.add(ln_0010_neg_y_ref,dt_1_neg_y_ref)
+
+        self.play(
+            FadeOut(ln_0010_neg_y),
+            FadeOut(dt_1_neg_y)
+        )
+
+        self.play(
+            FadeOut(dt_1_neg_y_ref),
+            Uncreate(ln_0010_neg_y_ref)
         )
         
 
