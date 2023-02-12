@@ -4134,16 +4134,70 @@ class Scene4_1(Scene):
 
         self.wait(2)
 
+        bulet_1=Dot(point=[-5.9,-1,0], radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN)
         txt_4=txt_3.copy()
 
         self.play(
-            txt_4.animate.move_to(5*LEFT+DOWN),
-            FadeIn(bulet_1)
+            Write(bulet_1)
         )
 
+        self.play(
+            txt_4.animate.next_to(bulet_1, RIGHT)
+        )
 
+        self.wait(4)
+
+        self.play(
+            AnimationGroup(
+                Unwrite(txt_3),
+                Uncreate(indct_ln_3)
+            )
+        )
+        self.wait()
+
+        ln_0010_neg_ref=ln_0010_neg.copy()
+        self.add(ln_0010_neg_ref)
+
+        self.play(
+            FadeOut(ln_0010_neg)
+        )
         
+        dt_1_neg_ref=dt_1_neg.copy()
+        self.add(dt_1_neg_ref)
+        self.play(
+            FadeOut(dt_1_neg)
+        )
 
+        self.play(
+            AnimationGroup(
+                Uncreate(sr_innr_prdct_dfn_3_ref_5_ref_grp),
+                Unwrite(innr_prdct_dfn_3_ref_5_ref_grp),
+                FadeOut(innr_prdct_dfn_4),
+                FadeOut(innr_prdct_dfn_5)
+            ),
+            AnimationGroup(
+                AnimationGroup(
+                    xrng_1.animate.set_value(6.5),
+                    xrng_min_1.animate.set_value(1.5),
+                )
+            ),
+            AnimationGroup(
+                Uncreate(d_d_line_1_ref_2)
+            )
+            
+        )
+
+        self.play(
+            AnimationGroup(
+                Uncreate(ln_0010_neg_ref),
+                FadeOut(dt_1_neg_ref)
+            ),
+            AnimationGroup(
+                Uncreate(ln_0010_neg_y),
+                FadeOut(dt_1_neg_y)
+            )
+        )
+        
 
 
 
