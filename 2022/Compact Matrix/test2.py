@@ -6796,7 +6796,7 @@ class weier_3(Scene):
             func_2.become(newfunc_2)      
         ax.add_updater(axUpdater)
 
-        self.add(ax,func,dt_3,ax_2,func_2)
+        self.add(ax,func,dt_3,func_2)
         
         self.play(
             FadeOut(ax_ref)
@@ -6812,6 +6812,168 @@ class weier_3(Scene):
 
 
         # manim -pqh test2.py weier_3
+
+
+
+
+class weier_4(Scene):
+    def construct(self):
+    
+        pau_1 = ValueTracker(5.5)
+        nau_1 = ValueTracker(1.5)
+
+        pau_2 = ValueTracker(5.5)
+        nau_2 = ValueTracker(1.5)
+
+        pau_3 = ValueTracker(5.5)
+        nau_3 = ValueTracker(1.5)
+
+        ax_1_ref = Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(3)
+
+        dt_1_ref=Dot(ax_1_ref.c2p(3,2)).set_color(REANLEA_PINK).set_opacity(.5).set_z_index(3)
+
+        func_1_ref=Line(start=ax_1_ref.c2p(0,0),end=dt_1_ref.get_center()).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW]).set_opacity(.45)
+
+        
+
+        self.add(ax_1_ref, func_1_ref, dt_1_ref)
+        
+
+
+        ax_1=VGroup()
+        dt_1=VMobject()
+        func_1 = VMobject()
+
+        ax_2=VGroup()
+        dt_2=VMobject()
+        func_2 = VMobject()
+
+        ax_3=VGroup()
+        dt_3=VMobject()
+        func_3 = VMobject()
+
+        def axUpdater(mobj):
+            xmin_1 = -nau_1.get_value()
+            xmax_1 = +pau_1.get_value()
+
+            xmin_2 = -nau_2.get_value()
+            xmax_2 = +pau_2.get_value()
+
+            xmin_3 = -nau_3.get_value()
+            xmax_3 = +pau_3.get_value()
+            
+            new_ax_1=Axes(
+                    x_range=[xmin_1,xmax_1,2**int(np.log10(xmax_1)-1)],
+                    y_range=[-1.5,4.5],
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False, 
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(0).set_z_index(1)   
+
+            new_dt_1=Dot().set_color(REANLEA_PINK).move_to(new_ax_1.c2p(3,2)).set_z_index(3)
+
+            new_func_1 = Line(start=new_ax_1.c2p(0,0),end=new_ax_1.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+
+            new_ax_2=Axes(
+                    x_range=[xmin_2,xmax_2,2**int(np.log10(xmax_1)-1)],
+                    y_range=[-1.5,4.5],
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False, 
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(0).set_z_index(1).shift((new_ax_1.c2p(3,0)[0]-new_ax_1.c2p(0,0)[0])*RIGHT)
+
+            new_dt_2=Dot().set_color(REANLEA_PINK).move_to(new_ax_2.c2p(3,2)).set_z_index(3)
+
+            new_func_2 = Line(start=new_ax_2.c2p(0,0),end=new_ax_2.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+
+
+            new_ax_3=Axes(
+                    x_range=[xmin_3,xmax_3,2**int(np.log10(xmax_3)-1)],
+                    y_range=[-1.5,4.5],
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False, 
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+
+            new_dt_3=Dot().set_color(REANLEA_PINK).move_to(new_ax_3.c2p(3,2)).set_z_index(3)
+
+            new_func_3 = Line(start=new_ax_3.c2p(0,0),end=new_ax_3.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+
+            
+            mobj.become(new_ax_1)
+            func_1.become(new_func_1)   
+            dt_1.become(new_dt_1)  
+
+            ax_2.become(new_ax_2) 
+            func_2.become(new_func_2)   
+            dt_2.become(new_dt_2)
+
+            ax_3.become(new_ax_3) 
+            func_3.become(new_func_3)   
+            dt_3.become(new_dt_3)   
+
+        ax_1.add_updater(axUpdater)
+
+        self.add(ax_1,func_1,dt_1, ax_2,func_2,dt_2, ax_3,func_3,dt_3)
+        
+        
+        self.play(
+            FadeOut(ax_1_ref)
+        )
+        
+
+        self.play(
+            pau_1.animate.set_value(5.5/1.25),
+            nau_1.animate.set_value(1.5/1.25),
+
+            pau_2.animate.set_value(5.5/.75),
+            nau_2.animate.set_value(1.5/.75),
+
+            pau_3.animate.set_value(5.5/2),
+            nau_3.animate.set_value(1.5/2),
+            run_time=2
+        ) 
+        self.play(
+            pau_1.animate.set_value(5.5/1.5),
+            nau_1.animate.set_value(1.5/1.5),
+
+            pau_2.animate.set_value(5.5/1),
+            nau_2.animate.set_value(1.5/1),
+
+            pau_3.animate.set_value(5.5/2.5),
+            nau_3.animate.set_value(1.5/2.5),
+            run_time=2
+        ) 
+        self.play(
+            pau_1.animate.set_value(5.5/1),
+            nau_1.animate.set_value(1.5/1),
+
+            pau_2.animate.set_value(5.5/1.75),
+            nau_2.animate.set_value(1.5/1.75),
+
+            pau_3.animate.set_value(5.5/2.75),
+            nau_3.animate.set_value(1.5/2.75),
+            run_time=2
+        ) 
+        self.wait(2)
+
+
+        # manim -pqh test2.py weier_4
 
 
 
