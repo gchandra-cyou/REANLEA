@@ -4182,9 +4182,9 @@ class Scene4_1(Scene):
                 )
             ),
             AnimationGroup(
-                Uncreate(d_d_line_1_ref_2)
+                FadeOut(d_d_line_1_ref_2),
+                dt_3_neg.animate.move_to(ax_1.c2p(1,0)).set_opacity(0)
             )
-            
         )
 
         self.play(

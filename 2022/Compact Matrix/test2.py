@@ -6680,6 +6680,132 @@ class TextTransformAlongPath(Scene):
         # manim -pqh test2.py TextTransformAlongPath
 
 
+
+class expan_axes_ex(Scene):
+    def construct(self):
+
+        ax_1=Axes(
+            x_range=[-1.5,6.5],
+            y_range=[-1.5,4.5],
+            x_length=(round(config.frame_width)-2)*8/7,
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5)
+        ax_1.add_coordinates()
+
+        ax_2=ax_1.copy()
+
+        self.play(
+            Create(ax_2)
+        )
+
+        dt_0=Dot().set_color(REANLEA_YELLOW).move_to(ax_1.c2p(0,0)).set_z_index(5)
+        dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0)).set_z_index(3)
+        dt_2=Dot().set_color(REANLEA_PINK).move_to(ax_1.c2p(3,2)).set_z_index(3)
+
+        self.play(
+            Write(dt_0),
+            Write(dt_1),
+            Write(dt_2),
+        )
+
+        self.wait()
+
+        ln_01=Line(start=ax_1.c2p(0,0),end=ax_1.c2p(1,0)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER])
+
+        ln_02=Line(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+
+        self.play(
+            Create(ln_01),
+            Create(ln_02)
+        )
+
+
+        self.wait(4)
+
+
+        # manim -pqh test2.py expan_axes_ex
+
+
+
+
+class weier_3(Scene):
+    def construct(self):
+    
+        xrng = ValueTracker(5.5)
+        xrng_min = ValueTracker(1.5)
+
+        ax_ref = Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(3)
+
+        dt_3_ref=Dot(ax_ref.c2p(3,2)).set_color(REANLEA_PINK).set_opacity(.5).set_z_index(3)
+
+        func_ref=Line(start=ax_ref.c2p(0,0),end=dt_3_ref.get_center()).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW]).set_opacity(.45)
+
+        
+
+        self.add(ax_ref, func_ref, dt_3_ref)
+        
+
+
+        ax=VGroup()
+        dt_3=VMobject()
+        func = VMobject()
+
+        def axUpdater(mobj):
+            xmin = -xrng_min.get_value()
+            xmax = +xrng.get_value()
+            #newax =Axes(x_range=[xmin,xmax,10**int(np.log10(xmax)-1)],y_range=[-1,4])
+            newax=Axes(
+                    x_range=[xmin,xmax,2**int(np.log10(xmax)-1)],
+                    y_range=[-1.5,4.5],
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False, 
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+            
+            new_dt_3=Dot().set_color(REANLEA_PINK).move_to(newax.c2p(3,2)).set_z_index(3)
+
+            newfunc = Line(start=newax.c2p(0,0),end=newax.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+            
+            mobj.become(newax)
+            func.become(newfunc)   
+            dt_3.become(new_dt_3)         
+        ax.add_updater(axUpdater)
+
+        self.add(ax,func,dt_3)
+        
+        self.play(
+            FadeOut(ax_ref)
+        )
+        
+
+        self.play(
+            xrng.animate.set_value(2.75),
+            xrng_min.animate.set_value(.75),
+            run_time=2
+        ) 
+        self.wait(2)
+
+
+        # manim -pqh test2.py weier_3
+
+
+
 ###################################################################################################################
 
 
