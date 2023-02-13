@@ -6763,6 +6763,7 @@ class weier_3(Scene):
         ax=VGroup()
         dt_3=VMobject()
         func = VMobject()
+        ax_2=ax.copy()
 
         def axUpdater(mobj):
             xmin = -xrng_min.get_value()
@@ -6781,13 +6782,16 @@ class weier_3(Scene):
             new_dt_3=Dot().set_color(REANLEA_PINK).move_to(newax.c2p(3,2)).set_z_index(3)
 
             newfunc = Line(start=newax.c2p(0,0),end=newax.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+
+            newax_2=newax.copy().shift(xmax/5*RIGHT)
             
             mobj.become(newax)
             func.become(newfunc)   
-            dt_3.become(new_dt_3)         
+            dt_3.become(new_dt_3)  
+            ax_2.become(newax_2)       
         ax.add_updater(axUpdater)
 
-        self.add(ax,func,dt_3)
+        self.add(ax,func,dt_3,ax_2)
         
         self.play(
             FadeOut(ax_ref)
