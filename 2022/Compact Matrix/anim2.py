@@ -3,8 +3,6 @@
                                     # VISIT    : https://reanlea.com/ 
                                     # YouTube  : https://www.youtube.com/Reanlea/ 
                                     # Twitter  : https://twitter.com/Reanlea_ 
-                                    # Facebook : https://www.facebook.com/reanlea.ed/ 
-                                    # Telegram : https://t.me/reanlea/ 
 
 ####################################################################################################################
 
@@ -4221,12 +4219,180 @@ class Scene4_1(Scene):
 
         
 
-        # manim -pqh anim2.py Scene4_1
+# manim -pqh anim2.py Scene4_1
 
-        # manim -pql anim2.py Scene4_1
+# manim -pql anim2.py Scene4_1
 
-        # manim -sqk anim2.py Scene4_1
+# manim -sqk anim2.py Scene4_1
         
+
+
+class Scene4_2(Scene):
+    def construct(self):
+
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        
+
+
+        # PREVIOUS SCENE
+
+        ax_1_prev=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+ 
+        ax_1=Axes(
+            x_range=[-1.5,6.5],
+            y_range=[-1.5,4.5],
+            x_length =(round(config.frame_width)-2)*8/7,
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+        ax_1.add_coordinates()
+
+        ax_1_ref=ax_1.copy()
+        ax_1.shift((ax_1_prev.c2p(0,0)[0]-ax_1_ref.c2p(0,0)[0])*RIGHT)
+
+        dt_0=Dot().set_color(REANLEA_YELLOW).move_to(ax_1.c2p(0,0)).set_z_index(5)
+        dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(1,0)).set_z_index(3)
+        dt_2=Dot().set_color(REANLEA_GOLDENROD).move_to(ax_1.c2p(2,0)).set_z_index(3)
+        dt_3=Dot().set_color(REANLEA_PINK).move_to(ax_1.c2p(3,2)).set_z_index(3)
+
+        dt_3_lbl=MathTex("v").scale(.7).set_color(REANLEA_PINK_LIGHTER).next_to(dt_3,RIGHT)
+
+        ln_0010=Line(start=ax_1.c2p(0,0),end=ax_1.c2p(1,0)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
+
+        ln_0032=Line(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+
+        dot_0=Dot(radius=0.1, color=REANLEA_AQUA_GREEN).move_to(ax_1.c2p(3,0)).set_sheen(-0.4,DOWN).set_z_index(3)
+
+        dot_1=Dot(radius=0.1, color=REANLEA_BLUE_LAVENDER).move_to(ax_1.c2p(6,0)).set_sheen(-0.4,DOWN).set_z_index(3)
+
+        angl_1=Angle(ln_0010,ln_0032).set_color(REANLEA_YELLOW_GREEN).set_stroke(width=3.5).set_z_index(-1)
+        
+        angl_1_lbl=MathTex(r"\theta").scale(.4).set_color(REANLEA_YELLOW_GREEN).next_to(angl_1,UR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2).shift(.25*DOWN).set_z_index(2)
+
+        d_d_line_1=DashedDoubleArrow(
+            start=ax_1.c2p(0,-.9), end=ax_1.c2p(3,-.9), dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).set_color_by_gradient(REANLEA_YELLOW_LIGHTER,REANLEA_GREEN_AUQA)
+
+        d_d_line_1_lbl=MathTex(r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_AQUA_GREEN).next_to(d_d_line_1,RIGHT)
+
+        d_d_line_2=DashedDoubleArrow(
+            start=ax_1.c2p(0,-1.35), end=ax_1.c2p(6,-1.35), dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.01, buff=10
+        ).set_color_by_gradient(REANLEA_YELLOW_LIGHTER,REANLEA_BLUE_LAVENDER)
+
+        d_d_line_2_lbl=MathTex(r"\lVert 2 \cdot i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_BLUE_LAVENDER).next_to(d_d_line_2,RIGHT)
+
+
+        innr_prdct_dfn_0=MathTex(r"\langle , \rangle",":",r"V \times V","\longrightarrow",r"\mathbb{R").scale(.65).set_color_by_gradient(REANLEA_CYAN_LIGHT).move_to(3*UP+3*RIGHT)
+
+        with RegisterFont("Courier Prime") as fonts:
+            innr_prdct_dfn_1=Text("by", font=fonts[0]).scale(.35).set_color(REANLEA_CYAN_LIGHT).next_to(innr_prdct_dfn_0, RIGHT).shift(.1*RIGHT+.02*DOWN)
+        
+        innr_prdct_dfn_2=MathTex(r"\langle i,v \rangle","=",r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.7).set_color_by_gradient(REANLEA_CYAN_LIGHT).move_to(2.5*UP+3.25*RIGHT)
+
+        innr_prdct_dfn=VGroup(innr_prdct_dfn_0,innr_prdct_dfn_1,innr_prdct_dfn_2).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_AQUA)
+
+        d_line_1=DashedLine(
+            start=ax_1.c2p(3,2), end=ax_1.c2p(3,0),stroke_width=2
+        ).set_color_by_gradient(REANLEA_AQUA,REANLEA_BLUE_SKY).set_z_index(5)
+
+        bulet_1=Dot(point=[-5.9,-1,0], radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN)
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_sym_1=Text("Symmetric", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(bulet_1,RIGHT)
+
+
+        self.add(ax_1,dt_0,dt_1,dt_2,dt_3,dt_3_lbl,ln_0010,ln_0032,dot_0,dot_1,angl_1,angl_1_lbl,d_d_line_1,d_d_line_1_lbl,d_d_line_2,d_d_line_2_lbl,innr_prdct_dfn,d_line_1, txt_sym_1,bulet_1)
+
+
+
+        txt_v_0=MathTex("v",",").set_color(REANLEA_PINK_LIGHTER).move_to(5.25*LEFT+2*UP)
+        txt_v_0[1].set_color(REANLEA_TXT_COL)
+        txt_i_0=MathTex("i").set_color(REANLEA_AQUA).move_to(4.9*LEFT+2.1*UP)
+        txt_com_0=MathTex(",").set_color(REANLEA_TXT_COL).next_to(txt_i_0,RIGHT, buff=.1).shift(.18*DOWN)
+        txt_th_0=MathTex(r"\theta").set_color(REANLEA_YELLOW).move_to(4.45*LEFT+2.1*UP)
+
+        txt_v_1=txt_v_0.copy()
+        txt_i_1=txt_i_0.copy()
+
+        txt_lbl_grp_0=VGroup(txt_v_0,txt_i_0,txt_com_0,txt_th_0).scale(1.5).move_to(4.9*LEFT+2.1*UP)
+        txt_lbl_grp_1=VGroup(txt_v_1,txt_i_1).scale(1.5).move_to(4.9*LEFT+2.1*UP)
+        
+
+        arr_1=Arrow(max_tip_length_to_length_ratio=.1, color=REANLEA_BLUE).rotate(-90*DEGREES).next_to(txt_i_0,DOWN).set_stroke(width=2, color=[REANLEA_BLUE,REANLEA_BLUE_SKY]).shift(.35*DOWN).scale(.85)
+
+        self.add(arr_1)
+
+        txt_scl_1=MathTex(r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").set_color(REANLEA_AQUA_GREEN).next_to(arr_1,DOWN, buff=.1).shift(.35*DOWN)
+
+        self.add(txt_scl_1)
+
+        '''self.play(
+            TransformMatchingShapes(txt_lbl_grp_0,txt_lbl_grp_1)
+        )'''
+
+        self.add(txt_lbl_grp_1)
+
+        indct_ln_1=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.25).rotate(PI/6).next_to(txt_lbl_grp_1, RIGHT).shift(.2*UP).set_z_index(2)
+
+        self.add(indct_ln_1)
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_1=Text("Vectors", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(indct_ln_1).shift(.35*UP)
+        
+        self.add(txt_1)
+
+        indct_ln_2=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.25).rotate(-PI/6).next_to(txt_scl_1, DOWN).shift(.2*RIGHT).set_z_index(2)
+
+        self.add(indct_ln_2)
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_2=Text("Scalars", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(indct_ln_2).shift(.25*DOWN)
+
+        self.add(txt_2)
+        
+        innr_prdct_sym=MathTex(r"\langle ,\rangle").set_color(REANLEA_BLUE_LAVENDER).next_to(arr_1,RIGHT)
+
+        self.add(innr_prdct_sym)
+
+        innr_prdct_grp_0=VGroup(txt_lbl_grp_1,arr_1,txt_scl_1,innr_prdct_sym,indct_ln_1,indct_ln_2,txt_1,txt_2).scale(.5).shift(.5*LEFT+.5*UP)
+
+        sr_innr_prdct_grp_0=SurroundingRectangle(innr_prdct_grp_0, color=REANLEA_PURPLE_LIGHTER, buff=.25, corner_radius=.125).set_opacity(.25)
+
+        self.add(sr_innr_prdct_grp_0)
+
+
+        # MAIN SCENE
+
+
+
+
+
+        # manim -pqh anim2.py Scene4_2
+
+        # manim -pql anim2.py Scene4_2
+
+        # manim -sqk anim2.py Scene4_2  
+
+
 
 ###################################################################################################################
 
