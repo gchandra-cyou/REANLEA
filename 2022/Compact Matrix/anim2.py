@@ -4406,10 +4406,12 @@ class Scene4_2(Scene):
 
         self.play(
             AnimationGroup(
+                Write(innr_prdct_plus_0),
+            ),
+            AnimationGroup(
                 vects_grp_0.animate.shift((ax_1.c2p(3,0)[0]-ax_1.c2p(0,0)[0])*RIGHT),
                 innr_prdct_add_1.animate.next_to(innr_prdct_plus_0,RIGHT),
             ),
-            Write(innr_prdct_plus_0),
             lag_ratio=.5
         )
         self.wait()
