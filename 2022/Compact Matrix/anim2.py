@@ -4391,6 +4391,7 @@ class Scene4_2(Scene):
         self.play(
             innr_prdct_add_0.animate.shift(DOWN)
         )
+        self.wait()
 
         dt_1_x=dt_1.copy()
         dt_3_x=dt_3.copy()
@@ -4406,33 +4407,71 @@ class Scene4_2(Scene):
 
         self.play(
             AnimationGroup(
+                innr_prdct_add_1.animate.next_to(innr_prdct_plus_0,RIGHT),
                 Write(innr_prdct_plus_0),
+                lag_ratio=.35
             ),
             AnimationGroup(
                 vects_grp_0.animate.shift((ax_1.c2p(3,0)[0]-ax_1.c2p(0,0)[0])*RIGHT),
-                innr_prdct_add_1.animate.next_to(innr_prdct_plus_0,RIGHT),
-            ),
-            lag_ratio=.5
+            )
         )
-        self.wait()
+        self.wait(2)
+
+
+        innr_prdct_add_grp_0=VGroup(innr_prdct_add_0,innr_prdct_add_1,innr_prdct_plus_0)
 
         d_line_1_x=DashedLine(
             start=ax_1.c2p(6,2), end=ax_1.c2p(6,0),stroke_width=2
         ).set_color_by_gradient(REANLEA_AQUA,REANLEA_BLUE_SKY).set_z_index(5)
 
         self.play(
+            innr_prdct_add_grp_0.animate.shift(LEFT),
             Create(d_line_1_x)
         )
+
+
+
+
+
+        innr_prdct_plus_1=MathTex("=").scale(.5).set_color(REANLEA_AQUA).next_to(innr_prdct_add_1,RIGHT)
+
+        innr_prdct_add_2=MathTex(r"2",r"\cdot",r"\langle i,v \rangle").scale(.7).set_color_by_gradient(REANLEA_AQUA).next_to(innr_prdct_plus_1,RIGHT)
+
+
+        self.play(
+            AnimationGroup(
+                Write(innr_prdct_add_2),
+                Write(innr_prdct_plus_1),
+                lag_ratio=.15
+            )
+        )
+        self.wait(2)
+
+
+
+
+        innr_prdct_add_3 = MathTex(r"2",r"\cdot",r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.7).set_color(REANLEA_AQUA).next_to(innr_prdct_plus_1,RIGHT)
+
+        self.play(
+            TransformMatchingShapes(innr_prdct_add_2, innr_prdct_add_3)
+        )
+
+        self.wait(2)
+
+
+        innr_prdct_add_4 = MathTex(r"\lVert 2 \cdot i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.7).set_color(REANLEA_AQUA).next_to(innr_prdct_plus_1,RIGHT)
 
         d_d_line_2_x=d_d_line_2.copy().set_z_index(6).save_state()
         self.add(d_d_line_2_x)
 
         self.play(
+            ReplacementTransform(innr_prdct_add_3, innr_prdct_add_4),
             d_d_line_2_x.animate.shift(
                 (ax_1.c2p(0,0)[1]-ax_1.c2p(0,-1.35)[1])*UP
             ).set_color(PURE_RED)
         )
-        self.wait()
+
+        self.wait(4)
 
         self.play(
             Restore(d_d_line_2_x)
