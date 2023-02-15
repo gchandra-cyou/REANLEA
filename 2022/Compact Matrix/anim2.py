@@ -4310,6 +4310,8 @@ class Scene4_2(Scene):
 
         innr_prdct_dfn=VGroup(innr_prdct_dfn_0,innr_prdct_dfn_1,innr_prdct_dfn_2).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_AQUA)
 
+        innr_prdct_dfn_2.set_color(REANLEA_AQUA)
+
         d_line_1=DashedLine(
             start=ax_1.c2p(3,2), end=ax_1.c2p(3,0),stroke_width=2
         ).set_color_by_gradient(REANLEA_AQUA,REANLEA_BLUE_SKY).set_z_index(5)
@@ -4382,6 +4384,68 @@ class Scene4_2(Scene):
 
         # MAIN SCENE
 
+        innr_prdct_add_0=innr_prdct_dfn_2[0].copy()
+        self.play(
+            Indicate(innr_prdct_dfn_2)
+        )
+        self.play(
+            innr_prdct_add_0.animate.shift(DOWN)
+        )
+
+        dt_1_x=dt_1.copy()
+        dt_3_x=dt_3.copy()
+        ln_0010_x=ln_0010.copy()
+        ln_0032_x=ln_0032.copy()
+        
+
+        vects_grp_0=VGroup(dt_1_x,dt_3_x,ln_0010_x,ln_0032_x)
+
+        innr_prdct_plus_0=MathTex("+").scale(.5).set_color(REANLEA_AQUA).next_to(innr_prdct_add_0,RIGHT)
+
+        innr_prdct_add_1=innr_prdct_add_0.copy()
+
+        self.play(
+            AnimationGroup(
+                vects_grp_0.animate.shift((ax_1.c2p(3,0)[0]-ax_1.c2p(0,0)[0])*RIGHT),
+                innr_prdct_add_1.animate.next_to(innr_prdct_plus_0,RIGHT),
+            ),
+            Write(innr_prdct_plus_0),
+            lag_ratio=.5
+        )
+        self.wait()
+
+        d_line_1_x=DashedLine(
+            start=ax_1.c2p(6,2), end=ax_1.c2p(6,0),stroke_width=2
+        ).set_color_by_gradient(REANLEA_AQUA,REANLEA_BLUE_SKY).set_z_index(5)
+
+        self.play(
+            Create(d_line_1_x)
+        )
+
+        d_d_line_2_x=d_d_line_2.copy().set_z_index(6).save_state()
+        self.add(d_d_line_2_x)
+
+        self.play(
+            d_d_line_2_x.animate.shift(
+                (ax_1.c2p(0,0)[1]-ax_1.c2p(0,-1.35)[1])*UP
+            ).set_color(PURE_RED)
+        )
+        self.wait()
+
+        self.play(
+            Restore(d_d_line_2_x)
+        )
+
+        
+
+        
+
+
+
+        
+
+
+        self.wait(4)
 
 
 
