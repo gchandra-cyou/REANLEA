@@ -4501,14 +4501,17 @@ class Scene4_2(Scene):
 
         lam_2=MathTex(r"\lambda").scale(.7).set_color(REANLEA_AQUA).move_to(innr_prdct_add_6[0][0].get_center())
 
+        uncrt_grp_0=VGroup(d_d_line_1,d_d_line_1_lbl,d_d_line_2,d_d_line_2_lbl,d_d_line_2_x)
+
 
 
         self.play(
             Transform(innr_prdct_add_5[0][1], lam_1),
-            Transform(innr_prdct_add_6[0][0], lam_2)
+            Transform(innr_prdct_add_6[0][0], lam_2),
+            FadeOut(uncrt_grp_0)
         )
 
-        lam_expli_0=MathTex(r"\lambda = \lambda_{1} + \lambda_{2}").scale(.5).set_color(REANLEA_YELLOW_GREEN).rotate(PI/4).shift(1.75*UP)
+        lam_expli_0=MathTex(r"\lambda = \lambda_{1} + \lambda_{2}").scale(.5).set_color(REANLEA_YELLOW_GREEN).rotate(PI/4).shift(1.75*UP+.5*LEFT)
 
         self.play(
             Write(lam_expli_0)
@@ -4519,6 +4522,23 @@ class Scene4_2(Scene):
         self.play(
             Create(sr_bez_0)
         )
+
+        innr_prdct_add_7=MathTex(r"( \lambda_{1} + \lambda_{2})",r"\cdot",r"\langle i,v \rangle","=",r"\langle ( \lambda_{1} + \lambda_{2}) \cdot i,v \rangle").scale(.7).set_color(REANLEA_AQUA).move_to(innr_prdct_add_grp_1.get_center()).shift(.2*DOWN)
+
+        self.play(
+            innr_prdct_add_grp_1.animate.shift(.3*UP).scale(.7).set_color(REANLEA_RED),
+            TransformMatchingShapes(innr_prdct_add_grp_1.copy(),innr_prdct_add_7)
+        )
+
+        self.wait(2)
+
+        innr_prdct_add_8=MathTex(r"\lambda_{1} \cdot \langle i,v \rangle",r"+",r"\lambda_{2} \cdot \langle i,v \rangle","=",r"\langle ( \lambda_{1} + \lambda_{2}) \cdot i,v \rangle").scale(.7).set_color(REANLEA_AQUA).move_to(innr_prdct_add_7.get_center())
+
+        self.play(
+            TransformMatchingShapes(innr_prdct_add_7,innr_prdct_add_8)
+        )
+
+
 
         
 
