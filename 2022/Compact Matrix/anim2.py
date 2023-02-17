@@ -4495,6 +4495,18 @@ class Scene4_2(Scene):
         self.play(
             Circumscribe(innr_prdct_add_grp_1, color=REANLEA_YELLOW_CREAM, run_time=1.75)
         )
+        self.wait(2)
+
+        lam_1=MathTex(r"\lambda").scale(.7).set_color(REANLEA_AQUA).move_to(innr_prdct_add_5[0][1].get_center())
+
+        lam_2=MathTex(r"\lambda").scale(.7).set_color(REANLEA_AQUA).move_to(innr_prdct_add_6[0][0].get_center())
+
+
+
+        self.play(
+            Transform(innr_prdct_add_5[0][1], lam_1),
+            Transform(innr_prdct_add_6[0][0], lam_2)
+        )
 
 
 
