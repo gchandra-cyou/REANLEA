@@ -4508,6 +4508,20 @@ class Scene4_2(Scene):
             Transform(innr_prdct_add_6[0][0], lam_2)
         )
 
+        lam_expli_0=MathTex(r"\lambda = \lambda_{1} + \lambda_{2}").scale(.5).set_color(REANLEA_YELLOW_GREEN).rotate(PI/4).shift(1.75*UP)
+
+        self.play(
+            Write(lam_expli_0)
+        )
+
+        sr_bez_0=get_surround_bezier(lam_expli_0).rotate(PI/4)
+
+        self.play(
+            Create(sr_bez_0)
+        )
+
+        
+
 
 
 
