@@ -4393,6 +4393,8 @@ class Scene4_2(Scene):
         )
         self.wait()
 
+        vects_grp_old=VGroup(dt_0,dt_1,dt_3,ln_0010,ln_0032)
+
         dt_0_x=dt_0.copy()
         dt_1_x=dt_1.copy()
         dt_3_x=dt_3.copy()
@@ -4483,12 +4485,14 @@ class Scene4_2(Scene):
         dt_1_32=VMobject()
         line_1_0010 = VMobject()
         line_1_0032 = VMobject()
+        d_line_1_ver=VMobject()
 
         axs_2=VGroup()
         dt_2_10=VMobject()
         dt_2_32=VMobject()
         line_2_0010 = VMobject()
         line_2_0032 = VMobject()
+        d_line_2_ver=VMobject()
 
         axs_3=VGroup()
         dt_3_10=VMobject()
@@ -4538,6 +4542,7 @@ class Scene4_2(Scene):
             new_dt_1_32=Dot().set_color(REANLEA_PINK).move_to(new_axs_1.c2p(3,2)).set_z_index(3)
             new_line_1_0010=Line(start=new_axs_1.c2p(0,0),end=new_axs_1.c2p(1,0)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
             new_line_1_0032=Line(start=new_axs_1.c2p(0,0),end=new_axs_1.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+            new_d_line_1_ver=DashedLine(start=new_axs_1.c2p(3,2), end=new_axs_1.c2p(3,0),stroke_width=2).set_color_by_gradient(REANLEA_AQUA,REANLEA_BLUE_SKY).set_z_index(5)
 
             new_axs_2=Axes(
                     x_range=[xmin_2,xmax_2,2**int(np.log10(xmax_1)-1)],
@@ -4554,6 +4559,7 @@ class Scene4_2(Scene):
             new_dt_2_32=Dot().set_color(REANLEA_PINK).move_to(new_axs_2.c2p(3,2)).set_z_index(3)
             new_line_2_0010=Line(start=new_axs_2.c2p(0,0),end=new_axs_2.c2p(1,0)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
             new_line_2_0032=Line(start=new_axs_2.c2p(0,0),end=new_axs_2.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+            new_d_line_2_ver=DashedLine(start=new_axs_2.c2p(3,2), end=new_axs_2.c2p(3,0),stroke_width=2).set_color_by_gradient(REANLEA_AQUA,REANLEA_BLUE_SKY).set_z_index(5)
 
 
             new_axs_3=Axes(
@@ -4580,12 +4586,14 @@ class Scene4_2(Scene):
             dt_1_32.become(new_dt_1_32)
             line_1_0010.become(new_line_1_0010)
             line_1_0032.become(new_line_1_0032)
+            d_line_1_ver.become(new_d_line_1_ver)
 
             axs_2.become(new_axs_2)
             dt_2_10.become(new_dt_2_10)
             dt_2_32.become(new_dt_2_32)
             line_2_0010.become(new_line_2_0010)
             line_2_0032.become(new_line_2_0032)
+            d_line_2_ver.become(new_d_line_2_ver)
 
             axs_3.become(new_axs_3)
             dt_3_10.become(new_dt_3_10)
@@ -4595,12 +4603,16 @@ class Scene4_2(Scene):
         
         axs_1.add_updater(axUpdater)
 
-        self.add(axs_1, dt_1_10,dt_1_32,line_1_0010 ,line_1_0032,
-        axs_2,dt_2_10,dt_2_32,line_2_0010 ,line_2_0032,
+        self.add(axs_1, dt_1_10,dt_1_32,line_1_0010 ,line_1_0032,d_line_1_ver,
+        axs_2,dt_2_10,dt_2_32,line_2_0010 ,line_2_0032,d_line_2_ver,
         axs_3,dt_3_10,dt_3_32,line_3_0010 ,line_3_0032)
 
         self.play(
-            FadeOut(ax_1)
+            FadeOut(ax_1),
+            vects_grp_old.animate.set_opacity(.25),
+            vects_grp_0.animate.set_opacity(0),
+            FadeOut(d_line_1),
+            FadeOut(d_line_1_x)
         )
 
 
@@ -4635,6 +4647,17 @@ class Scene4_2(Scene):
 
             pau_3.animate.set_value(6.5/2.75),
             nau_3.animate.set_value(1.5/2.75),
+            run_time=2
+        ) 
+        self.play(
+            pau_1.animate.set_value(6.5/1),
+            nau_1.animate.set_value(1.5/1),
+
+            pau_2.animate.set_value(6.5/1),
+            nau_2.animate.set_value(1.5/1),
+
+            pau_3.animate.set_value(6.5/2),
+            nau_3.animate.set_value(1.5/2),
             run_time=2
         ) 
         self.wait(2)
