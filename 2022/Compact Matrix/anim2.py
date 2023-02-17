@@ -4490,7 +4490,13 @@ class Scene4_2(Scene):
 
         self.wait(2)
 
-        
+        innr_prdct_add_grp_1=VGroup(innr_prdct_add_5,innr_prdct_add_6,innr_prdct_plus_1)
+
+        self.play(
+            Circumscribe(innr_prdct_add_grp_1, color=REANLEA_YELLOW_CREAM, run_time=1.75)
+        )
+
+
 
 
         
