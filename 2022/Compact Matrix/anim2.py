@@ -4473,9 +4473,25 @@ class Scene4_2(Scene):
 
         self.wait(4)
 
+        innr_prdct_add_5=MathTex(r"\langle 2 \cdot i,v \rangle").scale(.7).set_color_by_gradient(REANLEA_AQUA).next_to(innr_prdct_plus_1,RIGHT)
+
         self.play(
-            Restore(d_d_line_2_x)
+            Restore(d_d_line_2_x),
+            TransformMatchingShapes(innr_prdct_add_4,innr_prdct_add_5)
         )
+
+        self.wait(2)
+
+        innr_prdct_add_6=MathTex(r"2 \cdot",r"\langle i,v \rangle").scale(.7).set_color_by_gradient(REANLEA_AQUA).next_to(innr_prdct_plus_1,LEFT)
+
+        self.play(
+            TransformMatchingShapes(innr_prdct_add_grp_0,innr_prdct_add_6)
+        )
+
+        self.wait(2)
+
+        
+
 
         
 
