@@ -4393,13 +4393,14 @@ class Scene4_2(Scene):
         )
         self.wait()
 
+        dt_0_x=dt_0.copy()
         dt_1_x=dt_1.copy()
         dt_3_x=dt_3.copy()
         ln_0010_x=ln_0010.copy()
         ln_0032_x=ln_0032.copy()
         
 
-        vects_grp_0=VGroup(dt_1_x,dt_3_x,ln_0010_x,ln_0032_x)
+        vects_grp_0=VGroup(dt_0_x,dt_1_x,dt_3_x,ln_0010_x,ln_0032_x)
 
         innr_prdct_plus_0=MathTex("+").scale(.5).set_color(REANLEA_AQUA).next_to(innr_prdct_add_0,RIGHT)
 
@@ -4463,6 +4464,182 @@ class Scene4_2(Scene):
 
         d_d_line_2_x=d_d_line_2.copy().set_z_index(6).save_state()
         self.add(d_d_line_2_x)
+
+
+        ###  SCALING EFFECT  ###
+
+        pau_1 = ValueTracker(6.5)
+        nau_1 = ValueTracker(1.5)
+
+        pau_2 = ValueTracker(6.5)
+        nau_2 = ValueTracker(1.5)
+
+        pau_3 = ValueTracker(6.5)
+        nau_3 = ValueTracker(1.5)
+
+
+        axs_1=VGroup()
+        dt_1_10=VMobject()
+        dt_1_32=VMobject()
+        line_1_0010 = VMobject()
+        line_1_0032 = VMobject()
+
+        axs_2=VGroup()
+        dt_2_10=VMobject()
+        dt_2_32=VMobject()
+        line_2_0010 = VMobject()
+        line_2_0032 = VMobject()
+
+        axs_3=VGroup()
+        dt_3_10=VMobject()
+        dt_3_32=VMobject()
+        line_3_0010 = VMobject()
+        line_3_0032 = VMobject()
+
+
+        def axUpdater(mobj):
+            xmin_1 = -nau_1.get_value()
+            xmax_1 = +pau_1.get_value()
+
+            xmin_2 = -nau_2.get_value()
+            xmax_2 = +pau_2.get_value()
+
+            xmin_3 = -nau_3.get_value()
+            xmax_3 = +pau_3.get_value()
+
+
+            axs_1_prev=Axes(
+                x_range=[-1.5,5.5],
+                y_range=[-1.5,4.5],
+                y_length=(round(config.frame_width)-2)*6/7,
+                tips=False, 
+                axis_config={
+                    "font_size": 24,
+                    #"include_ticks": False,
+                }, 
+            ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+
+
+            new_axs_1=Axes(
+                    x_range=[xmin_1,xmax_1,2**int(np.log10(xmax_1)-1)],
+                    y_range=[-1.5,4.5],
+                    x_length =(round(config.frame_width)-2)*8/7,
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False,
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(0).set_z_index(1)
+
+            new_axs_1_ref=new_axs_1.copy()
+            new_axs_1.shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
+
+            new_dt_1_10=Dot().set_color(REANLEA_AQUA).move_to(new_axs_1.c2p(1,0)).set_z_index(5)
+            new_dt_1_32=Dot().set_color(REANLEA_PINK).move_to(new_axs_1.c2p(3,2)).set_z_index(3)
+            new_line_1_0010=Line(start=new_axs_1.c2p(0,0),end=new_axs_1.c2p(1,0)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
+            new_line_1_0032=Line(start=new_axs_1.c2p(0,0),end=new_axs_1.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+
+            new_axs_2=Axes(
+                    x_range=[xmin_2,xmax_2,2**int(np.log10(xmax_1)-1)],
+                    y_range=[-1.5,4.5],
+                    x_length =(round(config.frame_width)-2)*8/7,
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False,
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(0).set_z_index(1).shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT).shift((new_axs_1.c2p(3,0)[0]-new_axs_1.c2p(0,0)[0])*RIGHT)
+
+            new_dt_2_10=Dot().set_color(REANLEA_AQUA).move_to(new_axs_2.c2p(1,0)).set_z_index(5)
+            new_dt_2_32=Dot().set_color(REANLEA_PINK).move_to(new_axs_2.c2p(3,2)).set_z_index(3)
+            new_line_2_0010=Line(start=new_axs_2.c2p(0,0),end=new_axs_2.c2p(1,0)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
+            new_line_2_0032=Line(start=new_axs_2.c2p(0,0),end=new_axs_2.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+
+
+            new_axs_3=Axes(
+                    x_range=[xmin_3,xmax_3,2**int(np.log10(xmax_1)-1)],
+                    y_range=[-1.5,4.5],
+                    x_length =(round(config.frame_width)-2)*8/7,
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False,
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(1).set_z_index(1).shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
+
+            new_axs_3.add_coordinates()
+
+            new_dt_3_10=Dot().set_color(REANLEA_AQUA).move_to(new_axs_3.c2p(1,0)).set_z_index(5)
+            new_dt_3_32=Dot().set_color(REANLEA_PINK).move_to(new_axs_3.c2p(3,2)).set_z_index(3)
+            new_line_3_0010=Line(start=new_axs_3.c2p(0,0),end=new_axs_3.c2p(1,0)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
+            new_line_3_0032=Line(start=new_axs_3.c2p(0,0),end=new_axs_3.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+
+
+            mobj.become(new_axs_1)
+            dt_1_10.become(new_dt_1_10)
+            dt_1_32.become(new_dt_1_32)
+            line_1_0010.become(new_line_1_0010)
+            line_1_0032.become(new_line_1_0032)
+
+            axs_2.become(new_axs_2)
+            dt_2_10.become(new_dt_2_10)
+            dt_2_32.become(new_dt_2_32)
+            line_2_0010.become(new_line_2_0010)
+            line_2_0032.become(new_line_2_0032)
+
+            axs_3.become(new_axs_3)
+            dt_3_10.become(new_dt_3_10)
+            dt_3_32.become(new_dt_3_32)
+            line_3_0010.become(new_line_3_0010)
+            line_3_0032.become(new_line_3_0032)
+        
+        axs_1.add_updater(axUpdater)
+
+        self.add(axs_1, dt_1_10,dt_1_32,line_1_0010 ,line_1_0032,
+        axs_2,dt_2_10,dt_2_32,line_2_0010 ,line_2_0032,
+        axs_3,dt_3_10,dt_3_32,line_3_0010 ,line_3_0032)
+
+        self.play(
+            FadeOut(ax_1)
+        )
+
+
+        self.play(
+            pau_1.animate.set_value(6.5/1.25),
+            nau_1.animate.set_value(1.5/1.25),
+
+            pau_2.animate.set_value(6.5/.75),
+            nau_2.animate.set_value(1.5/.75),
+
+            pau_3.animate.set_value(6.5/2),
+            nau_3.animate.set_value(1.5/2),
+            run_time=2
+        ) 
+        self.play(
+            pau_1.animate.set_value(6.5/1.5),
+            nau_1.animate.set_value(1.5/1.5),
+
+            pau_2.animate.set_value(6.5/1),
+            nau_2.animate.set_value(1.5/1),
+
+            pau_3.animate.set_value(6.5/2.5),
+            nau_3.animate.set_value(1.5/2.5),
+            run_time=2
+        ) 
+        self.play(
+            pau_1.animate.set_value(6.5/1),
+            nau_1.animate.set_value(1.5/1),
+
+            pau_2.animate.set_value(6.5/1.75),
+            nau_2.animate.set_value(1.5/1.75),
+
+            pau_3.animate.set_value(6.5/2.75),
+            nau_3.animate.set_value(1.5/2.75),
+            run_time=2
+        ) 
+        self.wait(2)
+
+
 
         self.play(
             ReplacementTransform(innr_prdct_add_3, innr_prdct_add_4),

@@ -6878,7 +6878,7 @@ class weier_4(Scene):
                     tips=False, 
                     axis_config={
                             "font_size": 24,
-                        }, 
+                        },
                 ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(0).set_z_index(1)   
 
             new_dt_1=Dot().set_color(REANLEA_PINK).move_to(new_ax_1.c2p(3,2)).set_z_index(3)
