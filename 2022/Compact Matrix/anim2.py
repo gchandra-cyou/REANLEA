@@ -4758,11 +4758,6 @@ class Scene4_2(Scene):
 
         
 
-
-
-
-        
-
         
 
 
