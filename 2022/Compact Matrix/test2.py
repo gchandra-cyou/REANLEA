@@ -6987,6 +6987,9 @@ class weier_5(Scene):
         pau_3 = ValueTracker(6.5)
         nau_3 = ValueTracker(1.5)
 
+        pau_4 = ValueTracker(6.5)
+        nau_4 = ValueTracker(1.5)
+
 
         axs_1=VGroup()
         dt_1_00=VMobject()
@@ -7010,6 +7013,8 @@ class weier_5(Scene):
         line_3_0010 = VMobject()
         line_3_0032 = VMobject()
 
+        axs_4=VGroup()
+
 
         def axUpdater(mobj):
             xmin_1 = -nau_1.get_value()
@@ -7020,6 +7025,9 @@ class weier_5(Scene):
 
             xmin_3 = -nau_3.get_value()
             xmax_3 = +pau_3.get_value()
+
+            xmin_4 = -nau_4.get_value()
+            xmax_4 = +pau_4.get_value()
 
 
             axs_1_prev=Axes(
@@ -7083,7 +7091,7 @@ class weier_5(Scene):
                     axis_config={
                             "font_size": 24,
                         }, 
-                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(1).set_z_index(1).shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(0).set_z_index(1).shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
 
             new_axs_3.add_coordinates()
 
@@ -7091,6 +7099,19 @@ class weier_5(Scene):
             new_dt_3_32=Dot().set_color(REANLEA_PURPLE).move_to(new_axs_3.c2p(3,2)).set_z_index(3)
             new_line_3_0010=Line(start=new_axs_3.c2p(0,0),end=new_axs_3.c2p(1,0)).set_stroke(width=4, color=[REANLEA_BLUE_SKY,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
             new_line_3_0032=Line(start=new_axs_3.c2p(0,0),end=new_axs_3.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PURPLE,REANLEA_YELLOW])
+
+            new_axs_4=Axes(
+                    x_range=[xmin_4,xmax_4,2**int(np.log10(xmax_1)-1)],
+                    y_range=[-1.5,4.5],
+                    x_length =(round(config.frame_width)-2)*8/7,
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False,
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(1).set_z_index(1).shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
+
+            new_axs_4.add_coordinates()
 
 
             mobj.become(new_axs_1)
@@ -7114,17 +7135,23 @@ class weier_5(Scene):
             dt_3_32.become(new_dt_3_32)
             line_3_0010.become(new_line_3_0010)
             line_3_0032.become(new_line_3_0032)
+
+            axs_4.become(new_axs_4).set_z_index(-1)
         
         axs_1.add_updater(axUpdater)
 
         self.add(axs_1, dt_1_10,dt_1_32,line_1_0010 ,line_1_0032,d_line_1_ver,dt_1_00,
         axs_2,dt_2_10,dt_2_32,line_2_0010 ,line_2_0032,d_line_2_ver,dt_2_00,
-        axs_3,dt_3_10,dt_3_32,line_3_0010 ,line_3_0032)
+        axs_3,dt_3_10,dt_3_32,line_3_0010 ,line_3_0032,
+        axs_4)
 
         self.play(
                 AnimationGroup(
                     pau_3.animate.set_value(6.5/2),
-                    nau_3.animate.set_value(1.5/2)
+                    nau_3.animate.set_value(1.5/2),
+
+                    pau_4.animate.set_value(6.5/2),
+                    nau_4.animate.set_value(1.5/2)
                 ),
             run_time=2
         ) 
@@ -7139,6 +7166,9 @@ class weier_5(Scene):
 
                 pau_2.animate.set_value(6.5/1),
                 nau_2.animate.set_value(1.5/1),
+
+                pau_4.animate.set_value(6.5/2.5),
+                nau_4.animate.set_value(1.5/2.5),
             ),
             run_time=2
         ) 
@@ -7154,7 +7184,10 @@ class weier_5(Scene):
                 nau_1.animate.set_value(1.5/1),
 
                 pau_2.animate.set_value(6.5/1.75),
-                nau_2.animate.set_value(1.5/1.75)
+                nau_2.animate.set_value(1.5/1.75),
+
+                pau_4.animate.set_value(6.5/2.75),
+                nau_4.animate.set_value(1.5/2.75),
             ),
             run_time=2
         ) 
@@ -7171,6 +7204,9 @@ class weier_5(Scene):
 
                 pau_2.animate.set_value(6.5/1),
                 nau_2.animate.set_value(1.5/1),
+
+                pau_4.animate.set_value(6.5/2),
+                nau_4.animate.set_value(1.5/2),
             ),
             run_time=2
         ) 
