@@ -4656,47 +4656,6 @@ class Scene4_2(Scene):
         self.wait(2)
 
 
-        self.play(
-            pau_1.animate.set_value(6.5/1.5),
-            nau_1.animate.set_value(1.5/1.5),
-
-            pau_2.animate.set_value(6.5/1),
-            nau_2.animate.set_value(1.5/1),
-
-            pau_3.animate.set_value(6.5/2.5),
-            nau_3.animate.set_value(1.5/2.5),
-            run_time=2
-        ) 
-        self.wait()
-
-
-        self.play(
-            pau_1.animate.set_value(6.5/1),
-            nau_1.animate.set_value(1.5/1),
-
-            pau_2.animate.set_value(6.5/1.75),
-            nau_2.animate.set_value(1.5/1.75),
-
-            pau_3.animate.set_value(6.5/2.75),
-            nau_3.animate.set_value(1.5/2.75),
-            run_time=2
-        ) 
-        self.wait()
-
-
-        self.play(
-            pau_1.animate.set_value(6.5/1),
-            nau_1.animate.set_value(1.5/1),
-
-            pau_2.animate.set_value(6.5/1),
-            nau_2.animate.set_value(1.5/1),
-
-            pau_3.animate.set_value(6.5/2),
-            nau_3.animate.set_value(1.5/2),
-            run_time=2
-        ) 
-        self.wait(2)
-
 
         innr_prdct_add_6=MathTex(r"2 \cdot",r"\langle i,v \rangle").scale(.7).set_color_by_gradient(REANLEA_AQUA).next_to(innr_prdct_plus_1,LEFT)
 
@@ -4735,15 +4694,41 @@ class Scene4_2(Scene):
 
         sr_bez_0=get_surround_bezier(lam_expli_0).rotate(PI/4)
 
-        self.play(
-            Create(sr_bez_0)
-        )
-
         innr_prdct_add_7=MathTex(r"( \lambda_{1} + \lambda_{2})",r"\cdot",r"\langle i,v \rangle","=",r"\langle ( \lambda_{1} + \lambda_{2}) \cdot i,v \rangle").scale(.7).set_color(REANLEA_AQUA).move_to(innr_prdct_add_grp_1.get_center()).shift(.2*DOWN)
+        
+        lam_val_trac_0=ValueTracker(2)
+        lam_txt_0=MathTex(r"\lambda","=").scale(.7).set_color(REANLEA_BLUE_SKY).scale(1.25)
+        lam_val_0=DecimalNumber().set_color_by_gradient(REANLEA_PURPLE).set_sheen(-0.1,LEFT)
+        lam_val_0.add_updater(
+            lambda x : x.set_value(lam_val_trac_0.get_value())
+        )
+        lam_val_grp_0=VGroup(lam_txt_0, lam_val_0).arrange(RIGHT, buff=0.3).move_to(2*DOWN+6*RIGHT).scale(.7)
+
+
+        lam_val_trac_1=ValueTracker(1)
+        lam_txt_1=MathTex(r"\lambda_{1}","=").scale(.7).set_color(REANLEA_AQUA).scale(1.25)
+        lam_val_1=DecimalNumber().set_color_by_gradient(REANLEA_PINK).set_sheen(-0.1,LEFT)
+        lam_val_1.add_updater(
+            lambda x : x.set_value(lam_val_trac_1.get_value())
+        )
+        lam_val_grp_1=VGroup(lam_txt_1, lam_val_1).arrange(RIGHT, buff=0.3).move_to(2.5*DOWN+6*RIGHT).scale(.7)
+
+
+        lam_val_trac_2=ValueTracker(1)
+        lam_txt_2=MathTex(r"\lambda_{2}","=").scale(.7).set_color(REANLEA_AQUA).scale(1.25)
+        lam_val_2=DecimalNumber().set_color_by_gradient(REANLEA_PINK).set_sheen(-0.1,LEFT)
+        lam_val_2.add_updater(
+            lambda x : x.set_value(lam_val_trac_2.get_value())
+        )
+        lam_val_grp_2=VGroup(lam_txt_2, lam_val_2).arrange(RIGHT, buff=0.3).move_to(3*DOWN+6*RIGHT).scale(.7)
+
+        lam_val_grp=VGroup(lam_val_grp_0,lam_val_grp_1,lam_val_grp_2)
 
         self.play(
+            Create(sr_bez_0),
             innr_prdct_add_grp_1.animate.shift(.3*UP).scale(.7).set_color(REANLEA_GREY),
-            TransformMatchingShapes(innr_prdct_add_grp_1.copy(),innr_prdct_add_7)
+            TransformMatchingShapes(innr_prdct_add_grp_1.copy(),innr_prdct_add_7),
+            Write(lam_val_grp)
         )
 
         self.wait(2)
@@ -4753,6 +4738,47 @@ class Scene4_2(Scene):
         self.play(
             TransformMatchingShapes(innr_prdct_add_7,innr_prdct_add_8)
         )
+
+        '''self.play(
+            pau_1.animate.set_value(6.5/1.5),
+            nau_1.animate.set_value(1.5/1.5),
+
+            pau_2.animate.set_value(6.5/1),
+            nau_2.animate.set_value(1.5/1),
+
+            pau_3.animate.set_value(6.5/2.5),
+            nau_3.animate.set_value(1.5/2.5),
+            run_time=2
+        ) 
+        self.wait()
+
+
+        self.play(
+            pau_1.animate.set_value(6.5/1),
+            nau_1.animate.set_value(1.5/1),
+
+            pau_2.animate.set_value(6.5/1.75),
+            nau_2.animate.set_value(1.5/1.75),
+
+            pau_3.animate.set_value(6.5/2.75),
+            nau_3.animate.set_value(1.5/2.75),
+            run_time=2
+        ) 
+        self.wait()
+
+
+        self.play(
+            pau_1.animate.set_value(6.5/1),
+            nau_1.animate.set_value(1.5/1),
+
+            pau_2.animate.set_value(6.5/1),
+            nau_2.animate.set_value(1.5/1),
+
+            pau_3.animate.set_value(6.5/2),
+            nau_3.animate.set_value(1.5/2),
+            run_time=2
+        ) 
+        self.wait(2)'''
 
 
 
