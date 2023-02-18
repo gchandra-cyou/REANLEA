@@ -4395,7 +4395,7 @@ class Scene4_2(Scene):
 
         vects_grp_old=VGroup(dt_0,dt_1,dt_3,ln_0010,ln_0032)
 
-        dt_0_x=dt_0.copy()
+        dt_0_x=dt_0.copy().set_z_index(2)
         dt_1_x=dt_1.copy()
         dt_3_x=dt_3.copy()
         ln_0010_x=ln_0010.copy()
@@ -4481,6 +4481,7 @@ class Scene4_2(Scene):
 
 
         axs_1=VGroup()
+        dt_1_00=VMobject()
         dt_1_10=VMobject()
         dt_1_32=VMobject()
         line_1_0010 = VMobject()
@@ -4488,6 +4489,7 @@ class Scene4_2(Scene):
         d_line_1_ver=VMobject()
 
         axs_2=VGroup()
+        dt_2_00=VMobject()
         dt_2_10=VMobject()
         dt_2_32=VMobject()
         line_2_0010 = VMobject()
@@ -4538,6 +4540,7 @@ class Scene4_2(Scene):
             new_axs_1_ref=new_axs_1.copy()
             new_axs_1.shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
 
+            new_dt_1_00=Dot().set_color(REANLEA_YELLOW).move_to(new_axs_1.c2p(0,0)).set_z_index(5)
             new_dt_1_10=Dot().set_color(REANLEA_AQUA).move_to(new_axs_1.c2p(1,0)).set_z_index(5)
             new_dt_1_32=Dot().set_color(REANLEA_PINK).move_to(new_axs_1.c2p(3,2)).set_z_index(3)
             new_line_1_0010=Line(start=new_axs_1.c2p(0,0),end=new_axs_1.c2p(1,0)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
@@ -4555,6 +4558,7 @@ class Scene4_2(Scene):
                         }, 
                 ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(0).set_z_index(1).shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT).shift((new_axs_1.c2p(3,0)[0]-new_axs_1.c2p(0,0)[0])*RIGHT)
 
+            new_dt_2_00=Dot().set_color(REANLEA_YELLOW).move_to(new_axs_2.c2p(0,0)).set_z_index(5)
             new_dt_2_10=Dot().set_color(REANLEA_AQUA).move_to(new_axs_2.c2p(1,0)).set_z_index(5)
             new_dt_2_32=Dot().set_color(REANLEA_PINK).move_to(new_axs_2.c2p(3,2)).set_z_index(3)
             new_line_2_0010=Line(start=new_axs_2.c2p(0,0),end=new_axs_2.c2p(1,0)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
@@ -4582,20 +4586,22 @@ class Scene4_2(Scene):
 
 
             mobj.become(new_axs_1)
+            dt_1_00.become(new_dt_1_00)
             dt_1_10.become(new_dt_1_10)
             dt_1_32.become(new_dt_1_32)
             line_1_0010.become(new_line_1_0010)
             line_1_0032.become(new_line_1_0032)
-            d_line_1_ver.become(new_d_line_1_ver)
+            d_line_1_ver.become(new_d_line_1_ver).set_z_index(6)
 
             axs_2.become(new_axs_2)
+            dt_2_00.become(new_dt_2_00)
             dt_2_10.become(new_dt_2_10)
             dt_2_32.become(new_dt_2_32)
             line_2_0010.become(new_line_2_0010)
             line_2_0032.become(new_line_2_0032)
-            d_line_2_ver.become(new_d_line_2_ver)
+            d_line_2_ver.become(new_d_line_2_ver).set_z_index(6)
 
-            axs_3.become(new_axs_3)
+            axs_3.become(new_axs_3).set_z_index(-1)
             dt_3_10.become(new_dt_3_10)
             dt_3_32.become(new_dt_3_32)
             line_3_0010.become(new_line_3_0010)
@@ -4603,8 +4609,8 @@ class Scene4_2(Scene):
         
         axs_1.add_updater(axUpdater)
 
-        self.add(axs_1, dt_1_10,dt_1_32,line_1_0010 ,line_1_0032,d_line_1_ver,
-        axs_2,dt_2_10,dt_2_32,line_2_0010 ,line_2_0032,d_line_2_ver,
+        self.add(axs_1, dt_1_10,dt_1_32,line_1_0010 ,line_1_0032,d_line_1_ver,dt_1_00,
+        axs_2,dt_2_10,dt_2_32,line_2_0010 ,line_2_0032,d_line_2_ver,dt_2_00,
         axs_3,dt_3_10,dt_3_32,line_3_0010 ,line_3_0032)
 
         self.play(
@@ -4617,12 +4623,6 @@ class Scene4_2(Scene):
 
 
         self.play(
-            pau_1.animate.set_value(6.5/1.25),
-            nau_1.animate.set_value(1.5/1.25),
-
-            pau_2.animate.set_value(6.5/.75),
-            nau_2.animate.set_value(1.5/.75),
-
             pau_3.animate.set_value(6.5/2),
             nau_3.animate.set_value(1.5/2),
             run_time=2
@@ -4726,7 +4726,7 @@ class Scene4_2(Scene):
         innr_prdct_add_7=MathTex(r"( \lambda_{1} + \lambda_{2})",r"\cdot",r"\langle i,v \rangle","=",r"\langle ( \lambda_{1} + \lambda_{2}) \cdot i,v \rangle").scale(.7).set_color(REANLEA_AQUA).move_to(innr_prdct_add_grp_1.get_center()).shift(.2*DOWN)
 
         self.play(
-            innr_prdct_add_grp_1.animate.shift(.3*UP).scale(.7).set_color(REANLEA_RED),
+            innr_prdct_add_grp_1.animate.shift(.3*UP).scale(.7).set_color(REANLEA_GREY),
             TransformMatchingShapes(innr_prdct_add_grp_1.copy(),innr_prdct_add_7)
         )
 
