@@ -4474,7 +4474,7 @@ class Scene4_2(Scene):
             ).set_color(PURE_RED)
         )
 
-        self.wait(4)
+        self.wait(2)
 
 
         ###  SCALING EFFECT  ###
@@ -4588,10 +4588,10 @@ class Scene4_2(Scene):
 
             new_axs_3.add_coordinates()
 
-            new_dt_3_10=Dot().set_color(REANLEA_AQUA).move_to(new_axs_3.c2p(1,0)).set_z_index(5)
-            new_dt_3_32=Dot().set_color(REANLEA_PINK).move_to(new_axs_3.c2p(3,2)).set_z_index(3)
-            new_line_3_0010=Line(start=new_axs_3.c2p(0,0),end=new_axs_3.c2p(1,0)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
-            new_line_3_0032=Line(start=new_axs_3.c2p(0,0),end=new_axs_3.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
+            new_dt_3_10=Dot().set_color(REANLEA_BLUE_SKY).move_to(new_axs_3.c2p(1,0)).set_z_index(5)
+            new_dt_3_32=Dot().set_color(REANLEA_PURPLE).move_to(new_axs_3.c2p(3,2)).set_z_index(3)
+            new_line_3_0010=Line(start=new_axs_3.c2p(0,0),end=new_axs_3.c2p(1,0)).set_stroke(width=4, color=[REANLEA_BLUE_SKY,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
+            new_line_3_0032=Line(start=new_axs_3.c2p(0,0),end=new_axs_3.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PURPLE,REANLEA_YELLOW])
 
 
             mobj.become(new_axs_1)
