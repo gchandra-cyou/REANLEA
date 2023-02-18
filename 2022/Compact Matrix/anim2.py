@@ -4702,7 +4702,7 @@ class Scene4_2(Scene):
         lam_val_0.add_updater(
             lambda x : x.set_value(lam_val_trac_0.get_value())
         )
-        lam_val_grp_0=VGroup(lam_txt_0, lam_val_0).arrange(RIGHT, buff=0.3).move_to(2*DOWN+6*RIGHT).scale(.7)
+        lam_val_grp_0=VGroup(lam_txt_0, lam_val_0).arrange(RIGHT, buff=0.3).move_to(2*DOWN+5.5*RIGHT).scale(.7)
 
 
         lam_val_trac_1=ValueTracker(1)
@@ -4711,7 +4711,7 @@ class Scene4_2(Scene):
         lam_val_1.add_updater(
             lambda x : x.set_value(lam_val_trac_1.get_value())
         )
-        lam_val_grp_1=VGroup(lam_txt_1, lam_val_1).arrange(RIGHT, buff=0.3).move_to(2.5*DOWN+6*RIGHT).scale(.7)
+        lam_val_grp_1=VGroup(lam_txt_1, lam_val_1).arrange(RIGHT, buff=0.3).move_to(2.5*DOWN+5.5*RIGHT).scale(.7)
 
 
         lam_val_trac_2=ValueTracker(1)
@@ -4720,7 +4720,7 @@ class Scene4_2(Scene):
         lam_val_2.add_updater(
             lambda x : x.set_value(lam_val_trac_2.get_value())
         )
-        lam_val_grp_2=VGroup(lam_txt_2, lam_val_2).arrange(RIGHT, buff=0.3).move_to(3*DOWN+6*RIGHT).scale(.7)
+        lam_val_grp_2=VGroup(lam_txt_2, lam_val_2).arrange(RIGHT, buff=0.3).move_to(3*DOWN+5.5*RIGHT).scale(.7)
 
         lam_val_grp=VGroup(lam_val_grp_0,lam_val_grp_1,lam_val_grp_2)
 
@@ -4739,7 +4739,7 @@ class Scene4_2(Scene):
             TransformMatchingShapes(innr_prdct_add_7,innr_prdct_add_8)
         )
 
-        '''self.play(
+        self.play(
             pau_1.animate.set_value(6.5/1.5),
             nau_1.animate.set_value(1.5/1.5),
 
@@ -4748,6 +4748,11 @@ class Scene4_2(Scene):
 
             pau_3.animate.set_value(6.5/2.5),
             nau_3.animate.set_value(1.5/2.5),
+
+            lam_val_trac_0.animate.set_value(2.5),
+            lam_val_trac_1.animate.set_value(1.5),
+            lam_val_trac_2.animate.set_value(1),
+
             run_time=2
         ) 
         self.wait()
@@ -4762,6 +4767,11 @@ class Scene4_2(Scene):
 
             pau_3.animate.set_value(6.5/2.75),
             nau_3.animate.set_value(1.5/2.75),
+
+            lam_val_trac_0.animate.set_value(2.75),
+            lam_val_trac_1.animate.set_value(1),
+            lam_val_trac_2.animate.set_value(1.75),
+
             run_time=2
         ) 
         self.wait()
@@ -4776,9 +4786,14 @@ class Scene4_2(Scene):
 
             pau_3.animate.set_value(6.5/2),
             nau_3.animate.set_value(1.5/2),
+
+            lam_val_trac_0.animate.set_value(2),
+            lam_val_trac_1.animate.set_value(1),
+            lam_val_trac_2.animate.set_value(1),
+
             run_time=2
         ) 
-        self.wait(2)'''
+        self.wait(2)
 
 
 
