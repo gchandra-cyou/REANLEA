@@ -6909,6 +6909,7 @@ class weier_4(Scene):
                             "font_size": 24,
                         }, 
                 ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+            new_ax_3.add_coordinates()
 
             new_dt_3=Dot().set_color(REANLEA_PINK).move_to(new_ax_3.c2p(3,2)).set_z_index(3)
 
