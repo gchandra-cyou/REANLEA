@@ -4467,6 +4467,15 @@ class Scene4_2(Scene):
         d_d_line_2_x=d_d_line_2.copy().set_z_index(6).save_state()
         self.add(d_d_line_2_x)
 
+        self.play(
+            ReplacementTransform(innr_prdct_add_3, innr_prdct_add_4),
+            d_d_line_2_x.animate.shift(
+                (ax_1.c2p(0,0)[1]-ax_1.c2p(0,-1.35)[1])*UP
+            ).set_color(PURE_RED)
+        )
+
+        self.wait(4)
+
 
         ###  SCALING EFFECT  ###
 
@@ -4622,11 +4631,31 @@ class Scene4_2(Scene):
         )
 
 
+
+        innr_prdct_add_5=MathTex(r"\langle 2 \cdot i,v \rangle").scale(.7).set_color_by_gradient(REANLEA_AQUA).next_to(innr_prdct_plus_1,RIGHT)
+
+
         self.play(
-            pau_3.animate.set_value(6.5/2),
-            nau_3.animate.set_value(1.5/2),
+            AnimationGroup(
+                AnimationGroup(
+                    pau_3.animate.set_value(6.5/2),
+                    nau_3.animate.set_value(1.5/2)
+                ),
+                AnimationGroup(
+                    Flash(point=Dot().move_to(ax_1.c2p(2,0)), color=REANLEA_BLUE_LAVENDER),
+                    dt_2.animate.set_color(REANLEA_CYAN_LIGHT)
+                ),
+                lag_ratio=.5
+            ),            
+            AnimationGroup(
+                Restore(d_d_line_2_x),
+                TransformMatchingShapes(innr_prdct_add_4,innr_prdct_add_5)
+            ),
             run_time=2
         ) 
+        self.wait(2)
+
+
         self.play(
             pau_1.animate.set_value(6.5/1.5),
             nau_1.animate.set_value(1.5/1.5),
@@ -4638,6 +4667,9 @@ class Scene4_2(Scene):
             nau_3.animate.set_value(1.5/2.5),
             run_time=2
         ) 
+        self.wait()
+
+
         self.play(
             pau_1.animate.set_value(6.5/1),
             nau_1.animate.set_value(1.5/1),
@@ -4649,6 +4681,9 @@ class Scene4_2(Scene):
             nau_3.animate.set_value(1.5/2.75),
             run_time=2
         ) 
+        self.wait()
+
+
         self.play(
             pau_1.animate.set_value(6.5/1),
             nau_1.animate.set_value(1.5/1),
@@ -4662,25 +4697,6 @@ class Scene4_2(Scene):
         ) 
         self.wait(2)
 
-
-
-        self.play(
-            ReplacementTransform(innr_prdct_add_3, innr_prdct_add_4),
-            d_d_line_2_x.animate.shift(
-                (ax_1.c2p(0,0)[1]-ax_1.c2p(0,-1.35)[1])*UP
-            ).set_color(PURE_RED)
-        )
-
-        self.wait(4)
-
-        innr_prdct_add_5=MathTex(r"\langle 2 \cdot i,v \rangle").scale(.7).set_color_by_gradient(REANLEA_AQUA).next_to(innr_prdct_plus_1,RIGHT)
-
-        self.play(
-            Restore(d_d_line_2_x),
-            TransformMatchingShapes(innr_prdct_add_4,innr_prdct_add_5)
-        )
-
-        self.wait(2)
 
         innr_prdct_add_6=MathTex(r"2 \cdot",r"\langle i,v \rangle").scale(.7).set_color_by_gradient(REANLEA_AQUA).next_to(innr_prdct_plus_1,LEFT)
 
