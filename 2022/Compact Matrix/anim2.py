@@ -4835,23 +4835,31 @@ class Scene4_2(Scene):
 
 
         self.play(
-            pau_1.animate.set_value(6.5/1),
-            nau_1.animate.set_value(1.5/1),
+            AnimationGroup(
+                AnimationGroup(
+                    pau_1.animate.set_value(6.5/1),
+                    nau_1.animate.set_value(1.5/1),
 
-            pau_2.animate.set_value(6.5/1),
-            nau_2.animate.set_value(1.5/1),
+                    pau_2.animate.set_value(6.5/1),
+                    nau_2.animate.set_value(1.5/1),
 
-            pau_3.animate.set_value(6.5/2),
-            nau_3.animate.set_value(1.5/2),
+                    pau_3.animate.set_value(6.5/2),
+                    nau_3.animate.set_value(1.5/2),
 
-            pau_4.animate.set_value(6.5/2),
-            nau_4.animate.set_value(1.5/2),
+                    pau_4.animate.set_value(6.5/2),
+                    nau_4.animate.set_value(1.5/2),
 
 
-            lam_val_trac_0.animate.set_value(2),
-            lam_val_trac_1.animate.set_value(1),
-            lam_val_trac_2.animate.set_value(1),
-
+                    lam_val_trac_0.animate.set_value(2),
+                    lam_val_trac_1.animate.set_value(1),
+                    lam_val_trac_2.animate.set_value(1),
+                ),
+                AnimationGroup(
+                    Flash(point=Dot().move_to(ax_1.c2p(2,0)), color=REANLEA_BLUE_LAVENDER),
+                    dt_2.animate.set_color(REANLEA_GOLDENROD)
+                ),
+                lag_ratio=.5
+            ),
             run_time=2
         ) 
         self.wait(2)
