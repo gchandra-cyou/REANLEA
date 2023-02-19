@@ -7117,7 +7117,7 @@ class weier_5(Scene):
 
 
 
-            
+            mobj.become(new_axs_4)
 
             axs_1.become(new_axs_1)
             dt_1_00.become(new_dt_1_00)
@@ -7141,9 +7141,9 @@ class weier_5(Scene):
             line_3_0010.become(new_line_3_0010)
             line_3_0032.become(new_line_3_0032)
 
-            #axs_4.become(new_axs_4).set_z_index(-1)
+            axs_4.become(new_axs_4).set_z_index(-1)
 
-            mobj.become(new_axs_4)
+            
         
         axs_4.add_updater(axUpdater)
 
@@ -7221,6 +7221,8 @@ class weier_5(Scene):
 
 
         # manim -pqh test2.py weier_5
+
+        # manim -pql test2.py weier_5
 
 
 class weier_6(Scene):
