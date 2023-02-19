@@ -4658,7 +4658,7 @@ class Scene4_2(Scene):
 
             new_axs_4.add_coordinates()
 
-            mobj.become(new_axs_4)
+            mobj.become(new_axs_4).set_z_index(-1)
 
         axs_4.add_updater(axUpdater_1)
 
