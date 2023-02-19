@@ -4593,8 +4593,9 @@ class Scene4_2(Scene):
             new_line_3_0010=Line(start=new_axs_3.c2p(0,0),end=new_axs_3.c2p(1,0)).set_stroke(width=4, color=[REANLEA_BLUE_SKY,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
             new_line_3_0032=Line(start=new_axs_3.c2p(0,0),end=new_axs_3.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PURPLE,REANLEA_YELLOW])
 
-
-            mobj.become(new_axs_1)
+            mobj.become(new_axs_3)
+            #mobj.become(new_axs_1)
+            axs_1.become(new_axs_1)
             dt_1_00.become(new_dt_1_00)
             dt_1_10.become(new_dt_1_10)
             dt_1_32.become(new_dt_1_32)
@@ -4610,13 +4611,14 @@ class Scene4_2(Scene):
             line_2_0032.become(new_line_2_0032)
             d_line_2_ver.become(new_d_line_2_ver).set_z_index(6)
 
-            axs_3.become(new_axs_3).set_z_index(-1)
+            #axs_3.become(new_axs_3).set_z_index(-1)
             dt_3_10.become(new_dt_3_10)
             dt_3_32.become(new_dt_3_32)
             line_3_0010.become(new_line_3_0010)
             line_3_0032.become(new_line_3_0032)
         
-        axs_1.add_updater(axUpdater)
+        #axs_1.add_updater(axUpdater)
+        axs_3.add_updater(axUpdater)
 
         self.add(axs_1, dt_1_10,dt_1_32,line_1_0010 ,line_1_0032,d_line_1_ver,dt_1_00,
         axs_2,dt_2_10,dt_2_32,line_2_0010 ,line_2_0032,d_line_2_ver,dt_2_00,

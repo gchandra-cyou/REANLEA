@@ -7051,10 +7051,11 @@ class weier_5(Scene):
                     axis_config={
                             "font_size": 24,
                         }, 
-                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(0).set_z_index(1)
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(1).set_z_index(1)
 
             new_axs_1_ref=new_axs_1.copy()
             new_axs_1.shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
+            new_axs_1.add_coordinates()
 
             new_dt_1_00=Dot().set_color(REANLEA_YELLOW).move_to(new_axs_1.c2p(0,0)).set_z_index(5)
             new_dt_1_10=Dot().set_color(REANLEA_AQUA).move_to(new_axs_1.c2p(1,0)).set_z_index(5)
@@ -7093,7 +7094,7 @@ class weier_5(Scene):
                         }, 
                 ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(0).set_z_index(1).shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
 
-            new_axs_3.add_coordinates()
+    
 
             new_dt_3_10=Dot().set_color(REANLEA_BLUE_SKY).move_to(new_axs_3.c2p(1,0)).set_z_index(5)
             new_dt_3_32=Dot().set_color(REANLEA_PURPLE).move_to(new_axs_3.c2p(3,2)).set_z_index(3)
@@ -7109,9 +7110,9 @@ class weier_5(Scene):
                     axis_config={
                             "font_size": 24,
                         }, 
-                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(1).set_z_index(1).shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(0).set_z_index(1).shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
 
-            new_axs_4.add_coordinates()
+
 
 
             mobj.become(new_axs_1)
@@ -7215,6 +7216,89 @@ class weier_5(Scene):
 
         # manim -pqh test2.py weier_5
 
+
+class weier_6(Scene):
+    def construct(self):
+
+        pau_1 = ValueTracker(6.5)
+        nau_1 = ValueTracker(1.5)
+
+        pau_2 = ValueTracker(6.5)
+        nau_2 = ValueTracker(1.5)
+
+        axs_1=VGroup()
+        axs_2=VGroup()
+
+        def axUpdater(mobj):
+
+            xmin_1 = -nau_1.get_value()
+            xmax_1 = +pau_1.get_value()
+
+            xmin_2 = -nau_2.get_value()
+            xmax_2 = +pau_2.get_value()
+
+
+            axs_1_prev=Axes(
+                x_range=[-1.5,5.5],
+                y_range=[-1.5,4.5],
+                y_length=(round(config.frame_width)-2)*6/7,
+                tips=False, 
+                axis_config={
+                    "font_size": 24,
+                    #"include_ticks": False,
+                }, 
+            ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+
+
+            new_axs_1=Axes(
+                    x_range=[xmin_1,xmax_1,2**int(np.log10(xmax_1)-1)],
+                    y_range=[-1.5,4.5],
+                    x_length =(round(config.frame_width)-2)*8/7,
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False,
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(1).set_z_index(1)
+
+            new_axs_1_ref=new_axs_1.copy()
+            new_axs_1.shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
+
+            new_axs_2=Axes(
+                    x_range=[xmin_2,xmax_2,2**int(np.log10(xmax_1)-1)],
+                    y_range=[-1.5,4.5],
+                    x_length =(round(config.frame_width)-2)*8/7,
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False,
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(0).set_z_index(1).shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT).shift((new_axs_1.c2p(3,0)[0]-new_axs_1.c2p(0,0)[0])*RIGHT)
+            new_axs_2.add_coordinates()
+
+            mobj.become(new_axs_1)
+            axs_2.become(new_axs_2)
+
+        axs_1.add_updater(axUpdater)
+
+        self.add(axs_1,axs_2)
+
+        self.play(
+                AnimationGroup(
+                    pau_1.animate.set_value(6.5/2),
+                    nau_1.animate.set_value(1.5/2),
+
+                    pau_2.animate.set_value(6.5/2),
+                    nau_2.animate.set_value(1.5/2)
+                ),
+            run_time=2
+        ) 
+
+
+        # manim -pqh test2.py weier_6
+
+
+        
 ###################################################################################################################
 
 
