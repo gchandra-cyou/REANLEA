@@ -7026,9 +7026,6 @@ class weier_5(Scene):
             xmin_3 = -nau_3.get_value()
             xmax_3 = +pau_3.get_value()
 
-            xmin_4 = -nau_4.get_value()
-            xmax_4 = +pau_4.get_value()
-
 
             axs_1_prev=Axes(
                 x_range=[-1.5,5.5],
@@ -7051,7 +7048,7 @@ class weier_5(Scene):
                     axis_config={
                             "font_size": 24,
                         }, 
-                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(1).set_z_index(1)
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(0).set_z_index(1)
 
             new_axs_1_ref=new_axs_1.copy()
             new_axs_1.shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
@@ -7065,7 +7062,7 @@ class weier_5(Scene):
             new_d_line_1_ver=DashedLine(start=new_axs_1.c2p(3,2), end=new_axs_1.c2p(3,0),stroke_width=2).set_color_by_gradient(REANLEA_AQUA,REANLEA_BLUE_SKY).set_z_index(5)
 
             new_axs_2=Axes(
-                    x_range=[xmin_2,xmax_2,2**int(np.log10(xmax_1)-1)],
+                    x_range=[xmin_2,xmax_2,2**int(np.log10(xmax_2)-1)],
                     y_range=[-1.5,4.5],
                     x_length =(round(config.frame_width)-2)*8/7,
                     y_length=(round(config.frame_width)-2)*6/7,
@@ -7084,7 +7081,7 @@ class weier_5(Scene):
 
 
             new_axs_3=Axes(
-                    x_range=[xmin_3,xmax_3,2**int(np.log10(xmax_1)-1)],
+                    x_range=[xmin_3,xmax_3,2**int(np.log10(xmax_3)-1)],
                     y_range=[-1.5,4.5],
                     x_length =(round(config.frame_width)-2)*8/7,
                     y_length=(round(config.frame_width)-2)*6/7,
@@ -7101,23 +7098,10 @@ class weier_5(Scene):
             new_line_3_0010=Line(start=new_axs_3.c2p(0,0),end=new_axs_3.c2p(1,0)).set_stroke(width=4, color=[REANLEA_BLUE_SKY,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
             new_line_3_0032=Line(start=new_axs_3.c2p(0,0),end=new_axs_3.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PURPLE,REANLEA_YELLOW])
 
-            new_axs_4=Axes(
-                    x_range=[xmin_4,xmax_4,2**int(np.log10(xmax_1)-1)],
-                    y_range=[-1.5,4.5],
-                    x_length =(round(config.frame_width)-2)*8/7,
-                    y_length=(round(config.frame_width)-2)*6/7,
-                    tips=False,
-                    axis_config={
-                            "font_size": 24,
-                        }, 
-                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(0).set_z_index(1).shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
-
-            new_axs_4.add_coordinates()
 
 
 
-
-            mobj.become(new_axs_4)
+            mobj.become(new_axs_1)
 
             axs_1.become(new_axs_1)
             dt_1_00.become(new_dt_1_00)
@@ -7140,12 +7124,50 @@ class weier_5(Scene):
             dt_3_32.become(new_dt_3_32)
             line_3_0010.become(new_line_3_0010)
             line_3_0032.become(new_line_3_0032)
-
-            axs_4.become(new_axs_4).set_z_index(-1)
-
             
         
-        axs_4.add_updater(axUpdater)
+        axs_1.add_updater(axUpdater)
+
+        def axUpdater_1(mobj):
+
+            xmin_4 = -nau_4.get_value()
+            xmax_4 = +pau_4.get_value()
+
+
+            axs_4_prev=Axes(
+                x_range=[-1.5,5.5],
+                y_range=[-1.5,4.5],
+                y_length=(round(config.frame_width)-2)*6/7,
+                tips=False, 
+                axis_config={
+                    "font_size": 24,
+                    #"include_ticks": False,
+                }, 
+            ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+
+
+            new_axs_4=Axes(
+                    x_range=[xmin_4,xmax_4,2**int(np.log10(xmax_4)-1)],
+                    y_range=[-1.5,4.5],
+                    x_length =(round(config.frame_width)-2)*8/7,
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False,
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(1).set_z_index(-1)
+
+            new_axs_4_ref=new_axs_4.copy()
+            new_axs_4.shift((axs_4_prev.c2p(0,0)[0]-new_axs_4_ref.c2p(0,0)[0])*RIGHT)
+            new_axs_4.add_coordinates()
+
+            mobj.become(new_axs_4)
+
+        axs_4.add_updater(axUpdater_1)
+
+        
+
+
 
         self.add(axs_1, dt_1_10,dt_1_32,line_1_0010 ,line_1_0032,d_line_1_ver,dt_1_00,
         axs_2,dt_2_10,dt_2_32,line_2_0010 ,line_2_0032,d_line_2_ver,dt_2_00,
