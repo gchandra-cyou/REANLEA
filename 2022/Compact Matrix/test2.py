@@ -7055,7 +7055,7 @@ class weier_5(Scene):
 
             new_axs_1_ref=new_axs_1.copy()
             new_axs_1.shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
-            new_axs_1.add_coordinates()
+
 
             new_dt_1_00=Dot().set_color(REANLEA_YELLOW).move_to(new_axs_1.c2p(0,0)).set_z_index(5)
             new_dt_1_10=Dot().set_color(REANLEA_AQUA).move_to(new_axs_1.c2p(1,0)).set_z_index(5)
@@ -7112,10 +7112,14 @@ class weier_5(Scene):
                         }, 
                 ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(0).set_z_index(1).shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
 
+            new_axs_4.add_coordinates()
 
 
 
-            mobj.become(new_axs_1)
+
+            
+
+            axs_1.become(new_axs_1)
             dt_1_00.become(new_dt_1_00)
             dt_1_10.become(new_dt_1_10)
             dt_1_32.become(new_dt_1_32)
@@ -7137,9 +7141,11 @@ class weier_5(Scene):
             line_3_0010.become(new_line_3_0010)
             line_3_0032.become(new_line_3_0032)
 
-            axs_4.become(new_axs_4).set_z_index(-1)
+            #axs_4.become(new_axs_4).set_z_index(-1)
+
+            mobj.become(new_axs_4)
         
-        axs_1.add_updater(axUpdater)
+        axs_4.add_updater(axUpdater)
 
         self.add(axs_1, dt_1_10,dt_1_32,line_1_0010 ,line_1_0032,d_line_1_ver,dt_1_00,
         axs_2,dt_2_10,dt_2_32,line_2_0010 ,line_2_0032,d_line_2_ver,dt_2_00,
@@ -7152,7 +7158,7 @@ class weier_5(Scene):
                     nau_3.animate.set_value(1.5/2),
 
                     pau_4.animate.set_value(6.5/2),
-                    nau_4.animate.set_value(1.5/2)
+                    nau_4.animate.set_value(1.5/2),
                 ),
             run_time=2
         ) 
