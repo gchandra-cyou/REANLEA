@@ -4527,9 +4527,6 @@ class Scene4_2(Scene):
             xmin_3 = -nau_3.get_value()
             xmax_3 = +pau_3.get_value()
 
-            xmin_4 = -nau_4.get_value()
-            xmax_4 = +pau_4.get_value()
-
 
             axs_1_prev=Axes(
                 x_range=[-1.5,5.5],
@@ -4566,7 +4563,7 @@ class Scene4_2(Scene):
 
 
             new_axs_2=Axes(
-                    x_range=[xmin_2,xmax_2,2**int(np.log10(xmax_1)-1)],
+                    x_range=[xmin_2,xmax_2,2**int(np.log10(xmax_2)-1)],
                     y_range=[-1.5,4.5],
                     x_length =(round(config.frame_width)-2)*8/7,
                     y_length=(round(config.frame_width)-2)*6/7,
@@ -4586,25 +4583,7 @@ class Scene4_2(Scene):
 
 
             new_axs_3=Axes(
-                    x_range=[xmin_3,xmax_3,2**int(np.log10(xmax_1)-1)],
-                    y_range=[-1.5,4.5],
-                    x_length =(round(config.frame_width)-2)*8/7,
-                    y_length=(round(config.frame_width)-2)*6/7,
-                    tips=False,
-                    axis_config={
-                            "font_size": 24,
-                        }, 
-                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(1).set_z_index(1).shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
-
-            new_axs_3.add_coordinates()
-
-            new_dt_3_10=Dot().set_color(REANLEA_BLUE_SKY).move_to(new_axs_3.c2p(1,0)).set_z_index(5)
-            new_dt_3_32=Dot().set_color(REANLEA_PURPLE).move_to(new_axs_3.c2p(3,2)).set_z_index(3)
-            new_line_3_0010=Line(start=new_axs_3.c2p(0,0),end=new_axs_3.c2p(1,0)).set_stroke(width=4, color=[REANLEA_BLUE_SKY,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
-            new_line_3_0032=Line(start=new_axs_3.c2p(0,0),end=new_axs_3.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PURPLE,REANLEA_YELLOW])
-
-            new_axs_4=Axes(
-                    x_range=[xmin_4,xmax_4,2**int(np.log10(xmax_1)-1)],
+                    x_range=[xmin_3,xmax_3,2**int(np.log10(xmax_3)-1)],
                     y_range=[-1.5,4.5],
                     x_length =(round(config.frame_width)-2)*8/7,
                     y_length=(round(config.frame_width)-2)*6/7,
@@ -4614,8 +4593,13 @@ class Scene4_2(Scene):
                         }, 
                 ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(0).set_z_index(1).shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
 
-
             
+
+            new_dt_3_10=Dot().set_color(REANLEA_BLUE_SKY).move_to(new_axs_3.c2p(1,0)).set_z_index(5)
+            new_dt_3_32=Dot().set_color(REANLEA_PURPLE).move_to(new_axs_3.c2p(3,2)).set_z_index(3)
+            new_line_3_0010=Line(start=new_axs_3.c2p(0,0),end=new_axs_3.c2p(1,0)).set_stroke(width=4, color=[REANLEA_BLUE_SKY,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
+            new_line_3_0032=Line(start=new_axs_3.c2p(0,0),end=new_axs_3.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PURPLE,REANLEA_YELLOW])
+
             
             mobj.become(new_axs_1)
             dt_1_00.become(new_dt_1_00)
@@ -4641,9 +4625,48 @@ class Scene4_2(Scene):
         
         axs_1.add_updater(axUpdater)
 
+        def axUpdater_1(mobj):
+
+            xmin_4 = -nau_4.get_value()
+            xmax_4 = +pau_4.get_value()
+
+            axs_4_prev=Axes(
+                x_range=[-1.5,5.5],
+                y_range=[-1.5,4.5],
+                y_length=(round(config.frame_width)-2)*6/7,
+                tips=False, 
+                axis_config={
+                    "font_size": 24,
+                    #"include_ticks": False,
+                }, 
+            ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
+
+
+            new_axs_4=Axes(
+                    x_range=[xmin_4,xmax_4,2**int(np.log10(xmax_4)-1)],
+                    y_range=[-1.5,4.5],
+                    x_length =(round(config.frame_width)-2)*8/7,
+                    y_length=(round(config.frame_width)-2)*6/7,
+                    tips=False,
+                    axis_config={
+                            "font_size": 24,
+                        }, 
+                ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_opacity(1).set_z_index(-1)
+
+            new_axs_4_ref=new_axs_4.copy()
+            new_axs_4.shift((axs_4_prev.c2p(0,0)[0]-new_axs_4_ref.c2p(0,0)[0])*RIGHT)
+
+            new_axs_4.add_coordinates()
+
+            mobj.become(new_axs_4)
+
+        axs_4.add_updater(axUpdater_1)
+
+
         self.add(axs_1, dt_1_10,dt_1_32,line_1_0010 ,line_1_0032,d_line_1_ver,dt_1_00,
         axs_2,dt_2_10,dt_2_32,line_2_0010 ,line_2_0032,d_line_2_ver,dt_2_00,
-        axs_3,dt_3_10,dt_3_32,line_3_0010 ,line_3_0032)
+        axs_3,dt_3_10,dt_3_32,line_3_0010 ,line_3_0032,
+        axs_4)
 
         self.play(
             FadeOut(ax_1),
@@ -4662,7 +4685,10 @@ class Scene4_2(Scene):
             AnimationGroup(
                 AnimationGroup(
                     pau_3.animate.set_value(6.5/2),
-                    nau_3.animate.set_value(1.5/2)
+                    nau_3.animate.set_value(1.5/2),
+
+                    pau_4.animate.set_value(6.5/2),
+                    nau_4.animate.set_value(1.5/2)
                 ),
                 AnimationGroup(
                     Flash(point=Dot().move_to(ax_1.c2p(2,0)), color=REANLEA_BLUE_LAVENDER),
@@ -4772,6 +4798,9 @@ class Scene4_2(Scene):
             pau_3.animate.set_value(6.5/2.5),
             nau_3.animate.set_value(1.5/2.5),
 
+            pau_4.animate.set_value(6.5/2.5),
+            nau_4.animate.set_value(1.5/2.5),
+
 
             lam_val_trac_0.animate.set_value(2.5),
             lam_val_trac_1.animate.set_value(1.5),
@@ -4792,6 +4821,9 @@ class Scene4_2(Scene):
             pau_3.animate.set_value(6.5/2.75),
             nau_3.animate.set_value(1.5/2.75),
 
+            pau_4.animate.set_value(6.5/2.75),
+            nau_4.animate.set_value(1.5/2.75),
+
 
             lam_val_trac_0.animate.set_value(2.75),
             lam_val_trac_1.animate.set_value(1),
@@ -4811,6 +4843,9 @@ class Scene4_2(Scene):
 
             pau_3.animate.set_value(6.5/2),
             nau_3.animate.set_value(1.5/2),
+
+            pau_4.animate.set_value(6.5/2),
+            nau_4.animate.set_value(1.5/2),
 
 
             lam_val_trac_0.animate.set_value(2),
