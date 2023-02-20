@@ -4225,11 +4225,11 @@ class Scene4_1(Scene):
 
         
 
-# manim -pqh anim2.py Scene4_1
+    # manim -pqh anim2.py Scene4_1
 
-# manim -pql anim2.py Scene4_1
+    # manim -pql anim2.py Scene4_1
 
-# manim -sqk anim2.py Scene4_1
+    # manim -sqk anim2.py Scene4_1
         
 
 
@@ -4269,6 +4269,7 @@ class Scene4_2(Scene):
             }, 
         ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(1)
         ax_1.add_coordinates()
+
 
         ax_1_ref=ax_1.copy()
         ax_1.shift((ax_1_prev.c2p(0,0)[0]-ax_1_ref.c2p(0,0)[0])*RIGHT)
@@ -4864,8 +4865,7 @@ class Scene4_2(Scene):
                 ),
                 AnimationGroup(
                     Flash(point=Dot().move_to(ax_1.c2p(2,0)), color=REANLEA_BLUE_LAVENDER),
-                    dt_2.animate.set_color(REANLEA_GOLDENROD),
-                    #lam_val_0.animate.set_color(REANLEA_GOLDENROD)
+                    dt_2.animate.set_color(REANLEA_GOLDENROD)
                 ),
                 lag_ratio=.5
             ),
@@ -5033,6 +5033,8 @@ class Scene4_2(Scene):
 
         self.wait(2)
 
+        
+
         uncrt_grp=VGroup(axs_1, dt_1_10,dt_1_32,line_1_0010 ,line_1_0032,d_line_1_ver,dt_1_00,
         axs_2,dt_2_10,dt_2_32,line_2_0010 ,line_2_0032,d_line_2_ver,dt_2_00,
         axs_3,dt_3_10,dt_3_32,line_3_0010 ,line_3_0032,
@@ -5040,11 +5042,25 @@ class Scene4_2(Scene):
 
         bez_grp=VGroup(bend_bez_arrow_1,txt_4)
         innr_prdct_add_def_grp=VGroup(innr_prdct_add_12,fr_all_txt_0)
+        dt_rep_grp=VGroup(dt_rep_0,dt_rep_lbl,dt_rep_lbl_1,txt_3)
+        dot_grp=VGroup(dot_1,dot_0,dt_2)
+        lbl_grp=VGroup(dt_3_lbl,angl_1,angl_1_lbl,lbl_i)
+
+        innr_prdct_dfn_3=MathTex(r"\langle i,v \rangle","=",r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(1.25).shift(RIGHT)
 
         self.play(
-            FadeOut(uncrt_grp),
-            FadeOut(bez_grp),
-            FadeOut(innr_prdct_add_def_grp),
+            AnimationGroup(
+                FadeOut(uncrt_grp),
+                FadeOut(bez_grp),
+                FadeOut(innr_prdct_add_def_grp),
+                FadeOut(lam_val_grp),
+                FadeOut(dt_rep_grp),
+                FadeOut(innr_prdct_add_grp_1),
+                FadeOut(dot_grp),
+                FadeOut(lbl_grp)
+            ),
+            vects_grp_old.animate.set_opacity(0),
+            ReplacementTransform(innr_prdct_dfn_2.copy(),innr_prdct_dfn_3)
         )
 
         
@@ -5066,13 +5082,123 @@ class Scene4_2(Scene):
 
 
 
-        # manim -pqh anim2.py Scene4_2
+    # manim -pqh anim2.py Scene4_2
 
-        # manim -pql anim2.py Scene4_2
+    # manim -pql anim2.py Scene4_2
 
-        # manim -sqk anim2.py Scene4_2  
+    # manim -sqk anim2.py Scene4_2  
 
 
+class Scene4_3(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        
+
+
+        # PREVIOUS SCENE
+
+
+        innr_prdct_dfn_0=MathTex(r"\langle , \rangle",":",r"V \times V","\longrightarrow",r"\mathbb{R").scale(.65).set_color_by_gradient(REANLEA_CYAN_LIGHT).move_to(3*UP+3*RIGHT)
+
+        with RegisterFont("Courier Prime") as fonts:
+            innr_prdct_dfn_1=Text("by", font=fonts[0]).scale(.35).set_color(REANLEA_CYAN_LIGHT).next_to(innr_prdct_dfn_0, RIGHT).shift(.1*RIGHT+.02*DOWN)
+        
+        innr_prdct_dfn_2=MathTex(r"\langle i,v \rangle","=",r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.7).set_color_by_gradient(REANLEA_CYAN_LIGHT).move_to(2.5*UP+3.25*RIGHT)
+
+        innr_prdct_dfn=VGroup(innr_prdct_dfn_0,innr_prdct_dfn_1,innr_prdct_dfn_2).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_AQUA)
+
+        innr_prdct_dfn_2.set_color(REANLEA_AQUA)
+
+
+        bulet_1=Dot(point=[-5.9,-1,0], radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN)
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_sym_1=Text("Symmetric", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(bulet_1,RIGHT)
+ 
+
+
+        self.add(innr_prdct_dfn, txt_sym_1,bulet_1)
+
+
+
+        txt_v_0=MathTex("v",",").set_color(REANLEA_PINK_LIGHTER).move_to(5.25*LEFT+2*UP)
+        txt_v_0[1].set_color(REANLEA_TXT_COL)
+        txt_i_0=MathTex("i").set_color(REANLEA_AQUA).move_to(4.9*LEFT+2.1*UP)
+        txt_com_0=MathTex(",").set_color(REANLEA_TXT_COL).next_to(txt_i_0,RIGHT, buff=.1).shift(.18*DOWN)
+        txt_th_0=MathTex(r"\theta").set_color(REANLEA_YELLOW).move_to(4.45*LEFT+2.1*UP)
+
+        txt_v_1=txt_v_0.copy()
+        txt_i_1=txt_i_0.copy()
+
+        txt_lbl_grp_0=VGroup(txt_v_0,txt_i_0,txt_com_0,txt_th_0).scale(1.5).move_to(4.9*LEFT+2.1*UP)
+        txt_lbl_grp_1=VGroup(txt_v_1,txt_i_1).scale(1.5).move_to(4.9*LEFT+2.1*UP)
+        
+
+        arr_1=Arrow(max_tip_length_to_length_ratio=.1, color=REANLEA_BLUE).rotate(-90*DEGREES).next_to(txt_i_0,DOWN).set_stroke(width=2, color=[REANLEA_BLUE,REANLEA_BLUE_SKY]).shift(.35*DOWN).scale(.85)
+
+        self.add(arr_1)
+
+        txt_scl_1=MathTex(r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").set_color(REANLEA_AQUA_GREEN).next_to(arr_1,DOWN, buff=.1).shift(.35*DOWN)
+
+        self.add(txt_scl_1)
+
+        self.add(txt_lbl_grp_1)
+
+        indct_ln_1=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.25).rotate(PI/6).next_to(txt_lbl_grp_1, RIGHT).shift(.2*UP).set_z_index(2)
+
+        self.add(indct_ln_1)
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_1=Text("Vectors", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(indct_ln_1).shift(.35*UP)
+        
+        self.add(txt_1)
+
+        indct_ln_2=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.25).rotate(-PI/6).next_to(txt_scl_1, DOWN).shift(.2*RIGHT).set_z_index(2)
+
+        self.add(indct_ln_2)
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_2=Text("Scalars", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(indct_ln_2).shift(.25*DOWN)
+
+        self.add(txt_2)
+        
+        innr_prdct_sym=MathTex(r"\langle ,\rangle").set_color(REANLEA_BLUE_LAVENDER).next_to(arr_1,RIGHT)
+
+        self.add(innr_prdct_sym)
+
+        innr_prdct_grp_0=VGroup(txt_lbl_grp_1,arr_1,txt_scl_1,innr_prdct_sym,indct_ln_1,indct_ln_2,txt_1,txt_2).scale(.5).shift(.5*LEFT+.5*UP)
+
+        sr_innr_prdct_grp_0=SurroundingRectangle(innr_prdct_grp_0, color=REANLEA_PURPLE_LIGHTER, buff=.25, corner_radius=.125).set_opacity(.25)
+
+        innr_prdct_dfn_3=MathTex(r"\langle i,v \rangle","=",r"\lVert i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(1.25).shift(RIGHT)
+
+        bulet_2=Dot(point=[-5.9,-1.75,0], radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN)
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_bil_1=Text("Bilinear", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(bulet_2,RIGHT)
+
+        self.add(sr_innr_prdct_grp_0, innr_prdct_dfn_3, bulet_2, txt_bil_1)
+
+
+        ### MAIN SCENE
+
+        self.wait(4)
+
+
+
+
+
+
+        # manim -pqh anim2.py Scene4_3
+
+        # manim -pql anim2.py Scene4_3
+
+        # manim -sqk anim2.py Scene4_3
+        
 
 ###################################################################################################################
 
