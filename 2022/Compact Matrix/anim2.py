@@ -4984,11 +4984,6 @@ class Scene4_2(Scene):
         )
         self.wait(2)
 
-        '''self.play(
-            Transform(innr_prdct_dfn_4[1], innr_prdct_dfn_4_1_ref),
-            Transform(innr_prdct_dfn_4[3],innr_prdct_dfn_4_3_ref, path_arc=-180*DEGREES)
-        )'''
-
         innr_prdct_add_12_ref_0_4t6=innr_prdct_add_12[0][4:6].copy().shift(.35*RIGHT)
         innr_prdct_add_12_ref_0_7=innr_prdct_add_12[0][7].copy().move_to(innr_prdct_add_12[0][4].get_center())
         innr_prdct_add_12_ref_0_6=innr_prdct_add_12[0][6].copy().shift(.15*LEFT)
@@ -5021,13 +5016,36 @@ class Scene4_2(Scene):
             ),
             Indicate(txt_sym_1, color=REANLEA_MAGENTA_MID_LIGHTER)
         )
+        self.wait(2)
 
         bulet_2=Dot(point=[-5.9,-1.75,0], radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN)
 
         with RegisterFont("Reenie Beanie") as fonts:
             txt_bil_1=Text("Bilinear", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(bulet_2,RIGHT)
 
-        self.add(bulet_2,txt_bil_1)
+
+        self.play(
+            Write(bulet_2)
+        )
+        self.play(
+            ReplacementTransform(txt_4[0][0:6].copy(), txt_bil_1)
+        )
+
+        self.wait(2)
+
+        uncrt_grp=VGroup(axs_1, dt_1_10,dt_1_32,line_1_0010 ,line_1_0032,d_line_1_ver,dt_1_00,
+        axs_2,dt_2_10,dt_2_32,line_2_0010 ,line_2_0032,d_line_2_ver,dt_2_00,
+        axs_3,dt_3_10,dt_3_32,line_3_0010 ,line_3_0032,
+        axs_4)
+
+        bez_grp=VGroup(bend_bez_arrow_1,txt_4)
+        innr_prdct_add_def_grp=VGroup(innr_prdct_add_12,fr_all_txt_0)
+
+        self.play(
+            FadeOut(uncrt_grp),
+            FadeOut(bez_grp),
+            FadeOut(innr_prdct_add_def_grp),
+        )
 
         
 
