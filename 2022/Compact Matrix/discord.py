@@ -6586,6 +6586,65 @@ class RectStretch(Scene):
         # manim -pqh discord.py RectStretch
 
 
+
+import random
+
+def circles_intersect(circle1, circle2):
+    distance = np.linalg.norm(circle1.get_center() - circle2.get_center())
+    return distance < circle1.get_width() / 2 + circle2.get_width() / 2
+
+
+class MovingCircles(VGroup):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        num_points = 50
+        self.ps = [
+            Dot(0.1).shift(random.uniform(-1, 1) * UP + random.uniform(-1, 1) * RIGHT)
+            for _ in range(num_points)
+        ]
+        self.add(*self.ps)
+        for point in self.ps:
+            point.velocity = random.uniform(-0.1, 0.1), random.uniform(-0.1, 0.1), 0
+        self.add_updater(self.update_self)
+
+    @staticmethod
+    def update_self(self, dt):
+        for point in self.ps:
+            point.shift(point.velocity)
+
+            if point.get_center_of_mass()[0] < -2 or point.get_center_of_mass()[0] > 2:
+                point.velocity = (
+                    -point.velocity[0],
+                    point.velocity[1],
+                    point.velocity[2],
+                )
+            if point.get_center_of_mass()[1] < -2 or point.get_center_of_mass()[1] > 2:
+                point.velocity = (
+                    point.velocity[0],
+                    -point.velocity[1],
+                    point.velocity[2],
+                )
+
+            for other_point in self.ps:
+                if point != other_point and circles_intersect(point, other_point):
+                    point.velocity, other_point.velocity = (
+                        other_point.velocity,
+                        point.velocity,
+                    )
+        return self
+
+class TestCirclesBouncing(Scene):
+    def construct(self):
+        box = Rectangle(width=4.4, height=4.4)
+        self.play(FadeIn(box))
+        circles = MovingCircles()
+        self.add(circles)
+        self.wait(5)
+
+
+        # manim -pqh discord.py TestCirclesBouncing
+
+
 ###################################################################################################################
 
 # NOTE :-

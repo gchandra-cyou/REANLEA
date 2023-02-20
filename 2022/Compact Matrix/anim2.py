@@ -3201,6 +3201,8 @@ class Scene4(Scene):
         self.add(dot_3)
 
         fade_out_grp=VGroup(lbl_i,dt_3_lbl,ln_3_lbl,ln_1_lbl)
+        lbl_i_1=MathTex("i").scale(.45).set_color(REANLEA_AQUA).move_to(ax_1.c2p(1.2,.2))  
+        self.add(lbl_i_1)
         self.play(
             dot_1.animate.move_to(ax_1.c2p(0,0)).set_opacity(0),
             FadeOut(fade_out_grp),
@@ -3334,9 +3336,13 @@ class Scene4_1(Scene):
         ).set_color_by_gradient(REANLEA_YELLOW_LIGHTER,REANLEA_BLUE_LAVENDER)
 
         d_d_line_2_lbl=MathTex(r"\lVert 2 \cdot i \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos\theta").scale(.5).set_color(REANLEA_BLUE_LAVENDER).next_to(d_d_line_2,RIGHT)
+
+        lbl_i=MathTex("i").scale(.45).set_color(REANLEA_AQUA).move_to(ax_1.c2p(1.2,.2))  
+
         
         
-        self.add(ax_2, dt_0,dt_1,dt_1_ref,dt_2,dt_3,dt_3_lbl,ln_0032,dot_0,dot_1,angl_1,angl_1_lbl,d_d_line_1,d_d_line_1_lbl,d_d_line_2,d_d_line_2_lbl)
+        
+        self.add(ax_2, dt_0,dt_1,dt_1_ref,dt_2,dt_3,dt_3_lbl,ln_0032,dot_0,dot_1,angl_1,angl_1_lbl,d_d_line_1,d_d_line_1_lbl,d_d_line_2,d_d_line_2_lbl,lbl_i)
 
 
 
@@ -4321,8 +4327,10 @@ class Scene4_2(Scene):
         with RegisterFont("Reenie Beanie") as fonts:
             txt_sym_1=Text("Symmetric", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(bulet_1,RIGHT)
 
+        lbl_i=MathTex("i").scale(.45).set_color(REANLEA_AQUA).move_to(ax_1.c2p(1.2,.2))  
 
-        self.add(ax_1,dt_0,dt_1,dt_2,dt_3,dt_3_lbl,ln_0010,ln_0032,dot_0,dot_1,angl_1,angl_1_lbl,d_d_line_1,d_d_line_1_lbl,d_d_line_2,d_d_line_2_lbl,innr_prdct_dfn,d_line_1, txt_sym_1,bulet_1)
+
+        self.add(ax_1,dt_0,dt_1,dt_2,dt_3,dt_3_lbl,ln_0010,ln_0032,dot_0,dot_1,angl_1,angl_1_lbl,d_d_line_1,d_d_line_1_lbl,d_d_line_2,d_d_line_2_lbl,innr_prdct_dfn,d_line_1, txt_sym_1,bulet_1, lbl_i)
 
 
 
@@ -4856,7 +4864,8 @@ class Scene4_2(Scene):
                 ),
                 AnimationGroup(
                     Flash(point=Dot().move_to(ax_1.c2p(2,0)), color=REANLEA_BLUE_LAVENDER),
-                    dt_2.animate.set_color(REANLEA_GOLDENROD)
+                    dt_2.animate.set_color(REANLEA_GOLDENROD),
+                    #lam_val_0.animate.set_color(REANLEA_GOLDENROD)
                 ),
                 lag_ratio=.5
             ),
@@ -4864,7 +4873,20 @@ class Scene4_2(Scene):
         ) 
         self.wait(2)
 
+        fr_all_txt_0= MathTex(r"\forall \lambda_{1} , \lambda_{2} \in \mathbb{R}").scale(.6).move_to(5.5*RIGHT+.75*UP).set_color(REANLEA_TXT_COL)
+        fr_all_txt_0[0][1:].shift(.1*RIGHT)
 
+        self.play(
+            Write(fr_all_txt_0)
+        )
+
+        self.wait(2)
+
+        innr_prdct_add_9=MathTex(r"\langle \lambda_{1} \cdot i,v \rangle",r"+",r"\langle \lambda_{2} \cdot i,v \rangle","=",r"\langle \lambda_{1} \cdot i + \lambda_{2} \cdot i,v \rangle").scale(.7).set_color(REANLEA_AQUA).move_to(innr_prdct_add_7.get_center())
+
+        self.play(
+            ReplacementTransform(innr_prdct_add_8,innr_prdct_add_9)
+        )
 
         
 
