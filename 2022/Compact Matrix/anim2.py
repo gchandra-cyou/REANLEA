@@ -4954,10 +4954,54 @@ class Scene4_2(Scene):
         self.play(
             Create(fr_all_txt_0)
         )
+        self.wait()
 
-        bend_bez_arrow_1=bend_bezier_arrow().rotate(-30*DEGREES).scale(0.75).set_color(REANLEA_TXT_COL)
+        innr_prdct_add_12=MathTex(r"\lambda_{1} \cdot \langle u_{1},v \rangle",r"+",r"\lambda_{2} \cdot \langle u_{2},v \rangle","=",r"\langle \lambda_{1} \cdot u_{1} + \lambda_{2} \cdot u_{2},v \rangle").scale(.7).set_color(REANLEA_AQUA).move_to(innr_prdct_add_7.get_center())
+
+        self.play(
+            ReplacementTransform(innr_prdct_add_11,innr_prdct_add_12)
+        )
+
+        
+
+        bend_bez_arrow_1=bend_bezier_arrow().scale(0.5).set_color(REANLEA_TXT_COL).flip().rotate(-80*DEGREES).move_to(1.8*UP+1.1*LEFT)
 
         self.add(bend_bez_arrow_1)
+
+        with RegisterFont("Cousine") as fonts:
+            txt_4 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "Linear on",
+                "first component"
+            )]).arrange_submobjects(DOWN).scale(0.3).set_color(REANLEA_GREY).move_to(2.8*UP+.8*LEFT).rotate(-15*DEGREES)
+
+        self.add(txt_4)
+
+        self.play(
+            Create(txt_4),
+            innr_prdct_add_12[0][7].animate.set_color(REANLEA_SAFRON),
+            innr_prdct_add_12[2][7].animate.set_color(REANLEA_SAFRON),
+            innr_prdct_add_12[4][13].animate.set_color(REANLEA_SAFRON),
+        )
+        self.wait(2)
+
+        '''self.play(
+            Transform(innr_prdct_dfn_4[1], innr_prdct_dfn_4_1_ref),
+            Transform(innr_prdct_dfn_4[3],innr_prdct_dfn_4_3_ref, path_arc=-180*DEGREES)
+        )'''
+
+        innr_prdct_add_12_ref_0_4t6=innr_prdct_add_12[0][4:6].copy().shift(.25*RIGHT)
+        innr_prdct_add_12_ref_0_7=innr_prdct_add_12[0][7].copy().move_to(innr_prdct_add_12[0][4].get_center())
+
+        self.play(
+            AnimationGroup(
+                Transform(innr_prdct_add_12[0][4:6],innr_prdct_add_12_ref_0_4t6),
+                Transform(innr_prdct_add_12[0][7],innr_prdct_add_12_ref_0_7, path_arc=-180*DEGREES),
+                innr_prdct_add_12[0][6].animate.shift(.1*LEFT)
+            )
+        )
+
+        
+
 
 
 

@@ -7328,6 +7328,16 @@ class weier_6(Scene):
         # manim -pqh test2.py weier_6
 
 
+
+class bez_arr_tst_1(Scene):
+    def construct(self):
+
+        bend_bez_arrow_1=bend_bezier_arrow().scale(0.5).set_color(REANLEA_TXT_COL).flip().rotate(-60*DEGREES)
+
+        self.add(bend_bez_arrow_1)
+
+
+        # manim -pqh test2.py bez_arr_tst_1
         
 ###################################################################################################################
 
