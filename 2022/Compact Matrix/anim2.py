@@ -4989,16 +4989,45 @@ class Scene4_2(Scene):
             Transform(innr_prdct_dfn_4[3],innr_prdct_dfn_4_3_ref, path_arc=-180*DEGREES)
         )'''
 
-        innr_prdct_add_12_ref_0_4t6=innr_prdct_add_12[0][4:6].copy().shift(.25*RIGHT)
+        innr_prdct_add_12_ref_0_4t6=innr_prdct_add_12[0][4:6].copy().shift(.35*RIGHT)
         innr_prdct_add_12_ref_0_7=innr_prdct_add_12[0][7].copy().move_to(innr_prdct_add_12[0][4].get_center())
+        innr_prdct_add_12_ref_0_6=innr_prdct_add_12[0][6].copy().shift(.15*LEFT)
+
+        innr_prdct_add_12_ref_2_4t6=innr_prdct_add_12[2][4:6].copy().shift(.35*RIGHT)
+        innr_prdct_add_12_ref_2_7=innr_prdct_add_12[2][7].copy().move_to(innr_prdct_add_12[2][4].get_center())
+        innr_prdct_add_12_ref_2_6=innr_prdct_add_12[2][6].copy().shift(.15*LEFT)
+
+        innr_prdct_add_12_ref_4_1t12=innr_prdct_add_12[4][1:12].copy().shift(.35*RIGHT)
+        innr_prdct_add_12_ref_4_13=innr_prdct_add_12[4][13].copy().shift(2.5*LEFT)
+        innr_prdct_add_12_ref_4_12=innr_prdct_add_12[4][12].copy().shift(2.15*LEFT)
+
+
 
         self.play(
             AnimationGroup(
                 Transform(innr_prdct_add_12[0][4:6],innr_prdct_add_12_ref_0_4t6),
                 Transform(innr_prdct_add_12[0][7],innr_prdct_add_12_ref_0_7, path_arc=-180*DEGREES),
-                innr_prdct_add_12[0][6].animate.shift(.1*LEFT)
-            )
+                Transform(innr_prdct_add_12[0][6],innr_prdct_add_12_ref_0_6)
+            ),
+            AnimationGroup(
+                Transform(innr_prdct_add_12[2][4:6],innr_prdct_add_12_ref_2_4t6),
+                Transform(innr_prdct_add_12[2][7],innr_prdct_add_12_ref_2_7, path_arc=-180*DEGREES),
+                Transform(innr_prdct_add_12[2][6],innr_prdct_add_12_ref_2_6)
+            ),
+            AnimationGroup(
+                Transform(innr_prdct_add_12[4][1:12],innr_prdct_add_12_ref_4_1t12),
+                Transform(innr_prdct_add_12[4][13],innr_prdct_add_12_ref_4_13, path_arc=-180*DEGREES),
+                Transform(innr_prdct_add_12[4][12],innr_prdct_add_12_ref_4_12)
+            ),
+            Indicate(txt_sym_1, color=REANLEA_MAGENTA_MID_LIGHTER)
         )
+
+        bulet_2=Dot(point=[-5.9,-1.75,0], radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN)
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_bil_1=Text("Bilinear", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(bulet_2,RIGHT)
+
+        self.add(bulet_2,txt_bil_1)
 
         
 
