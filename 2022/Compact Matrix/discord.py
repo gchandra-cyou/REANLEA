@@ -6645,6 +6645,81 @@ class TestCirclesBouncing(Scene):
         # manim -pqh discord.py TestCirclesBouncing
 
 
+
+from colour import Color
+
+def circles_intersect(circle1, circle2):
+    distance = np.linalg.norm(circle1.get_center() - circle2.get_center())
+    return distance < circle1.get_width() / 2 + circle2.get_width() / 2
+
+class veloDot(Dot):
+    def __init__(self, velocity = np.ndarray([0,0,0]), mass = 1, tracker = None, **kwargs):
+        super().__init__(**kwargs)
+        self.velocity = velocity
+        self.mass     = mass
+        self.tracker  = tracker
+        self.add_updater(self.updater)
+
+    @staticmethod    
+    def updater(mobj, dt):
+        if mobj.tracker != None:
+            pos = mobj.get_center() + mobj.tracker.get_value()*dt*mobj.velocity
+        else:
+            pos = mobj.get_center() + dt*mobj.velocity
+
+        if (pos[0] >= 2):
+            pos[0] = +2 - (pos[0] - 2)
+            mobj.velocity[0] = -abs(mobj.velocity[0])
+        elif (pos[0] <= -2):
+            pos[0] = -2 - (pos[0] + 2)
+            mobj.velocity[0] = +abs(mobj.velocity[0])
+        if (pos[1] >= 2):
+            pos[1] = +2 - (pos[1] - 2)
+            mobj.velocity[1] = -abs(mobj.velocity[1])
+        elif (pos[1] <= -2):
+            pos[1] = -2 - (pos[1] + 2)
+            mobj.velocity[1] = +abs(mobj.velocity[1])
+        mobj.move_to(pos)
+
+class ParticleCollisonScene(Scene):
+    def construct(self):
+        sloMo = ValueTracker(1)
+        dots = VGroup()
+        for i in range(20):
+            dot = veloDot(
+                point    = np.random.uniform(low=-1,high=1)*RIGHT+np.random.uniform(low=-1,high=1)*UP,
+                velocity = np.random.uniform(low=-3,high=3)*RIGHT+np.random.uniform(low=-3,high=3)*UP,
+                mass = np.random.uniform(low=0.5, high=2),
+                tracker = sloMo
+            )
+            dots += dot
+
+        def dotsUpdater(mobj):
+            for i in range(len(mobj)):
+                for j in range(i+1,len(mobj)):
+                    if circles_intersect(dots[i],dots[j]):
+                        v1 = dots[i].velocity
+                        v2 = dots[j].velocity
+                        m1 = dots[i].mass
+                        m2 = dots[j].mass
+                        dots[i].velocity = (m1*v1 + m2*(2*v2-v1))/(m1+m2)
+                        dots[j].velocity = (m2*v2 + m1*(2*v1-v2))/(m1+m2)
+                        color = Color(hsl=(np.random.uniform(0,1),1,0.5))
+                        dots[i].set_color(color) 
+                        dots[j].set_color(color) 
+
+        dots.add_updater(dotsUpdater)                    
+        self.add(dots, Square(side_length=4,stroke_width=2))
+        self.wait(5)
+        self.play(sloMo.animate.set_value(0.2))
+        self.wait(5)
+        self.play(sloMo.animate.set_value(2))
+        self.wait(5)
+
+        # manim -pqh discord.py ParticleCollisonScene
+
+
+
 ###################################################################################################################
 
 # NOTE :-

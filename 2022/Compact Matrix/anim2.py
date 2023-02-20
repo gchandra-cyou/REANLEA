@@ -4563,7 +4563,7 @@ class Scene4_2(Scene):
             new_axs_1.shift((axs_1_prev.c2p(0,0)[0]-new_axs_1_ref.c2p(0,0)[0])*RIGHT)
 
             new_dt_1_00=Dot().set_color(REANLEA_YELLOW).move_to(new_axs_1.c2p(0,0)).set_z_index(5)
-            new_dt_1_10=Dot().set_color(REANLEA_AQUA).move_to(new_axs_1.c2p(1,0)).set_z_index(5)
+            new_dt_1_10=Dot().set_color(REANLEA_AQUA).move_to(new_axs_1.c2p(1,0)).set_z_index(6)
             new_dt_1_32=Dot().set_color(REANLEA_PINK).move_to(new_axs_1.c2p(3,2)).set_z_index(3)
             new_line_1_0010=Line(start=new_axs_1.c2p(0,0),end=new_axs_1.c2p(1,0)).set_stroke(width=4, color=[REANLEA_AQUA,REANLEA_YELLOW_LIGHTER]).set_z_index(2)
             new_line_1_0032=Line(start=new_axs_1.c2p(0,0),end=new_axs_1.c2p(3,2)).set_stroke(width=4, color=[REANLEA_PINK,REANLEA_YELLOW])
@@ -4611,7 +4611,7 @@ class Scene4_2(Scene):
             
             mobj.become(new_axs_1)
             dt_1_00.become(new_dt_1_00)
-            dt_1_10.become(new_dt_1_10)
+            dt_1_10.become(new_dt_1_10).set_z_index(3)
             dt_1_32.become(new_dt_1_32)
             line_1_0010.become(new_line_1_0010)
             line_1_0032.become(new_line_1_0032)
@@ -4880,13 +4880,86 @@ class Scene4_2(Scene):
             Write(fr_all_txt_0)
         )
 
-        self.wait(2)
+        self.wait(4)
 
         innr_prdct_add_9=MathTex(r"\langle \lambda_{1} \cdot i,v \rangle",r"+",r"\langle \lambda_{2} \cdot i,v \rangle","=",r"\langle \lambda_{1} \cdot i + \lambda_{2} \cdot i,v \rangle").scale(.7).set_color(REANLEA_AQUA).move_to(innr_prdct_add_7.get_center())
 
         self.play(
             ReplacementTransform(innr_prdct_add_8,innr_prdct_add_9)
         )
+
+        self.wait(2)
+
+        dt_rep_0=Dot().set_color(PURE_RED).set_sheen(-.25,DOWN).move_to(ax_1.c2p(0,0)).set_z_index(5)
+
+        self.play(
+            FadeIn(dt_rep_0)
+        )
+
+        self.play(
+            dt_rep_0.animate.move_to(ax_1.c2p(5.5,0))
+        )
+        self.play(
+            dt_rep_0.animate.move_to(ax_1.c2p(-1.25,0))
+        )
+        self.play(
+            dt_rep_0.animate.move_to(ax_1.c2p(3,0))
+        )
+        self.play(
+            dt_rep_0.animate.move_to(ax_1.c2p(-1,0))
+        )
+        self.play(
+            dt_rep_0.animate.move_to(ax_1.c2p(6.25,0))
+        )
+
+        dt_rep_lbl=MathTex(r"u","=",r"\mu \cdot i").scale(.85).set_color(PURE_RED).move_to(2.5*DOWN+.75*RIGHT)
+        dt_rep_lbl[2][2].set_color(REANLEA_AQUA)
+
+        self.play(
+            ReplacementTransform(dt_rep_0.copy(),dt_rep_lbl),
+            dt_rep_0.animate.move_to(ax_1.c2p(4.55,0))   
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            txt_3=Text("for some", font=fonts[0]).scale(.25).set_color(REANLEA_TXT_COL).next_to(dt_rep_lbl,RIGHT)
+
+        self.play(
+            Write(txt_3)
+        )
+
+        dt_rep_lbl_1=MathTex(r"\mu \in \mathbb{R}").scale(.5).set_color(PURE_RED).next_to(txt_3,RIGHT)
+
+        self.play(
+            Create(dt_rep_lbl_1)
+        )
+
+        self.wait(2)
+
+        innr_prdct_add_10=MathTex(r"\langle u_{1} ,v \rangle",r"+",r"\langle u_{2} ,v \rangle","=",r"\langle u_{1} + u_{2} ,v \rangle").scale(.7).set_color(REANLEA_AQUA).move_to(innr_prdct_add_7.get_center())
+
+        self.play(
+            ReplacementTransform(innr_prdct_add_9,innr_prdct_add_10),
+            FadeOut(fr_all_txt_0),
+            FadeOut(lam_expli_0),
+            FadeOut(sr_bez_0)
+        )
+
+        self.wait(2)
+
+        innr_prdct_add_11=MathTex(r"\langle \lambda_{1} \cdot u_{1},v \rangle",r"+",r"\langle \lambda_{2} \cdot u_{2},v \rangle","=",r"\langle \lambda_{1} \cdot u_{1} + \lambda_{2} \cdot u_{2},v \rangle").scale(.7).set_color(REANLEA_AQUA).move_to(innr_prdct_add_7.get_center())
+
+        self.play(
+            ReplacementTransform(innr_prdct_add_10,innr_prdct_add_11)
+        )
+        self.play(
+            Create(fr_all_txt_0)
+        )
+
+        bend_bez_arrow_1=bend_bezier_arrow().rotate(-30*DEGREES).scale(0.75).set_color(REANLEA_TXT_COL)
+
+        self.add(bend_bez_arrow_1)
+
+
 
         
 
