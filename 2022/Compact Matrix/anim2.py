@@ -5226,6 +5226,48 @@ class Scene4_3(Scene):
             Create(innr_prdct_dfn_5)
         )
 
+        arr_2=MathTex(r"\longrightarrow").rotate(-30*DEGREES).next_to(innr_prdct_dfn_5,RIGHT).set_stroke(width=2, color=[REANLEA_PURPLE,REANLEA_BLUE_SKY]).shift(.15*LEFT+.45*DOWN)
+
+        self.play(
+            Write(arr_2)
+        )
+
+        innr_prdct_dfn_6=MathTex(r"v").set_color_by_gradient(REANLEA_TXT_COL)
+
+        with RegisterFont("Cousine") as fonts:
+            txt_5=Text("is the ZERO vector.", font=fonts[0]).scale(.35).set_color(REANLEA_TXT_COL)#.next_to(innr_prdct_dfn_6,RIGHT)
+
+        innr_prdct_dfn_6_grp=VGroup(innr_prdct_dfn_6,txt_5).arrange_submobjects(RIGHT, buff=.2).next_to(arr_2,DOWN).shift(1.95*RIGHT+.35*UP)
+
+        self.play(
+            Write(innr_prdct_dfn_6_grp)
+        )
+
+        with RegisterFont("Fuzzy Bubbles") as fonts:
+            txt_pos_def_0=Text("Positive Definite", font=fonts[0]).scale(.75).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_BLUE_LAVENDER).shift(1.25*UP+RIGHT)
+
+        strp_1=get_stripe(factor=0.05, buff_max=4.2, color=PURE_GREEN).next_to(txt_pos_def_0,DOWN).shift(.15*UP+.175*RIGHT)
+
+        self.play(
+            Write(txt_pos_def_0)
+        )
+        self.play(
+            Create(strp_1)
+        )
+
+        bulet_3=Dot(point=[-5.9,-2.5,0], radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN)
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_pos_def_1=Text("Positive Definite", font=fonts[0]).scale(.75).set_color(REANLEA_CYAN_LIGHT).next_to(bulet_3,RIGHT)
+
+        self.play(
+            FadeIn(bulet_3)
+        )
+        self.play(
+            ReplacementTransform(txt_pos_def_0.copy(),txt_pos_def_1)
+        )
+
+
 
 
         self.wait(4)
