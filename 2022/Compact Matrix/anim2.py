@@ -5186,32 +5186,40 @@ class Scene4_3(Scene):
 
         ### MAIN SCENE
 
+        self.wait(2)
+
         innr_prdct_dfn_4=MathTex(r"\langle v,v \rangle","=",r"\lVert v \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos0").set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(1.25).shift(RIGHT)
 
         self.play(
             ReplacementTransform(innr_prdct_dfn_3,innr_prdct_dfn_4)
         )
+        self.wait()
 
         cos_0_val=MathTex("1").set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(1.25).move_to(innr_prdct_dfn_4[-1].get_center()).shift(.3*LEFT)
 
         self.play(
             Transform(innr_prdct_dfn_4[-1],cos_0_val)
         )
+        self.wait()
 
         v_sq_0=MathTex(r"\lVert v \rVert ^{2}").set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(1.25).move_to(innr_prdct_dfn_4[2].get_center()).shift(.2*RIGHT+.05*UP)
 
         self.play(
             Transform(innr_prdct_dfn_4[2:], v_sq_0)
         )
+
         self.play(
             innr_prdct_dfn_4.animate.shift(RIGHT)
         )
+
+        self.wait(2)
 
         innr_prdct_dfn_4_geq=MathTex(r"\geq 0").set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(1.25).next_to(innr_prdct_dfn_4,RIGHT)
 
         self.play(
             Write(innr_prdct_dfn_4_geq)
         )
+        self.wait(2)
 
         with RegisterFont("Cousine") as fonts:
             txt_4=Text("and the equality holds \"if and only if\" ", font=fonts[0]).scale(.35).set_color(REANLEA_TXT_COL).next_to(innr_prdct_dfn_4,DOWN).shift(RIGHT)
@@ -5225,6 +5233,7 @@ class Scene4_3(Scene):
         self.play(
             Create(innr_prdct_dfn_5)
         )
+        self.wait(2)
 
         arr_2=MathTex(r"\longrightarrow").rotate(-30*DEGREES).next_to(innr_prdct_dfn_5,RIGHT).set_stroke(width=2, color=[REANLEA_PURPLE,REANLEA_BLUE_SKY]).shift(.15*LEFT+.45*DOWN)
 
@@ -5242,6 +5251,7 @@ class Scene4_3(Scene):
         self.play(
             Write(innr_prdct_dfn_6_grp)
         )
+        self.wait(2)
 
         with RegisterFont("Fuzzy Bubbles") as fonts:
             txt_pos_def_0=Text("Positive Definite", font=fonts[0]).scale(.75).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_BLUE_LAVENDER).shift(1.25*UP+RIGHT)
@@ -5254,6 +5264,7 @@ class Scene4_3(Scene):
         self.play(
             Create(strp_1)
         )
+        self.wait()
 
         bulet_3=Dot(point=[-5.9,-2.5,0], radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN)
 
