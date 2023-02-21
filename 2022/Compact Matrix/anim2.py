@@ -5186,6 +5186,48 @@ class Scene4_3(Scene):
 
         ### MAIN SCENE
 
+        innr_prdct_dfn_4=MathTex(r"\langle v,v \rangle","=",r"\lVert v \rVert",r"\cdot",r"\lVert v \rVert",r"\cdot",r"cos0").set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(1.25).shift(RIGHT)
+
+        self.play(
+            ReplacementTransform(innr_prdct_dfn_3,innr_prdct_dfn_4)
+        )
+
+        cos_0_val=MathTex("1").set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(1.25).move_to(innr_prdct_dfn_4[-1].get_center()).shift(.3*LEFT)
+
+        self.play(
+            Transform(innr_prdct_dfn_4[-1],cos_0_val)
+        )
+
+        v_sq_0=MathTex(r"\lVert v \rVert ^{2}").set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(1.25).move_to(innr_prdct_dfn_4[2].get_center()).shift(.2*RIGHT+.05*UP)
+
+        self.play(
+            Transform(innr_prdct_dfn_4[2:], v_sq_0)
+        )
+        self.play(
+            innr_prdct_dfn_4.animate.shift(RIGHT)
+        )
+
+        innr_prdct_dfn_4_geq=MathTex(r"\geq 0").set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(1.25).next_to(innr_prdct_dfn_4,RIGHT)
+
+        self.play(
+            Write(innr_prdct_dfn_4_geq)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            txt_4=Text("and the equality holds \"if and only if\" ", font=fonts[0]).scale(.35).set_color(REANLEA_TXT_COL).next_to(innr_prdct_dfn_4,DOWN).shift(RIGHT)
+
+        self.play(
+            Write(txt_4)
+        )
+
+        innr_prdct_dfn_5=MathTex(r"\lVert v \rVert = 0").set_color_by_gradient(REANLEA_CYAN_LIGHT).next_to(txt_4,DOWN).shift(LEFT)
+
+        self.play(
+            Create(innr_prdct_dfn_5)
+        )
+
+
+
         self.wait(4)
 
 
