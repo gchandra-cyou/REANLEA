@@ -5096,6 +5096,8 @@ class Scene4_3(Scene):
 
         water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
         self.add(water_mark)
+
+        water_mark_1=water_mark.copy()
         
 
 
@@ -5276,6 +5278,14 @@ class Scene4_3(Scene):
         )
         self.play(
             ReplacementTransform(txt_pos_def_0.copy(),txt_pos_def_1)
+        )
+
+        self.play(            
+            AnimationGroup(
+                *[FadeOut(mobj) for mobj in self.mobjects],
+            ),
+            FadeIn(water_mark_1),
+            run_time=3
         )
 
 
