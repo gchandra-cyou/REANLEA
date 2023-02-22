@@ -6749,6 +6749,410 @@ class graphingEx(Scene):
 
         # manim -sqk discord.py graphingEx
 
+
+
+class Color_Gradient_example(Scene):
+  def construct(self):
+    radius = 2
+    colors = color_gradient(["#fef601", "#fef601", "#ba7946", "#780488", "#14a9ec"], 100)
+    cs = VGroup(
+       *[Circle(radius=(i+1)*radius/100,stroke_width=2*radius, color=colors[i]) for i in range(100)] 
+    )
+    #self.add(cs)
+    self.play(
+        Write(cs)
+    )
+
+    # manim -pqh discord.py Color_Gradient_example
+
+    # manim -sqk discord.py Color_Gradient_example
+
+
+import numpy as np
+
+class FourierEpicycle(Scene):
+    def construct(self):
+        # Define the number of epicycles and the frequency of the signal
+        num_circles = 20
+        signal_freq = 5
+
+        # Generate a random signal
+        x_vals = np.linspace(-4*np.pi, 4*np.pi, 1000)
+        y_vals = np.zeros_like(x_vals)
+        for i in range(1, signal_freq+1):
+            y_vals += np.sin(i*x_vals)
+
+        # Plot the signal
+        axes = Axes(
+            x_range=[-4*np.pi, 4*np.pi, np.pi],
+            y_range=[-2, 2, 1],
+            x_length=8,
+            y_length=4,
+            axis_config={"color": WHITE},
+            x_axis_config={"numbers_to_include": np.arange(-4*np.pi, 4*np.pi+1, np.pi)},
+            y_axis_config={"numbers_to_include": np.arange(-2, 2.1, 1)}
+        )
+        signal = axes.get_graph(lambda x: np.interp(x, x_vals, y_vals))
+
+
+
+        # Plot the Fourier Epicycle
+        epicycles = self.get_epicycles(num_circles, signal_freq, signal)
+
+        # Show the animation
+        self.add(signal, *epicycles)
+
+        self.wait(10)
+
+    def get_epicycles(self, num_circles, signal_freq, signal):
+        epicycles = []
+        epicycle_radius = 0.5
+
+        # Get the Fourier coefficients
+        x_vals = np.linspace(-4*np.pi, 4*np.pi, 1000)
+        y_vals = np.interp(x_vals, signal.get_points()[:, 0], signal.get_points()[:, 1])
+        fourier_coeffs = np.fft.fft(y_vals)
+
+        # Plot the epicycles
+        circle = Circle(radius=epicycle_radius, color=WHITE)
+        circle.move_to(ORIGIN)
+        epicycles.append(circle)
+
+        for i in range(1, num_circles+1):
+            prev_circle = epicycles[-1]
+            circle = Circle(radius=epicycle_radius/i, color=WHITE)
+            circle.next_center = prev_circle.get_right()
+
+            # Add the rotating animation
+            rot_angle = -np.angle(fourier_coeffs[i])
+            circle.rotate(rot_angle, about_point=prev_circle.get_center())
+
+            epicycles.append(circle)
+
+        # Plot the path traced by the last epicycle
+        path = VMobject()
+        path.set_points_smoothly(signal.get_points())
+        traced_path = TracedPath(path, stroke_width=2, stroke_color=YELLOW)
+
+        # Connect the epicycles with lines
+        lines = VGroup()
+        for i in range(len(epicycles)-1):
+            line = Line(
+                epicycles[i].get_right(),
+                epicycles[i+1].get_left(),
+                stroke_width=2,
+                stroke_color=WHITE
+            )
+            lines.add(line)
+
+        return [lines, traced_path, *epicycles]
+
+
+
+        # manim -pqh discord.py FourierEpicycle
+
+
+
+
+
+class FourierEpicycle_1(Scene):
+    def construct(self):
+        # Set up the parameters
+        num_circles = 10
+        amplitude = 1.5
+        freqs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        phase_shifts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        circle_color = BLUE
+        curve_color = YELLOW
+
+        # Define the functions for the Fourier series
+        def f(t):
+            return sum(amplitude * np.exp(2 * np.pi * freqs[i] * t * 1j + phase_shifts[i]) for i in range(num_circles))
+
+        def f_real(t):
+            return np.real(f(t))
+
+        def f_imag(t):
+            return np.imag(f(t))
+
+        # Create the circles and curve
+        circles = VGroup()
+        for i in range(num_circles):
+            circle = Circle(radius=amplitude / (i + 1), color=circle_color, stroke_width=2)
+            circles.add(circle)
+
+        curve = ParametricFunction(lambda t: np.array([f_real(t), f_imag(t), 0]), t_range=[0,1], color=curve_color, stroke_width=2)
+
+        # Animate the circles and curve
+        self.add(circles, curve)
+
+        self.play(*[ApplyMethod(circles[i].rotate, -360 * freqs[i], about_point=ORIGIN) for i in range(num_circles)], rate_func=linear, run_time=4)
+
+        self.wait()
+
+
+        # manim -pqh discord.py FourierEpicycle_1
+
+
+class upd(Scene):
+    def construct(self):
+        color = [RED,BLUE,PURPLE,WHITE]
+        dots = VGroup(*[Dot(fill_opacity=1).set_color(color[i%4]) for i in range(2000)])
+        dots.arrange_in_grid(40,buff=0)
+        self.add(dots)
+        def mcomp(mob):
+            return complex(mob.get_center()[0],mob.get_center()[1])
+        def pcomp(comp):
+            return [comp.real,comp.imag,0]
+        def iter(mob,c = 1,n=5):
+            
+            for i in range(n):
+                a = []
+                for sub in mob:
+                    z_old = mcomp(sub)
+                    z_new = z_old**2 + c
+                    a.append(sub.animate.move_to(pcomp(z_new)))
+                    z_old = z_new
+                self.play(*a)
+        
+        self.play(Write(dots))
+        self.wait()
+        iter(dots,complex(0,1),5)
+        self.wait()
+        self.play(Unwrite(dots))
+
+
+        # manim -pqh discord.py upd
+
+
+
+
+class FourierCircleBase(VGroup):
+    def __init__(self, vt, n, cn, **kwargs):
+        super().__init__(**kwargs)
+        self.vt = vt
+        self.cn = cn
+        self.n = n
+        self.circle = always_redraw(
+            lambda: Circle(
+                fill_color=BLUE_D,
+                fill_opacity=0.1,
+                stroke_color=BLUE_B,
+                stroke_width=1,
+                stroke_opacity=0.5,
+            )
+            .scale(np.linalg.norm(self.cn))
+            .move_to(self.get_center())
+        )
+        # self.num_dots = 5 if np.linalg.norm(cn) > 0.2 else 0
+        # self.dots = VGroup(
+        #     *[
+        #         Dot().scale(0.1).move_to(self.circle.point_from_proportion(i))
+        #         for i in np.linspace(
+        #             0,
+        #             1,
+        #             self.num_dots,
+        #         )
+        #     ]
+        # )
+
+        self.vec = Vector(RIGHT, stroke_width=2)
+        self.add(self.circle, self.vec)  # , self.dots)
+        self.add_updater(self.update_state)
+
+    @staticmethod
+    def update_state(instance: "FourierCircleBase", dt):
+        instance.vec.put_start_and_end_on(
+            instance.get_center(),
+            instance.get_attachment_point(),
+        )
+        # if instance.num_dots > 0:
+        #     for dot, i in zip(instance.dots, np.linspace(0, 1, instance.num_dots)):
+        #         dot.move_to(
+        #             instance.circle.point_from_proportion(
+        #                 (i - instance.vt.get_value()) % 1
+        #             )
+        #         )
+
+    def get_attachment_point(self):
+        raise NotImplementedError("Must be implemented in subclass.")
+
+    def set_cns(self, n, cn):
+        self.n = n
+        self.cn = cn
+
+
+class ComplexCircle(FourierCircleBase):
+    def __init__(self, vt, factor, scale, **kwargs):
+        super().__init__(vt, factor, scale, **kwargs)
+
+    def get_vec_dir(self, t):
+        return self.cn * np.e ** (1j * self.n * t * 2 * np.pi)
+
+    def get_attachment_point(self):
+        result = self.get_vec_dir(self.vt.get_value())
+        return self.get_center() + result.real * RIGHT + result.imag * UP
+
+
+class FourierManager(VGroup):
+    def __init__(self, vt, constructor=ComplexCircle, **kwargs):
+        super().__init__(**kwargs)
+        self.vt = vt
+        self.center_dot = Dot(color=BLUE).scale(0.5)
+        self.add(self.center_dot)
+        self.circles = []
+        self.constructor = constructor
+
+    def add_circle(self, factor, scale):
+        vc = self.constructor(self.vt, factor, scale)
+        attach_func = self.get_attachment_func()
+
+        def tmp(instance):
+            instance.move_to(attach_func())
+
+        vc.add_updater(tmp)
+        self.add(vc)
+        self.circles.append(vc)
+
+    def get_attachment_func(self):
+        if len(self.circles) == 0:
+            return lambda: self.center_dot.get_center()
+        return self.circles[-1].get_attachment_point
+
+    @staticmethod
+    def create_producer(s):
+        """This function generates a function which returns a complex point from the proportion of the given shape.
+
+        Parameters
+        ----------
+        s : VMobject
+            The shape to generate the function for.
+        """
+
+        def complex_from_proportion(t):
+            point = s.point_from_proportion(t)
+            return point[0] + point[1] * 1j
+
+        return complex_from_proportion
+
+    def init_for_shape(self, shape, degree, resolution=10000):
+        produce_prportion = self.create_producer(shape)
+        samples = np.fromiter(
+            (produce_prportion(t) for t in np.linspace(0, 1, resolution)),
+            count=resolution,
+            dtype=np.complex128,
+        )
+
+        
+        def generate_cns(samples, degree):
+            ns = np.linspace(-degree / 2, degree / 2, degree + 1)
+            idxs = np.argsort(np.abs(ns))
+            ns = ns[idxs]
+            cns = [calculate_cn(n, samples) for n in ns]
+            return ns, cns
+
+        ns, cns = generate_cns(samples, degree)
+        self.ns = ns
+        self.cns = cns
+        for n, cn in zip(ns, cns):
+            self.add_circle(n, cn)
+
+
+
+def calculate_cn(n, samples):
+    ts = np.linspace(0, 1, len(samples))
+    return sum(
+        [np.exp(-2 * np.pi * 1j * n * t) * ft for t, ft in zip(ts, samples)]
+    ) / len(ts)
+    # return integrate.quad(tmp, 0, 1, )[0]
+
+
+def auto_zoom(self, *mobjects, margin=1, animate=False):
+    bb = Group(*mobjects).get_bounding_box()
+    lower_left = bb[0]
+    upper_right = bb[2]
+    new_width = upper_right[0] - lower_left[0]
+    new_height = upper_right[1] - lower_left[1]
+    x = lower_left[0] + new_width / 2
+    y = lower_left[1] + new_height / 2
+    m_target = self.animate if animate else self
+    if new_width / self.get_width() > new_height / self.get_height():
+        return m_target.set_x(x).set_y(y).set_width(new_width + margin)
+    else:
+        return m_target.set_x(x).set_y(y).set_height(new_height + margin)
+
+
+class Test_epi(Scene):
+    def construct(self):
+        self.camera.background_rgba = [0, 0, 0, 0]
+        t_tracker = ValueTracker(0)
+        degree = 200
+        resolution = 10000
+        # shape = (
+        #     Square(stroke_width=1, color=GREY_A, opacity=0.2).scale(2).rotate(PI / 4)
+        # )
+        shape = Text("Test", fill_opacity=0, stroke_width=2, stroke_color=GREY_A).scale(
+            7
+        )
+        print("Initializing")
+
+        # s = VMobject()
+        # s.set_points_as_corners(shape.get_all_points())
+        # s.push_self_into_submobjects()
+        # shape = s
+        # self.play(Write(shape))
+
+        def factory_for_shape(shape):
+            original_point = shape.get_center()
+            m1 = FourierManager(t_tracker, constructor=ComplexCircle)
+            m1.move_to(shape)
+            shape.move_to(ORIGIN)
+            m1.init_for_shape(shape, degree, resolution)
+            f = m1.get_attachment_func()
+            path = TracedPath(
+                f,
+                stroke_color=RED,
+                stroke_width=2,
+                stroke_opacity=0.8,
+            ).suspend_updating()
+            return VGroup(m1, path)
+
+        t_tracker.set_value(0)
+        shapes = VGroup()
+        paths = VGroup()
+        for s in shape:
+            s1, p1 = factory_for_shape(s)
+            s1.update(0)
+            shapes.add(s1)
+            paths.add(p1)
+
+        self.play(
+            AnimationGroup(*[Write(s) for s in shapes], lag_ratio=0.1),
+            run_time=3,
+        )
+        self.add(paths)
+        paths.resume_updating()
+
+        self.play(t_tracker.animate.set_value(2), run_time=5, rate_func=linear)
+
+        # decoy = VMobject()
+        # decoy.add_updater(lambda m, dt: t_tracker.increment_value(dt / 10))
+        # self.add(decoy)
+        # self.wait(20)
+        # frame = self.camera.frame
+        # updater = decoy.add_updater(
+        #     lambda m: auto_zoom(frame, shape2.circles[-1], margin=3)
+        # )
+        # self.wait(5)
+
+
+        # manim -pql discord.py Test_epi
+
+
+
+
+
+
 ###################################################################################################################
 
 # NOTE :-
