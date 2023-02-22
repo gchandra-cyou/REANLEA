@@ -5295,14 +5295,14 @@ class Scene4_3(Scene):
         )
         self.wait(2)
 
-        ln_0=Line().set_stroke(width=7.5, color=[REANLEA_BLUE_LAVENDER,REANLEA_BLUE_LAVENDER,REANLEA_PURPLE]).rotate(PI/2).next_to(txt_x_0,DOWN)
+        ln_0=Line().set_stroke(width=7.5, color=[REANLEA_BLUE_LAVENDER,REANLEA_BLUE_SKY,REANLEA_PURPLE]).rotate(PI/2).next_to(txt_x_0,DOWN)
 
         self.play(
             Create(ln_0.reverse_direction())
         )
 
         with RegisterFont("Fuzzy Bubbles") as fonts:
-            txt_x_1=Text("Magnitude / Norm", font=fonts[0]).scale(.75).set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_PURPLE).next_to(ln_0,DOWN)
+            txt_x_1=Text("Magnitude / Norm", font=fonts[0]).scale(.75).set_color_by_gradient(REANLEA_PURPLE,REANLEA_BLUE_LAVENDER).next_to(ln_0,DOWN)
         
         self.play(
             Write(txt_x_1)
@@ -5315,7 +5315,7 @@ class Scene4_3(Scene):
             ln_txt_grp_0.animate.shift(3.25*LEFT)
         )
 
-        ln_1=Line(start=1.5*LEFT,end=1.5*RIGHT).set_stroke(width=7.5, color=[REANLEA_PURPLE,PURE_GREEN,REANLEA_AQUA]).next_to(txt_x_1,RIGHT)
+        ln_1=Line(start=1.5*LEFT,end=1.5*RIGHT).set_stroke(width=7.5, color=[REANLEA_GOLD,REANLEA_PURPLE,REANLEA_BLUE_LAVENDER]).next_to(txt_x_1,RIGHT)
 
         self.play(
             Create(ln_1)
@@ -5323,27 +5323,31 @@ class Scene4_3(Scene):
 
         with RegisterFont("Fuzzy Bubbles") as fonts:
             txt_x_2 = VGroup(*[Text(x, font=fonts[0]) for x in (
-                "Pythagorus",
+                "Pythagoras\'",
                 "Theorem"
-            )]).arrange_submobjects(DOWN).scale(.75).set_color_by_gradient(PURE_GREEN,REANLEA_AQUA).next_to(ln_1,RIGHT)
+            )]).arrange_submobjects(DOWN).scale(.75).set_color_by_gradient(REANLEA_GOLD,REANLEA_TXT_COL).next_to(ln_1,RIGHT)
         
         self.play(
             Write(txt_x_2)
         )
         self.wait(2)
 
-        ln_2=Line(start=2.3*RIGHT+.6*DOWN,end=2.65*LEFT+1.55*UP).set_stroke(width=7.5, color=[REANLEA_AQUA,REANLEA_BLUE_LAVENDER])
+        ln_2=Line(start=2.3*RIGHT+.6*DOWN,end=2.65*LEFT+1.55*UP).set_stroke(width=7.5, color=[REANLEA_TXT_COL,REANLEA_GOLD,REANLEA_BLUE_SKY])
 
         self.play(
             Create(ln_2)
         )
         self.wait()
 
-        arr_circ_1=MathTex(r"\circlearrowleft").set_color(REANLEA_PURPLE).scale(3.5).set_stroke(width=7.5, color=[REANLEA_PURPLE,REANLEA_GREEN]).shift(1.55*LEFT+.1*UP)
+        arr_circ_1=MathTex(r"\circlearrowleft").set_color(REANLEA_BLUE_SKY).scale(3.5).set_stroke(width=7.5, color=[REANLEA_BLUE_LAVENDER,REANLEA_BLUE_SKY,REANLEA_PURPLE,REANLEA_GOLD]).shift(1.55*LEFT+.1*UP)
 
         self.play(
             Write(arr_circ_1)
         )
+
+        
+
+
 
 
 

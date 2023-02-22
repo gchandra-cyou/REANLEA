@@ -6720,6 +6720,35 @@ class ParticleCollisonScene(Scene):
 
 
 
+
+def exFunc(x) :
+    return (x**2-10*x+9)/(x**2-7*x+6)
+
+class graphingEx(Scene):
+    def construct(self):
+
+        plane = NumberPlane(
+            x_range = [-20, 20, 5], 
+            y_range = [-20,20,5],
+            x_length=14.1,
+            y_length=8
+        ).add_coordinates()
+        graph = plane.plot(
+            exFunc, 
+            x_range = [-20, 20, 0.01], 
+            discontinuities = [1,6],
+            dt = 0.1,
+            color=BLUE,
+            use_smoothing=False,
+        )
+        self.play(FadeIn(plane))
+        self.play(Create(graph, run_time=4))
+
+
+        # manim -pqh discord.py graphingEx
+
+        # manim -sqk discord.py graphingEx
+
 ###################################################################################################################
 
 # NOTE :-
