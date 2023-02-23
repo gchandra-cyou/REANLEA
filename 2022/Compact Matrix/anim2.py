@@ -5385,7 +5385,91 @@ class Scene5(Scene):
 
         water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
         self.add(water_mark)
+        self.wait()
 
+
+        # MAIN SCENE
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5)
+
+        self.play(
+            Write(ax_1)
+        )
+        dt_0=Dot(point=ax_1.c2p(0,0), color=REANLEA_GREY, radius=DEFAULT_SMALL_DOT_RADIUS*1.25).set_z_index(1).set_sheen(.4,UP)
+        self.play(
+            FadeIn(dt_0)
+        )
+
+        dt_1=Dot(point=ax_1.c2p(-1,2), color=REANLEA_AQUA).set_sheen(-.4,DOWN)
+
+        self.play(
+            Write(dt_1)
+        )
+
+        dt_1_lbl=MathTex("v").scale(.75).set_color(REANLEA_AQUA).next_to(dt_1,UL)
+
+        arr_1=Arrow(start=ax_1.c2p(0,0),end=ax_1.c2p(-1,2),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_BLUE_SKY)
+
+        self.play(
+            Write(arr_1),
+            Write(dt_1_lbl)
+        )
+        self.wait(2)
+
+        nrm_def_0=MathTex(r"\langle v,v \rangle","=",r"\lVert v \rVert ^{2}").set_color(REANLEA_TXT_COL).shift(3*UP+4*RIGHT)
+        nrm_def_0_copy_1=nrm_def_0.copy()
+
+        self.play(
+            ReplacementTransform(dt_1_lbl.copy(),nrm_def_0_copy_1),
+            Write(nrm_def_0)
+        )
+        self.wait(2)
+
+        nrm_def_1=MathTex(r"\Rightarrow",r"\lVert v \rVert","=",r"\sqrt{\langle v,v \rangle}").set_color(REANLEA_TXT_COL).next_to(nrm_def_0,DOWN).shift(.5*RIGHT)
+
+        self.play(
+            Write(nrm_def_1)
+        )
+        self.wait(2)
+
+        dt_2=Dot(point=ax_1.c2p(2,3), color=REANLEA_GOLD).set_sheen(-.4,DOWN)
+        arr_2=Arrow(start=ax_1.c2p(0,0),end=ax_1.c2p(2,3),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_YELLOW)
+
+        self.play(
+            Write(dt_2)
+        )
+        self.play(
+            Write(arr_2)
+        )
+        self.wait()
+
+        dt_3=Dot(point=ax_1.c2p(3,1), color=REANLEA_MAGENTA).set_sheen(-.4,DOWN)
+
+        arr_3=Arrow(start=ax_1.c2p(0,0),end=ax_1.c2p(3,1),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_PURPLE)
+
+        self.play(
+            Write(dt_3)
+        )
+        self.wait()
+
+        self.play(
+            Write(arr_3)
+        )
+        self.play(
+            arr_1.animate.shift(
+                (ax_1.c2p(3,1)[0]-ax_1.c2p(0,0)[0])*RIGHT+
+                (ax_1.c2p(3,1)[1]-ax_1.c2p(0,0)[1])*UP
+            )
+        )
 
 
         self.wait(4)
