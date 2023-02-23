@@ -5569,7 +5569,7 @@ class Scene5(Scene):
             Create(sep_ln_2)
         )
 
-        eqn_2=MathTex(r"\lVert X-Y \rVert ^{2}&",r"= \lVert (x_{1}-y_{1},x_{2}-y_{2}) \rVert \\ &", r"(x_{1}-y_{1})^2 + (x_{2}-y_{2})^2 \\ &",r"(x_{1}^2 - 2x_{1}y_{1}+ y_{1}^2)+(x_{2}^2 - 2x_{2}y_{2}+ y_{2}^2) \\ &",r"(x_{1}^2+x_{2}^2)+(y_{1}^2+y_{2}^2) -2(x_{1}y_{1}+x_{2}y_{2})").scale(.6).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER).set_z_index(11).shift(3.25*RIGHT+.5*UP)
+        eqn_2=MathTex(r"\lVert X-Y \rVert ^{2}&",r"= \lVert (x_{1}-y_{1},x_{2}-y_{2}) \rVert \\ &", r"=(x_{1}-y_{1})^2 + (x_{2}-y_{2})^2 \\ &",r"=(x_{1}^2 - 2x_{1}y_{1}+ y_{1}^2)+(x_{2}^2 - 2x_{2}y_{2}+ y_{2}^2) \\ &",r"=(x_{1}^2+x_{2}^2)+(y_{1}^2+y_{2}^2) -2(x_{1}y_{1}+x_{2}y_{2}) \\ &",r"= \lVert X \rVert ^{2} + \lVert Y \rVert ^{2} -2(x_{1}y_{1}+x_{2}y_{2})").scale(.6).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER).set_z_index(11).shift(3.25*RIGHT+.5*UP)
 
         self.play(
             Write(eqn_2)
