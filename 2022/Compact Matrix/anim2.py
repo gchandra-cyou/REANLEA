@@ -5515,14 +5515,19 @@ class Scene5(Scene):
         self.wait(2)
 
         v_equal_grp=VGroup(v_equal_1,v_equal_2)
-        v_equal_grp_1=VGroup(v_equal_1,v_equal_2).move_to(3*UP+2.75*LEFT).set_z_index(11)
+        #v_equal_grp_1=VGroup(v_equal_1,v_equal_2).move_to(3*UP+2.75*LEFT).set_z_index(11)
+        v_equal_grp_1=v_equal_grp.copy().set_z_index(11)
 
         rect_overlap=Rectangle(width=16, height=9, color=REANLEA_BACKGROUND_COLOR).to_edge(RIGHT, buff=0).set_opacity(.825).set_z_index(10)
+        self.add(v_equal_grp_1)
 
         self.play(
-            ReplacementTransform(v_equal_grp.copy(),v_equal_grp_1),
+            AnimationGroup(
+                Create(rect_overlap),
+                v_equal_grp_1.animate.move_to(3*UP+2.75*LEFT)
+            ),
             nrm_def_0.animate.set_z_index(11),
-            Create(rect_overlap)
+            run_time=2.5
         )
 
         v_eq_nrm_grp=VGroup(v_equal_grp_1[0],nrm_def_0)
@@ -5533,12 +5538,13 @@ class Scene5(Scene):
             Create(sep_ln_1)
         )
 
-        eqn_1=MathTex(r"\lVert X-Y \rVert ^{2}&",r"= \langle X-Y , X-Y \rangle \\ &",r"= \langle X , X \rangle - \langle X , Y \rangle - \langle Y , X \rangle + \langle Y , Y \rangle \\ &",r"= \lVert X \rVert ^{2} + \lVert Y \rVert ^{2} - \langle X , Y \rangle - \langle X , Y \rangle \\ &",r"= \lVert X \rVert ^{2} + \lVert Y \rVert ^{2} - 2 \langle X , Y \rangle ").scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_BLUE_LAVENDER).set_z_index(11)
+        eqn_1=MathTex(r"\lVert X-Y \rVert ^{2}&",r"= \langle X-Y , X-Y \rangle \\ &",r"= \langle X , X \rangle - \langle X , Y \rangle - \langle Y , X \rangle + \langle Y , Y \rangle \\ &",r"= \lVert X \rVert ^{2} + \lVert Y \rVert ^{2} - \langle X , Y \rangle - \langle X , Y \rangle \\ &",r"= \lVert X \rVert ^{2} + \lVert Y \rVert ^{2} - 2 \langle X , Y \rangle ").scale(.75).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER).set_z_index(11)
 
         eqn_1_ref=eqn_1[0:2].copy()
 
         self.play(
-            ReplacementTransform(v_eq_nrm_grp.copy(), eqn_1_ref)
+            ReplacementTransform(v_eq_nrm_grp.copy(), eqn_1_ref),
+            run_time=2
         )
 
         self.play(
@@ -5550,6 +5556,23 @@ class Scene5(Scene):
 
         self.play(
             FadeOut(eqn_1_ref)
+        )
+        self.wait(2)
+
+        self.play(
+            eqn_1.animate.scale(.75).shift(3.75*LEFT+.5*UP)
+        )
+
+        sep_ln_2 = Line(start=.5*LEFT+2.5*UP, end=.5*LEFT+1.5*DOWN).set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_BLUE_LAVENDER,REANLEA_VIOLET,REANLEA_AQUA]).set_z_index(11)
+
+        self.play(
+            Create(sep_ln_2)
+        )
+
+        eqn_2=MathTex(r"\lVert X-Y \rVert ^{2}&",r"= \lVert (x_{1}-y_{1},x_{2}-y_{2}) \rVert \\ &", r"(x_{1}-y_{1})^2 + (x_{2}-y_{2})^2 \\ &",r"(x_{1}^2 - 2x_{1}y_{1}+ y_{1}^2)+(x_{2}^2 - 2x_{2}y_{2}+ y_{2}^2) \\ &",r"(x_{1}^2+x_{2}^2)+(y_{1}^2+y_{2}^2) -2(x_{1}y_{1}+x_{2}y_{2})").scale(.6).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER).set_z_index(11).shift(3.25*RIGHT+.5*UP)
+
+        self.play(
+            Write(eqn_2)
         )
 
         
