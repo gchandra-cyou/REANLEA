@@ -5432,12 +5432,14 @@ class Scene5(Scene):
             ReplacementTransform(dt_1_lbl.copy(),nrm_def_0_copy_1),
             Write(nrm_def_0)
         )
+        self.play(FadeOut(nrm_def_0_copy_1))
         self.wait(2)
 
-        nrm_def_1=MathTex(r"\Rightarrow",r"\lVert v \rVert","=",r"\sqrt{\langle v,v \rangle}").set_color(REANLEA_TXT_COL).next_to(nrm_def_0,DOWN).shift(.5*RIGHT)
+        nrm_def_1=MathTex(r"\Rightarrow",r"\lVert v \rVert","=",r"\sqrt{\langle v,v \rangle}").set_color(REANLEA_TXT_COL).next_to(nrm_def_0,DOWN).shift(.175*RIGHT)
 
         self.play(
-            Write(nrm_def_1)
+            Write(nrm_def_1),
+            nrm_def_0.animate.scale(.75)
         )
         self.wait(2)
 
