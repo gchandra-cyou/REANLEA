@@ -5418,11 +5418,13 @@ class Scene5(Scene):
         dt_1_lbl=MathTex("v").scale(.75).set_color(REANLEA_AQUA).next_to(dt_1,UL)
 
         arr_1=Arrow(start=ax_1.c2p(0,0),end=ax_1.c2p(-1,2),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_BLUE_SKY)
+        arr_1_copy_1=arr_1.copy().set_opacity(.5)
 
         self.play(
             Write(arr_1),
             Write(dt_1_lbl)
         )
+        self.add(arr_1_copy_1)
         self.wait(2)
 
         nrm_def_0=MathTex(r"\langle v,v \rangle","=",r"\lVert v \rVert ^{2}").set_color(REANLEA_TXT_COL).shift(3*UP+4*RIGHT)
@@ -5443,20 +5445,25 @@ class Scene5(Scene):
         )
         self.wait(2)
 
-        dt_2=Dot(point=ax_1.c2p(2,3), color=REANLEA_GOLD).set_sheen(-.4,DOWN)
+        dt_2=Dot(point=ax_1.c2p(2,3), color=REANLEA_GOLD).set_sheen(-.4,DOWN).set_z_index(-1)
         arr_2=Arrow(start=ax_1.c2p(0,0),end=ax_1.c2p(2,3),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_YELLOW)
+        dt_2_lbl=MathTex("X").scale(.5).set_color(REANLEA_YELLOW).move_to(ax_1.c2p(.75,1.75))
+        
 
         self.play(
             Write(dt_2)
         )
         self.play(
-            Write(arr_2)
+            Write(arr_2),
+            Write(dt_2_lbl)
         )
         self.wait()
 
-        dt_3=Dot(point=ax_1.c2p(3,1), color=REANLEA_MAGENTA).set_sheen(-.4,DOWN)
+        dt_3=Dot(point=ax_1.c2p(3,1), color=REANLEA_GREEN).set_sheen(-.4,DOWN)
 
-        arr_3=Arrow(start=ax_1.c2p(0,0),end=ax_1.c2p(3,1),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_PURPLE)
+        arr_3=Arrow(start=ax_1.c2p(0,0),end=ax_1.c2p(3,1),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_GREEN)
+
+        dt_3_lbl=MathTex("Y").scale(.5).set_color(REANLEA_GREEN).move_to(ax_1.c2p(1.75,.25))
 
         self.play(
             Write(dt_3)
@@ -5464,7 +5471,8 @@ class Scene5(Scene):
         self.wait()
 
         self.play(
-            Write(arr_3)
+            Write(arr_3),
+            Write(dt_3_lbl)
         )
         self.play(
             arr_1.animate.shift(
@@ -5472,6 +5480,39 @@ class Scene5(Scene):
                 (ax_1.c2p(3,1)[1]-ax_1.c2p(0,0)[1])*UP
             )
         )
+        self.wait(2)
+
+        v_equal_1=MathTex("v","=","X-Y").scale(.75).move_to(ax_1.c2p(4,2))
+        v_equal_1[0].set_color(REANLEA_AQUA).scale(1.25)
+        v_equal_1[2][0].set_color(REANLEA_YELLOW)
+        v_equal_1[2][2].set_color(REANLEA_GREEN)
+
+        self.play(
+            Write(v_equal_1)
+        )
+        self.wait(2)
+
+        dt_2_lbl_1=MathTex(r"(x_{1},x_{2})").scale(.5).set_color(REANLEA_YELLOW).move_to(ax_1.c2p(2.15,3.5))
+
+        dt_3_lbl_1=MathTex(r"(y_{1},y_{2})").scale(.5).set_color(REANLEA_GREEN).move_to(ax_1.c2p(3.45,.6))
+
+        self.play(
+            Write(dt_2_lbl_1),
+            Write(dt_3_lbl_1)
+        )
+
+        dt_2_3_lbl_1_grp=VGroup(dt_2_lbl_1,dt_3_lbl_1)
+
+        v_equal_2=MathTex("=",r"(x_{1}-y_{1},x_{2}-y_{2})").scale(.75).next_to(v_equal_1,RIGHT)
+        v_equal_2[1][1:3].set_color(REANLEA_YELLOW)
+        v_equal_2[1][7:9].set_color(REANLEA_YELLOW)
+        v_equal_2[1][5:7].set_color(REANLEA_GREEN)
+        v_equal_2[1][11:13].set_color(REANLEA_GREEN)
+
+        self.play(
+            ReplacementTransform(dt_2_3_lbl_1_grp.copy(),v_equal_2)
+        )
+        
 
 
         self.wait(4)

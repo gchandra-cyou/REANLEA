@@ -6753,6 +6753,12 @@ class graphingEx(Scene):
 
 class Color_Gradient_example(Scene):
   def construct(self):
+
+    # WATER MARK 
+
+    water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+    self.add(water_mark)
+
     radius = 2
     colors = color_gradient(["#fef601", "#fef601", "#ba7946", "#780488", "#14a9ec"], 100)
     cs = VGroup(
@@ -6766,6 +6772,7 @@ class Color_Gradient_example(Scene):
     # manim -pqh discord.py Color_Gradient_example
 
     # manim -sqk discord.py Color_Gradient_example
+    
 
 
 import numpy as np
