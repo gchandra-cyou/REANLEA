@@ -5345,6 +5345,13 @@ class Scene4_3(Scene):
             Write(arr_circ_1)
         )
 
+        uncrt_grp=VGroup(ln_0,ln_1,ln_2,txt_x_0,txt_x_1,txt_x_2,arr_circ_1)
+
+        self.play(
+            FadeOut(uncrt_grp),
+            run_time=3
+        )
+
         
 
 
@@ -5366,6 +5373,29 @@ class Scene4_3(Scene):
         # manim -pql anim2.py Scene4_3
 
         # manim -sqk anim2.py Scene4_3
+        
+
+
+###################################################################################################################
+
+class Scene5(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+
+
+
+        self.wait(4)
+
+
+        # manim -pqh anim2.py Scene5
+
+        # manim -pql anim2.py Scene5
+
+        # manim -sqk anim2.py Scene5
         
 
 ###################################################################################################################
