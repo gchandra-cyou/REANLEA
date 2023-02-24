@@ -5545,6 +5545,7 @@ class Scene5(Scene):
         eqn_1=MathTex(r"\lVert X-Y \rVert ^{2}&",r"= \langle X-Y , X-Y \rangle \\ &",r"= \langle X , X \rangle - \langle X , Y \rangle - \langle Y , X \rangle + \langle Y , Y \rangle \\ &",r"= \lVert X \rVert ^{2} + \lVert Y \rVert ^{2} - \langle X , Y \rangle - \langle X , Y \rangle \\ &",r"= \lVert X \rVert ^{2} + \lVert Y \rVert ^{2} - 2 \langle X , Y \rangle ").scale(.75).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER).set_z_index(11)
 
         eqn_1_ref=eqn_1[0:2].copy()
+        
 
         self.play(
             ReplacementTransform(v_eq_nrm_grp.copy(), eqn_1_ref),
@@ -5625,6 +5626,62 @@ class Scene5(Scene):
 
         self.play(
             ReplacementTransform(eqn_3,eqn_4)
+        )
+
+        sr_eqn_4=SurroundingRectangle(eqn_4, buff=.25, corner_radius=.125).set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_VIOLET])
+
+        self.play(
+            Write(sr_eqn_4)
+        )
+
+        eqn_4_grp=VGroup(eqn_4,sr_eqn_4)
+
+        uncrt_grp_0=VGroup(eqn_1,eqn_2,sep_ln_1,sep_ln_2,v_equal_grp_1,nrm_def_0_copy_2,rect_overlap)
+
+        eqn_5=MathTex(r"\lVert X-Y \rVert ^{2}&",r"= \lVert X \rVert ^{2} + \lVert Y \rVert ^{2} -2",r" \langle X , Y \rangle ").scale(.57).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER).shift(4.25*LEFT+2.5*UP)
+
+        eqn_5_ref=MathTex(r" \lVert X \rVert \cdot \lVert Y \rVert \cdot cos\theta ").shift(2.475*UP+1.7*LEFT).scale(.57)
+
+        eqn_1_1=eqn_1.copy()
+
+        self.play(
+            FadeOut(uncrt_grp_0),
+            ReplacementTransform(eqn_1_1.copy(),eqn_5),
+            eqn_4_grp.animate.shift(4.5*RIGHT)
+        )
+
+        self.wait(2)
+
+        angl_1=Angle(arr_3,arr_2, radius=.5).set_color(REANLEA_YELLOW_GREEN).set_stroke(width=3.5).set_z_index(-1)
+        
+        angl_1_lbl=MathTex(r"\theta").scale(.65).set_color(REANLEA_YELLOW_GREEN).next_to(angl_1,UR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2).set_z_index(2).shift(.125*DOWN)
+
+        self.play(
+            Write(angl_1)
+        )
+        self.play(
+            Write(angl_1_lbl)
+        )
+
+        self.wait(2)
+
+        eqn_6=MathTex(r"\langle X,Y \rangle","=",r" \lVert X \rVert \cdot \lVert Y \rVert \cdot cos\theta ").shift(2.75*DOWN+4.5*LEFT).scale(.6)
+
+        dt_angl_lbl_grp=VGroup(dt_2_lbl,dt_3_lbl,angl_1_lbl)
+
+        self.play(
+            ReplacementTransform(dt_angl_lbl_grp.copy(),eqn_6)
+        )
+        self.wait(2)
+
+        eqn_5_grp=VGroup(eqn_5[-1],eqn_6[-1].copy())
+
+        self.play(
+            AnimationGroup(
+                Transform(eqn_6[-1].copy(),eqn_5_ref),
+                Transform(eqn_5[-1],eqn_5_ref),
+                lag_ratio=.25
+            )
         )
 
 
