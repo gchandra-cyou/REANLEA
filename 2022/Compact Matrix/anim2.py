@@ -5517,23 +5517,24 @@ class Scene5(Scene):
         v_equal_grp=VGroup(v_equal_1,v_equal_2)
         #v_equal_grp_1=VGroup(v_equal_1,v_equal_2).move_to(3*UP+2.75*LEFT).set_z_index(11)
         v_equal_grp_1=v_equal_grp.copy().set_z_index(11)
-        v_equal_grp_2=VGroup(v_equal_1[0],v_equal_2)
+        
 
         rect_overlap=Rectangle(width=16, height=9, color=REANLEA_BACKGROUND_COLOR).to_edge(RIGHT, buff=0).set_opacity(.825).set_z_index(10)
         self.add(v_equal_grp_1)
         nrm_def_0_copy_2=nrm_def_0.copy().set_z_index(11)
 
-        self.add(nrm_def_0_copy_2)
 
         self.play(
             AnimationGroup(
                 Create(rect_overlap),
-                v_equal_grp_1.animate.move_to(3*UP+2.75*LEFT)
+                v_equal_grp_1.animate.move_to(3*UP+2.75*LEFT),
+                FadeIn(nrm_def_0_copy_2)
             ),
             run_time=2.5
         )
 
-        v_eq_nrm_grp=VGroup(v_equal_grp_1[0],nrm_def_0)
+        v_eq_nrm_grp=VGroup(v_equal_grp_1[0],nrm_def_0_copy_2)
+        v_eq_nrm_grp_2=VGroup(v_equal_grp_1[0][0],v_equal_grp_1[1],nrm_def_0_copy_2)
 
         sep_ln_1=Line(start=2.65*UP+5.5*LEFT, end=2.65*UP+5*RIGHT).set_stroke(width=5, color=[REANLEA_AQUA, REANLEA_PURPLE, REANLEA_BLUE_LAVENDER,REANLEA_BLUE_SKY]).set_z_index(11)
 
@@ -5574,6 +5575,13 @@ class Scene5(Scene):
 
         eqn_2=MathTex(r"\lVert X-Y \rVert ^{2}&",r"= \lVert (x_{1}-y_{1},x_{2}-y_{2}) \rVert^{2} \\ &", r"=(x_{1}-y_{1})^2 + (x_{2}-y_{2})^2 \\ &",r"=(x_{1}^2 - 2x_{1}y_{1}+ y_{1}^2)+(x_{2}^2 - 2x_{2}y_{2}+ y_{2}^2) \\ &",r"=(x_{1}^2+x_{2}^2)+(y_{1}^2+y_{2}^2) -2(x_{1}y_{1}+x_{2}y_{2}) \\ &",r"= \lVert X \rVert ^{2} + \lVert Y \rVert ^{2} -2(x_{1}y_{1}+x_{2}y_{2})").scale(.6).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER).set_z_index(11).shift(3.25*RIGHT+.45*UP)
 
+        eqn_2_ref_0=eqn_2[0:2].copy()
+        eqn_2_ref_1=eqn_2[2:].copy()
+
+        self.play(
+            ReplacementTransform(v_eq_nrm_grp_2.copy(),eqn_2_ref_0)
+        )
+
 
         with RegisterFont("Cousine") as fonts:
             txt_x_1=Text("Pythagoras\' Theorem", font=fonts[0]).scale(.5).move_to(3*RIGHT).set_z_index(11)
@@ -5588,11 +5596,38 @@ class Scene5(Scene):
                 FadeOut(txt_x_1)
             ),
             AnimationGroup(
-                *[Write(eq) for eq in eqn_2],
+                *[Write(eq) for eq in eqn_2_ref_1[2:]],
                 lag_ratio=2
             ),
             lag_ratio=.6
         )
+        self.add(eqn_2)
+
+        self.play(
+            FadeOut(eqn_2_ref_0),
+            FadeOut(eqn_2_ref_1)
+        )
+        self.wait(2)
+
+        eqn_1_x_0=eqn_1[-1].copy()
+        eqn_2_x_0=eqn_2[-1].copy()
+
+        eqn_1_2_x_0_grp=VGroup(eqn_1_x_0,eqn_2_x_0)
+
+        eqn_3=MathTex(r"\lVert X \rVert ^{2} + \lVert Y \rVert ^{2} - 2 \langle X , Y \rangle ","=",r"\lVert X \rVert ^{2} + \lVert Y \rVert ^{2} -2(x_{1}y_{1}+x_{2}y_{2})").set_z_index(11).shift(2.75*DOWN).scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE)
+
+        self.play(
+            ReplacementTransform(eqn_1_2_x_0_grp,eqn_3)
+        )
+        self.wait(2)
+
+        eqn_4=MathTex(r"\langle X , Y \rangle ","=",r"(x_{1}y_{1}+x_{2}y_{2})").set_z_index(11).shift(2.75*DOWN).scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE)
+
+        self.play(
+            ReplacementTransform(eqn_3,eqn_4)
+        )
+
+
 
         
 
