@@ -5596,7 +5596,7 @@ class Scene5(Scene):
                 FadeOut(txt_x_1)
             ),
             AnimationGroup(
-                *[Write(eq) for eq in eqn_2_ref_1[2:]],
+                *[Write(eq) for eq in eqn_2_ref_1],
                 lag_ratio=2
             ),
             lag_ratio=.6
