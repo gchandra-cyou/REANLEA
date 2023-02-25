@@ -5683,6 +5683,29 @@ class Scene5(Scene):
                 lag_ratio=.25
             )
         )
+        self.wait(2)
+        
+        dt_2_3_grp_1=VGroup(dt_2_lbl,dt_3_lbl)
+
+        trans_grp_1=VGroup(dt_2_3_grp_1[0],dt_2_3_grp_1[1],v_equal_grp)
+        trans_grp_2=VGroup(dt_2_3_grp_1[0].copy(),dt_2_3_grp_1[1].copy(),v_equal_grp.copy())
+
+        dt_2_lbl_alt=MathTex("a").set_color(REANLEA_YELLOW).move_to(ax_1.c2p(.75,1.75)).scale(.8)
+        dt_3_lbl_alt=MathTex("b").set_color(REANLEA_GREEN).move_to(ax_1.c2p(1.75,.25)).scale(.8)
+        dt_x_lbl_alt=MathTex("c").move_to(v_equal_1[0].get_center()).set_color(REANLEA_AQUA).scale(.8)
+
+        dt_lbl_grp=VGroup(dt_2_lbl_alt,dt_3_lbl_alt,dt_x_lbl_alt)
+
+        self.play(
+            ReplacementTransform(trans_grp_1,dt_lbl_grp)
+        )
+        self.wait(2)
+
+        self.play(
+            ReplacementTransform(dt_lbl_grp,trans_grp_2)
+        )
+
+
 
 
 
