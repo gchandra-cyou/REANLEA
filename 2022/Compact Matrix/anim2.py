@@ -5641,6 +5641,7 @@ class Scene5(Scene):
         eqn_5=MathTex(r"\lVert X-Y \rVert ^{2}&",r"= \lVert X \rVert ^{2} + \lVert Y \rVert ^{2} -2",r" \langle X , Y \rangle ").scale(.57).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER).shift(4.25*LEFT+2.5*UP)
 
         eqn_5_ref=MathTex(r" \lVert X \rVert \cdot \lVert Y \rVert \cdot cos\theta ").shift(2.475*UP+1.7*LEFT).scale(.57)
+        eqn_5_ref_copy=MathTex(r" \lVert X \rVert \cdot \lVert Y \rVert \cdot cos\theta ").shift(2.475*UP+1.7*LEFT).scale(.57)
 
         eqn_1_1=eqn_1.copy()
 
@@ -5678,12 +5679,15 @@ class Scene5(Scene):
 
         self.play(
             AnimationGroup(
-                Transform(eqn_6[-1].copy(),eqn_5_ref),
+                Transform(eqn_6[-1].copy(),eqn_5_ref_copy),
                 Transform(eqn_5[-1],eqn_5_ref),
                 lag_ratio=.25
             )
         )
-        self.wait(2)
+        self.wait()
+        self.play(
+            FadeOut(eqn_5_ref_copy)
+        )
         
         dt_2_3_grp_1=VGroup(dt_2_lbl,dt_3_lbl)
 
@@ -5696,14 +5700,23 @@ class Scene5(Scene):
 
         dt_lbl_grp=VGroup(dt_2_lbl_alt,dt_3_lbl_alt,dt_x_lbl_alt)
 
+        eqn_7=MathTex(r"c^{2}","=",r"a^{2} + b^{2} -2","a","b",r"\cos\theta").scale(.67).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER).shift(4.25*LEFT+2.5*UP)
+        eqn_7[0][0].set_color(REANLEA_AQUA)
+        eqn_7[2][0].set_color(REANLEA_YELLOW)
+        eqn_7[2][3].set_color(REANLEA_GREEN)
+        eqn_7[3].set_color(REANLEA_YELLOW)
+        eqn_7[4].set_color(REANLEA_GREEN)
+        eqn_7[5][-1].set_color(REANLEA_YELLOW_GREEN)
+
         self.play(
-            ReplacementTransform(trans_grp_1,dt_lbl_grp)
+            ReplacementTransform(trans_grp_1,dt_lbl_grp),
+            ReplacementTransform(eqn_5,eqn_7)
         )
         self.wait(2)
 
-        self.play(
+        '''self.play(
             ReplacementTransform(dt_lbl_grp,trans_grp_2)
-        )
+        )'''
 
 
 
