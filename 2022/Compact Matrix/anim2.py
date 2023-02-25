@@ -5438,6 +5438,7 @@ class Scene5(Scene):
         self.wait(2)
 
         nrm_def_1=MathTex(r"\Rightarrow",r"\lVert v \rVert","=",r"\sqrt{\langle v,v \rangle}").set_color(REANLEA_TXT_COL).next_to(nrm_def_0,DOWN).shift(.175*RIGHT)
+        nrm_def_1_ref=nrm_def_1.copy().set_z_index(11)
 
         self.play(
             Write(nrm_def_1),
@@ -5641,6 +5642,7 @@ class Scene5(Scene):
         eqn_5=MathTex(r"\lVert X-Y \rVert ^{2}&",r"= \lVert X \rVert ^{2} + \lVert Y \rVert ^{2} -2",r" \langle X , Y \rangle ").scale(.57).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER).shift(4.25*LEFT+2.5*UP)
 
         eqn_5_ref=MathTex(r" \lVert X \rVert \cdot \lVert Y \rVert \cdot cos\theta ").shift(2.475*UP+1.7*LEFT).scale(.57)
+
         eqn_5_ref_copy=MathTex(r" \lVert X \rVert \cdot \lVert Y \rVert \cdot cos\theta ").shift(2.475*UP+1.7*LEFT).scale(.57)
 
         eqn_1_1=eqn_1.copy()
@@ -5675,11 +5677,11 @@ class Scene5(Scene):
         )
         self.wait(2)
 
-        eqn_5_grp=VGroup(eqn_5[-1],eqn_6[-1].copy())
+        eqn_6_ref=eqn_6[-1].copy()
 
         self.play(
             AnimationGroup(
-                Transform(eqn_6[-1].copy(),eqn_5_ref_copy),
+                ReplacementTransform(eqn_6_ref,eqn_5_ref_copy),
                 Transform(eqn_5[-1],eqn_5_ref),
                 lag_ratio=.25
             )
@@ -5707,6 +5709,7 @@ class Scene5(Scene):
         eqn_7[3].set_color(REANLEA_YELLOW)
         eqn_7[4].set_color(REANLEA_GREEN)
         eqn_7[5][-1].set_color(REANLEA_YELLOW_GREEN)
+        eqn_7[5:].shift(.05*RIGHT)
 
         self.play(
             ReplacementTransform(trans_grp_1,dt_lbl_grp),
@@ -5714,9 +5717,103 @@ class Scene5(Scene):
         )
         self.wait(2)
 
-        '''self.play(
-            ReplacementTransform(dt_lbl_grp,trans_grp_2)
-        )'''
+        bez_arr_1=bend_bezier_arrow().flip(UP).rotate(-45*DEGREES).scale(.5).next_to(eqn_7,DOWN).set_z_index(11)
+
+        with RegisterFont("Homemade Apple") as fonts:
+            txt_2=Text("Law of Cosines", font=fonts[0]).scale(.5)
+            txt_2.set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_TXT_COL_LIGHTER)
+            txt_2.next_to(bez_arr_1,DOWN).shift(2*RIGHT+.75*UP).set_z_index(11)
+
+        self.add(nrm_def_1_ref)        
+
+        undr_bez=underline_bez_curve().scale(1.25).next_to(txt_2, DOWN).shift(.2*UP).set_z_index(11)
+
+        rect_overlap_1=Rectangle(width=16, height=4, color=REANLEA_BACKGROUND_COLOR).to_edge(RIGHT, buff=0).set_opacity(.825).set_z_index(10)
+
+        self.play(
+            Write(rect_overlap_1),
+            Create(bez_arr_1)
+        )
+        self.play(
+            Write(txt_2)
+        )
+
+        self.play(            
+            Write(undr_bez)
+        )
+        self.wait(2)
+
+        with RegisterFont("Cousine") as fonts:
+            txt_3 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "The square of any one side of a triangle",
+                "is equal to the difference between the",
+                "sum of squares of the other two sides",
+                "and double the product of other sides",
+                "and cosine angle included between them."
+            )]).scale(0.4).set_color(REANLEA_GREY).arrange_submobjects(.3*DOWN).shift(.45*DOWN+.5*RIGHT).set_z_index(11)
+
+        self.play(
+            AnimationGroup(
+                *[Write(xx) for xx in txt_3],
+                lag_ratio=1.25
+            )
+        )
+
+        self.wait(2)
+
+        remain_grp_1=VGroup()
+
+        eqn_4_grp_copy=eqn_4_grp.copy()
+        eqn_6_copy=eqn_6.copy()
+        nrm_def_0_copy_3=nrm_def_0.copy()
+        water_mark_1=water_mark.copy()
+
+
+        self.play(            
+            AnimationGroup(
+                *[FadeOut(mobj) for mobj in self.mobjects],
+            ),
+            FadeIn(water_mark_1),
+            nrm_def_0_copy_3.animate.shift(.25*DOWN),
+            eqn_4_grp_copy.animate.move_to(ORIGIN).shift(1.25*UP),
+            eqn_6_copy.animate.shift(5.5*UP),
+            run_time=3
+        )
+        self.wait(2)
+
+        eqn_8_0=MathTex(r"\langle X , X \rangle ","=",r"x_{1}x_{1}+x_{2}x_{2}").scale(.75).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER)
+
+        self.play(
+            ReplacementTransform(eqn_4_grp_copy[0].copy(),eqn_8_0)
+        )
+
+        eqn_8_1=MathTex(r"\langle X , X \rangle &",r"= x_{1}^{2}+x_{2}^{2} \\ &",r"= \lVert X \rVert ^{2}").scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE)
+
+        self.play(
+            ReplacementTransform(eqn_8_0,eqn_8_1[0:2])
+        )
+        self.wait(2)
+
+        self.play(
+            Write(eqn_8_1[2])
+        )
+
+        eqn_9_0=MathTex(r"\Rightarrow \lVert X \rVert",r"= \sqrt{ x_{1}^{2}+x_{2}^{2} }").scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE).next_to(eqn_8_1,DOWN).shift(.5*RIGHT)
+
+        eqn_9_1=MathTex(r"= \Biggl\lbrack \sum_{i=1}^{2} x_{i}^{2} \Biggr\rbrack ^{1/2} ").scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE).next_to(eqn_9_0)
+
+        self.play(
+            TransformMatchingShapes(eqn_8_1.copy(),eqn_9_0)
+        )
+        self.wait(2)
+
+        self.play(
+            Write(eqn_9_1)
+        )
+
+
+
+
 
 
 
@@ -5733,6 +5830,8 @@ class Scene5(Scene):
         # manim -pql anim2.py Scene5
 
         # manim -sqk anim2.py Scene5
+
+        # manim -sqh anim2.py Scene5
         
 
 ###################################################################################################################
