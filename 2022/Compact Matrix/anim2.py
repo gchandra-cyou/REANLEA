@@ -5848,10 +5848,8 @@ class Scene5(Scene):
         
 
 
-        self.wait(4)
 
 
-        # manim -pqh anim2.py Scene5
 
         # manim -pql anim2.py Scene5
 
