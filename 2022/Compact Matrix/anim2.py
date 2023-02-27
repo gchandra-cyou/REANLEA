@@ -5817,7 +5817,7 @@ class Scene5_1(Scene):
 
         nrm_def_0=MathTex(r"\langle v,v \rangle","=",r"\lVert v \rVert ^{2}").set_color(REANLEA_TXT_COL).shift(3*UP+4*RIGHT).scale(.75)
 
-        eqn_0=MathTex(r"\langle X , Y \rangle ","=",r"(x_{1}y_{1}+x_{2}y_{2})").set_z_index(11).shift(2.75*DOWN).scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE).move_to(1.25*UP)
+        eqn_0=MathTex(r"\langle X , Y \rangle ","=",r"(x_{1}y_{1}+x_{2}y_{2})").shift(2.75*DOWN).scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE).move_to(1.25*UP)
 
         sr_eqn_0=SurroundingRectangle(eqn_0, buff=.25, corner_radius=.125).set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_VIOLET])
 
@@ -5860,7 +5860,7 @@ class Scene5_1(Scene):
             Write(eqn_3_1)
         )
         self.wait(2)
-        
+
 
 
         
@@ -5888,7 +5888,7 @@ class Scene5_1(Scene):
             eqn_2_3_grp.animate.shift(4*LEFT)
         )
 
-        sep_ln_0=Line(start=1.5*UP, end=1.5*DOWN).set_stroke(width=3, color=[REANLEA_AQUA,REANLEA_PINK,REANLEA_AQUA]).set_z_index(11).shift(1.5*RIGHT+DOWN)
+        sep_ln_0=Line(start=1.5*UP, end=1.5*DOWN).set_stroke(width=3, color=[REANLEA_AQUA,REANLEA_PINK,REANLEA_AQUA]).shift(1.5*RIGHT+DOWN)
 
         self.play(
             Create(sep_ln_0)
@@ -5917,6 +5917,18 @@ class Scene5_1(Scene):
             Write(txt_1)
         )
         self.wait(2)
+
+        rect_overlap_0=Rectangle(width=16, height=9, color=REANLEA_BACKGROUND_COLOR).to_edge(RIGHT, buff=0).set_opacity(.825).set_z_index(10)
+
+        water_mark_1=water_mark.copy().set_z_index(11)
+
+        self.play(
+            FadeIn(water_mark_1),
+            FadeIn(rect_overlap_0)
+        )
+
+
+        self.wait(4)
 
 
 
