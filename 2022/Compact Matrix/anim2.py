@@ -5783,61 +5783,6 @@ class Scene5(Scene):
         )
         self.wait(2)
 
-        '''eqn_8_0=MathTex(r"\langle X , X \rangle ","=",r"x_{1}x_{1}+x_{2}x_{2}").scale(.75).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER)
-
-        self.play(
-            ReplacementTransform(eqn_4_grp_copy[0].copy(),eqn_8_0)
-        )
-
-        eqn_8_1=MathTex(r"\langle X , X \rangle &",r"= x_{1}^{2}+x_{2}^{2} \\ &",r"= \lVert X \rVert ^{2}").scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE)
-
-        self.play(
-            ReplacementTransform(eqn_8_0,eqn_8_1[0:2])
-        )
-        self.wait(2)
-
-        self.play(
-            Write(eqn_8_1[2])
-        )
-
-        eqn_9_0=MathTex(r"\Rightarrow \lVert X \rVert",r"= \sqrt{ x_{1}^{2}+x_{2}^{2} }").scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE).next_to(eqn_8_1,DOWN).shift(.15*RIGHT)
-
-        eqn_9_1=MathTex(r"= \Biggl\lbrack \sum_{i=1}^{2} x_{i}^{2} \Biggr\rbrack ^{1/2} ").scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE).next_to(eqn_9_0)
-
-        self.play(
-            TransformMatchingShapes(eqn_8_1.copy(),eqn_9_0)
-        )
-        self.wait(2)
-
-        self.play(
-            Write(eqn_9_1)
-        )
-        self.wait(2)
-
-        eqn_8_9_grp=VGroup(eqn_8_1,eqn_9_0,eqn_9_1)
-
-        self.play(
-            eqn_8_9_grp.animate.shift(4*LEFT)
-        )
-
-        indct_ln_1=Line().scale(.25).rotate(-135*DEGREES).next_to(eqn_9_1,DOWN).shift(.25*LEFT)
-
-        sep_ln_3=Line(start=1.5*UP, end=1.5*DOWN).set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_VIOLET,REANLEA_AQUA]).set_z_index(11).shift(1.5*RIGHT+DOWN)
-
-        self.play(
-            Create(indct_ln_1)
-        )
-        self.wait(2)
-
-        self.play(
-            Create(sep_ln_3)
-        )
-
-        eqn_10=MathTex(r"\lVert X \rVert",r"= \Biggl\lbrack \sum_{i=1}^{n} x_{i}^{2} \Biggr\rbrack ^{1/2} ").scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE).next_to(sep_ln_3).shift(1.5*RIGHT)
-
-        self.play(
-            TransformMatchingShapes(eqn_9_1.copy(),eqn_10)
-        )'''
 
         
 
@@ -5918,13 +5863,8 @@ class Scene5_1(Scene):
 
         eqn_2_3_grp=VGroup(eqn_2_1,eqn_3_0,eqn_3_1)
 
-        self.play(
-            eqn_2_3_grp.animate.shift(4*LEFT)
-        )
-
+        
         indct_ln_0=Line().scale(.25).rotate(-135*DEGREES).next_to(eqn_3_1,DOWN).shift(.25*LEFT)
-
-        sep_ln_0=Line(start=1.5*UP, end=1.5*DOWN).set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_VIOLET,REANLEA_AQUA]).set_z_index(11).shift(1.5*RIGHT+DOWN)
 
         self.play(
             Create(indct_ln_0)
