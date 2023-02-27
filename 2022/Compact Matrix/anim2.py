@@ -5830,7 +5830,7 @@ class Scene5_1(Scene):
 
         # MAIN SCENE
 
-        eqn_2_0=MathTex(r"\langle X , X \rangle ","=",r"x_{1}x_{1}+x_{2}x_{2}").scale(.75).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER)
+        eqn_2_0=MathTex(r"\langle X , X \rangle ","=",r"x_{1}x_{1}+x_{2}x_{2}").scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE)
 
         self.play(
             ReplacementTransform(eqn_0.copy(),eqn_2_0)
@@ -5860,16 +5860,35 @@ class Scene5_1(Scene):
             Write(eqn_3_1)
         )
         self.wait(2)
+        
 
-        eqn_2_3_grp=VGroup(eqn_2_1,eqn_3_0,eqn_3_1)
 
         
-        indct_ln_0=Line().scale(.25).rotate(-135*DEGREES).next_to(eqn_3_1,DOWN).shift(.25*LEFT)
+        indct_ln_0=Line().scale(.35).rotate(-115*DEGREES).next_to(eqn_3_1,DOWN).shift(.25*LEFT).set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_PINK])
 
         self.play(
             Create(indct_ln_0)
         )
+
+        with RegisterFont("Cousine") as fonts:
+            txt_0=Text("2 dimensional space", font=fonts[0]).scale(.35)
+            txt_0.set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_TXT_COL_LIGHTER)
+            txt_0.next_to(indct_ln_0,DOWN)
+
+        self.play(
+            Write(txt_0)
+        )
         self.wait(2)
+
+
+
+        eqn_2_3_grp=VGroup(eqn_2_1,eqn_3_0,eqn_3_1, indct_ln_0, txt_0)
+
+        self.play(
+            eqn_2_3_grp.animate.shift(4*LEFT)
+        )
+
+        sep_ln_0=Line(start=1.5*UP, end=1.5*DOWN).set_stroke(width=3, color=[REANLEA_AQUA,REANLEA_PINK,REANLEA_AQUA]).set_z_index(11).shift(1.5*RIGHT+DOWN)
 
         self.play(
             Create(sep_ln_0)
@@ -5880,6 +5899,24 @@ class Scene5_1(Scene):
         self.play(
             TransformMatchingShapes(VGroup(eqn_3_0[0].copy(),eqn_3_1.copy()),eqn_4)
         )
+
+        self.wait(2)
+
+        indct_ln_1=Line().scale(.35).rotate(-115*DEGREES).next_to(eqn_4,DOWN).shift(.25*LEFT).set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_ORANGE])
+
+        self.play(
+            Create(indct_ln_1)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            txt_1=Text("n dimensional space", font=fonts[0]).scale(.35)
+            txt_1.set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_TXT_COL_LIGHTER)
+            txt_1.next_to(indct_ln_1,DOWN)
+
+        self.play(
+            Write(txt_1)
+        )
+        self.wait(2)
 
 
 
