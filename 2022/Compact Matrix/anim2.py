@@ -5989,8 +5989,23 @@ class Scene5_1(Scene):
         )
         self.wait(4)
 
+        with RegisterFont("Fuzzy Bubbles") as fonts:
+            txt_3 = Text("Cauchy-Schwarz Inequality", font=fonts[0]).set_z_index(11)
+
         self.play(
-            FadeOut(txt_2_grp)
+            ReplacementTransform(txt_2_grp,txt_3)
+        )
+
+        self.wait(2)
+
+        water_mark_2=water_mark.copy()
+
+        self.play(            
+            AnimationGroup(
+                *[FadeOut(mobj) for mobj in self.mobjects],
+            ),
+            FadeIn(water_mark_2),
+            run_time=3
         )
 
 
@@ -6006,6 +6021,7 @@ class Scene5_1(Scene):
         # manim -sqk anim2.py Scene5_1
 
         # manim -sqh anim2.py Scene5_1
+
 
 
         
