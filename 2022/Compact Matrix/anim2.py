@@ -5927,6 +5927,41 @@ class Scene5_1(Scene):
             FadeIn(rect_overlap_0)
         )
 
+        with RegisterFont("Cousine") as fonts:
+            txt_2_0_0 = Text("Given", font=fonts[0]).scale(.35).set_z_index(11)
+            txt_2_0_1=MathTex(r"x>0").scale(.6).next_to(txt_2_0_0,RIGHT).set_z_index(11)
+            txt_2_0_2 = Text("and", font=fonts[0]).scale(.35).next_to(txt_2_0_1,RIGHT).set_z_index(11)
+            txt_2_0_3=MathTex(r"n \in \mathbb{N}").scale(.6).next_to(txt_2_0_2,RIGHT).set_z_index(11)
+            txt_2_0_4 = Text(", then there is a", font=fonts[0]).scale(.35).next_to(txt_2_0_3,RIGHT).set_z_index(11).shift(.15*LEFT)
+
+            txt_2_0_4[0][0].shift(.075*DOWN)
+
+            txt_2_0_grp=VGroup(txt_2_0_0,txt_2_0_1,txt_2_0_2,txt_2_0_3,txt_2_0_4).move_to(ORIGIN)
+
+        with RegisterFont("Cousine") as fonts:
+            txt_2_1_0 = Text("unique", font=fonts[0]).scale(.35).set_z_index(11)
+            txt_2_1_1 = MathTex(r"y>0").scale(.6).next_to(txt_2_1_0,RIGHT).set_z_index(11)
+            txt_2_1_2 = Text("such that", font=fonts[0]).scale(.35).next_to(txt_2_1_1,RIGHT).set_z_index(11)
+            txt_2_1_3 = MathTex(r"y^{n}=x").scale(.6).next_to(txt_2_1_2,RIGHT).set_z_index(11)
+            txt_2_1_4 = Text(".", font=fonts[0]).scale(.35).next_to(txt_2_1_3,RIGHT).set_z_index(11).shift(.15*LEFT+.075*DOWN)
+            
+
+            txt_2_1_grp=VGroup(txt_2_1_0,txt_2_1_1,txt_2_1_2,txt_2_1_3,txt_2_1_4).next_to(txt_2_0_grp,DOWN)
+
+
+        
+        
+
+        
+        
+
+        self.play(
+            Write(txt_2_0_grp)
+        )
+        self.play(
+            Write(txt_2_1_grp)
+        )
+
 
         self.wait(4)
 
