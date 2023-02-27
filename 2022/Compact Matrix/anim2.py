@@ -3257,7 +3257,6 @@ class Scene4(Scene):
         
 
 
-###################################################################################################################
 
 
 class Scene4_1(Scene):
@@ -4233,6 +4232,7 @@ class Scene4_1(Scene):
         
 
 
+
 class Scene4_2(Scene):
     def construct(self):
 
@@ -5089,6 +5089,8 @@ class Scene4_2(Scene):
     # manim -sqk anim2.py Scene4_2  
 
 
+
+
 class Scene4_3(Scene):
     def construct(self):
 
@@ -5763,8 +5765,8 @@ class Scene5(Scene):
 
         remain_grp_1=VGroup()
 
-        eqn_4_grp_copy=eqn_4_grp.copy()
-        eqn_6_copy=eqn_6.copy()
+        eqn_4_grp_copy=eqn_4_grp.copy().set_z_index(12)
+        eqn_6_copy=eqn_6.copy().set_z_index(12)
         nrm_def_0_copy_3=nrm_def_0.copy()
         water_mark_1=water_mark.copy()
 
@@ -5774,14 +5776,14 @@ class Scene5(Scene):
                 *[FadeOut(mobj) for mobj in self.mobjects],
             ),
             FadeIn(water_mark_1),
-            nrm_def_0_copy_3.animate.shift(.25*DOWN),
+            FadeIn(nrm_def_0_copy_3),
             eqn_4_grp_copy.animate.move_to(ORIGIN).shift(1.25*UP),
-            eqn_6_copy.animate.shift(5.5*UP),
+            eqn_6_copy.animate.move_to(2.25*UP+4.5*LEFT),
             run_time=3
         )
         self.wait(2)
 
-        eqn_8_0=MathTex(r"\langle X , X \rangle ","=",r"x_{1}x_{1}+x_{2}x_{2}").scale(.75).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER)
+        '''eqn_8_0=MathTex(r"\langle X , X \rangle ","=",r"x_{1}x_{1}+x_{2}x_{2}").scale(.75).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER)
 
         self.play(
             ReplacementTransform(eqn_4_grp_copy[0].copy(),eqn_8_0)
@@ -5820,7 +5822,7 @@ class Scene5(Scene):
 
         indct_ln_1=Line().scale(.25).rotate(-135*DEGREES).next_to(eqn_9_1,DOWN).shift(.25*LEFT)
 
-        sep_ln_3=Line(start=1.5*UP, end=1.5*DOWN).set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_VIOLET,REANLEA_AQUA]).set_z_index(11).shift(RIGHT+DOWN)
+        sep_ln_3=Line(start=1.5*UP, end=1.5*DOWN).set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_VIOLET,REANLEA_AQUA]).set_z_index(11).shift(1.5*RIGHT+DOWN)
 
         self.play(
             Create(indct_ln_1)
@@ -5835,21 +5837,15 @@ class Scene5(Scene):
 
         self.play(
             TransformMatchingShapes(eqn_9_1.copy(),eqn_10)
-        )
-
-
-
-
-
-
-
-
+        )'''
 
         
 
 
+        self.wait(4)
 
 
+        # manim -pqh anim2.py Scene5
 
         # manim -pql anim2.py Scene5
 
@@ -5858,6 +5854,106 @@ class Scene5(Scene):
         # manim -sqh anim2.py Scene5
         
 
+
+
+
+
+class Scene5_1(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        self.wait()
+
+
+        # PREVIOUS SCENE
+
+        nrm_def_0=MathTex(r"\langle v,v \rangle","=",r"\lVert v \rVert ^{2}").set_color(REANLEA_TXT_COL).shift(3*UP+4*RIGHT).scale(.75)
+
+        eqn_0=MathTex(r"\langle X , Y \rangle ","=",r"(x_{1}y_{1}+x_{2}y_{2})").set_z_index(11).shift(2.75*DOWN).scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE).move_to(1.25*UP)
+
+        sr_eqn_0=SurroundingRectangle(eqn_0, buff=.25, corner_radius=.125).set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_VIOLET])
+
+        eqn_0_grp=VGroup(eqn_0,sr_eqn_0)
+
+        eqn_1=MathTex(r"\langle X,Y \rangle","=",r" \lVert X \rVert \cdot \lVert Y \rVert \cdot cos\theta ").move_to(2.25*UP+4.5*LEFT).scale(.6)
+
+        self.add(nrm_def_0,eqn_0_grp,eqn_1)
+
+
+        # MAIN SCENE
+
+        eqn_2_0=MathTex(r"\langle X , X \rangle ","=",r"x_{1}x_{1}+x_{2}x_{2}").scale(.75).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER)
+
+        self.play(
+            ReplacementTransform(eqn_0.copy(),eqn_2_0)
+        )
+
+        eqn_2_1=MathTex(r"\langle X , X \rangle &",r"= x_{1}^{2}+x_{2}^{2} \\ &",r"= \lVert X \rVert ^{2}").scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE)
+
+        self.play(
+            ReplacementTransform(eqn_2_0,eqn_2_1[0:2])
+        )
+        self.wait(2)
+
+        self.play(
+            Write(eqn_2_1[2])
+        )
+
+        eqn_3_0=MathTex(r"\Rightarrow \lVert X \rVert",r"= \sqrt{ x_{1}^{2}+x_{2}^{2} }").scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE).next_to(eqn_2_1,DOWN).shift(.15*RIGHT)
+
+        eqn_3_1=MathTex(r"= \Biggl\lbrack \sum_{i=1}^{2} x_{i}^{2} \Biggr\rbrack ^{1/2} ").scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE).next_to(eqn_3_0)
+
+        self.play(
+            TransformMatchingShapes(eqn_2_1.copy(),eqn_3_0)
+        )
+        self.wait(2)
+
+        self.play(
+            Write(eqn_3_1)
+        )
+        self.wait(2)
+
+        eqn_2_3_grp=VGroup(eqn_2_1,eqn_3_0,eqn_3_1)
+
+        self.play(
+            eqn_2_3_grp.animate.shift(4*LEFT)
+        )
+
+        indct_ln_0=Line().scale(.25).rotate(-135*DEGREES).next_to(eqn_3_1,DOWN).shift(.25*LEFT)
+
+        sep_ln_0=Line(start=1.5*UP, end=1.5*DOWN).set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_VIOLET,REANLEA_AQUA]).set_z_index(11).shift(1.5*RIGHT+DOWN)
+
+        self.play(
+            Create(indct_ln_0)
+        )
+        self.wait(2)
+
+        self.play(
+            Create(sep_ln_0)
+        )
+
+        eqn_4=MathTex(r"\lVert X \rVert",r"= \Biggl\lbrack \sum_{i=1}^{n} x_{i}^{2} \Biggr\rbrack ^{1/2} ").scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE).next_to(sep_ln_0).shift(1.5*RIGHT)
+
+        self.play(
+            TransformMatchingShapes(VGroup(eqn_3_0[0].copy(),eqn_3_1.copy()),eqn_4)
+        )
+
+
+
+
+        # manim -pqh anim2.py Scene5_1
+
+        # manim -pql anim2.py Scene5_1
+
+        # manim -sqk anim2.py Scene5_1
+
+        # manim -sqh anim2.py Scene5_1
+
+
+        
 ###################################################################################################################
 
 # Changing FONTS : import any font from Google
