@@ -5972,14 +5972,25 @@ class Scene5_1(Scene):
         self.play(
             Write(txt_2_0_grp)
         )
+        self.wait()
+
         self.play(
             Write(txt_2_1_grp)
         )
+        self.wait()
+
         self.play(
             Write(txt_2_2_grp)
         )
+        self.wait()
+
         self.play(
             Write(txt_2_3_grp)
+        )
+        self.wait(4)
+
+        self.play(
+            FadeOut(txt_2_grp)
         )
 
 
