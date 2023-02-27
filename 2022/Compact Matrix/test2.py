@@ -7338,7 +7338,18 @@ class bez_arr_tst_1(Scene):
 
 
         # manim -pqh test2.py bez_arr_tst_1
-        
+
+
+class root_test(Scene):
+    def construct(self):
+        txt_0 = MathTex(r"y=\sqrt[\leftroot{-1}\uproot{2}n]{x}")
+
+        self.add(txt_0)
+
+
+       # manim -pqh test2.py root_test 
+
+
 ###################################################################################################################
 
 

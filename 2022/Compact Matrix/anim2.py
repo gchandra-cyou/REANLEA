@@ -5948,8 +5948,22 @@ class Scene5_1(Scene):
 
             txt_2_1_grp=VGroup(txt_2_1_0,txt_2_1_1,txt_2_1_2,txt_2_1_3,txt_2_1_4).next_to(txt_2_0_grp,DOWN)
 
+        with RegisterFont("Cousine") as fonts:
+            txt_2_2_0 = Text("That is,", font=fonts[0]).scale(.35).set_z_index(11)
+            txt_2_2_1 = MathTex(r"y=\sqrt[\leftroot{-1}\uproot{2}n]{x}").scale(.6).next_to(txt_2_2_0,RIGHT).set_z_index(11)
+            txt_2_2_2 = Text("exists and is unique.", font=fonts[0]).scale(.35).next_to(txt_2_2_1,RIGHT).set_z_index(11)
 
-        
+            txt_2_2_grp=VGroup(txt_2_2_0,txt_2_2_1,txt_2_2_2).next_to(txt_2_1_grp,DOWN)
+
+        with RegisterFont("Cousine") as fonts:
+            txt_2_3_0 = Text("[ Hint: Consider,", font=fonts[0]).scale(.35).set_z_index(11)
+            txt_2_3_1 = MathTex(r"y = l.u.b \: \{s \in \mathbb{R} : s^{n} \leq x\}").scale(.6).next_to(txt_2_3_0,RIGHT).set_z_index(11)
+            txt_2_3_2 = Text("]", font=fonts[0]).scale(.35).set_z_index(11).next_to(txt_2_3_1,RIGHT).shift(.15*LEFT)
+
+            txt_2_3_grp=VGroup(txt_2_3_0,txt_2_3_1,txt_2_3_2).next_to(txt_2_2_grp,DOWN).scale(.75)
+
+
+        txt_2_grp=VGroup(txt_2_0_grp,txt_2_1_grp,txt_2_2_grp,txt_2_3_grp).move_to(ORIGIN)
         
 
         
@@ -5960,6 +5974,12 @@ class Scene5_1(Scene):
         )
         self.play(
             Write(txt_2_1_grp)
+        )
+        self.play(
+            Write(txt_2_2_grp)
+        )
+        self.play(
+            Write(txt_2_3_grp)
         )
 
 
