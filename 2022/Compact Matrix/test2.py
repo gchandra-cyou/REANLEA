@@ -7350,6 +7350,81 @@ class root_test(Scene):
        # manim -pqh test2.py root_test 
 
 
+class segmented_circle_ex(Scene):
+    def construct(self):
+
+        s1=AnnularSector(inner_radius=2, outer_radius=2.75, angle=2*PI, color=REANLEA_GREY_DARKER).set_opacity(0.3).move_to(5.5*LEFT)
+
+        s2=AnnularSector(inner_radius=2,angle=2*PI/5).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).move_to(4.5*RIGHT)
+
+        s3=AnnularSector(inner_radius=2,angle=2*PI/5).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).move_to(4.5*RIGHT).rotate(3*PI/5, about_point=4.5*RIGHT)
+
+        self.add(s1,s2,s3)
+        self.wait(2)
+
+        self.play(
+            s2.animate.rotate(2*PI)
+        )
+
+
+        # manim -pqh test2.py segmented_circle_ex
+
+        # manim -sqk test2.py segmented_circle_ex
+
+
+
+class segmented_circle_ex_1(Scene):
+    def construct(self):
+
+        s1=AnnularSector(inner_radius=2, outer_radius=2.75, angle=2*PI, color=REANLEA_GREY_DARKER).set_opacity(0.3).move_to(5.5*LEFT)
+
+        x_trac=ValueTracker(0)
+
+        s2=AnnularSector(inner_radius=2,angle=2*PI/5).set_stroke(width=10, color=[REANLEA_YELLOW,REANLEA_AQUA,REANLEA_PURPLE,PURE_RED]).set_z_index(2)
+
+        s3=Circle(radius=2).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE])
+
+        s4=AnnularSector(inner_radius=2,angle=2*PI).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE])
+
+        dt_1=Dot().set_sheen(-.4,DOWN)
+
+        s5=AnnularSector(inner_radius=2,angle=4*PI/5).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE])
+
+        
+
+        s2_ref=s2.copy()
+
+        s2.add_updater(
+            lambda x : x.become(s2_ref.copy()).rotate(
+            x_trac.get_value(), about_point=ORIGIN
+            )
+        )
+
+        s5_ref=s5.copy()
+
+        s5.add_updater(
+            lambda x : x.become(s5_ref.copy()).rotate(
+            x_trac.get_value()*1.527, about_point=ORIGIN
+            )
+        )
+
+        grp=VGroup(s1,s2,s3,s4,s5,dt_1)
+
+        self.add(grp)
+
+        self.play(
+            x_trac.animate.set_value(PI)
+        )
+
+        
+
+
+        # manim -pqh test2.py segmented_circle_ex_1
+
+        # manim -sqk test2.py segmented_circle_ex_1
+
+
+
 ###################################################################################################################
 
 

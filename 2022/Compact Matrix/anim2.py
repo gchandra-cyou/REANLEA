@@ -6024,6 +6024,36 @@ class Scene5_1(Scene):
 
 
 
+###################################################################################################################
+
+class Scene6(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        self.wait()
+
+
+        # MAIN SCENE
+
+        
+
+        
+
+
+
+
+        # manim -pqh anim2.py Scene6
+
+        # manim -pql anim2.py Scene6
+
+        # manim -sqk anim2.py Scene6
+
+        # manim -sqh anim2.py Scene6
+        
+
         
 ###################################################################################################################
 
