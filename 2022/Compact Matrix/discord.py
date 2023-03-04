@@ -7158,6 +7158,19 @@ class Test_epi(Scene):
 
 
 
+class rad_gard_1(Scene):
+  def construct(self):
+    radius = 2
+    colors = color_gradient([WHITE,DARK_BLUE], 100)
+    cs = VGroup(
+       *[Circle(radius=(i+1)*radius/100,stroke_width=2*radius, color=colors[i]) for i in range(100)] 
+    )
+    self.add(cs)
+
+
+    # manim -sqk discord.py rad_gard_1
+
+    # manim -pqh discord.py rad_gard_1
 
 
 ###################################################################################################################

@@ -7617,6 +7617,25 @@ class segmented_circle_ex_3(Scene):
 
         
 
+class bgGradient(Scene):
+    def construct(self):
+        bground = Rectangle(
+            height=8,
+            width=14.2,
+            fill_color=[PURE_GREEN,PURE_RED],
+            fill_opacity=1,
+            stroke_width=0
+        ).set_z_index(-10)
+        self.add(bground)
+
+
+
+        # manim -sqk test2.py bgGradient
+
+    
+
+
+
 ###################################################################################################################
 
 
