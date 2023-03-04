@@ -6038,6 +6038,123 @@ class Scene6(Scene):
 
         # MAIN SCENE
 
+
+        with RegisterFont("Fuzzy Bubbles") as fonts:
+            txt_0 = VGroup(*[Text(x, font=fonts[0]) for x in (
+               "Inner",
+               "Product" 
+            )]).arrange_submobjects(DOWN).shift(5.75*LEFT).scale(.5)
+
+        self.play(
+            AddTextWordByWord(txt_0),
+            run_time=2
+        )
+
+
+        s0=AnnularSector(inner_radius=2,angle=2*PI).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).shift(6*LEFT)
+
+        x_trac_1=ValueTracker(0)
+        x_trac_2_0=ValueTracker(0)
+        x_trac_2_1=ValueTracker(0)
+        x_trac_3=ValueTracker(0)
+
+        s1=AnnularSector(inner_radius=2,angle=2*PI/7).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).set_z_index(2).shift(6*LEFT).rotate(7*PI/10, about_point=6*LEFT)
+
+        s1_ref=s1.copy()
+
+        s1.add_updater(
+            lambda x : x.become(s1_ref.copy()).rotate(
+            x_trac_1.get_value(), about_point=6*LEFT
+            )
+        )
+
+        s2_0=AnnularSector(inner_radius=2,angle=3*PI/14).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).set_z_index(2).shift(6*LEFT).rotate(7*PI/10, about_point=6*LEFT)
+
+        s2_0_ref=s2_0.copy()
+
+        s2_0.add_updater(
+            lambda x : x.become(s2_0_ref.copy()).rotate(
+            x_trac_2_0.get_value(), about_point=6*LEFT
+            )
+        ) 
+
+        s2_1=AnnularSector(inner_radius=2,angle=3*PI/14).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).set_z_index(2).shift(6*LEFT).rotate(7*PI/10, about_point=6*LEFT)
+
+        s2_1_ref=s2_1.copy()
+
+        s2_1.add_updater(
+            lambda x : x.become(s2_1_ref.copy()).rotate(
+            x_trac_2_1.get_value(), about_point=6*LEFT
+            )
+        ) 
+
+        s3=AnnularSector(inner_radius=2,angle=2*PI/7).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).set_z_index(2).shift(6*LEFT).rotate(7*PI/10, about_point=6*LEFT)
+
+        s3_ref=s3.copy()
+
+        s3.add_updater(
+            lambda x : x.become(s3_ref.copy()).rotate(
+            x_trac_3.get_value(), about_point=6*LEFT
+            )
+        )
+
+        self.wait()
+        self.add(s1,s2_0,s2_1,s3)
+
+        self.play(
+            AnimationGroup(
+                x_trac_1.animate.set_value((3*PI/10)+(5*PI/12)),
+                x_trac_2_0.animate.set_value((3*PI/10)+(5*PI/12)+(2*PI/7)+(PI/18)),
+                x_trac_2_1.animate.set_value((3*PI/10)+(5*PI/12)+(2*PI/7)+(PI/18)+(3*PI/14)+(PI/18)),
+                x_trac_3.animate.set_value((3*PI/10)+(5*PI/12)+(2*PI/7)+((3*PI/7)+(PI/18))+(2*PI/18))
+            ),
+            run_time=1.35
+        )
+
+        grid=NumberPlane()
+
+        dt_1=Dot(grid.polar_to_point(2, PI+(5*PI/12)+(2*PI/7)+(PI/18)-5*DEGREES)).shift(6*LEFT).set_color(PURE_GREEN).set_sheen(-.4,DOWN)
+
+        dt_2=Dot(grid.polar_to_point(2, PI+(5*PI/12)+(2*PI/7)+(PI/18)+(3*PI/14)+(PI/18)-5*DEGREES)).shift(6*LEFT).set_color(REANLEA_WHITE).set_sheen(-.4,DOWN)
+
+        dt_3=Dot(grid.polar_to_point(2, PI+(5*PI/12)+(2*PI/7)+((3*PI/7)+(PI/18))+(2*PI/18)-5*DEGREES)).shift(6*LEFT).set_color(REANLEA_YELLOW ).set_sheen(-.4,DOWN)
+
+        self.play(
+            AnimationGroup(
+                Write(dt_1),
+                Write(dt_2),
+                Write(dt_3)
+            ),
+            AnimationGroup(
+                Flash(dt_1, color=PURE_GREEN),
+                Flash(dt_2, color=REANLEA_WHITE),
+                Flash(dt_3, color=REANLEA_YELLOW)
+            ),
+            lag_ratio=.75
+        )
+
+        with RegisterFont("Fuzzy Bubbles") as fonts:
+
+            txt_1=Text("Bilinear", font=fonts[0]).scale(.45).set_color_by_gradient(PURE_GREEN).next_to(dt_1,RIGHT)
+
+            txt_2=Text("Symmetric", font=fonts[0]).scale(.45).set_color_by_gradient(REANLEA_WHITE).next_to(dt_2,RIGHT)
+
+            txt_3=Text("Positive Definite", font=fonts[0]).scale(.45).set_color_by_gradient(REANLEA_YELLOW).next_to(dt_3,RIGHT)
+
+        self.play(
+            AnimationGroup(
+                Write(txt_1),
+                Write(txt_2),
+                Write(txt_3)
+            )
+        )
+
+
+
+
+
+        self.wait(4)
+
         
 
         

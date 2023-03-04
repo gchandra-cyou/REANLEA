@@ -7380,15 +7380,16 @@ class segmented_circle_ex_1(Scene):
 
         x_trac=ValueTracker(0)
 
-        s2=AnnularSector(inner_radius=2,angle=2*PI/5).set_stroke(width=10, color=[REANLEA_YELLOW,REANLEA_AQUA,REANLEA_PURPLE,PURE_RED]).set_z_index(2)
+        s2=AnnularSector(inner_radius=2,angle=2*PI/5).set_stroke(width=10, color=[REANLEA_YELLOW,REANLEA_AQUA,REANLEA_PURPLE,PURE_RED]).set_z_index(2).shift(2*LEFT)
 
         s3=Circle(radius=2).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE])
+        s3_copy=s3.copy().shift(2*RIGHT)
 
-        s4=AnnularSector(inner_radius=2,angle=2*PI).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE])
+        s4=AnnularSector(inner_radius=2,angle=2*PI).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).shift(2*LEFT)
 
-        dt_1=Dot().set_sheen(-.4,DOWN)
+        dt_1=Dot().set_sheen(-.4,DOWN).shift(2*LEFT)
 
-        s5=AnnularSector(inner_radius=2,angle=4*PI/5).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE])
+        s5=AnnularSector(inner_radius=2,angle=4*PI/5).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).shift(2*LEFT)
 
         
 
@@ -7396,7 +7397,7 @@ class segmented_circle_ex_1(Scene):
 
         s2.add_updater(
             lambda x : x.become(s2_ref.copy()).rotate(
-            x_trac.get_value(), about_point=ORIGIN
+            x_trac.get_value(), about_point=2*LEFT
             )
         )
 
@@ -7404,11 +7405,11 @@ class segmented_circle_ex_1(Scene):
 
         s5.add_updater(
             lambda x : x.become(s5_ref.copy()).rotate(
-            x_trac.get_value()*1.527, about_point=ORIGIN
+            x_trac.get_value()*1.527, about_point=2*LEFT
             )
         )
 
-        grp=VGroup(s1,s2,s3,s4,s5,dt_1)
+        grp=VGroup(s2,s3,s3_copy,s5)
 
         self.add(grp)
 
@@ -7424,6 +7425,197 @@ class segmented_circle_ex_1(Scene):
         # manim -sqk test2.py segmented_circle_ex_1
 
 
+
+class segmented_circle_ex_2(Scene):
+    def construct(self):
+
+        with RegisterFont("Fuzzy Bubbles") as fonts:
+            txt_0 = VGroup(*[Text(x, font=fonts[0]) for x in (
+               "Inner",
+               "Product" 
+            )]).arrange_submobjects(DOWN).shift(5.75*LEFT).scale(.5)
+        
+        self.add(txt_0)
+
+
+        s0=AnnularSector(inner_radius=2,angle=2*PI).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).shift(6*LEFT)
+
+        x_trac_1=ValueTracker(0)
+        x_trac_2=ValueTracker(0)
+        x_trac_3=ValueTracker(0)
+
+        s1=AnnularSector(inner_radius=2,angle=2*PI/7).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).set_z_index(2).shift(6*LEFT).rotate(7*PI/10, about_point=6*LEFT)
+
+        s1_ref=s1.copy()
+
+        s1.add_updater(
+            lambda x : x.become(s1_ref.copy()).rotate(
+            x_trac_1.get_value(), about_point=6*LEFT
+            )
+        )
+
+        s2=AnnularSector(inner_radius=2,angle=(3*PI/7)+(PI/18)).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).set_z_index(2).shift(6*LEFT).rotate(7*PI/10, about_point=6*LEFT)
+
+        s2_ref=s2.copy()
+
+        s2.add_updater(
+            lambda x : x.become(s2_ref.copy()).rotate(
+            x_trac_2.get_value(), about_point=6*LEFT
+            )
+        )
+
+        s3=AnnularSector(inner_radius=2,angle=2*PI/7).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).set_z_index(2).shift(6*LEFT).rotate(7*PI/10, about_point=6*LEFT)
+
+        s3_ref=s3.copy()
+
+        s3.add_updater(
+            lambda x : x.become(s3_ref.copy()).rotate(
+            x_trac_3.get_value(), about_point=6*LEFT
+            )
+        )
+
+        self.wait()
+        self.add(s1,s2,s3)
+
+        self.play(
+            x_trac_1.animate.set_value((3*PI/10)+(5*PI/12)),
+            x_trac_2.animate.set_value((3*PI/10)+(5*PI/12)+(2*PI/7)+(PI/18)),
+            x_trac_3.animate.set_value((3*PI/10)+(5*PI/12)+(2*PI/7)+((3*PI/7)+(PI/18))+(2*PI/18))
+        )
+
+        
+        self.wait(2)
+
+
+        # manim -pqh test2.py segmented_circle_ex_2
+
+        # manim -sqk test2.py segmented_circle_ex_2
+        
+
+
+class segmented_circle_ex_3(Scene):
+    def construct(self):
+
+        with RegisterFont("Fuzzy Bubbles") as fonts:
+            txt_0 = VGroup(*[Text(x, font=fonts[0]) for x in (
+               "Inner",
+               "Product" 
+            )]).arrange_submobjects(DOWN).shift(5.75*LEFT).scale(.5)
+        
+        self.add(txt_0)
+
+
+        s0=AnnularSector(inner_radius=2,angle=2*PI).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).shift(6*LEFT)
+
+        x_trac_1=ValueTracker(0)
+        x_trac_2_0=ValueTracker(0)
+        x_trac_2_1=ValueTracker(0)
+        x_trac_3=ValueTracker(0)
+
+        s1=AnnularSector(inner_radius=2,angle=2*PI/7).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).set_z_index(2).shift(6*LEFT).rotate(7*PI/10, about_point=6*LEFT)
+
+        s1_ref=s1.copy()
+
+        s1.add_updater(
+            lambda x : x.become(s1_ref.copy()).rotate(
+            x_trac_1.get_value(), about_point=6*LEFT
+            )
+        )
+
+        s2_0=AnnularSector(inner_radius=2,angle=3*PI/14).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).set_z_index(2).shift(6*LEFT).rotate(7*PI/10, about_point=6*LEFT)
+
+        s2_0_ref=s2_0.copy()
+
+        s2_0.add_updater(
+            lambda x : x.become(s2_0_ref.copy()).rotate(
+            x_trac_2_0.get_value(), about_point=6*LEFT
+            )
+        ) 
+
+        s2_1=AnnularSector(inner_radius=2,angle=3*PI/14).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).set_z_index(2).shift(6*LEFT).rotate(7*PI/10, about_point=6*LEFT)
+
+        s2_1_ref=s2_1.copy()
+
+        s2_1.add_updater(
+            lambda x : x.become(s2_1_ref.copy()).rotate(
+            x_trac_2_1.get_value(), about_point=6*LEFT
+            )
+        ) 
+
+        s3=AnnularSector(inner_radius=2,angle=2*PI/7).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).set_z_index(2).shift(6*LEFT).rotate(7*PI/10, about_point=6*LEFT)
+
+        s3_ref=s3.copy()
+
+        s3.add_updater(
+            lambda x : x.become(s3_ref.copy()).rotate(
+            x_trac_3.get_value(), about_point=6*LEFT
+            )
+        )
+
+        self.wait()
+        self.add(s1,s2_0,s2_1,s3)
+
+        self.play(
+            AnimationGroup(
+                x_trac_1.animate.set_value((3*PI/10)+(5*PI/12)),
+                x_trac_2_0.animate.set_value((3*PI/10)+(5*PI/12)+(2*PI/7)+(PI/18)),
+                x_trac_2_1.animate.set_value((3*PI/10)+(5*PI/12)+(2*PI/7)+(PI/18)+(3*PI/14)+(PI/18)),
+                x_trac_3.animate.set_value((3*PI/10)+(5*PI/12)+(2*PI/7)+((3*PI/7)+(PI/18))+(2*PI/18))
+            ),
+            run_time=1.35
+        )
+
+        grid=NumberPlane()
+
+        dt_1=Dot(grid.polar_to_point(2, PI+(5*PI/12)+(2*PI/7)+(PI/18)-5*DEGREES)).shift(6*LEFT).set_color(PURE_GREEN).set_sheen(-.4,DOWN)
+
+        dt_2=Dot(grid.polar_to_point(2, PI+(5*PI/12)+(2*PI/7)+(PI/18)+(3*PI/14)+(PI/18)-5*DEGREES)).shift(6*LEFT).set_color(REANLEA_WHITE).set_sheen(-.4,DOWN)
+
+        dt_3=Dot(grid.polar_to_point(2, PI+(5*PI/12)+(2*PI/7)+((3*PI/7)+(PI/18))+(2*PI/18)-5*DEGREES)).shift(6*LEFT).set_color(REANLEA_YELLOW ).set_sheen(-.4,DOWN)
+
+        self.play(
+            AnimationGroup(
+                Write(dt_1),
+                Write(dt_2),
+                Write(dt_3)
+            ),
+            AnimationGroup(
+                Flash(dt_1, color=PURE_GREEN),
+                Flash(dt_2, color=REANLEA_WHITE),
+                Flash(dt_3, color=REANLEA_YELLOW)
+            ),
+            lag_ratio=.75
+        )
+
+        with RegisterFont("Fuzzy Bubbles") as fonts:
+
+            txt_1=Text("Bilinear", font=fonts[0]).scale(.5).set_color_by_gradient(PURE_GREEN).next_to(dt_1,RIGHT)
+
+            txt_2=Text("Symmetric", font=fonts[0]).scale(.5).set_color_by_gradient(REANLEA_WHITE).next_to(dt_2,RIGHT)
+
+            txt_3=Text("Positive Definite", font=fonts[0]).scale(.5).set_color_by_gradient(REANLEA_YELLOW).next_to(dt_3,RIGHT)
+
+        self.play(
+            AnimationGroup(
+                Write(txt_1),
+                Write(txt_2),
+                Write(txt_3)
+            )
+        )
+
+
+
+
+
+        self.wait(2)
+
+
+        # manim -pqh test2.py segmented_circle_ex_3
+
+        # manim -sqk test2.py segmented_circle_ex_3
+
+
+        
 
 ###################################################################################################################
 
