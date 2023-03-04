@@ -7593,7 +7593,7 @@ class segmented_circle_ex_3(Scene):
 
             txt_2=Text("Symmetric", font=fonts[0]).scale(.5).set_color_by_gradient(REANLEA_WHITE).next_to(dt_2,RIGHT)
 
-            txt_3=Text("Positive Definite", font=fonts[0]).scale(.5).set_color_by_gradient(REANLEA_YELLOW).next_to(dt_3,RIGHT)
+            txt_3=Text("Positive Definite Maatix", font=fonts[0]).scale(.5).set_color_by_gradient(REANLEA_YELLOW).next_to(dt_3,RIGHT)
 
         self.play(
             AnimationGroup(
