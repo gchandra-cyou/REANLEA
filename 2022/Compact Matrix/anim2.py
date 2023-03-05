@@ -6057,7 +6057,7 @@ class Scene6(Scene):
         txt_cs_grp_0=VGroup(txt_cs_0,undr_bez_0)
 
         self.play(
-            txt_cs_grp_0.animate.shift(3*UP).scale(.5)
+            txt_cs_grp_0.animate.shift(1.5*UP).scale(.5)
         )
 
         with RegisterFont("Courier Prime") as fonts:
@@ -6069,36 +6069,39 @@ class Scene6(Scene):
         txt_cs_def_1[4:].shift(.05*RIGHT)
         txt_cs_def_1[5:].shift(.05*RIGHT)
 
-        txt_cs_def_2=MathTex(r"\langle x,y \rangle","=",r"\lVert x \rVert ",r"\lVert y \rVert ", ".").scale(.5).next_to(txt_cs_def_1,RIGHT).shift(.05*LEFT)
+        txt_cs_def_2=MathTex(r"\langle x,y \rangle",r"\leq",r"\lVert x \rVert ",r"\lVert y \rVert ", ".").scale(.5).next_to(txt_cs_def_1,RIGHT).shift(.05*LEFT)
         txt_cs_def_2[1:].shift(.05*RIGHT)
         txt_cs_def_2[2:].shift(.05*RIGHT)
         txt_cs_def_2[3:].shift(.05*RIGHT)
         
 
-        txt_cs_def=VGroup(txt_cs_def_0,txt_cs_def_1,txt_cs_def_2)
+        txt_cs_def=VGroup(txt_cs_def_0,txt_cs_def_1,txt_cs_def_2).scale(2).move_to(ORIGIN)
 
         self.play(
-            AddTextLetterByLetter(txt_cs_def)
+            Create(txt_cs_def),
+            run_time=3
         )
 
+        self.wait(3)
+
+        txt_cs_grp_1=VGroup(txt_cs_grp_0,txt_cs_def)
+
+        self.play(
+            txt_cs_grp_1.animate.scale(.5).move_to(3*RIGHT+3*UP)
+        )
+
+        self.wait(2)
 
 
 
-
-
-        # manim -pqh anim2.py Scene6
-
-        # manim -sqk anim2.py Scene6
-
-
-        '''with RegisterFont("Fuzzy Bubbles") as fonts:
+        with RegisterFont("Fuzzy Bubbles") as fonts:
             txt_0 = VGroup(*[Text(x, font=fonts[0]) for x in (
                "Inner",
                "Product" 
             )]).arrange_submobjects(DOWN).shift(5.75*LEFT).scale(.5)
 
         self.play(
-            AddTextWordByWord(txt_0),
+            Create(txt_0),
             run_time=2
         )
 
@@ -6199,7 +6202,7 @@ class Scene6(Scene):
                 Write(txt_2),
                 Write(txt_3)
             )
-        )'''
+        )
 
 
 
