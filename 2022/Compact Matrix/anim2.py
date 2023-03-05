@@ -6204,6 +6204,12 @@ class Scene6(Scene):
             )
         )
 
+        self.wait(2)
+
+        innr_prdct_grp=VGroup(txt_0,txt_1,txt_2,txt_3,s1,s2_0,s2_1,s3,dt_1,dt_2,dt_3)
+
+        
+
 
 
 
