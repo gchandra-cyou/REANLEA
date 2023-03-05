@@ -6038,8 +6038,60 @@ class Scene6(Scene):
 
         # MAIN SCENE
 
+        with RegisterFont("Homemade Apple") as fonts:
+            txt_cs_0 = Text("Cauchy  Schwarz Inequality" , font=fonts[0])
+            
 
-        with RegisterFont("Fuzzy Bubbles") as fonts:
+        self.play(
+            Write(txt_cs_0)
+        )
+
+        undr_bez_0=underline_bez_curve().next_to(txt_cs_0,DOWN).scale(2)
+
+        self.play(
+            Write(undr_bez_0)
+        )
+
+        self.wait(2)
+
+        txt_cs_grp_0=VGroup(txt_cs_0,undr_bez_0)
+
+        self.play(
+            txt_cs_grp_0.animate.shift(3*UP).scale(.5)
+        )
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_cs_def_0 = Text("For all" , font=fonts[0]).scale(.35)
+        
+        txt_cs_def_1=MathTex(r"x",",","y",r"\in" r"\mathbb{R}^{n}", ",").scale(.5).next_to(txt_cs_def_0,RIGHT).shift(.05*LEFT)
+        txt_cs_def_1[1:].shift(.05*RIGHT)
+        txt_cs_def_1[3:].shift(.05*RIGHT)
+        txt_cs_def_1[4:].shift(.05*RIGHT)
+        txt_cs_def_1[5:].shift(.05*RIGHT)
+
+        txt_cs_def_2=MathTex(r"\langle x,y \rangle","=",r"\lVert x \rVert ",r"\lVert y \rVert ", ".").scale(.5).next_to(txt_cs_def_1,RIGHT).shift(.05*LEFT)
+        txt_cs_def_2[1:].shift(.05*RIGHT)
+        txt_cs_def_2[2:].shift(.05*RIGHT)
+        txt_cs_def_2[3:].shift(.05*RIGHT)
+        
+
+        txt_cs_def=VGroup(txt_cs_def_0,txt_cs_def_1,txt_cs_def_2)
+
+        self.play(
+            AddTextLetterByLetter(txt_cs_def)
+        )
+
+
+
+
+
+
+        # manim -pqh anim2.py Scene6
+
+        # manim -sqk anim2.py Scene6
+
+
+        '''with RegisterFont("Fuzzy Bubbles") as fonts:
             txt_0 = VGroup(*[Text(x, font=fonts[0]) for x in (
                "Inner",
                "Product" 
@@ -6147,7 +6199,7 @@ class Scene6(Scene):
                 Write(txt_2),
                 Write(txt_3)
             )
-        )
+        )'''
 
 
 
@@ -6166,9 +6218,9 @@ class Scene6(Scene):
 
         # manim -pql anim2.py Scene6
 
-        # manim -sqk anim2.py Scene6
-
         # manim -sqh anim2.py Scene6
+
+        # manim -sqk anim2.py Scene6
         
 
         
