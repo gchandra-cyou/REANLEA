@@ -6208,7 +6208,113 @@ class Scene6(Scene):
 
         innr_prdct_grp=VGroup(txt_0,txt_1,txt_2,txt_3,s1,s2_0,s2_1,s3,dt_1,dt_2,dt_3)
 
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).shift(2.25*RIGHT+.5*DOWN)
+
+        self.play(
+            Write(ax_1)
+        )
+
+        dot_0=Dot(ax_1.c2p(0,0)).set_color(REANLEA_BLUE_LAVENDER).set_sheen(-.4,DOWN).scale(.5).set_z_index(5)
+
+        self.play(
+            Write(dot_0)
+        )
+
+        dot_1=Dot(ax_1.c2p(1,1)).set_color(REANLEA_BLUE_SKY).set_sheen(-.4,DOWN).scale(.5).set_z_index(5)
+
+        dot_2=Dot(ax_1.c2p(2,1)).set_color(REANLEA_YELLOW).set_sheen(-.4,DOWN).scale(.5).set_z_index(5)
+
+        arr_1=Arrow(start=ax_1.c2p(0,0),end=ax_1.c2p(1,1),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_BLUE_SKY)
+
+        arr_2_x=Arrow(start=ax_1.c2p(0,0),end=ax_1.c2p(2,1),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_YELLOW)
+
+        self.play(
+            Write(dot_1)
+        )
+        self.wait()
+        self.play(
+            Write(arr_1)
+        )
+        self.wait(2)
+
+        self.play(
+            Write(dot_2)
+        )
+        self.wait()
+        self.play(
+            Write(arr_2_x)
+        )
         
+        self.wait(2)
+
+        self.play(
+            arr_2_x.animate.shift(
+                (ax_1.c2p(1,1)[1]-ax_1.c2p(0,0)[1])*UP+
+                (ax_1.c2p(1,1)[0]-ax_1.c2p(0,0)[0])*RIGHT
+            ),
+            FadeOut(dot_2)
+        )
+
+        self.wait(2)
+
+        dot_3=Dot(ax_1.c2p(3,2)).set_color(REANLEA_GREEN).set_sheen(-.4,DOWN).scale(.5).set_z_index(5)
+
+        self.play(
+            Write(dot_3)
+        )
+
+        arr_2=always_redraw(
+            lambda : Arrow(start=ax_1.c2p(1,1),end=dot_3.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_YELLOW)
+        )
+        self.add(arr_2)
+        self.play(
+            FadeOut(arr_2_x)
+        )
+
+        arr_3=always_redraw(
+            lambda : Arrow(start=ax_1.c2p(0,0),end=dot_3.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_GREEN)
+        )
+
+        self.wait()
+        self.play(
+            Write(arr_3)
+        )
+
+        self.wait(2)
+
+        self.play(
+            dot_3.animate.move_to(ax_1.c2p(4,2.5))
+        )
+        self.wait()
+
+        self.play(
+            dot_3.animate.move_to(ax_1.c2p(6,3.5))
+        )
+        self.wait()
+
+        self.play(
+            dot_3.animate.move_to(ax_1.c2p(5,3))
+        )
+        self.wait()
+
+        self.play(
+            dot_3.animate.move_to(ax_1.c2p(7,4))
+        )
+        self.wait()
+
+        self.play(
+            dot_3.animate.move_to(ax_1.c2p(3,2))
+        )
+        self.wait()
 
 
 
