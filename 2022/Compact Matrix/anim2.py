@@ -6358,7 +6358,49 @@ class Scene6(Scene):
         self.play(
             dot_3.animate.move_to(ax_1.c2p(3,2))
         )
+
+        self.play(
+            dot_3.animate.move_to(ax_1.c2p(3.5,2.25))
+        )
+        
+        lbl_2= MathTex("w","=","x","+","t","y").scale(.6).move_to(ax_1.c2p(4.5,2.25))
+        lbl_2[0].set_color(REANLEA_GREEN)
+        lbl_2[2].set_color(REANLEA_BLUE_SKY)
+        lbl_2[3].scale(.65)
+        lbl_2[4].set_color(REANLEA_BLUE_LAVENDER)
+        lbl_2[5].set_color(REANLEA_YELLOW).shift(.05*RIGHT)
+
+        self.play(
+            TransformMatchingShapes(lbl_1,lbl_2)
+        )
+        self.wait(2)
+
+        eqn_0_0=MathTex(r"\langle w,w \rangle").scale(.7).move_to(ax_1.c2p(1,3.5))
+        eqn_0_1=MathTex("=",r"\lVert w \rVert ^{2}").scale(.7).next_to(eqn_0_0)
+        eqn_0_2_prev=MathTex(r"\geq",r"0").scale(.7).next_to(eqn_0_1)
+        eqn_0_2=MathTex("=",r"\lVert x + ty \rVert ^{2}").scale(.7).next_to(eqn_0_0)
+        eqn_0_3=MathTex("=",r"\langle x + ty,x + ty \rangle").scale(.7).next_to(eqn_0_0)
+
+        self.play(
+            TransformMatchingShapes(lbl_2[0].copy(),eqn_0_0)
+        )
         self.wait()
+        self.play(
+            Write(eqn_0_1)
+        )
+        self.wait()
+
+        self.play(
+            TransformMatchingShapes(eqn_0_1,eqn_0_2)
+        )
+        self.wait()
+        
+        self.play(
+            TransformMatchingShapes(eqn_0_2,eqn_0_3)
+        )
+        
+
+
 
 
 
