@@ -6390,14 +6390,31 @@ class Scene6(Scene):
         )
         self.wait()
 
+        ln_0=Line().scale(.25).set_stroke(width=1).rotate(35*DEGREES).next_to(eqn_0_1,UP).shift(.35*RIGHT+.25*DOWN)
+
+        with RegisterFont("Cousine") as fonts:
+            ln_0_lbl=Text(r"Scalar (Real Valued)", font=fonts[0]).scale(.25).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(ln_0.get_end()).shift(.1875*LEFT)
+        
         self.play(
+            Write(ln_0_lbl)
+        )
+
+        
+
+        
+
+        self.play(
+            Create(ln_0)
+        )
+
+        '''self.play(
             TransformMatchingShapes(eqn_0_1,eqn_0_2)
         )
         self.wait()
-        
+
         self.play(
             TransformMatchingShapes(eqn_0_2,eqn_0_3)
-        )
+        )'''
         
 
 
