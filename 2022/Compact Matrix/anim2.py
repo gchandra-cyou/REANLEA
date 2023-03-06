@@ -6435,13 +6435,31 @@ class Scene6(Scene):
 
         rect_overlap=Rectangle(width=8, height=6, color=REANLEA_BACKGROUND_COLOR).to_edge(RIGHT, buff=0).set_opacity(.825).set_z_index(10).shift(.75*DOWN)
 
-        eqn_1 = MathTex(r"f(x) &",r"= \langle x + ty,x + ty \rangle \\&",r"= \langle x,x \rangle + 2t \langle x,y \rangle + t^{2} \langle y,y \rangle ").scale(.7).move_to(2.5*RIGHT+1.5*UP).set_z_index(11)
+        eqn_1 = MathTex(r"f(x) &",r"= \langle x + ty,x + ty \rangle \\&",r"= \langle x,x \rangle +  2\langle x,y \rangle t + \langle y,y \rangle t^{2} \\&",r" = c+bt+at^{2}").scale(.7).move_to(2.5*RIGHT+1.5*UP).set_z_index(11)
+        eqn_1[2][13:].shift(.1*RIGHT)
+        eqn_1[2][20:].shift(.1*RIGHT)
 
         self.play(
             Write(rect_overlap),
             TransformMatchingShapes(eqn_0.copy(),eqn_1[0:2])
         )
+        self.play(
+            Write(eqn_1[2]),
+            Indicate(txt_1),
+            Indicate(txt_2),
+            FocusOn(txt_1),
+            FocusOn(txt_2)
+        )
         
+        sr_eqn_1_2_0=SurroundingRectangle(eqn_1[2][1:6], buff=SMALL_BUFF*.85).set_stroke(width=1).set_z_index(11)
+        sr_eqn_1_2_1=SurroundingRectangle(eqn_1[2][7:13], buff=SMALL_BUFF*85).set_stroke(width=1).set_z_index(11)
+        sr_eqn_1_2_2=SurroundingRectangle(eqn_1[2][15:20], buff=SMALL_BUFF*85).set_stroke(width=1).set_z_index(11)
+
+        self.play(
+            Create(sr_eqn_1_2_0),
+            Create(sr_eqn_1_2_1),
+            Create(sr_eqn_1_2_2)
+        )
 
 
 
