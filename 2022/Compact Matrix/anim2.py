@@ -6409,14 +6409,14 @@ class Scene6(Scene):
         self.wait()   
         self.play(
             Indicate(txt_3),
-            Flash(txt_3)
+            FocusOn(txt_3)
         ) 
         self.wait(2)
 
         self.play(
             TransformMatchingShapes(eqn_0_1,eqn_0_2),
             Indicate(lbl_2[2:]),
-            Flash(lbl_2[2:]),
+            FocusOn(lbl_2[2:]),
             eqn_0_1_ref.animate.rotate(-30*DEGREES).scale(.5).next_to(eqn_0_2).shift(.3*DOWN+.35*LEFT)
         )
         self.wait()
@@ -6429,6 +6429,17 @@ class Scene6(Scene):
 
         self.play(
             Write(eqn_0_4)
+        )
+
+        eqn_0=VGroup(eqn_0_0,eqn_0_3,eqn_0_4)
+
+        rect_overlap=Rectangle(width=8, height=6, color=REANLEA_BACKGROUND_COLOR).to_edge(RIGHT, buff=0).set_opacity(.825).set_z_index(10).shift(.75*DOWN)
+
+        eqn_1 = MathTex(r"f(x) &",r"= \langle x + ty,x + ty \rangle \\&",r"= \langle x,x \rangle + 2t \langle x,y \rangle + t^{2} \langle y,y \rangle ").scale(.7).move_to(2.5*RIGHT+1.5*UP).set_z_index(11)
+
+        self.play(
+            Write(rect_overlap),
+            TransformMatchingShapes(eqn_0.copy(),eqn_1[0:2])
         )
         
 
