@@ -7633,7 +7633,81 @@ class bgGradient(Scene):
         # manim -sqk test2.py bgGradient
 
     
+class distance(Scene):
+    def construct(self):
+        
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5)
 
+        dot_0=Dot(ax_1.c2p(0,0)).set_color(REANLEA_BLUE_SKY).set_sheen(-.4,DOWN).set_z_index(5)
+
+        dot_i=Dot(ax_1.c2p(1,0)).set_color(REANLEA_BLUE_SKY).set_sheen(-.4,DOWN).set_z_index(5)
+
+        dot_1=Dot(ax_1.c2p(1,1)).set_color(REANLEA_BLUE_SKY).set_sheen(-.4,DOWN).set_z_index(5)
+
+        dot_2=Dot(ax_1.c2p(2,3)).set_color(REANLEA_YELLOW).set_sheen(-.4,DOWN).set_z_index(5)
+
+        value=DecimalNumber(2.24).shift(3*RIGHT)
+        value.add_updater(
+            lambda z : z.set_value(
+                (np.sqrt(
+                        np.square(dot_2.get_center()[0]-dot_1.get_center()[0])+
+                        np.square(dot_2.get_center()[1]-dot_1.get_center()[1])
+                )/
+                np.sqrt(
+                        np.square(dot_i.get_center()[0]-dot_0.get_center()[0])+
+                        np.square(dot_i.get_center()[1]-dot_0.get_center()[1])
+                ))/np.sqrt(5)
+            )
+
+        )
+
+        self.add(ax_1,dot_1,dot_2)
+
+        
+
+        self.add(value)
+        self.wait(2)
+
+        self.play(
+            dot_2.animate.move_to(ax_1.c2p(5,4.5))
+        )
+        self.wait()
+
+        self.play(
+            dot_2.animate.move_to(ax_1.c2p(2,4.5))
+        )
+        self.wait()
+
+        self.play(
+            dot_2.animate.move_to(ax_1.c2p(3,2.5))
+        )
+        self.wait()
+
+        self.play(
+            dot_2.animate.move_to(ax_1.c2p(1,1.35))
+        )
+        self.wait()
+
+        self.play(
+            dot_2.animate.move_to(ax_1.c2p(2,3))
+        )
+        self.wait()
+
+
+
+
+        # manim -sqk test2.py distance
+
+        # manim -pqh test2.py distance
 
 
 ###################################################################################################################
