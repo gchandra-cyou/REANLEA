@@ -6377,9 +6377,10 @@ class Scene6(Scene):
 
         eqn_0_0=MathTex(r"\langle w,w \rangle").scale(.7).move_to(ax_1.c2p(1,3.5))
         eqn_0_1=MathTex("=",r"\lVert w \rVert ^{2}").scale(.7).next_to(eqn_0_0)
-        eqn_0_2_prev=MathTex(r"\geq",r"0").scale(.7).next_to(eqn_0_1)
+        eqn_0_1_ref=MathTex(r"\geq",r"0").scale(.7).next_to(eqn_0_1)
         eqn_0_2=MathTex("=",r"\lVert x + ty \rVert ^{2}").scale(.7).next_to(eqn_0_0)
-        eqn_0_3=MathTex("=",r"\langle x + ty,x + ty \rangle").scale(.7).next_to(eqn_0_0)
+        eqn_0_3=MathTex("=",r"\langle x + ty,x + ty \rangle").scale(.7).next_to(eqn_0_0).shift(.025*DOWN)
+        eqn_0_4=MathTex("=",r"f(t)").scale(.7).next_to(eqn_0_3)
 
         self.play(
             TransformMatchingShapes(lbl_2[0].copy(),eqn_0_0)
@@ -6394,27 +6395,41 @@ class Scene6(Scene):
 
         with RegisterFont("Cousine") as fonts:
             ln_0_lbl=Text(r"Scalar (Real Valued)", font=fonts[0]).scale(.25).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(ln_0.get_end()).shift(.1875*LEFT)
-        
-        self.play(
-            Write(ln_0_lbl)
-        )
-
-        
-
-        
 
         self.play(
             Create(ln_0)
         )
+        self.play(
+            Write(ln_0_lbl)
+        ) 
+        self.wait(2) 
+        self.play(
+            Write(eqn_0_1_ref)
+        )  
+        self.wait()   
+        self.play(
+            Indicate(txt_3),
+            Flash(txt_3)
+        ) 
+        self.wait(2)
 
-        '''self.play(
-            TransformMatchingShapes(eqn_0_1,eqn_0_2)
+        self.play(
+            TransformMatchingShapes(eqn_0_1,eqn_0_2),
+            Indicate(lbl_2[2:]),
+            Flash(lbl_2[2:]),
+            eqn_0_1_ref.animate.rotate(-30*DEGREES).scale(.5).next_to(eqn_0_2).shift(.3*DOWN+.35*LEFT)
         )
         self.wait()
 
         self.play(
-            TransformMatchingShapes(eqn_0_2,eqn_0_3)
-        )'''
+            TransformMatchingShapes(eqn_0_2,eqn_0_3),
+            eqn_0_1_ref.animate.next_to(eqn_0_3).shift(.25*DOWN+.2*LEFT)
+        )
+        self.wait(2)
+
+        self.play(
+            Write(eqn_0_4)
+        )
         
 
 
