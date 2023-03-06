@@ -6309,13 +6309,14 @@ class Scene6(Scene):
 
         self.wait(2)
 
-        lbl_1_1=MathTex("w","=","x","+","y").scale(1.25).move_to(ax_1.c2p(3,3.5))
+        lbl_1_1=MathTex("w","=","x","+","y").scale(1.25)
         lbl_1_1[0].set_color(REANLEA_GREEN)
         lbl_1_1[2].set_color(REANLEA_BLUE_SKY)
-        lbl_1_1[4].set_color(REANLEA_YELLOW).shift(.25*RIGHT)
+        lbl_1_1[3].scale(.65)
+        lbl_1_1[4].set_color(REANLEA_YELLOW).shift(0.875*RIGHT)
 
-        value=DecimalNumber(2.24).next_to(lbl_1_1[3])
-        value.add_updater(
+        value_1=DecimalNumber(1).set_color(REANLEA_BLUE_LAVENDER).next_to(lbl_1_1[3])
+        value_1.add_updater(
             lambda z : z.set_value(
                 (np.sqrt(
                         np.square(dot_3.get_center()[0]-dot_1.get_center()[0])+
@@ -6326,6 +6327,12 @@ class Scene6(Scene):
                         np.square(dot_i.get_center()[1]-dot_0.get_center()[1])
                 ))/np.sqrt(5)
             )
+        )
+
+        lbl_1=VGroup(lbl_1_1,value_1).move_to(ax_1.c2p(3,3.5)).scale(.75)
+
+        self.play(
+            TransformMatchingShapes(arr_3_lbl,lbl_1)
         )
 
         self.play(
