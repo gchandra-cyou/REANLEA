@@ -6225,6 +6225,8 @@ class Scene6(Scene):
 
         dot_0=Dot(ax_1.c2p(0,0)).set_color(REANLEA_BLUE_LAVENDER).set_sheen(-.4,DOWN).scale(.5).set_z_index(5)
 
+        dot_i=Dot(ax_1.c2p(1,0)).set_color(REANLEA_BLUE_SKY).set_sheen(-.4,DOWN).set_z_index(5)
+
         self.play(
             Write(dot_0)
         )
@@ -6306,6 +6308,25 @@ class Scene6(Scene):
         )
 
         self.wait(2)
+
+        lbl_1_1=MathTex("w","=","x","+","y").scale(1.25).move_to(ax_1.c2p(3,3.5))
+        lbl_1_1[0].set_color(REANLEA_GREEN)
+        lbl_1_1[2].set_color(REANLEA_BLUE_SKY)
+        lbl_1_1[4].set_color(REANLEA_YELLOW).shift(.25*RIGHT)
+
+        value=DecimalNumber(2.24).next_to(lbl_1_1[3])
+        value.add_updater(
+            lambda z : z.set_value(
+                (np.sqrt(
+                        np.square(dot_3.get_center()[0]-dot_1.get_center()[0])+
+                        np.square(dot_3.get_center()[1]-dot_1.get_center()[1])
+                )/
+                np.sqrt(
+                        np.square(dot_i.get_center()[0]-dot_0.get_center()[0])+
+                        np.square(dot_i.get_center()[1]-dot_0.get_center()[1])
+                ))/np.sqrt(5)
+            )
+        )
 
         self.play(
             dot_3.animate.move_to(ax_1.c2p(4,2.5))
