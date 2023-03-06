@@ -6235,14 +6235,21 @@ class Scene6(Scene):
 
         arr_1=Arrow(start=ax_1.c2p(0,0),end=ax_1.c2p(1,1),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_BLUE_SKY)
 
+        arr_1_lbl=MathTex("x").scale(.6).move_to(ax_1.c2p(.3,.7)).set_color(REANLEA_BLUE_SKY)
+
         arr_2_x=Arrow(start=ax_1.c2p(0,0),end=ax_1.c2p(2,1),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_YELLOW)
+
+        arr_2_x_lbl=MathTex("y").scale(.6).move_to(ax_1.c2p(1.35,.3)).set_color(REANLEA_YELLOW)
+
+        arr_2_ref=arr_2_x.copy().set_opacity(.5)
 
         self.play(
             Write(dot_1)
         )
         self.wait()
         self.play(
-            Write(arr_1)
+            Write(arr_1),
+            ReplacementTransform(txt_cs_def_2[0][1].copy(), arr_1_lbl)
         )
         self.wait(2)
 
@@ -6251,8 +6258,10 @@ class Scene6(Scene):
         )
         self.wait()
         self.play(
-            Write(arr_2_x)
+            Write(arr_2_x),
+            ReplacementTransform(txt_cs_def_2[0][2].copy(), arr_2_x_lbl)
         )
+        self.add(arr_2_ref)
         
         self.wait(2)
 
@@ -6261,7 +6270,7 @@ class Scene6(Scene):
                 (ax_1.c2p(1,1)[1]-ax_1.c2p(0,0)[1])*UP+
                 (ax_1.c2p(1,1)[0]-ax_1.c2p(0,0)[0])*RIGHT
             ),
-            FadeOut(dot_2)
+            dot_2.animate.set_opacity(.5)
         )
 
         self.wait(2)
@@ -6284,9 +6293,16 @@ class Scene6(Scene):
             lambda : Arrow(start=ax_1.c2p(0,0),end=dot_3.get_center(),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_GREEN)
         )
 
+        arr_3_lbl=MathTex("w","=","x","+","y").scale(.6).move_to(ax_1.c2p(4,2))
+        arr_3_lbl[0].set_color(REANLEA_GREEN)
+        arr_3_lbl[2].set_color(REANLEA_BLUE_SKY)
+        arr_3_lbl[4].set_color(REANLEA_YELLOW)
+
+
         self.wait()
         self.play(
-            Write(arr_3)
+            Write(arr_3),
+            ReplacementTransform(VGroup(arr_1_lbl.copy(),arr_2_x_lbl.copy()),arr_3_lbl)
         )
 
         self.wait(2)
