@@ -6438,6 +6438,7 @@ class Scene6(Scene):
         eqn_1 = MathTex(r"f(t) &",r"= \langle x + ty,x + ty \rangle \\&",r"= \langle x,x \rangle +  2\langle x,y \rangle t + \langle y,y \rangle t^{2} \\&",r" = c+bt+at^{2}").scale(.7).move_to(2.5*RIGHT+1.5*UP).set_z_index(11)
         eqn_1[2][13:].shift(.1*RIGHT)
         eqn_1[2][20:].shift(.1*RIGHT)
+        eqn_1[3].shift(1.25*DOWN)
 
         self.play(
             Write(rect_overlap),
@@ -6455,10 +6456,47 @@ class Scene6(Scene):
         sr_eqn_1_2_1=SurroundingRectangle(eqn_1[2][7:13], buff=SMALL_BUFF*.85, color=REANLEA_WELDON_BLUE).set_stroke(width=1).set_z_index(11)
         sr_eqn_1_2_2=SurroundingRectangle(eqn_1[2][15:20], buff=SMALL_BUFF*.85, color=REANLEA_WELDON_BLUE).set_stroke(width=1).set_z_index(11)
 
+        
+
         self.play(
             Create(sr_eqn_1_2_0),
             Create(sr_eqn_1_2_1),
             Create(sr_eqn_1_2_2)
+        )
+
+        indct_ln_0=Line(start=ax_1.c2p(2.825,3.55), end=ax_1.c2p(2.825,2.75)).set_stroke(width=1.5, color=[REANLEA_BLUE_SKY,REANLEA_MAGENTA]).set_z_index(11)
+
+        indct_ln_1=Line(start=ax_1.c2p(1.25,3.55), end=ax_1.c2p(2.825,2.75)).set_stroke(width=1.5, color=[REANLEA_BLUE_SKY,REANLEA_MAGENTA]).set_z_index(11)
+
+        indct_ln_2=Line(start=ax_1.c2p(4.4,3.55), end=ax_1.c2p(2.825,2.75)).set_stroke(width=1.5, color=[REANLEA_MAGENTA,REANLEA_BLUE_SKY]).set_z_index(11)
+
+        indct_ln_grp=VGroup(indct_ln_0,indct_ln_1,indct_ln_2)
+
+        self.play(
+            Create(indct_ln_grp)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            indct_ln_grp_lbl=Text(r"Scalar ", font=fonts[0]).scale(.45).set_color_by_gradient(REANLEA_BLUE_SKY).move_to(ax_1.c2p(2.825,2.5)).set_z_index(11)
+
+        self.play(
+            Write(indct_ln_grp_lbl)
+        )
+        self.wait(2)
+
+        eqn_2=MathTex(r"&",r"c=\langle x,x \rangle \\&" , r"b= 2\langle x,y \rangle \\&", r"a=\langle y,y \rangle \\&").scale(.55).set_color_by_gradient(REANLEA_MAGENTA,REANLEA_BLUE_SKY).move_to(6*RIGHT).set_z_index(11)
+
+        self.play(
+            TransformMatchingShapes(VGroup(eqn_1[2][1:6],eqn_1[2][7:13], eqn_1[2][15:20]).copy(),eqn_2)
+        )
+        sep_ln_0=Line().set_stroke(width=2.5,color=[REANLEA_BLUE_LAVENDER,REANLEA_CYAN_LIGHT]).scale(.75).rotate(PI/2).next_to(eqn_2,LEFT)
+
+        self.play(
+            Create(sep_ln_0)
+        )
+
+        self.play(
+            Write(eqn_1[3])
         )
 
 
