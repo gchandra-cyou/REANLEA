@@ -6441,9 +6441,13 @@ class Scene6(Scene):
         eqn_1[3].shift(1.25*DOWN)
 
         self.play(
-            Write(rect_overlap),
             TransformMatchingShapes(eqn_0.copy(),eqn_1[0:2])
         )
+        self.play(
+            Write(rect_overlap)
+        )
+        self.wait()
+
         self.play(
             Write(eqn_1[2]),
             Indicate(txt_1),
@@ -6451,6 +6455,7 @@ class Scene6(Scene):
             FocusOn(txt_1),
             FocusOn(txt_2)
         )
+        self.wait(2)
         
         sr_eqn_1_2_0=SurroundingRectangle(eqn_1[2][1:6], buff=SMALL_BUFF*.85, color=REANLEA_WELDON_BLUE).set_stroke(width=1).set_z_index(11)
         sr_eqn_1_2_1=SurroundingRectangle(eqn_1[2][7:13], buff=SMALL_BUFF*.85, color=REANLEA_WELDON_BLUE).set_stroke(width=1).set_z_index(11)
@@ -6463,6 +6468,7 @@ class Scene6(Scene):
             Create(sr_eqn_1_2_1),
             Create(sr_eqn_1_2_2)
         )
+        self.wait()
 
         indct_ln_0=Line(start=ax_1.c2p(2.825,3.55), end=ax_1.c2p(2.825,2.75)).set_stroke(width=1.5, color=[REANLEA_BLUE_SKY,REANLEA_MAGENTA]).set_z_index(11)
 
@@ -6473,8 +6479,9 @@ class Scene6(Scene):
         indct_ln_grp=VGroup(indct_ln_0,indct_ln_1,indct_ln_2)
 
         self.play(
-            Create(indct_ln_grp)
+            Write(indct_ln_grp)
         )
+        self.wait()
 
         with RegisterFont("Cousine") as fonts:
             indct_ln_grp_lbl=Text(r"Scalar ", font=fonts[0]).scale(.45).set_color_by_gradient(REANLEA_BLUE_SKY).move_to(ax_1.c2p(2.825,2.5)).set_z_index(11)
@@ -6489,10 +6496,10 @@ class Scene6(Scene):
         self.play(
             TransformMatchingShapes(VGroup(eqn_1[2][1:6],eqn_1[2][7:13], eqn_1[2][15:20]).copy(),eqn_2)
         )
-        sep_ln_0=Line().set_stroke(width=2.5,color=[REANLEA_BLUE_LAVENDER,REANLEA_CYAN_LIGHT]).scale(.75).rotate(PI/2).next_to(eqn_2,LEFT)
+        sep_ln_0=Line().set_stroke(width=1,color=[REANLEA_BLUE_LAVENDER,REANLEA_CYAN_LIGHT]).scale(.75).rotate(PI/2).next_to(eqn_2,LEFT).set_z_index(11)
 
         self.play(
-            Create(sep_ln_0)
+            Create(sep_ln_0.reverse_direction())
         )
 
         self.play(
