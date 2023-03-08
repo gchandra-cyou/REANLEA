@@ -7709,6 +7709,59 @@ class distance(Scene):
 
         # manim -pqh test2.py distance
 
+class plot_polynomial(Scene):
+    def construct(self):
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5)
+        
+        self.wait()
+        self.play(
+            Write(ax_1)
+        )
+
+        graph_1=ax_1.plot(
+            lambda x: x**2-6*x+8 , x_range=[0.551,5.449]
+        ).set_stroke(width=7, color=[REANLEA_WARM_BLUE,REANLEA_BLUE,REANLEA_WARM_BLUE]).scale(.5)
+
+        graph_1_ref=graph_1.copy()
+
+        graph_2=graph_1.copy().shift(
+            (ax_1.c2p(3,.5)-ax_1.c2p(3,0))*DOWN
+        )
+
+        graph_3=graph_1.copy().shift(
+            (ax_1.c2p(3,.5)-ax_1.c2p(3,-.5))*DOWN
+        )
+
+        self.wait()
+        self.play(
+            Create(graph_1),
+            Create(graph_2),
+            Create(graph_3)
+        )
+
+        dt_1=Dot(ax_1.c2p(2.5,0)).set_color(PURE_RED)
+        dt_2=Dot(ax_1.c2p(3.5,0)).set_color(PURE_RED)
+
+        self.add(dt_1,dt_2)
+
+        self.wait(2)
+
+
+
+        # manim -sqk test2.py plot_polynomial
+
+        # manim -pqh test2.py plot_polynomial
+
 
 ###################################################################################################################
 

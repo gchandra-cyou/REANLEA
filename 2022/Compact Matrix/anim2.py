@@ -6440,6 +6440,8 @@ class Scene6(Scene):
         eqn_1[2][20:].shift(.1*RIGHT)
         eqn_1[3].shift(1.25*DOWN)
 
+        eqn_1_sym_1=MathTex(r"\geq 0").scale(.5).set_z_index(11).next_to(eqn_1[3],RIGHT).shift(.0675*DOWN)
+
         self.play(
             TransformMatchingShapes(eqn_0.copy(),eqn_1[0:2])
         )
@@ -6505,6 +6507,49 @@ class Scene6(Scene):
         self.play(
             Write(eqn_1[3])
         )
+        self.wait(2)
+
+        self.play(
+            Write(eqn_1_sym_1)
+        )
+
+        ln_1=Line().scale(.25).set_stroke(width=1).rotate(-35*DEGREES).next_to(eqn_1,DOWN).shift(.5*LEFT+.15*UP).set_z_index(11)
+
+        with RegisterFont("Cousine") as fonts:
+            ln_1_lbl=Text(r"quadratic polynomial", font=fonts[0]).scale(.25).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(ln_1.get_end()).shift(.175*LEFT).set_z_index(11)
+
+        rect_overlap_1=Rectangle(width=8, height=6, color=REANLEA_BACKGROUND_COLOR).to_edge(LEFT, buff=0).set_opacity(.825).set_z_index(10).shift(.75*DOWN)
+
+        ax_2_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.2).shift(5*LEFT+2*UP).set_z_index(11)
+
+        ax_2_1_x=ax_2_1.copy()
+
+        ax_2_2=ax_2_1.copy().next_to(ax_2_1_x,DOWN)
+        ax_2_3=ax_2_1.copy().next_to(ax_2_2,DOWN)
+
+        
+
+        self.play(
+            FadeIn(rect_overlap_1),
+            AnimationGroup(
+            Create(ln_1),
+            Write(ln_1_lbl),
+            Lag_ratio=1
+            )
+        )
+        self.play(
+            Write(ax_2_1)
+        )
+    
 
 
 
