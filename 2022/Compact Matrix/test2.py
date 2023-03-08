@@ -7730,7 +7730,7 @@ class plot_polynomial(Scene):
 
         graph_1=ax_1.plot(
             lambda x: x**2-6*x+8 , x_range=[0.551,5.449]
-        ).set_stroke(width=7, color=[REANLEA_WARM_BLUE,REANLEA_BLUE,REANLEA_WARM_BLUE]).scale(.5)
+        ).set_stroke(width=7, color=[REANLEA_BLUE,REANLEA_WARM_BLUE]).scale(.5)
 
         graph_1_ref=graph_1.copy()
 

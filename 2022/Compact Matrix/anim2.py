@@ -6512,11 +6512,28 @@ class Scene6(Scene):
         self.play(
             Write(eqn_1_sym_1)
         )
+        self.wait()
 
         ln_1=Line().scale(.25).set_stroke(width=1).rotate(-35*DEGREES).next_to(eqn_1,DOWN).shift(.5*LEFT+.15*UP).set_z_index(11)
 
         with RegisterFont("Cousine") as fonts:
             ln_1_lbl=Text(r"quadratic polynomial", font=fonts[0]).scale(.25).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(ln_1.get_end()).shift(.175*LEFT).set_z_index(11)
+
+        self.play(
+            AnimationGroup(
+            Create(ln_1),
+            Write(ln_1_lbl),
+            Lag_ratio=1
+            )
+        )
+        self.wait(2)
+
+        eqn_3=MathTex(r"f(t) > 0").scale(.7).set_color_by_gradient(REANLEA_PINK,REANLEA_SLATE_BLUE_LIGHTER).move_to(1.75*DOWN).set_z_index(11)
+
+        self.play(
+            Write(eqn_3)
+        )
+
 
         rect_overlap_1=Rectangle(width=8, height=6, color=REANLEA_BACKGROUND_COLOR).to_edge(LEFT, buff=0).set_opacity(.825).set_z_index(10).shift(.75*DOWN)
 
@@ -6537,17 +6554,26 @@ class Scene6(Scene):
         ax_2_3=ax_2_1.copy().next_to(ax_2_2,DOWN)
 
         
-
         self.play(
             FadeIn(rect_overlap_1),
-            AnimationGroup(
-            Create(ln_1),
-            Write(ln_1_lbl),
-            Lag_ratio=1
-            )
-        )
-        self.play(
             Write(ax_2_1)
+        )
+
+        graph_1=ax_2_1.plot(
+            lambda x: x**2-6*x+8 , x_range=[0.551,5.449]
+        ).set_stroke(width=7, color=[REANLEA_BLUE,REANLEA_WARM_BLUE]).scale(.5).set_z_index(11)
+
+        self.play(
+            Create(graph_1)
+        )
+
+        eqn_3_1=MathTex(r"\Rightarrow",r"f(t) \neq 0",",",r"\forall t").scale(.7).set_color_by_gradient(REANLEA_SLATE_BLUE_LIGHTER, REANLEA_BLUE_SKY).next_to(eqn_3).set_z_index(11)
+        eqn_3_1[2].scale(.7).shift(.05*DOWN)
+        eqn_3_1[3].shift(.1*RIGHT)
+        eqn_3_1[3][1:].shift(.075*RIGHT)
+
+        self.play(
+            Write(eqn_3_1)
         )
     
 
