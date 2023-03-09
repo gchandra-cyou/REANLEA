@@ -6583,10 +6583,10 @@ class Scene6(Scene):
             eqn_3_grp.animate.shift(LEFT)
         )
 
-        sep_ln_1=Line().set_stroke(width=1,color=[REANLEA_BLUE_LAVENDER,REANLEA_CYAN_LIGHT]).scale(.75).rotate(PI/2).next_to(eqn_3_grp,RIGHT).set_z_index(11)
+        sep_ln_1=Line().set_stroke(width=1,color=[REANLEA_BLUE_LAVENDER,REANLEA_CYAN_LIGHT]).scale(.75).rotate(PI/2).next_to(eqn_3_grp,RIGHT).shift(.5*RIGHT+.5*DOWN).set_z_index(11)
 
         self.play(
-            Create(sep_ln_1)
+            Create(sep_ln_1.reverse_direction())
         )
 
         eqn_4_1=MathTex(r"f(t) = 0").scale(.7).set_color_by_gradient(REANLEA_YELLOW_GREEN, REANLEA_GOLD).move_to(1.75*DOWN+5*RIGHT).set_z_index(11)
@@ -6598,15 +6598,45 @@ class Scene6(Scene):
         self.play(
             Write(eqn_4_1)
         )
-        self.wait()
+        self.wait(2)
 
         self.play(
             ReplacementTransform(eqn_4_1,eqn_4_2)
         )
         self.wait()
+
+        self.play(
+            Create(eqn_4_3)
+        )
+
+        graph_1_lbl_1 = MathTex(r"f(t) > 0").scale(.5).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_SLATE_BLUE).next_to(graph_1,RIGHT).shift(.35*UP+.2*RIGHT).set_z_index(11)
+
+        self.play(
+            Write(graph_1_lbl_1)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            graph_1_lbl_2=Text(r"no real root", font=fonts[0]).scale(.25).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(graph_1_lbl_1,DOWN).shift(.15*UP).set_z_index(11)
         
         self.play(
-            Write(eqn_4_3)
+            Write(graph_1_lbl_2)
+        )
+
+        eqn_5_1=MathTex(r"b^{2}-4ac",r"\leq 0").scale(.7).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_SLATE_BLUE).next_to(eqn_3_grp,DOWN).shift(.5*DOWN).set_z_index(11)
+        eqn_5_1[1].scale(.7)
+
+        self.play(
+            TransformMatchingShapes(eqn_4_3[1].copy(),eqn_5_1[0])
+        )
+        self.play(
+            Write(eqn_5_1[1])
+        )
+
+        eqn_5_2=MathTex(r"\sqrt{b^{2}-4ac}",r"\in \mathbb{C} \setminus \mathbb{R}").scale(.7).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_SLATE_BLUE).next_to(eqn_3_grp,DOWN).shift(.5*DOWN).set_z_index(11)
+        eqn_5_2[1].scale(.7).set_color_by_gradient(PURE_RED,REANLEA_GOLD)
+
+        self.play(
+            TransformMatchingShapes(eqn_5_1,eqn_5_2)
         )
     
 
