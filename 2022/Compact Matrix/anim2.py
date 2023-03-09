@@ -6568,12 +6568,45 @@ class Scene6(Scene):
         )
 
         eqn_3_1=MathTex(r"\Rightarrow",r"f(t) \neq 0",",",r"\forall t").scale(.7).set_color_by_gradient(REANLEA_SLATE_BLUE_LIGHTER, REANLEA_BLUE_SKY).next_to(eqn_3).set_z_index(11)
-        eqn_3_1[2].scale(.7).shift(.05*DOWN)
-        eqn_3_1[3].shift(.1*RIGHT)
+        eqn_3_1[2].scale(.7).shift(.025*DOWN)
+        eqn_3_1[3].shift(.05*RIGHT)
         eqn_3_1[3][1:].shift(.075*RIGHT)
 
         self.play(
             Write(eqn_3_1)
+        )
+        self.wait(2)
+
+        eqn_3_grp=VGroup(eqn_3,eqn_3_1)
+
+        self.play(
+            eqn_3_grp.animate.shift(LEFT)
+        )
+
+        sep_ln_1=Line().set_stroke(width=1,color=[REANLEA_BLUE_LAVENDER,REANLEA_CYAN_LIGHT]).scale(.75).rotate(PI/2).next_to(eqn_3_grp,RIGHT).set_z_index(11)
+
+        self.play(
+            Create(sep_ln_1)
+        )
+
+        eqn_4_1=MathTex(r"f(t) = 0").scale(.7).set_color_by_gradient(REANLEA_YELLOW_GREEN, REANLEA_GOLD).move_to(1.75*DOWN+5*RIGHT).set_z_index(11)
+
+        eqn_4_2=MathTex(r"c+bt+at^{2} = 0").scale(.7).set_color_by_gradient(REANLEA_YELLOW_GREEN, REANLEA_GOLD).move_to(1.75*DOWN+5*RIGHT).set_z_index(11)
+
+        eqn_4_3=MathTex(r"\Rightarrow",r"t=\frac{-b \pm \sqrt{b^{2}-4ac}}{2a}").scale(.7).set_color_by_gradient(REANLEA_YELLOW_GREEN, REANLEA_GOLD).next_to(eqn_4_2,DOWN).set_z_index(11)
+
+        self.play(
+            Write(eqn_4_1)
+        )
+        self.wait()
+
+        self.play(
+            ReplacementTransform(eqn_4_1,eqn_4_2)
+        )
+        self.wait()
+        
+        self.play(
+            Write(eqn_4_3)
         )
     
 
