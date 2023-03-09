@@ -6595,6 +6595,8 @@ class Scene6(Scene):
 
         eqn_4_3=MathTex(r"\Rightarrow",r"t=\frac{-b \pm \sqrt{b^{2}-4ac}}{2a}").scale(.7).set_color_by_gradient(REANLEA_YELLOW_GREEN, REANLEA_GOLD).next_to(eqn_4_2,DOWN).set_z_index(11)
 
+        eqn_4_4=MathTex(r"\notin \mathbb{R}").scale(.55).next_to(eqn_4_3,DOWN).shift(1.25*RIGHT+.25*UP).set_z_index(11)
+
         self.play(
             Write(eqn_4_1)
         )
@@ -6622,8 +6624,12 @@ class Scene6(Scene):
             Write(graph_1_lbl_2)
         )
 
-        eqn_5_1=MathTex(r"b^{2}-4ac",r"\leq 0").scale(.7).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_SLATE_BLUE).next_to(eqn_3_grp,DOWN).shift(.5*DOWN).set_z_index(11)
+        eqn_5_1=MathTex(r"b^{2}-4ac",r"< 0").scale(.7).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_SLATE_BLUE).next_to(eqn_3_grp,DOWN).shift(.5*DOWN).set_z_index(11)
         eqn_5_1[1].scale(.7)
+
+        eqn_5_1_ref=eqn_5_1.copy()
+
+        graph_1_lbl_3=MathTex(r"b^{2}-4ac",r"< 0").scale(.5).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_PURPLE).next_to(graph_1_lbl_2,DOWN).set_z_index(11)
 
         self.play(
             TransformMatchingShapes(eqn_4_3[1].copy(),eqn_5_1[0])
@@ -6636,8 +6642,38 @@ class Scene6(Scene):
         eqn_5_2[1].scale(.7).set_color_by_gradient(PURE_RED,REANLEA_GOLD)
 
         self.play(
-            TransformMatchingShapes(eqn_5_1,eqn_5_2)
+            TransformMatchingShapes(eqn_5_1,eqn_5_2),
+            Write(eqn_4_4)
         )
+        self.wait()
+
+        self.play(
+            ReplacementTransform(eqn_5_1_ref,graph_1_lbl_3)
+        )
+
+        self.wait(2)
+
+        eqn_6_1=MathTex(r"b^{2}-4ac",r"= 0").scale(.7).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_SLATE_BLUE).shift(1.75*DOWN+RIGHT).set_z_index(11)
+
+        self.play(
+            FadeOut(eqn_3_grp),
+            FadeOut(eqn_4_4),
+            TransformMatchingShapes(eqn_5_2,eqn_6_1)
+        )
+        self.wait(2)
+
+        indct_arr_1=MathTex(r"\rightarrow").set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_PINK]).rotate(-PI/2).scale(.75).next_to(eqn_6_1,DOWN).set_z_index(11)
+
+        self.play(
+            Create(indct_arr_1)
+        )
+
+        eqn_6_2=MathTex(r"t=\frac{-b \pm \sqrt{b^{2}-4ac}}{2a}").scale(.5).set_color_by_gradient(REANLEA_YELLOW_CREAM, REANLEA_SLATE_BLUE_LIGHTER).next_to(indct_arr_1,DOWN).set_z_index(11)
+
+        self.play(
+            TransformMatchingShapes(eqn_4_3.copy(),eqn_6_2)
+        )
+
     
 
 
