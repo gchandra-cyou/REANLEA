@@ -6668,13 +6668,60 @@ class Scene6(Scene):
             Create(indct_arr_1)
         )
 
-        eqn_6_2=MathTex(r"t=\frac{-b \pm \sqrt{b^{2}-4ac}}{2a}").scale(.5).set_color_by_gradient(REANLEA_YELLOW_CREAM, REANLEA_SLATE_BLUE_LIGHTER).next_to(indct_arr_1,DOWN).set_z_index(11)
+        eqn_6_2=MathTex(r"t=\frac{-b \pm \sqrt{b^{2}-4ac}}{2a}").scale(.5).set_color_by_gradient(REANLEA_PINK,REANLEA_YELLOW_CREAM, REANLEA_SLATE_BLUE_LIGHTER,REANLEA_AQUA_GREEN).next_to(indct_arr_1,DOWN).set_z_index(11)
 
         self.play(
             TransformMatchingShapes(eqn_4_3.copy(),eqn_6_2)
         )
 
-    
+        eqn_6_2_1=MathTex("0").scale(.5).set_color_by_gradient(REANLEA_SLATE_BLUE_LIGHTER).move_to(eqn_6_2[0][5:13].get_center()+.5*LEFT).set_z_index(11)
+
+        self.play(
+            Indicate(indct_arr_1),
+            Transform(eqn_6_2[0][5:13],eqn_6_2_1)
+        )
+
+        eqn_6_3=MathTex(r"t=\frac{-b \pm 0}{2a}").scale(.5).set_color_by_gradient(REANLEA_PINK,REANLEA_YELLOW_CREAM, REANLEA_SLATE_BLUE_LIGHTER,REANLEA_AQUA_GREEN).next_to(indct_arr_1,DOWN).set_z_index(11)
+
+        self.play(
+            TransformMatchingShapes(eqn_6_2,eqn_6_3)
+        )
+        self.wait(2)
+
+        indct_ln_3=Line().scale(.25).set_stroke(width=1).rotate(-35*DEGREES).next_to(eqn_6_3,DOWN).shift(.15*UP).set_z_index(11)
+
+        with RegisterFont("Cousine") as fonts:
+            indct_ln_3_lbl=Text(r"double", font=fonts[0]).scale(.25).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(indct_ln_3.get_end()).shift(.175*LEFT).set_z_index(11)
+
+        self.play(
+            Create(indct_ln_3)
+        )
+        self.play(
+            Write(indct_ln_3_lbl)
+        )
+
+        self.wait(2)
+
+        self.play(
+            Write(ax_2_2)
+        )
+
+        graph_2=ax_2_2.plot(
+            lambda x: x**2-6*x+8 , x_range=[0.551,5.449]
+        ).set_stroke(width=7, color=[REANLEA_BLUE,REANLEA_WARM_BLUE]).scale(.5).set_z_index(11)
+        graph_2.shift(
+            (ax_2_2.c2p(3,.5)-ax_2_2.c2p(3,0))*DOWN
+        )
+
+        self.play(
+            Create(graph_2)
+        )
+
+        dt_1=Dot(ax_2_2.c2p(3,0)).set_color(PURE_RED).scale(.5).set_z_index(11)
+
+        self.play(
+            Create(dt_1)
+        )
 
 
 

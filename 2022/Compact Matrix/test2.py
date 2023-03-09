@@ -7762,6 +7762,27 @@ class plot_polynomial(Scene):
 
         # manim -pqh test2.py plot_polynomial
 
+class frac_tst_1(Scene):
+    def construct(self):
+
+        eqn_6_2=MathTex(r"t=\frac{-b \pm \sqrt{b^{2}-4ac}}{2a}").set_color_by_gradient(REANLEA_PINK,REANLEA_YELLOW_CREAM, REANLEA_SLATE_BLUE_LIGHTER,REANLEA_AQUA_GREEN).set_z_index(11)
+
+        self.play(
+            Write(eqn_6_2)
+        )
+
+        self.play(
+            FadeOut(eqn_6_2[0][5:13])
+        )
+
+        
+
+
+        # manim -pqh test2.py frac_tst_1
+
+        # manim -sqk test2.py frac_tst_1
+
+
 
 ###################################################################################################################
 
