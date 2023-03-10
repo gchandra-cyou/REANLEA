@@ -7173,6 +7173,111 @@ class rad_gard_1(Scene):
     # manim -pqh discord.py rad_gard_1
 
 
+
+
+from manim import *
+
+#from shapely.geometry import Polygon, LineString
+import shapely as shp
+import shapely.geometry as geo
+import shapely.ops as ops
+#from shapely.ops import polygonize
+import scipy.optimize as opt
+
+### Gaussian smoother from http://www.swharden.com/blog/2008-11-17-linear-data-smoothing-in-python/ for getting a nice polygon
+
+def smoothListGaussian(list,degree=5):  
+     window=degree*2-1  
+     weight=np.array([1.0]*window)  
+     weightGauss=[]  
+     for i in range(window):  
+         i=i-degree+1  
+         frac=i/float(window)  
+         gauss=1/(np.exp((4*(frac))**2))  
+         weightGauss.append(gauss)  
+     weight=np.array(weightGauss)*weight  
+     smoothed=[0.0]*(len(list)-window)  
+     for i in range(len(smoothed)):  
+         smoothed[i]=sum(np.array(list[i:i+window])*weight)/sum(weight)  
+     return smoothed  
+
+# The function for splitting the polygon and calculating the objective function value
+def splitPoly(poly, parameters):
+    rot = parameters[0]
+    shift = parameters[1]
+
+    c = poly.centroid.coords[0]
+    l = poly.length
+    shiftvec = (np.cos(rot), np.sin(rot))
+
+    linestart = (c[0] - shiftvec[0]*l + shiftvec[1]*shift, c[1] - shiftvec[1]*l - shiftvec[0]*shift)
+    lineend = (c[0] + shiftvec[0]*l + shiftvec[1]*shift, c[1] + shiftvec[1]*l - shiftvec[0]*shift)
+
+    line = geo.LineString([linestart, lineend])
+
+    splitpoly = list(shp.ops.polygonize(poly.boundary.union( line ) ))
+    areadiff = 1+np.abs(splitpoly[0].area - splitpoly[1].area)
+    lengthdiff = 1+np.abs(splitpoly[0].length - splitpoly[1].length)
+    return areadiff*lengthdiff-1, splitpoly
+
+
+
+
+
+
+class randomly(Scene):
+    def construct(self):
+        
+        # Generate the polygon
+        theta = np.linspace(0,2*np.pi,200, endpoint=False)
+        r = np.random.lognormal(0,0.4,200)
+        r = np.pad(r,(9,10),mode='wrap')
+
+        r = smoothListGaussian(r, degree=10)
+
+        coords = zip(np.cos(theta)*r, np.sin(theta)*r)
+
+        polygon = geo.Polygon(coords)
+
+        def wrapper(parameters):
+            return splitPoly(polygon, parameters)[0]
+
+        # Use a grid search for finding a good starting value
+        res = opt.brute(wrapper, ((0.0,2),(-0.1,0.1)))
+
+        # Nelder-Mead for optimizing the parameters
+        res = opt.minimize(wrapper, res, method='nelder-mead')
+
+        # Split the polygon using the final parameter values
+        value, splitpoly = splitPoly(polygon, res.x)
+
+        print ("Areas: {} {}".format(splitpoly[0].area, splitpoly[1].area))
+        print ("Perimeters: {} {}".format(splitpoly[0].length, splitpoly[1].length))
+
+        # Write the coordinates
+        #np.savetxt('polygonA.txt', np.array(list(splitpoly[0].exterior.coords)))
+        #np.savetxt('polygonB.txt', np.array(list(splitpoly[1].exterior.coords)))
+
+        polyA = Polygon(*[(point[0],point[1],0) for point in splitpoly[0].exterior.coords]).set_color(YELLOW)
+        polyB = Polygon(*[(point[0],point[1],0) for point in splitpoly[1].exterior.coords]).set_color(BLUE)
+
+        self.add(polyA,polyB)
+
+        self.play(
+            Create(polyA)
+        )
+        self.wait(2)
+
+        self.play(
+            Create(polyB)
+        )
+        self.wait(4)
+
+
+        # manim -sqk discord.py randomly
+
+        # manim -pqh discord.py randomly
+
 ###################################################################################################################
 
 # NOTE :-
