@@ -7742,17 +7742,29 @@ class plot_polynomial(Scene):
             (ax_1.c2p(3,.5)-ax_1.c2p(3,-.5))*DOWN
         )
 
-        self.wait()
-        self.play(
-            Create(graph_1),
-            Create(graph_2),
-            Create(graph_3)
-        )
 
         dt_1=Dot(ax_1.c2p(2.5,0)).set_color(PURE_RED)
         dt_2=Dot(ax_1.c2p(3.5,0)).set_color(PURE_RED)
 
-        self.add(dt_1,dt_2)
+        self.play(
+            AnimationGroup(
+                AnimationGroup(
+                    Create(graph_3),
+                    AnimationGroup(
+                        Create(dt_1),
+                        Flash(dt_1.get_center(), color=PURE_GREEN),
+                        lag_ratio=.15
+                    ),             
+                    lag_ratio=.05
+                ),
+                AnimationGroup(
+                    Create(dt_2),
+                    Flash(dt_2.get_center(), color=PURE_GREEN),
+                    lag_ratio=.15
+                ),
+                lag_ratio=.2
+            )
+        )
 
         self.wait(2)
 
@@ -7761,6 +7773,8 @@ class plot_polynomial(Scene):
         # manim -sqk test2.py plot_polynomial
 
         # manim -pqh test2.py plot_polynomial
+
+
 
 class frac_tst_1(Scene):
     def construct(self):
