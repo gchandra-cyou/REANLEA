@@ -6688,10 +6688,10 @@ class Scene6(Scene):
         )
         self.wait(2)
 
-        indct_ln_3=Line().scale(.25).set_stroke(width=1).rotate(-35*DEGREES).next_to(eqn_6_3,DOWN).shift(.15*UP).set_z_index(11)
+        indct_ln_3=Line().scale(.175).set_stroke(width=1).rotate(-35*DEGREES).next_to(eqn_6_3,DOWN).shift(.2*UP+.5*RIGHT).set_z_index(11)
 
         with RegisterFont("Cousine") as fonts:
-            indct_ln_3_lbl=Text(r"double", font=fonts[0]).scale(.25).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(indct_ln_3.get_end()).shift(.175*LEFT).set_z_index(11)
+            indct_ln_3_lbl=Text(r"double root", font=fonts[0]).scale(.25).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(indct_ln_3.get_end()).shift(.175*LEFT).set_z_index(11)
 
         self.play(
             Create(indct_ln_3)
@@ -6713,15 +6713,43 @@ class Scene6(Scene):
             (ax_2_2.c2p(3,.5)-ax_2_2.c2p(3,0))*DOWN
         )
 
-        self.play(
-            Create(graph_2)
-        )
-
-        dt_1=Dot(ax_2_2.c2p(3,0)).set_color(PURE_RED).scale(.5).set_z_index(11)
+        dt_1=Dot(ax_2_2.c2p(3,0)).scale(.675).set_color(PURE_RED).set_z_index(11)
 
         self.play(
-            Create(dt_1)
+            AnimationGroup(
+                Create(graph_2)
+            ),
+            AnimationGroup(
+                Create(dt_1),
+            ),
+            lag_ratio=.5
         )
+
+
+        graph_2_lbl_1 = MathTex(r"f(t) \geq 0").scale(.5).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_SLATE_BLUE).next_to(graph_2,RIGHT).shift(.35*UP+.2*RIGHT).shift(
+            (ax_2_2.c2p(3,.5)-ax_2_2.c2p(3,0))*UP
+        ).set_z_index(11)
+
+        with RegisterFont("Cousine") as fonts:
+            graph_2_lbl_2=Text(r"one double root", font=fonts[0]).scale(.25).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(graph_2_lbl_1,DOWN).shift(.15*UP).set_z_index(11)
+
+        self.play(
+            Write(graph_2_lbl_1)
+        )
+        self.wait(2)
+
+        self.play(
+            Write(graph_2_lbl_2)
+        )
+
+        self.wait(2)
+
+        graph_2_lbl_3=MathTex(r"b^{2}-4ac",r"= 0").scale(.5).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_PURPLE).next_to(graph_2_lbl_2,DOWN).set_z_index(11)
+
+        self.play(
+            TransformMatchingShapes(eqn_6_1.copy(),graph_2_lbl_3)
+        )
+
 
 
 
