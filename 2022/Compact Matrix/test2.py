@@ -7798,6 +7798,110 @@ class frac_tst_1(Scene):
 
 
 
+
+class ax_bez_tst_1(Scene):
+    def construct(self):
+        
+        ax_2_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.2).shift(5*LEFT+2*UP).set_z_index(11)
+
+        ax_2_1_x=ax_2_1.copy()
+
+        ax_2_2=ax_2_1.copy().next_to(ax_2_1_x,DOWN)
+        ax_2_3=ax_2_1.copy().next_to(ax_2_2,DOWN)
+        self.wait()
+
+        self.play(
+            Write(ax_2_3)
+        )
+
+        graph_3=ax_2_3.plot(
+            lambda x: x**2-6*x+8 , x_range=[0.551,5.449]
+        ).set_stroke(width=7, color=[REANLEA_BLUE,REANLEA_WARM_BLUE]).scale(.5).set_z_index(12)
+        graph_3.shift(
+            (ax_2_2.c2p(3,.5)-ax_2_2.c2p(3,-.5))*DOWN
+        )
+
+        dt_2=Dot(ax_2_3.c2p(2.5,0)).scale(.675).set_color(REANLEA_BLUE_LAVENDER).set_z_index(12)
+        dt_3=Dot(ax_2_3.c2p(3.5,0)).scale(.675).set_color(REANLEA_BLUE_LAVENDER).set_z_index(12)
+
+        self.play(
+            AnimationGroup(
+                Write(ax_2_3),
+                AnimationGroup(
+                    AnimationGroup(
+                        Create(graph_3),
+                        AnimationGroup(
+                            Create(dt_2),
+                            Flash(dt_2.get_center(), color=REANLEA_BLUE_LAVENDER),
+                            lag_ratio=.15
+                        ),             
+                        lag_ratio=.05
+                    ),
+                    AnimationGroup(
+                        Create(dt_3),
+                        Flash(dt_3.get_center(), color=REANLEA_BLUE_LAVENDER),
+                        lag_ratio=.15
+                    ),
+                    lag_ratio=.2
+                ),
+                lag_ratio=1
+            )
+        )
+        self.wait(2)
+
+        r1=Polygon(ax_2_3.c2p(-1.5,0),ax_2_3.c2p(5.5,0),ax_2_3.c2p(5.5,-1.5),ax_2_3.c2p(-1.5,-1.5)).set_opacity(0).set_z_index(11)
+        r1.set_fill(color=REANLEA_CHARM, opacity=0.15).set_z_index(11)
+
+        self.play(
+            Create(r1)
+        )
+
+        sgn_neg_1=MathTex("-").scale(.75).set_stroke(width=1.5).set_color(PURE_RED)
+        sgn_neg_2=Circle(radius=0.2, color=PURE_RED).move_to(sgn_neg_1.get_center()).set_stroke(width= 1)
+        sgn_neg=VGroup(sgn_neg_1,sgn_neg_2).scale(.35).move_to(ax_2_3.c2p(-.75,-.75)).set_z_index(12)
+
+        self.play(
+            Write(sgn_neg)
+        )
+        self.wait(2)
+
+        dt_4=Dot(ax_2_3.c2p(3,-.5)).scale(.675).set_color(PURE_RED).set_z_index(12)
+
+        d_ln_1=DashedLine(start=ax_2_3.c2p(3,-.5), end=ax_2_3.c2p(0,-.5), stroke_width=1).set_color(PURE_RED).set_z_index(12)
+
+        self.play(
+            Write(dt_4)
+        )
+        self.play(
+            Create(d_ln_1)
+        )
+
+        self.wait(2)
+
+        lbl_1=MathTex(r"f(t) < 0").scale(.25).set_color_by_gradient(REANLEA_GOLDENROD,REANLEA_RED_LIGHTER).move_to(ax_2_3.c2p(3.5,-1)).set_z_index(12)
+
+        self.play(
+            Write(lbl_1)
+        )
+
+
+        self.wait(2)
+
+
+        # manim -pqh test2.py ax_bez_tst_1
+
+        # manim -sqk test2.py ax_bez_tst_1
+
+
 ###################################################################################################################
 
 
