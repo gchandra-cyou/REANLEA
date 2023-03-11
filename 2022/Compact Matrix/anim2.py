@@ -6877,10 +6877,49 @@ class Scene6(Scene):
         eqn_8_1= MathTex(r"f \geq 0").scale(.75).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_SLATE_BLUE).shift(1.75*DOWN).set_z_index(21)
 
         self.play(
-            TransformMatchingShapes(eqn_1_grp_1.copy(),eqn_8_1)
+            Indicate(eqn_1_grp_1),
+            Write(eqn_8_1)
         )
 
         indct_arr_2=MathTex(r"\rightarrow").set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_PINK]).rotate(-PI/2).scale(.75).next_to(eqn_8_1,DOWN).set_z_index(21)
+
+        self.play(
+            Create(indct_arr_2)
+        )
+
+        graph_1_lbl_3.set_z_index(21)
+        graph_2_lbl_3.set_z_index(21)
+
+        graph_1_lbl_3_ref=MathTex(r"b^{2}-4ac",r"< 0").scale(.5).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_PURPLE).next_to(indct_arr_2,DOWN).set_z_index(21)
+
+        graph_2_lbl_3_ref=MathTex(r"b^{2}-4ac",r"= 0").scale(.5).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_PURPLE).next_to(indct_arr_2,DOWN).shift(.5*DOWN).set_z_index(21)
+
+        self.play(
+            TransformMatchingShapes(graph_1_lbl_3.copy(),graph_1_lbl_3_ref)
+        )
+        self.wait()
+
+        self.play(
+            TransformMatchingShapes(graph_2_lbl_3.copy(),graph_2_lbl_3_ref)
+        )
+        self.wait()
+
+        graph_1_2_lbl_3_ref_grp=VGroup(graph_1_lbl_3_ref,graph_2_lbl_3_ref)
+
+        eqn_8_2=MathTex(r"b^{2}-4ac",r"\leq 0").scale(.5).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_PURPLE).next_to(indct_arr_2,DOWN).set_z_index(21)
+
+        self.play(
+            TransformMatchingShapes(graph_1_2_lbl_3_ref_grp,eqn_8_2)
+        )
+        self.wait(2)
+
+        indct_ln_4=Line().scale(.35).set_stroke(width=1).rotate(35*DEGREES).next_to(eqn_8_2,RIGHT).shift(.2*UP+.5*RIGHT).set_z_index(21)
+
+        self.play(
+            Create(indct_ln_4)
+        )
+
+        
 
 
 
