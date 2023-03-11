@@ -6913,11 +6913,74 @@ class Scene6(Scene):
         )
         self.wait(2)
 
-        indct_ln_4=Line().scale(.35).set_stroke(width=1).rotate(35*DEGREES).next_to(eqn_8_2,RIGHT).shift(.2*UP+.5*RIGHT).set_z_index(21)
+        indct_ln_4=Line().scale(.65).set_stroke(width=1).rotate(50*DEGREES).next_to(eqn_8_2,RIGHT).shift(.6*UP+.15*LEFT).set_z_index(21)
 
         self.play(
             Create(indct_ln_4)
         )
+
+        eqn_2.set_z_index(21)
+
+        eqn_8_3=MathTex(
+            r"(2 \langle x,y \rangle)^{2}",r"-",r"4 \langle x,x \rangle \langle y,y \rangle","\leq 0"
+        ).scale(.5).set_color_by_gradient(REANLEA_PINK,REANLEA_BLUE_SKY).next_to(indct_ln_4.get_end(),RIGHT).shift(.1*UP+.1*LEFT).set_z_index(21)
+
+        self.play(
+            ReplacementTransform(VGroup(eqn_8_2,eqn_2).copy(),eqn_8_3)
+        )
+        self.wait(2)
+
+        eqn_8_4=MathTex(
+            r"4 \langle x,y \rangle^{2}",r"-",r"4 \langle x,x \rangle \langle y,y \rangle","\leq 0"
+        ).scale(.5).set_color_by_gradient(REANLEA_PINK,REANLEA_BLUE_SKY).next_to(indct_ln_4.get_end(),RIGHT).shift(.1*UP+.1*LEFT).set_z_index(21)
+
+        self.play(
+            TransformMatchingShapes(eqn_8_3,eqn_8_4)
+        )
+        self.wait(2)
+
+        eqn_8_5=MathTex(
+            r"4 \langle x,y \rangle^{2}",r"\leq",r"4 \langle x,x \rangle \langle y,y \rangle"
+        ).scale(.5).set_color_by_gradient(REANLEA_PINK,REANLEA_BLUE_SKY).next_to(indct_ln_4.get_end(),RIGHT).shift(.1*UP+.1*LEFT).set_z_index(21)
+
+        self.play(
+            TransformMatchingShapes(eqn_8_4,eqn_8_5)
+        )
+        self.wait(2)
+
+        eqn_8_6=MathTex(
+            r"\langle x,y \rangle^{2}",r"\leq",r"\langle x,x \rangle \langle y,y \rangle"
+        ).scale(.5).set_color_by_gradient(REANLEA_PINK,REANLEA_BLUE_SKY).next_to(indct_ln_4.get_end(),RIGHT).shift(.1*UP+.1*LEFT).set_z_index(21)
+
+        self.play(
+            TransformMatchingShapes(eqn_8_5,eqn_8_6)
+        )
+        self.wait(2)
+
+        eqn_8_7=MathTex(
+            r"\langle x,y \rangle^{2}",r"\leq",r"\lVert x \rVert^{2} \lVert y \rVert^{2}"
+        ).scale(.5).set_color_by_gradient(REANLEA_PINK,REANLEA_BLUE_SKY).next_to(indct_ln_4.get_end(),RIGHT).shift(.1*UP+.1*LEFT).set_z_index(21)
+
+        self.play(
+            TransformMatchingShapes(eqn_8_6,eqn_8_7)
+        )
+        self.wait(2)
+
+        eqn_8_8=MathTex(
+            r"\langle x,y \rangle^{2}",r"\leq",r"(\lVert x \rVert \ \lVert y \rVert)^{2}"
+        ).scale(.5).set_color_by_gradient(REANLEA_PINK,REANLEA_BLUE_SKY).next_to(indct_ln_4.get_end(),RIGHT).shift(.1*UP+.1*LEFT).set_z_index(21)
+
+        self.play(
+            TransformMatchingShapes(eqn_8_7,eqn_8_8)
+        )
+        self.wait(2)
+
+        brace_1=Brace(eqn_8_8[2][1:8])
+
+        self.play(
+            Write(brace_1)
+        )
+
 
         
 
