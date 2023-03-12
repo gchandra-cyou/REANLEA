@@ -6035,6 +6035,8 @@ class Scene6(Scene):
         self.add(water_mark)
         self.wait()
 
+        water_mark_1=water_mark.copy()
+
 
         # MAIN SCENE
 
@@ -6989,19 +6991,51 @@ class Scene6(Scene):
 
         self.wait(2)
 
+        indct_arr_3=MathTex(r"\rightarrow").set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_PINK]).rotate(-PI/2).scale(.75).next_to(eqn_8_8,DOWN).shift(.1*DOWN).set_z_index(21)
+
+        self.play(
+            Create(indct_arr_3)
+        )
+
+        eqn_8_9=MathTex(
+            r"\langle x,y \rangle",r"\leq",r"\lVert x \rVert \ \lVert y \rVert"
+        ).scale(.5).set_color_by_gradient(REANLEA_PINK,REANLEA_BLUE_SKY).next_to(indct_arr_3,DOWN).set_z_index(21)
+
+        self.play(
+            TransformMatchingShapes(eqn_8_8.copy(),eqn_8_9)
+        )
+        self.wait()
+
+        self.play(
+            eqn_8_9.animate.scale(1.5)
+        )
+
+        eqn_8_9_x=MathTex(r"\forall","x,y",r"\in \mathbb{R}^{n}").set_color_by_gradient(REANLEA_PINK,REANLEA_BLUE_SKY).scale(.5).next_to(eqn_8_9,RIGHT).shift(.25*RIGHT+.1*DOWN).set_z_index(21)
+        eqn_8_9_x[1:].shift(.1*RIGHT)
+
+        self.play(
+            Write(eqn_8_9_x)
+        )
+        self.wait(2)
+
+        txt_cs_grp_1_ref=txt_cs_grp_1.copy()
+        undr_bez_0_ref=undr_bez_0.copy()
+        
+
+        txt_cs_grp_ref=VGroup(txt_cs_grp_1_ref,undr_bez_0_ref)
+
+        self.play(
+            AnimationGroup(
+            *[FadeOut(mobj) for mobj in self.mobjects]
+            ),
+            FadeIn(water_mark_1),
+            txt_cs_grp_ref.animate.move_to(3*UP)
+        )
+
         
 
 
         
-
-
-
-
-
-
-
-
-
 
         self.wait(4)
 
@@ -7018,7 +7052,63 @@ class Scene6(Scene):
         # manim -sqk anim2.py Scene6
         
 
+
+class Scene6_1(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        self.wait()
+
+
+        # PREVIOUS SCENE
+
+        with RegisterFont("Homemade Apple") as fonts:
+            txt_cs_0 = Text("Cauchy  Schwarz Inequality" , font=fonts[0])
+            
+
+        undr_bez_0=underline_bez_curve().next_to(txt_cs_0,DOWN).scale(2)
+
+        txt_cs_grp_0=VGroup(txt_cs_0,undr_bez_0).scale(.5)
+
         
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_cs_def_0 = Text("For all" , font=fonts[0]).scale(.35)
+        
+        txt_cs_def_1=MathTex(r"x",",","y",r"\in" r"\mathbb{R}^{n}", ",").scale(.5).next_to(txt_cs_def_0,RIGHT).shift(.05*LEFT)
+        txt_cs_def_1[1:].shift(.05*RIGHT)
+        txt_cs_def_1[3:].shift(.05*RIGHT)
+        txt_cs_def_1[4:].shift(.05*RIGHT)
+        txt_cs_def_1[5:].shift(.05*RIGHT)
+
+        txt_cs_def_2=MathTex(r"\langle x,y \rangle",r"\leq",r"\lVert x \rVert ",r"\lVert y \rVert ", ".").scale(.5).next_to(txt_cs_def_1,RIGHT).shift(.05*LEFT)
+        txt_cs_def_2[1:].shift(.05*RIGHT)
+        txt_cs_def_2[2:].shift(.05*RIGHT)
+        txt_cs_def_2[3:].shift(.05*RIGHT)
+        
+
+        txt_cs_def=VGroup(txt_cs_def_0,txt_cs_def_1,txt_cs_def_2).scale(2).next_to(txt_cs_grp_0,1.775*DOWN)
+
+        txt_cs_grp_1=VGroup(txt_cs_grp_0,txt_cs_def).scale(.5).move_to(3*UP)
+
+        self.add(water_mark,txt_cs_grp_1)
+
+
+
+
+        # manim -pqh anim2.py Scene6_1
+
+        # manim -pql anim2.py Scene6_1
+
+        # manim -sqh anim2.py Scene6_1
+
+        # manim -sqk anim2.py Scene6_1
+
+        
+               
 ###################################################################################################################
 
 # Changing FONTS : import any font from Google
