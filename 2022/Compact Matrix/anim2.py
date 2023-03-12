@@ -7007,9 +7007,6 @@ class Scene6(Scene):
 
         
 
-        
-
-
 
 
         # manim -pqh anim2.py Scene6
