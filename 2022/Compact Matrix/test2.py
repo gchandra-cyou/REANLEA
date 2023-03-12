@@ -7902,6 +7902,38 @@ class ax_bez_tst_1(Scene):
         # manim -sqk test2.py ax_bez_tst_1
 
 
+class brace_tst(Scene):
+    def construct(self):
+        
+        eqn_8_8=MathTex(
+            r"\langle x,y \rangle^{2}",r"\leq",r"(\lVert x \rVert \ \lVert y \rVert)^{2}"
+        ).scale(.5).set_color_by_gradient(REANLEA_PINK,REANLEA_BLUE_SKY)
+
+        self.play(
+            Write(eqn_8_8)
+        )
+
+        
+        brace_1=MathTex(r"\lbrace").rotate(PI/2).set_stroke(width=.5).next_to(eqn_8_8[2][1:8].get_center(),DOWN).scale(1.5).shift(.05*LEFT).set_color(REANLEA_TXT_COL)
+
+        
+        self.play(
+            Write(brace_1)
+        )
+
+        brace_1_lbl=MathTex(r"\geq 0").next_to(brace_1,RIGHT).rotate(-20*DEGREES).scale(.35).shift(.1*DOWN+.425*LEFT)
+
+        self.play(
+            Write(brace_1_lbl)
+        )
+
+
+
+        # manim -pqh test2.py brace_tst
+
+        # manim -sqk test2.py brace_tst
+
+
 ###################################################################################################################
 
 

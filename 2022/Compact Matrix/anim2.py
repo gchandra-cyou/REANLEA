@@ -6975,11 +6975,21 @@ class Scene6(Scene):
         )
         self.wait(2)
 
-        brace_1=Brace(eqn_8_8[2][1:8])
+        brace_1=MathTex(r"\lbrace").rotate(PI/2).set_stroke(width=.5).next_to(eqn_8_8[2][1:8].get_center(),DOWN).scale(1.5).shift(.05*LEFT).set_color(REANLEA_TXT_COL).set_z_index(21)
 
         self.play(
             Write(brace_1)
         )
+
+        brace_1_lbl=MathTex(r"\geq 0").next_to(brace_1,RIGHT).rotate(-20*DEGREES).scale(.35).shift(.1*DOWN+.425*LEFT).set_z_index(21)
+
+        self.play(
+            Write(brace_1_lbl)
+        )
+
+        self.wait(2)
+
+        
 
 
         
