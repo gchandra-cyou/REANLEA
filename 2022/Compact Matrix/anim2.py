@@ -7168,12 +7168,37 @@ class Scene6_1(Scene):
             Create(sep_ln_1)
         )
 
-        
+        txt_ti_pf=MathTex(r"\lVert x + y \rVert ^{2} &",r"= \langle x+y, x+y \rangle \\&",r"= \langle x, x \rangle + 2\langle x, y \rangle + \langle y, y \rangle \\&",r"\leq \lVert x \rVert ^{2} + 2 \lVert x \rVert \lVert y \rVert + \lVert  y \rVert ^{2} \\&",r" = (\lVert x \rVert + \lVert  y \rVert)^{2}").scale(.65).move_to(2.5*RIGHT+.5*UP)
+
+        self.play(
+            AnimationGroup(
+                *[Write(eq) for eq in txt_ti_pf[0:4]],
+                lag_ratio=2
+            )
+        )
+
+        indct_ln_1=Line().scale(.25).set_stroke(width=1).rotate(-35*DEGREES).next_to(txt_ti_pf[3],DOWN).shift(.1*UP+.5*RIGHT)
+
+        with RegisterFont("Cousine") as fonts:
+            indct_ln_1_lbl=Text(r"by Cauchy Schwarz Inequality", font=fonts[0]).scale(.25).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(indct_ln_1.get_end()).shift(.175*LEFT)
+
+        self.play(
+            Create(indct_ln_1)
+        )
+        self.play(
+            Create(indct_ln_1_lbl)
+        )
+
+
+
+
+
+
+        self.wait(4)
 
         
 
-
-
+    
 
 
         # manim -pqh anim2.py Scene6_1
