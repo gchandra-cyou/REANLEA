@@ -7060,7 +7060,6 @@ class Scene6_1(Scene):
 
         water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
         self.add(water_mark)
-        self.wait()
 
 
         # PREVIOUS SCENE
@@ -7095,6 +7094,77 @@ class Scene6_1(Scene):
         txt_cs_grp_1=VGroup(txt_cs_grp_0,txt_cs_def).scale(.5).move_to(3*UP)
 
         self.add(water_mark,txt_cs_grp_1)
+
+
+        # MAIN SCENE 
+
+        sr_txt_cs_grp_1=SurroundingRectangle(txt_cs_grp_1, buff=0.25, corner_radius=.15, color=REANLEA_WELDON_BLUE).set_opacity(0.25).set_z_index(-1)
+
+        self.play(
+            FadeIn(sr_txt_cs_grp_1)
+        )
+
+        indct_arr_1=MathTex(r"\rightarrow").set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_PINK]).rotate(-PI/2).scale(.75).next_to(sr_txt_cs_grp_1,DOWN)
+
+        self.play(
+            Create(indct_arr_1)
+        )
+
+        with RegisterFont("Homemade Apple") as fonts:
+            txt_ti_0 = Text("Triangle Inequality" , font=fonts[0]).next_to(indct_arr_1,DOWN).shift(.75*UP)
+        undr_bez_1=underline_bez_curve().next_to(txt_ti_0,DOWN).scale(2)
+
+        txt_ti_grp_0=VGroup(txt_ti_0,undr_bez_1).scale(.5)
+        txt_ti_grp_0_ref=txt_ti_grp_0.copy()
+
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_ti_def_0 = Text("For all" , font=fonts[0]).scale(.35)
+        
+        txt_ti_def_1=MathTex(r"x",",","y",r"\in" r"\mathbb{R}^{n}", ",").scale(.5).next_to(txt_ti_def_0,RIGHT).shift(.05*LEFT)
+        txt_ti_def_1[1:].shift(.05*RIGHT)
+        txt_ti_def_1[3:].shift(.05*RIGHT)
+        txt_ti_def_1[4:].shift(.05*RIGHT)
+        txt_ti_def_1[5:].shift(.05*RIGHT)
+
+        txt_ti_def_2=MathTex(r"\lVert x+y \rVert",r"\leq",r"\lVert x \rVert +",r"\lVert y \rVert ", ".").scale(.5).next_to(txt_ti_def_1,RIGHT).shift(.05*LEFT)
+        txt_ti_def_2[1:].shift(.05*RIGHT)
+        txt_ti_def_2[2:].shift(.05*RIGHT)
+        txt_ti_def_2[3:].shift(.05*RIGHT)
+        
+
+        txt_ti_def=VGroup(txt_ti_def_0,txt_ti_def_1,txt_ti_def_2).scale(2).next_to(txt_ti_grp_0,1.775*DOWN)
+
+        txt_ti_grp_1=VGroup(txt_ti_grp_0,txt_ti_def).scale(.5)
+
+        self.play(
+            Write(txt_ti_0)
+        )
+
+        self.play(
+            Create(undr_bez_1)
+        )
+
+        self.play(
+            Write(txt_ti_def)
+        )
+
+        sr_txt_ti_grp_1=SurroundingRectangle(txt_ti_grp_1, buff=0.25, corner_radius=.15, color=REANLEA_PURPLE).set_opacity(0.25).set_z_index(-1)
+
+        self.play(
+            Create(sr_txt_ti_grp_1)
+        )
+
+        txt_ti_cs_grp=VGroup(txt_cs_grp_1,txt_ti_grp_1,indct_arr_1,sr_txt_cs_grp_1,sr_txt_ti_grp_1)
+
+        self.play(
+            txt_ti_cs_grp.animate.scale(.75).shift(4.5*LEFT+2*DOWN)
+        )
+
+        
+
+        
+
 
 
 
