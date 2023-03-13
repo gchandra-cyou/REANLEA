@@ -7195,7 +7195,7 @@ class Scene6_1(Scene):
             Write(txt_ti_pf[4])
         )
 
-        txt_ti_pf_1=MathTex(r"\Rightarrow",r"\lVert x + y \rVert",r" = \lVert x \rVert + \lVert  y \rVert").scale(.65).move_to(2.5*RIGHT+1.5*DOWN)
+        txt_ti_pf_1=MathTex(r"\Rightarrow",r"\lVert x + y \rVert",r" = \lVert x \rVert + \lVert  y \rVert").scale(.65).move_to(1.315*RIGHT+1.5*DOWN)
 
         self.play(
             Write(txt_ti_pf_1)
