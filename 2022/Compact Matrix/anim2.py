@@ -7111,11 +7111,11 @@ class Scene6_1(Scene):
         )
 
         with RegisterFont("Homemade Apple") as fonts:
-            txt_ti_0 = Text("Triangle Inequality" , font=fonts[0]).next_to(indct_arr_1,DOWN).shift(.75*UP)
+            txt_ti_0 = Text("Triangle Inequality" , font=fonts[0]).next_to(indct_arr_1,DOWN).shift(.7*UP).scale(1.25)
         undr_bez_1=underline_bez_curve().next_to(txt_ti_0,DOWN).scale(2)
 
         txt_ti_grp_0=VGroup(txt_ti_0,undr_bez_1).scale(.5)
-        txt_ti_grp_0_ref=txt_ti_grp_0.copy()
+        txt_ti_grp_0_ref=txt_ti_grp_0.copy().scale(.75).move_to(3*UP+2.25*RIGHT)
 
 
         with RegisterFont("Courier Prime") as fonts:
@@ -7158,7 +7158,14 @@ class Scene6_1(Scene):
         txt_ti_cs_grp=VGroup(txt_cs_grp_1,txt_ti_grp_1,indct_arr_1,sr_txt_cs_grp_1,sr_txt_ti_grp_1)
 
         self.play(
-            txt_ti_cs_grp.animate.scale(.75).shift(4.5*LEFT+2*DOWN)
+            txt_ti_cs_grp.animate.scale(.75).shift(4.5*LEFT+2*DOWN),
+            TransformMatchingShapes(txt_ti_grp_0.copy(),txt_ti_grp_0_ref)
+        )
+
+        sep_ln_1=Line(start=3*UP+2*LEFT, end=3*DOWN+2*LEFT).set_stroke(width=2, color=[REANLEA_WARM_BLUE,REANLEA_PURPLE])
+
+        self.play(
+            Create(sep_ln_1)
         )
 
         
