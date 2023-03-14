@@ -7240,6 +7240,8 @@ class Scene6_1(Scene):
 
         sep_ln_2=Line(start=1.75*UP+1.55*LEFT,end=1.75*UP+4.45*RIGHT).set_stroke(width=1)
 
+        eqn_dis_tineq_grp=VGroup(eqn_dis_tineq_0,eqn_dis_tineq_1,sep_ln_2)
+
         self.play(
             Create(sep_ln_2)
         )
@@ -7277,6 +7279,8 @@ class Scene6_1(Scene):
 
         eqn_2_last=MathTex(r"x-y",r"= (x-z) + (z-y)").scale(.65).next_to(eqn_2_prev).shift(.5*DOWN+LEFT).set_color(REANLEA_CYAN_LIGHT)
 
+        eqn_2=VGroup(eqn_2_prev,eqn_2_last)
+
         self.play(
             Create(eqn_2_last[0])
         )
@@ -7305,19 +7309,34 @@ class Scene6_1(Scene):
             Create(indct_ln_2_lbl)
         )
 
-        eqn_4=MathTex(r"i.e.",r"d(x,y)",r"\leq d(x,z) + d(z,y)").scale(.65).next_to(eqn_3,DOWN).set_color(REANLEA_CYAN_LIGHT).shift(.75*DOWN+.3*LEFT)
-        eqn_4[0].scale(.65).shift(.15*LEFT+.05*DOWN)
+        eqn_4_0=MathTex(r"i.e.",r"d(x,y)",r"\leq d(x,z) + d(z,y)").scale(.65).next_to(eqn_3,DOWN).set_color(REANLEA_CYAN_LIGHT).shift(.75*DOWN+.3*LEFT)
+        eqn_4_0[0].scale(.65).shift(.15*LEFT+.05*DOWN)
 
-        eqn_4_1=MathTex(r"\forall",r"x,y,z",r"\in",r"\mathbb{R}^{n}").set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(.5).next_to(eqn_4,RIGHT).shift(.3*RIGHT+.05*DOWN)
+        eqn_4_1=MathTex(r"\forall",r"x,y,z",r"\in",r"\mathbb{R}^{n}").set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(.5).next_to(eqn_4_0,RIGHT).shift(.3*RIGHT+.05*DOWN)
         eqn_4_1[1:].shift(.1*RIGHT)
 
+        eqn_4=VGroup(eqn_4_0,eqn_4_1)
+
         self.play(
-            Write(eqn_4)
+            Write(eqn_4_0)
         )
         self.wait()
 
         self.play(
             Write(eqn_4_1)
+        )
+
+        grp_1_0=VGroup(txt_ti_grp_0_ref,eqn_dis_tineq_grp)
+        grp_1_1=VGroup(eqn_1,eqn_2,eqn_3,eqn_4,indct_ln_2,indct_ln_2_lbl)
+
+
+        self.play(
+            grp_1_0.animate.shift(3*UP),
+            grp_1_1.animate.shift(2*UP),
+            run_time=3
+        )
+        self.play(
+            FadeOut(grp_1_0)
         )
 
 
