@@ -7379,6 +7379,15 @@ class Scene6_1(Scene):
         )
         self.wait(2)
 
+        msp_def_0=MathTex(r"(\mathbb{R}^{n},d)")        
+        with RegisterFont("Reenie Beanie") as fonts:
+            msp_def_1 = Text("is a metric space" , font=fonts[0]).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(msp_def_0,RIGHT).shift(.05*DOWN)
+        ms_def=VGroup(msp_def_0,msp_def_1).set_color_by_gradient(REANLEA_PINK,REANLEA_WARM_BLUE).move_to(3.25*RIGHT+2.85*DOWN)
+
+        self.play(
+            Write(ms_def)
+        )
+
 
 
         
