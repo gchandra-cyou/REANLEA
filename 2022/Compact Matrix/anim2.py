@@ -7350,7 +7350,7 @@ class Scene6_1(Scene):
         )
         self.wait()
 
-        eqns_msp_prev=MathTex(r"&",r"1. \ d(x,y) \geq 0 \\&" , r"2. \ d(x,y)=d(y,x) \\&", r"3. \ d(x,y) \leq d(x,z) + d(z,y) \\&").scale(.55).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(txt_0,DOWN).shift(1.5*LEFT)
+        eqns_msp_prev=MathTex(r"&",r"i. \ d(x,y) \geq  0,  \\&" , r"ii. \  d(x,y)=d(y,x) \\&", r"iii. \ d(x,y) \leq d(x,z) + d(z,y) \\&").scale(.55).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(txt_0,DOWN).shift(1.5*LEFT)
 
         
         with RegisterFont("Courier Prime") as fonts:
@@ -7381,7 +7381,7 @@ class Scene6_1(Scene):
 
         msp_def_0=MathTex(r"(\mathbb{R}^{n},d)")        
         with RegisterFont("Reenie Beanie") as fonts:
-            msp_def_1 = Text("is a metric space" , font=fonts[0]).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(msp_def_0,RIGHT).shift(.05*DOWN)
+            msp_def_1 = Text("is a metric space." , font=fonts[0]).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(msp_def_0,RIGHT).shift(.05*DOWN+.25*RIGHT)
         ms_def=VGroup(msp_def_0,msp_def_1).set_color_by_gradient(REANLEA_PINK,REANLEA_WARM_BLUE).move_to(3.25*RIGHT+2.85*DOWN)
 
         self.play(
