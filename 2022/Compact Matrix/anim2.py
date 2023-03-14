@@ -7338,6 +7338,15 @@ class Scene6_1(Scene):
         self.play(
             FadeOut(grp_1_0)
         )
+        self.wait(2)
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_0 = Text("distance between two points in n-dimensional space satisfies" , font=fonts[0]).scale(.35).next_to(eqn_4_1,DOWN)
+        
+        self.play(
+            Create(txt_0)
+        )
+
 
 
         
