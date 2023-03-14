@@ -7103,6 +7103,7 @@ class Scene6_1(Scene):
         self.play(
             FadeIn(sr_txt_cs_grp_1)
         )
+        self.wait()
 
         indct_arr_1=MathTex(r"\rightarrow").set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_PINK]).rotate(-PI/2).scale(.75).next_to(sr_txt_cs_grp_1,DOWN)
 
@@ -7144,16 +7145,19 @@ class Scene6_1(Scene):
         self.play(
             Create(undr_bez_1)
         )
+        self.wait()
 
         self.play(
             Write(txt_ti_def)
         )
+        self.wait()
 
         sr_txt_ti_grp_1=SurroundingRectangle(txt_ti_grp_1, buff=0.25, corner_radius=.15, color=REANLEA_PURPLE).set_opacity(0.25).set_z_index(-1)
 
         self.play(
             Create(sr_txt_ti_grp_1)
         )
+        self.wait(2)
 
         txt_ti_cs_grp=VGroup(txt_cs_grp_1,txt_ti_grp_1,indct_arr_1,sr_txt_cs_grp_1,sr_txt_ti_grp_1)
 
@@ -7178,6 +7182,7 @@ class Scene6_1(Scene):
                 lag_ratio=2
             )
         )
+        self.wait()
 
         indct_ln_1=Line().scale(.25).set_stroke(width=1).rotate(-35*DEGREES).next_to(txt_ti_pf[3],DOWN).shift(.1*UP+.5*RIGHT)
 
@@ -7190,12 +7195,14 @@ class Scene6_1(Scene):
         self.play(
             Create(indct_ln_1_lbl)
         )
+        self.wait(2)
 
         self.play(
             Write(txt_ti_pf[4])
         )
+        self.wait(2)
 
-        txt_ti_pf_1=MathTex(r"\Rightarrow",r"\lVert x + y \rVert",r" = \lVert x \rVert + \lVert  y \rVert").scale(.65).move_to(1.315*RIGHT+1.5*DOWN)
+        txt_ti_pf_1=MathTex(r"\Rightarrow",r"\lVert x + y \rVert",r" \leq \lVert x \rVert + \lVert  y \rVert").scale(.65).move_to(1.315*RIGHT+1.5*DOWN)
         txt_ti_pf_1[0].shift(.1*LEFT)
 
         self.play(
