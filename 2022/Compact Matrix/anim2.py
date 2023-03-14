@@ -7248,6 +7248,7 @@ class Scene6_1(Scene):
         self.wait(2)
 
         eqn_1=MathTex(r"d(x,y)",r"= \lVert x-y \rVert",r"= \Biggl\lbrack \sum_{i=1}^{n} (x_{i}-y_{i})^{2} \Biggr\rbrack ^{1/2} ").scale(.65).shift(3*RIGHT+.8*UP)
+        
 
         self.play(
             Write(eqn_1[0:2])
@@ -7362,6 +7363,8 @@ class Scene6_1(Scene):
         eqns_msp_1=MathTex(r"\forall",r"x,y,z",r"\in",r"\mathbb{R}^{n}").set_color_by_gradient(REANLEA_BLUE_LAVENDER).scale(.5).next_to(eqns_msp_prev[3],RIGHT).shift(.3*RIGHT+.25*DOWN)
         eqns_msp_1[1:].shift(.1*RIGHT)
 
+        eqns_msp_grp=VGroup(eqns_msp_prev,eqns_msp_prev_txt_0,eqns_msp_prev_txt_1,eqns_msp_1)
+
 
         
 
@@ -7382,11 +7385,23 @@ class Scene6_1(Scene):
         msp_def_0=MathTex(r"(\mathbb{R}^{n},d)")        
         with RegisterFont("Reenie Beanie") as fonts:
             msp_def_1 = Text("is a metric space." , font=fonts[0]).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(msp_def_0,RIGHT).shift(.05*DOWN+.25*RIGHT)
-        ms_def=VGroup(msp_def_0,msp_def_1).set_color_by_gradient(REANLEA_PINK,REANLEA_WARM_BLUE).move_to(3.25*RIGHT+2.85*DOWN)
+        ms_def=VGroup(msp_def_0,msp_def_1).set_color_by_gradient(REANLEA_PINK,REANLEA_WARM_BLUE).move_to(2.75*RIGHT+2.85*DOWN)
 
         self.play(
             Write(ms_def)
         )
+
+        self.wait(2)
+
+        eqn_1_ref=eqn_1.copy()
+        self.add(eqn_1_ref)
+
+        grp_1_2=VGroup(txt_0,eqns_msp_grp,ms_def)
+
+        '''self.play(
+            FadeOut(grp_1_1),
+            FadeOut(grp_1_2)
+        )'''
 
 
 
