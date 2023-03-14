@@ -7061,6 +7061,8 @@ class Scene6_1(Scene):
         water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
         self.add(water_mark)
 
+        water_mark_1=water_mark.copy()
+
 
         # PREVIOUS SCENE
 
@@ -7355,8 +7357,8 @@ class Scene6_1(Scene):
 
         
         with RegisterFont("Courier Prime") as fonts:
-            eqns_msp_prev_txt_0 = Text("and equality holds if and only if" , font=fonts[0]).scale(.25).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(eqns_msp_prev[1],RIGHT).shift(.05*DOWN)
-            eqns_msp_prev_txt_1 = MathTex(r"x=y",".").scale(.55).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(eqns_msp_prev_txt_0,RIGHT)
+            eqns_msp_prev_txt_0 = Text("and equality holds if and only if" , font=fonts[0]).scale(.25).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(eqns_msp_prev[1],RIGHT).shift(.025*DOWN)
+            eqns_msp_prev_txt_1 = MathTex(r"x=y",".").scale(.55).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(eqns_msp_prev_txt_0,RIGHT).shift(.025*DOWN)
 
             eqns_msp_prev_txt_grp=VGroup(eqns_msp_prev_txt_0,eqns_msp_prev_txt_1)
         
@@ -7398,24 +7400,67 @@ class Scene6_1(Scene):
 
         grp_1_2=VGroup(txt_0,eqns_msp_grp,ms_def)
 
-        '''self.play(
+        self.play(
             FadeOut(grp_1_1),
-            FadeOut(grp_1_2)
-        )'''
+            FadeOut(grp_1_2),
+            eqn_1_ref.animate.scale(1.75).set_color_by_gradient(REANLEA_PINK,REANLEA_BLUE_SKY).move_to(2.75*RIGHT+2.5*UP)
+        )
+        self.wait(2)
 
+        graphs = VGroup()
+        for n in np.arange(1,15):                    
+            graphs += ImplicitFunction(lambda x,y : np.abs(x)**n + np.abs(y)**n -1).scale(3).set_stroke(width=1.25)
+                
+        graphs.scale(.5).set_color_by_gradient(REANLEA_BLUE,REANLEA_BLUE_SKY).next_to(eqn_1_ref,DOWN).shift(DOWN)
 
+                
+        self.play(
+            Create(graphs[1])
+        )
+        self.wait(2)
 
-        
+        eqn_1_x=MathTex(r"d_{k}(x,y)",r"= \lVert x-y \rVert",r"= \Biggl\lbrack \sum_{i=1}^{n} \lvert x_{i}-y_{i} \rvert ^{k} \Biggr\rbrack ^{1/k} ").scale(.56875).set_color_by_gradient(REANLEA_PINK,REANLEA_BLUE_SKY).move_to(2.75*RIGHT+2.5*UP)
 
+        self.play(
+            TransformMatchingShapes(eqn_1_ref,eqn_1_x)
+        )
+        self.play(
+            Create(graphs[0])
+        )
+        self.play(
+            Create(graphs[2:], run_rime=18)
+        )
+        self.wait(2)
 
-        
+        graphs_ref=graphs.copy()
+        eqn_1_x_ref=eqn_1_x.copy()
 
-
-
-
-
-
+        self.play(
+            AnimationGroup(
+            *[FadeOut(mobj) for mobj in self.mobjects]
+            ),
+            FadeIn(water_mark_1),
+            graphs_ref.animate.scale(1.5).move_to(ORIGIN+.5*DOWN),
+            eqn_1_x_ref.animate.move_to(2.75*UP)
+        )
         self.wait(4)
+
+        water_mark_2=water_mark.copy()
+
+        self.play(
+            AnimationGroup(
+            *[FadeOut(mobj) for mobj in self.mobjects]
+            ),
+            FadeIn(water_mark_2)
+        )
+
+
+
+
+
+
+
+        self.wait(10)
 
         
 
