@@ -7269,13 +7269,13 @@ class Scene6_1(Scene):
         eqn_2_1[4:].shift(.05*RIGHT)
         eqn_2_1[5:].shift(.05*RIGHT)
 
-        eqn_2_prev=VGroup(eqn_2_0,eqn_2_1).next_to(eqn_1,DOWN)
+        eqn_2_prev=VGroup(eqn_2_0,eqn_2_1).next_to(eqn_1,DOWN).set_color(REANLEA_CYAN_LIGHT)
 
         self.play(
             Write(eqn_2_prev)
         )
 
-        eqn_2_last=MathTex(r"x-y",r"= (x-z) + (z-y)").scale(.75).next_to(eqn_2_prev).shift(.5*DOWN).set_color(REANLEA_CYAN_LIGHT)
+        eqn_2_last=MathTex(r"x-y",r"= (x-z) + (z-y)").scale(.65).next_to(eqn_2_prev).shift(.5*DOWN+LEFT).set_color(REANLEA_CYAN_LIGHT)
 
         self.play(
             Create(eqn_2_last[0])
@@ -7284,6 +7284,40 @@ class Scene6_1(Scene):
 
         self.play(
             Create(eqn_2_last[1])
+        )
+
+        eqn_3=MathTex(r"\Rightarrow",r"\lVert x-y \rVert",r"\leq \lVert (x-z) \rVert + \lVert (z-y) \rVert").scale(.65).next_to(eqn_2_last,DOWN).set_color(REANLEA_CYAN_LIGHT).shift(.075*LEFT)
+        eqn_3[0].shift(.1*LEFT)
+
+        self.play(
+            Create(eqn_3)
+        )
+
+        indct_ln_2=Line().scale(.25).set_stroke(width=1).rotate(-35*DEGREES).next_to(eqn_3,DOWN).shift(.15*UP+.75*RIGHT)
+
+        with RegisterFont("Cousine") as fonts:
+            indct_ln_2_lbl=Text(r"by Triangle Inequality for vectors", font=fonts[0]).scale(.25).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(indct_ln_2.get_end()).shift(.125*LEFT+.05*DOWN)
+
+        self.play(
+            Create(indct_ln_2)
+        )
+        self.play(
+            Create(indct_ln_2_lbl)
+        )
+
+        eqn_4=MathTex(r"i.e.",r"d(x,y)",r"\leq d(x,z) + d(z,y)").scale(.65).next_to(eqn_3,DOWN).set_color(REANLEA_CYAN_LIGHT).shift(.75*DOWN+.3*LEFT)
+        eqn_4[0].scale(.65).shift(.15*LEFT+.05*DOWN)
+
+        eqn_4_1=MathTex(r"\forall",r"x,y,z",r"\in",r"\mathbb{R}^{n}").set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(.5).next_to(eqn_4,RIGHT).shift(.3*RIGHT+.05*DOWN)
+        eqn_4_1[1:].shift(.1*RIGHT)
+
+        self.play(
+            Write(eqn_4)
+        )
+        self.wait()
+
+        self.play(
+            Write(eqn_4_1)
         )
 
 
