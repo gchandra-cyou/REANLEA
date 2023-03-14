@@ -7209,6 +7209,87 @@ class Scene6_1(Scene):
             Write(txt_ti_pf_1)
         )
 
+        bez_1=bend_bezier_arrow().rotate(-30*DEGREES).scale(.5).shift(1.5*RIGHT)
+
+        eqn_dis_tineq_0=MathTex(r"d(x,z)",r"\leq",r"d(x,y)",r"+",r"d(y,z)").set_color_by_gradient(REANLEA_PINK,REANLEA_BLUE_SKY).scale(.5).next_to(bez_1,RIGHT).shift(.22*DOWN+.1*LEFT)
+
+        eqn_dis_tineq_1=MathTex(r"\forall",r"x,y,z",r"\in",r"\mathbb{R}^{n}").set_color_by_gradient(REANLEA_PINK,REANLEA_BLUE_SKY).scale(.5).next_to(eqn_dis_tineq_0,DOWN)
+        eqn_dis_tineq_1[1:].shift(.1*RIGHT)
+        
+
+        self.play(
+            Create(bez_1)
+        )
+        self.play(
+            Write(eqn_dis_tineq_0)
+        )
+        self.play(
+            Write(eqn_dis_tineq_1)
+        )
+        self.wait(2)
+
+        uncrt_grp_0=VGroup(txt_ti_pf,txt_ti_pf_1,indct_ln_1,indct_ln_1_lbl,bez_1)
+
+        eqn_dis_tineq_0_ref=eqn_dis_tineq_0.copy().move_to(2*UP+.5*RIGHT).scale(1.5)
+
+        self.play(
+            FadeOut(uncrt_grp_0),
+            eqn_dis_tineq_0.animate.move_to(2*UP+.5*RIGHT).scale(1.5),
+            eqn_dis_tineq_1.animate.next_to(eqn_dis_tineq_0_ref,RIGHT).shift(.075*DOWN+.25*RIGHT)
+        )
+
+        sep_ln_2=Line(start=1.75*UP+1.55*LEFT,end=1.75*UP+4.45*RIGHT).set_stroke(width=1)
+
+        self.play(
+            Create(sep_ln_2)
+        )
+        self.wait(2)
+
+        eqn_1=MathTex(r"d(x,y)",r"= \lVert x-y \rVert",r"= \Biggl\lbrack \sum_{i=1}^{n} x_{i}^{2} \Biggr\rbrack ^{1/2} ").scale(.65).shift(3*RIGHT+.8*UP)
+
+        self.play(
+            Write(eqn_1[0:2])
+        )
+        self.wait(2)
+        self.play(
+            Write(eqn_1[2])
+        )
+        self.wait(2)
+
+        self.play(
+            eqn_1.animate.scale(.5).shift(3*LEFT+.5*UP)
+        )
+
+        with RegisterFont("Courier Prime") as fonts:
+            eqn_2_0 = Text("For all" , font=fonts[0]).scale(.35)
+        
+        eqn_2_1 =MathTex(r"x",",","y",",","z",r"\in" r"\mathbb{R}^{n}", ",").scale(.5).next_to(eqn_2_0 ,RIGHT).shift(.05*LEFT)
+        eqn_2_1[1:].shift(.05*RIGHT)
+        eqn_2_1[3:].shift(.05*RIGHT)
+        eqn_2_1[4:].shift(.05*RIGHT)
+        eqn_2_1[5:].shift(.05*RIGHT)
+
+        eqn_2_prev=VGroup(eqn_2_0,eqn_2_1).next_to(eqn_1,DOWN)
+
+        self.play(
+            Write(eqn_2_prev)
+        )
+
+        eqn_2_last=MathTex(r"x-y",r"= (x-z) + (z-y)").scale(.75).next_to(eqn_2_prev).shift(.5*DOWN).set_color(REANLEA_CYAN_LIGHT)
+
+        self.play(
+            Create(eqn_2_last[0])
+        )
+        self.wait()
+
+        self.play(
+            Create(eqn_2_last[1])
+        )
+
+
+        
+
+
         
 
 
