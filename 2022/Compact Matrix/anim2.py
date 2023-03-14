@@ -7247,7 +7247,7 @@ class Scene6_1(Scene):
         )
         self.wait(2)
 
-        eqn_1=MathTex(r"d(x,y)",r"= \lVert x-y \rVert",r"= \Biggl\lbrack \sum_{i=1}^{n} x_{i}^{2} \Biggr\rbrack ^{1/2} ").scale(.65).shift(3*RIGHT+.8*UP)
+        eqn_1=MathTex(r"d(x,y)",r"= \lVert x-y \rVert",r"= \Biggl\lbrack \sum_{i=1}^{n} (x_{i}-y_{i})^{2} \Biggr\rbrack ^{1/2} ").scale(.65).shift(3*RIGHT+.8*UP)
 
         self.play(
             Write(eqn_1[0:2])
@@ -7341,11 +7341,43 @@ class Scene6_1(Scene):
         self.wait(2)
 
         with RegisterFont("Courier Prime") as fonts:
-            txt_0 = Text("distance between two points in n-dimensional space satisfies" , font=fonts[0]).scale(.35).next_to(eqn_4_1,DOWN)
+            txt_0=VGroup(*[Text(x, font=fonts[0]) for x in (
+               "distance between two points in n-dimensional space satisfies ...",
+            )]).arrange_submobjects(DOWN).scale(.3).set_color(REANLEA_TXT_COL).shift(2*RIGHT+.5*DOWN)
         
         self.play(
             Create(txt_0)
         )
+        self.wait()
+
+        eqns_msp_prev=MathTex(r"&",r"1. \ d(x,y) \geq 0 \\&" , r"2. \ d(x,y)=d(y,x) \\&", r"3. \ d(x,y) \leq d(x,z) + d(z,y) \\&").scale(.55).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(txt_0,DOWN).shift(1.5*LEFT)
+
+        
+        with RegisterFont("Courier Prime") as fonts:
+            eqns_msp_prev_txt_0 = Text("and equality holds if and only if" , font=fonts[0]).scale(.25).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(eqns_msp_prev[1],RIGHT).shift(.05*DOWN)
+            eqns_msp_prev_txt_1 = MathTex(r"x=y",".").scale(.55).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(eqns_msp_prev_txt_0,RIGHT)
+
+            eqns_msp_prev_txt_grp=VGroup(eqns_msp_prev_txt_0,eqns_msp_prev_txt_1)
+        
+        eqns_msp_1=MathTex(r"\forall",r"x,y,z",r"\in",r"\mathbb{R}^{n}").set_color_by_gradient(REANLEA_BLUE_LAVENDER).scale(.5).next_to(eqns_msp_prev[3],RIGHT).shift(.3*RIGHT+.25*DOWN)
+        eqns_msp_1[1:].shift(.1*RIGHT)
+
+
+        
+
+        self.play(
+            Write(eqns_msp_prev[0:2])
+        )
+        self.play(
+            Write(eqns_msp_prev_txt_grp)
+        )
+        self.play(
+            Write(eqns_msp_prev[2:])
+        )
+        self.play(
+            Write(eqns_msp_1)
+        )
+        self.wait(2)
 
 
 
