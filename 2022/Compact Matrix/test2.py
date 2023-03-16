@@ -7934,6 +7934,48 @@ class brace_tst(Scene):
         # manim -sqk test2.py brace_tst
 
 
+
+class Color_Gradient_example_1(Scene):
+  def construct(self):
+
+    # WATER MARK 
+
+    water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+    self.add(water_mark)
+
+    radius = 2
+    colors = color_gradient(["#fef601", "#fef601", "#ba7946", "#780488", "#14a9ec"], 100)
+    cs = VGroup(
+       *[Circle(radius=(i+1)*radius/100,stroke_width=2*radius, color=colors[i]) for i in range(100)] 
+    )
+    #self.add(cs)
+    self.play(
+        Create(cs)
+    )
+
+    # manim -pqh test2.py Color_Gradient_example_1
+
+    # manim -sqk test2.py Color_Gradient_example_1
+
+
+
+class reanlea_logo(Scene):
+    def construct(self):
+        cloud = PointCloudDot(color="#ff0000")
+        logo=ImageMobject("watermark.png").shift(LEFT).scale(0.135).set_z_index(-1)
+        self.add(cloud)
+        self.wait()
+
+        self.add_sound("piano.mp3")
+
+        self.play(
+            cloud.animate.apply_complex_function(lambda z: np.exp(z)),
+            FadeIn(logo, run_time=2)
+        )
+
+        # manim -pqh test2.py reanlea_logo
+
+
 ###################################################################################################################
 
 
