@@ -7975,7 +7975,13 @@ class reanlea_logo(Scene):
 
         # manim -pqh test2.py reanlea_logo
 
+class mathbb_X(Scene):
+    def construct(self):
+        
+        a=MathTex(r"\mathbb{X}")
+        self.add(a)
 
+    # manim -pqh test2.py mathbb_X  
 ###################################################################################################################
 
 

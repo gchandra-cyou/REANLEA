@@ -7278,6 +7278,38 @@ class randomly(Scene):
 
         # manim -pqh discord.py randomly
 
+
+
+class rideAlong(Scene):
+    def construct(self):
+        ax = Axes(
+            x_range=[0,10,1],
+            y_range=[-2,2,1],
+            tips=False,
+        )
+        self.add(ax)
+
+        curve = ax.plot(np.sin)
+        self.play(Create(curve))
+
+        a = ValueTracker(0)
+        normal = VMobject()
+        def normalUpdater(mobj):
+            tangent = TangentLine(curve, alpha=a.get_value(), length=1).rotate(90*DEGREES)
+            mobj.become(Line(tangent.get_center(),tangent.get_end()).set_color(YELLOW))
+        normal.add_updater(normalUpdater)
+        normal.update()
+
+        self.add(normal)
+        self.wait()
+        self.play(a.animate.set_value(1),run_time=10,rate_func=linear)
+        self.wait()
+
+
+        # manim -sqk discord.py rideAlong
+
+        # manim -pqh discord.py rideAlong
+
 ###################################################################################################################
 
 # NOTE :-

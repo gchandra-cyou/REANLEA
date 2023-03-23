@@ -202,7 +202,7 @@ class Scene2(Scene):
 
             text_2 = VGroup(*[Text(x, font=fonts[1], weight=BOLD) for x in (
                 "Two Different Point Represents",
-                "Two Dfferent Static Positions..."
+                "Two Different Static Positions..."
             )]).arrange_submobjects(DOWN).to_edge(UP).shift(0.5*DOWN).scale(0.6).set_color(REANLEA_TXT_COL)
 
 
@@ -239,33 +239,42 @@ class Scene2(Scene):
         self.play(
             DrawBorderThenFill(dumy_line)
         )
-        self.play(Create(text_1))
         self.add(line)
+        self.wait()
+        
         self.play(
+            Create(text_1),
             Create(dot1[0])
         )
+        self.wait(5)
+
         self.play(
             Flash(
                 dot1[0],
                 color=RED, flash_radius=0.15+SMALL_BUFF, time_width=0.3
             )
         )
+        self.wait(8)
 
-        self.play(FadeIn(zero_tick))
-        self.wait()
-        self.play(Create(one_tick))
-        self.wait(2)
         self.play(Write(dot1[1]))
-        self.wait(2)
+        self.play(FadeIn(zero_tick))
+        self.play(Create(one_tick))
+        self.wait(4)
 
-        self.play(Transform(text_1,text_2))
-        self.play(Create(dot2))
-        self.wait(2)
+        self.play(
+            Transform(text_1,text_2),
+            Create(dot2)
+        )
+        
+        self.wait(3)
 
         self.play(Create(dots))
         self.play(FadeOut(grp1))
         self.play(set_zoom_exp(2.5), run_time=3)
+        self.wait(3)
+
         self.play(Write(text_3))
+        self.wait(7)
 
 
         self.play(FadeOut(dumy_line))
@@ -273,22 +282,29 @@ class Scene2(Scene):
         self.play(FadeOut(text_3))
 
         self.play(set_zoom_exp(1), run_time=1.5)
-
-
         
+        self.wait(4)
         self.play(Create(dash_arrow))
         self.wait(3)
-        self.play(Write(text_4))
+        self.play(
+            Indicate(dot1[0])
+        )
         self.wait(3)
+        
+        self.play(Write(text_4))
+        self.wait(4)
+        self.wait(20)
+       
 
         '''self.play(
             *[FadeOut(mobj) for mobj in self.mobjects],
             run_time=2
         )'''
         self.play(FadeOut(grp2))
+        self.wait(4)
         #self.add(water_mark)
         self.play(Write(text_5))
-        self.wait(1.75)
+        self.wait(4)
         self.play(FadeOut(text_5))
         self.wait(5)
         
