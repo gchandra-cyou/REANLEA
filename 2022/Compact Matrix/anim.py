@@ -1198,6 +1198,10 @@ class Scene6(MovingCameraScene):
         dot2_lbl2=MathTex("x").scale(0.6).next_to(dot2, LEFT)
         dot3_lbl=MathTex("z").scale(0.6).next_to(dot3, UP)
 
+        dt_1_2_lbl=VGroup(dot1_lbl,dot2_lbl)
+        dt_1_2_3_lbl=VGroup(dot2_lbl2,dot1_lbl2,dot3_lbl)
+
+
         line1_lbl=MathTex("Z").scale(0.6).next_to(line1, DOWN).set_color(REANLEA_YELLOW)
         line2_lbl=MathTex("Y").scale(0.6).next_to(line2, aligned_edge=RIGHT, direction=LEFT, buff=0.4).rotate(line2.get_angle()).set_color(REANLEA_GREEN)
         line3_lbl=MathTex("X").scale(0.6).next_to(line3, aligned_edge=LEFT, direction=RIGHT, buff= 0.6).rotate(line3.get_angle()).set_color(REANLEA_VIOLET_LIGHTER)
@@ -1205,8 +1209,8 @@ class Scene6(MovingCameraScene):
         brace_line2=Brace(Line(start=dot2.get_center(), end=np.array((dot3.get_center()[0],0,0)))).set_color(REANLEA_GREEN).set_opacity(0.8).set_z_index(-1)
         brace_line3=Brace(Line(start=np.array((dot3.get_center()[0],0,0)), end=dot1.get_center())).set_color(REANLEA_VIOLET).set_opacity(0.8).set_z_index(-1)
         
-        brace_line2_lbl=MathTex(r"Y.cos\theta_{1}").next_to(brace_line2, .4*DOWN).scale(.5).set_color(REANLEA_GREEN)
-        brace_line3_lbl=MathTex(r"X.cos\theta_{2}").next_to(brace_line3, .4*DOWN).scale(.5).set_color(REANLEA_VIOLET_LIGHTER).set_sheen(0.2,DR)
+        brace_line2_lbl=MathTex(r"Y \cdot cos\theta_{1}").next_to(brace_line2, .4*DOWN).scale(.5).set_color(REANLEA_GREEN)
+        brace_line3_lbl=MathTex(r"X \cdot cos\theta_{2}").next_to(brace_line3, .4*DOWN).scale(.5).set_color(REANLEA_VIOLET_LIGHTER).set_sheen(0.2,DR)
         
         angle_12_lbl=MathTex(r"\theta_{1}").move_to(
             Angle(
@@ -1240,7 +1244,7 @@ class Scene6(MovingCameraScene):
 
         # TEXT & EQUN REGION 
 
-        eq1 = MathTex("Z", "=", r"Y.cos\theta_{1}", "+",r"X.cos\theta_{2}").move_to(2.5*DOWN).scale(.7).set_color(REANLEA_TXT_COL)
+        eq1 = MathTex("Z", "=", r"Y \cdot cos\theta_{1}", "+",r"X \cdot cos\theta_{2}").move_to(2.5*DOWN).scale(.7).set_color(REANLEA_TXT_COL)
         eq2 = MathTex("\leq", "Y", "+", "X").scale(.7).set_color_by_gradient(REANLEA_GREY).next_to(eq1)
         eq3 = MathTex("-1","\leq",r"cos\theta","\leq","1").scale(0.85).set_color_by_gradient(REANLEA_GREEN_AUQA).move_to(3*UP+4*RIGHT)
         eq4 = MathTex("d(x,y)","\leq",r"d(x,z)","+","d(z,y)").scale(0.7).set_color_by_gradient(REANLEA_BLUE_LAVENDER).move_to(3*DOWN+ 0.75*RIGHT)
@@ -1345,8 +1349,7 @@ class Scene6(MovingCameraScene):
             dot1.animate.scale(.5),
             dot2.animate.scale(.5),
             line1.animate.set_stroke(width=5),
-            FadeOut(dot1_lbl),
-            FadeOut(dot2_lbl),
+            ReplacementTransform(dt_1_2_lbl,dt_1_2_3_lbl),
             FadeIn(dot3)
         )
         self.wait()
@@ -1740,7 +1743,7 @@ class Scene6(MovingCameraScene):
         
         self.wait(2)
 
-        eq13 = MathTex(r"\in","X").set_color_by_gradient(REANLEA_MAGENTA_LIGHTER,REANLEA_PURPLE_LIGHTER).arrange(RIGHT,buff=.1).move_to(2.2*RIGHT+0.45*UP)
+        eq13 = MathTex(r"\in",r"\mathbb{X}").set_color_by_gradient(REANLEA_MAGENTA_LIGHTER,REANLEA_PURPLE_LIGHTER).arrange(RIGHT,buff=.1).move_to(2.2*RIGHT+0.45*UP)
         eq13[0][0].scale(0.6)
 
         self.play(Write(eq13))
@@ -1754,7 +1757,7 @@ class Scene6(MovingCameraScene):
 
         self.wait(4)
 
-        eq14=MathTex(r"d|",r"_{X \times X}","(x,y)").scale(1.35).set_color_by_gradient(REANLEA_MAGENTA_LIGHTER,REANLEA_PURPLE_LIGHTER)
+        eq14=MathTex(r"d|",r"_{\mathbb{X} \times \mathbb{X}}","(x,y)").scale(1.35).set_color_by_gradient(REANLEA_MAGENTA_LIGHTER,REANLEA_PURPLE_LIGHTER)
         eq14[1].next_to(eq14[0].get_center(),0.01*RIGHT+0.1*DOWN)
         eq14[2].next_to(eq14[0],3.5*RIGHT)
         #eq14.move_to(2*DOWN)
@@ -1779,7 +1782,7 @@ class Scene6(MovingCameraScene):
         )
         self.wait(4)
 
-        eq16_1=MathTex(r"d : X \times X ").scale(1.3).set_color_by_gradient(REANLEA_MAGENTA_LIGHTER,REANLEA_PURPLE_LIGHTER)
+        eq16_1=MathTex(r"d :\mathbb{X} \times \mathbb{X} ").scale(1.3).set_color_by_gradient(REANLEA_MAGENTA_LIGHTER,REANLEA_PURPLE_LIGHTER)
         eq16_2=MathTex(r"\longrightarrow \mathbb{R}").scale(1.3).set_color_by_tex("",color=(REANLEA_PURPLE,REANLEA_PURPLE_LIGHTER))
         eq16=VGroup(eq16_1,eq16_2).arrange(RIGHT, buff=0.2)
 
@@ -1789,7 +1792,7 @@ class Scene6(MovingCameraScene):
         )
 
 
-        eq17=MathTex(r"(X,d)").scale(1.3).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_CHARM).move_to(1.5*DOWN)
+        eq17=MathTex(r"(\mathbb{X},d)").scale(1.3).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_CHARM).move_to(1.5*DOWN)
         eq18=eq17.copy()
         eq16_sub_grp=VGroup(eq16[0][0][2],eq16[0][0][4])
 
