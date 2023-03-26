@@ -339,7 +339,14 @@ class Scene3(Scene):
         ann=VGroup(s1,s2,s3)
 
         # PLAY REGION
-        self.add(s1,s2,s3, water_mark)
+        self.add(water_mark)
+        self.wait(2)
+        
+        self.play(
+            FadeIn(s1),
+            FadeIn(s2),
+            FadeIn(s3),
+        )
         self.play(
             Wiggle(s1),
             Wiggle(s2),
