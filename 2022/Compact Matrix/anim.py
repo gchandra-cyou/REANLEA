@@ -628,7 +628,8 @@ class Scene4(MovingCameraScene):
         self.play(Uncreate(dumy_line))
         self.play(Create(zero_tick))
         self.play(Create(grp))
-        self.wait()
+        self.wait(10)
+
         self.play(
             self.camera.frame.animate.scale(0.5).move_to(DOWN + 1.5*RIGHT),
             text_1.animate.scale(0.5).move_to(0.425*UP + 1.5 *RIGHT),
@@ -637,11 +638,10 @@ class Scene4(MovingCameraScene):
         
         self.wait()
         self.play(Create(grp2))
-        self.wait(2)
+        
         self.play(Write(d_line))
-        self.wait(2)
         self.play(Write(d_line_label))
-        self.wait(2)
+        self.wait(10)
         self.play(Restore(self.camera.frame), Restore(text_1), Restore(water_mark))
 
         self.wait(2)
