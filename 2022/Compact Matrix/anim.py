@@ -1383,25 +1383,28 @@ class Scene6(MovingCameraScene):
             dot1.animate.scale(.5),
             dot2.animate.scale(.5),
             line1.animate.set_stroke(width=5),
-            ReplacementTransform(dt_1_2_lbl,dt_1_2_3_lbl),
+            TransformMatchingTex(dt_1_2_lbl,dt_1_2_3_lbl),
             FadeIn(dot3)
         )
-        self.wait()
+        self.wait(5)
+
         self.play(
             Create(grp_line23),
             run_time=1.5,
             buff=10
         )
-        self.wait()
+        self.wait(5)
         
 
         self.play(Write(line_lbl))
-        self.wait()
+        self.wait(5)
+
         self.play(Write(angle_grp))
         self.play(Write(angle_lbl_grp))
-        self.wait(2)
+        self.wait(2.5)
+
         self.play(Create(projec_line))
-        self.wait()
+        self.wait(2.5)
         
         self.play(
             line1_lbl.animate.shift(.5*DOWN),
@@ -1410,18 +1413,22 @@ class Scene6(MovingCameraScene):
             buff=1,
             run_time=3
         )
+        self.wait(5)
+
         self.play(Write(brace_line2_lbl),
             Write(brace_line3_lbl),
             run_time=2
         )
-        self.wait()
+        self.wait(2.5)
+
         self.play(
             TransformMatchingShapes(z_lbl.copy(),eq1)
         )
         self.wait()
         self.play(Write(eq3))
+        self.wait(3)
         self.play(Write(eq2))
-        self.wait()
+        self.wait(5)
 
         self.play(Write(line1_p1))
         self.wait()
@@ -1444,9 +1451,8 @@ class Scene6(MovingCameraScene):
         self.play(line1_p1_tracker.animate.set_value(line1.get_angle()))
         self.wait()
         self.play(Uncreate(line1_p1))
-        self.wait(2)
-        self.play(Write(dot_lbl_grp))
-        self.wait()
+        self.wait(3)
+        
         self.play(
             eq_grp1.animate.shift(.35*UP).set_opacity(0.65),
             Write(eq4)
@@ -1459,7 +1465,7 @@ class Scene6(MovingCameraScene):
         self.play(
             FadeOut(uncreate_grp)
         )
-        self.wait(2)
+        self.wait(5)
         #self.play(Write(create_grp))
         
 
