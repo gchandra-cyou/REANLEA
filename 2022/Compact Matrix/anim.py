@@ -341,7 +341,7 @@ class Scene3(Scene):
         # PLAY REGION
         self.add(water_mark)
         self.wait(2)
-        
+
         self.play(
             FadeIn(s1),
             FadeIn(s2),
@@ -1006,19 +1006,19 @@ class Scene5(Scene):
         self.wait()
         self.play(Write(grp2))
         self.add(dot3)
-        self.wait()
+        self.wait(5)
         '''self.play(
             MoveAlongPath(dot2, line1, rate_func=rate_functions.ease_in_out_sine),
             run_time=3
         )'''
         self.play(
             x.animate.set_value(dot1.get_center()[0]),
-            run_time=3
+            run_time=5
         )
-        self.wait(2)
+        self.wait(5)
         
         self.play(
-            x.animate.set_value(dot3.get_center()[0] + dot1.get_center()[0]/4),
+            x.animate.set_value(dot3.get_center()[0] + dot1.get_center()[0]/4)
         )
         self.play(
             x.animate.set_value(dot3.get_center()[0]/2 + dot1.get_center()[0]),
@@ -1031,9 +1031,35 @@ class Scene5(Scene):
             x.animate.set_value(dot3.get_center()[0]/4 + dot1.get_center()[0]),
            AddTextLetterByLetter(text_1)
         )
+        
+        self.play(
+            x.animate.set_value(dot3.get_center()[0] + dot1.get_center()[0]/2.75),
+            run_time=5
+        )
+
+        self.play(
+            x.animate.set_value(dot3.get_center()[0]/4 + dot1.get_center()[0]),
+            run_time=5
+        )
         self.play(
             x.animate.set_value(dot3.get_center()[0] + dot1.get_center()[0]),
+            run_time=3
         )
+
+        self.play(
+            x.animate.set_value(dot3.get_center()[0] + dot1.get_center()[0]/2.75),
+            run_time=5
+        )
+
+        self.play(
+            x.animate.set_value(dot3.get_center()[0]/4 + dot1.get_center()[0]),
+            run_time=5
+        )
+        self.play(
+            x.animate.set_value(dot3.get_center()[0] + dot1.get_center()[0]),
+            run_time=3
+        )
+
         self.play(
             x.animate.set_value(dot3.get_center()[0]/6 + dot1.get_center()[0]),
         )
@@ -1046,7 +1072,7 @@ class Scene5(Scene):
             x.animate.set_value(dot3.get_center()[0]/10 + dot1.get_center()[0]),
             run_time=3
         )
-        self.wait()
+        self.wait(5)
         
         self.play(
             x.animate.set_value(dot1.get_center()[0]),
@@ -1060,6 +1086,7 @@ class Scene5(Scene):
             Uncreate(grp3),
             Uncreate(text_1)
         )
+        self.wait(10)
         self.play(
             AddTextLetterByLetter(text_3)
         )
