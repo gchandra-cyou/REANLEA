@@ -8277,10 +8277,7 @@ class TransitionTemplate_2(Scene):
             FadeIn(title),LaggedStartMap(FadeIn, nodes_and_lines)
         )
         self.wait(2)
-        self.play(
-            FadeOut(title),
-            run_time=2
-        )
+        
         
 
         
