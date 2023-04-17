@@ -8190,13 +8190,32 @@ class TransitionTemplate_1(Scene):
 class TransitionTemplate_2(Scene):
     def construct(self):
 
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        self.wait()
+
+        water_mark_1=water_mark.copy()
+
+        # MAIN SCENE
+
+        with RegisterFont("Fuzzy Bubbles") as fonts:
+            txt_0 = VGroup(*[Text(x, font=fonts[0]) for x in (
+               "Inner",
+               "Product" 
+            )]).arrange_submobjects(DOWN).shift(5.75*LEFT).scale(.5)
+
+
+
+        
         transition_points = [
             # use a list if we want multiple lines
             ["Distance"],
             ["Space"],
-            ["Cartesian Product"],
+            ["Cartesian" ,"Product"],
             ["Dimension"],
-            ["Pythagoras Theorem"]
+            ["Pythagoras","Theorem"]
         ]
         for i in range(len(transition_points)):
             self.transition(
@@ -8205,7 +8224,7 @@ class TransitionTemplate_2(Scene):
                 total=len(transition_points),
             )
 
-            self.wait()
+
 
     def transition(self, transition_name, index, total):
         """
@@ -8229,6 +8248,7 @@ class TransitionTemplate_2(Scene):
                 title = (
                     VGroup(*subtitles)
                     .scale(.45)
+                    .arrange(DOWN)
                 )
         else:
             title = (
@@ -8237,6 +8257,8 @@ class TransitionTemplate_2(Scene):
                 .scale_to_fit_width(config.frame_width - 3)
                 .shift(UP)
             )
+
+        title_ref=title.copy().shift(5.75*LEFT)
 
         nodes_and_lines = VGroup()
         for n in range(1, total + 1):
@@ -8274,9 +8296,84 @@ class TransitionTemplate_2(Scene):
         
 
         self.play(
-            FadeIn(title),LaggedStartMap(FadeIn, nodes_and_lines)
+            AnimationGroup(
+                LaggedStartMap(FadeIn, nodes_and_lines),
+                AnimationGroup(
+                    FadeIn(title),
+                    FadeIn(title_ref)
+                ),
+                lag_ratio=.35
+            )
         )
+
+        s0=AnnularSector(inner_radius=2,angle=2*PI).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).shift(6*LEFT)
+
+        x_trac_1=ValueTracker(0)
+        x_trac_2_0=ValueTracker(0)
+        x_trac_2_1=ValueTracker(0)
+        x_trac_3=ValueTracker(0)
+
+        s1=AnnularSector(inner_radius=2,angle=2*PI/7).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).set_z_index(2).shift(6*LEFT).rotate(7*PI/10, about_point=6*LEFT)
+
+        s1_ref=s1.copy()
+
+        s1.add_updater(
+            lambda x : x.become(s1_ref.copy()).rotate(
+            x_trac_1.get_value(), about_point=6*LEFT
+            )
+        )
+
+        s2_0=AnnularSector(inner_radius=2,angle=3*PI/14).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).set_z_index(2).shift(6*LEFT).rotate(7*PI/10, about_point=6*LEFT)
+
+        s2_0_ref=s2_0.copy()
+
+        s2_0.add_updater(
+            lambda x : x.become(s2_0_ref.copy()).rotate(
+            x_trac_2_0.get_value(), about_point=6*LEFT
+            )
+        ) 
+
+        s2_1=AnnularSector(inner_radius=2,angle=3*PI/14).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).set_z_index(2).shift(6*LEFT).rotate(7*PI/10, about_point=6*LEFT)
+
+        s2_1_ref=s2_1.copy()
+
+        s2_1.add_updater(
+            lambda x : x.become(s2_1_ref.copy()).rotate(
+            x_trac_2_1.get_value(), about_point=6*LEFT
+            )
+        ) 
+
+        s3=AnnularSector(inner_radius=2,angle=2*PI/7).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).set_z_index(2).shift(6*LEFT).rotate(7*PI/10, about_point=6*LEFT)
+
+        s3_ref=s3.copy()
+
+        s3.add_updater(
+            lambda x : x.become(s3_ref.copy()).rotate(
+            x_trac_3.get_value(), about_point=6*LEFT
+            )
+        )
+
+        s_grp=VGroup(s1,s2_0,s2_1,s3)
+
+        self.add(s_grp)
+
+        self.play(
+            AnimationGroup(
+                x_trac_1.animate.set_value((3*PI/10)+(5*PI/12)),
+                x_trac_2_0.animate.set_value((3*PI/10)+(5*PI/12)+(2*PI/7)+(PI/18)),
+                x_trac_2_1.animate.set_value((3*PI/10)+(5*PI/12)+(2*PI/7)+(PI/18)+(3*PI/14)+(PI/18)),
+                x_trac_3.animate.set_value((3*PI/10)+(5*PI/12)+(2*PI/7)+((3*PI/7)+(PI/18))+(2*PI/18))
+            ),
+            run_time=1.35
+        )
+
+
         self.wait(2)
+        self.play(
+            FadeOut(title),
+            FadeOut(title_ref),
+            FadeOut(s_grp)
+        )
         
         
 
