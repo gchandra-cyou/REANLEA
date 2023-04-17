@@ -8142,8 +8142,8 @@ class TransitionTemplate_1(Scene):
                 node = (
                     Circle()
                     .scale(0.2)
-                    .set_stroke(REANLEA_SLATE_BLUE)
-                    .set_fill(REANLEA_VIOLET, opacity=1)
+                    .set_stroke(REANLEA_RED)
+                    .set_fill(REANLEA_GOLDENROD, opacity=1)
                 )
                 nodes_and_lines.add(node)
                 
@@ -8315,8 +8315,8 @@ class TransitionTemplate_2(Scene):
                 node = (
                     Circle()
                     .scale(0.2)
-                    .set_stroke(REANLEA_YELLOW)
-                    .set_fill(REANLEA_YELLOW_DARKER, opacity=1)
+                    .set_stroke(REANLEA_RED)
+                    .set_fill(REANLEA_GOLDENROD, opacity=1)
                 )
                 nodes_and_lines.add(node)
                 
