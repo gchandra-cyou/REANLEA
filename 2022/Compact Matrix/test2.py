@@ -8199,7 +8199,7 @@ class TransitionTemplate_2(Scene):
 
         # MAIN SCENE
 
-        rect=Rectangle(height=4.5, width=8).shift(UP+3*RIGHT)
+        rect=Rectangle(height=4.5, width=8).scale(.8).shift(UP+3*RIGHT)
         self.play(
             Create(rect)
         )
