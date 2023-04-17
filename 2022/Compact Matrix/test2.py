@@ -7988,6 +7988,7 @@ class mathbb_X(Scene):
 class TransitionTemplate(Scene):
     def construct(self):
 
+
         transition_points = [
             # use a list if we want multiple lines
             ["Defining", "Ideal Behavior"],
@@ -8081,6 +8082,211 @@ class TransitionTemplate(Scene):
 
 
 # manim -pqh test2.py TransitionTemplate
+
+
+
+class TransitionTemplate_1(Scene):
+    def construct(self):
+
+        transition_points = [
+            # use a list if we want multiple lines
+            ["Distance"],
+            ["Space"],
+            ["Cartesian Product"],
+            ["Dimension"],
+            ["Pythagoras Theorem"]
+        ]
+        for i in range(len(transition_points)):
+            self.transition(
+                transition_name=transition_points[i],
+                index=i + 1,
+                total=len(transition_points),
+            )
+
+            self.wait()
+
+    def transition(self, transition_name, index, total):
+        """
+        Create transitions easily.
+
+        - Transition name — string, self explanatory
+        - Index correspond to the position of this transition on the video
+        - Total corresponds to the total amount of transitions there will be
+
+        Total will generate a number of nodes and index will highlight that specific
+        node, showing the progress.
+        """
+
+        if isinstance(transition_name, list):
+            with RegisterFont("Courier Prime") as fonts:
+                subtitles = [
+                    Text(t,font=fonts[0])
+                    for t in transition_name
+                ]
+
+                title = (
+                    VGroup(*subtitles)
+                    .scale(.45)
+                )
+        else:
+            title = (
+                MarkupText(transition_name, weight=BOLD)
+                .set_stroke(BLACK, width=10, background=True)
+                .scale_to_fit_width(config.frame_width - 3)
+                .shift(UP)
+            )
+
+        nodes_and_lines = VGroup()
+        for n in range(1, total + 1):
+            if n == index:
+                node = (
+                    Circle()
+                    .scale(0.2)
+                    .set_stroke(REANLEA_YELLOW)
+                    .set_fill(REANLEA_YELLOW_DARKER, opacity=1)
+                )
+                nodes_and_lines.add(node)
+                
+
+            else:
+                nodes_and_lines.add(
+                    Circle()
+                    .scale(0.2)
+                    .set_stroke(REANLEA_PURPLE)
+                    .set_fill(REANLEA_AQUA, opacity=1)
+                )
+
+
+            nodes_and_lines.add(Line().set_color(REANLEA_PURPLE))
+            
+
+        nodes_and_lines.remove(nodes_and_lines[-1])
+
+        nodes_and_lines.arrange(RIGHT, buff=0.5).scale_to_fit_width(
+            config.frame_width - 5
+        ).to_edge(DOWN, buff=1)
+
+        title.next_to(nodes_and_lines[2*(index-1)],UP)
+
+        
+        
+
+        self.play(
+            FadeIn(title),LaggedStartMap(FadeIn, nodes_and_lines)
+        )
+        self.wait(2)
+        self.play(
+            FadeOut(title),
+            run_time=2
+        )
+        
+
+        
+
+
+# manim -pqh test2.py TransitionTemplate_1
+
+
+class TransitionTemplate_2(Scene):
+    def construct(self):
+
+        transition_points = [
+            # use a list if we want multiple lines
+            ["Distance"],
+            ["Space"],
+            ["Cartesian Product"],
+            ["Dimension"],
+            ["Pythagoras Theorem"]
+        ]
+        for i in range(len(transition_points)):
+            self.transition(
+                transition_name=transition_points[i],
+                index=i + 1,
+                total=len(transition_points),
+            )
+
+            self.wait()
+
+    def transition(self, transition_name, index, total):
+        """
+        Create transitions easily.
+
+        - Transition name — string, self explanatory
+        - Index correspond to the position of this transition on the video
+        - Total corresponds to the total amount of transitions there will be
+
+        Total will generate a number of nodes and index will highlight that specific
+        node, showing the progress.
+        """
+
+        if isinstance(transition_name, list):
+            with RegisterFont("Courier Prime") as fonts:
+                subtitles = [
+                    Text(t,font=fonts[0])
+                    for t in transition_name
+                ]
+
+                title = (
+                    VGroup(*subtitles)
+                    .scale(.45)
+                )
+        else:
+            title = (
+                MarkupText(transition_name, weight=BOLD)
+                .set_stroke(BLACK, width=10, background=True)
+                .scale_to_fit_width(config.frame_width - 3)
+                .shift(UP)
+            )
+
+        nodes_and_lines = VGroup()
+        for n in range(1, total + 1):
+            if n == index:
+                node = (
+                    Circle()
+                    .scale(0.2)
+                    .set_stroke(REANLEA_YELLOW)
+                    .set_fill(REANLEA_YELLOW_DARKER, opacity=1)
+                )
+                nodes_and_lines.add(node)
+                
+
+            else:
+                nodes_and_lines.add(
+                    Circle()
+                    .scale(0.2)
+                    .set_stroke(REANLEA_PURPLE)
+                    .set_fill(REANLEA_AQUA, opacity=1)
+                )
+
+
+            nodes_and_lines.add(Line().set_color(REANLEA_PURPLE))
+            
+
+        nodes_and_lines.remove(nodes_and_lines[-1])
+
+        nodes_and_lines.arrange(RIGHT, buff=0.5).scale_to_fit_width(
+            config.frame_width - 5
+        ).to_edge(DOWN, buff=1)
+
+        title.next_to(nodes_and_lines[2*(index-1)],UP)
+
+        
+        
+
+        self.play(
+            FadeIn(title),LaggedStartMap(FadeIn, nodes_and_lines)
+        )
+        self.wait(2)
+        self.play(
+            FadeOut(title),
+            run_time=2
+        )
+        
+
+        
+
+
+# manim -pqh test2.py TransitionTemplate_2
 
 
 ###################################################################################################################
