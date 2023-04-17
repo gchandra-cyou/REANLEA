@@ -8196,15 +8196,13 @@ class TransitionTemplate_2(Scene):
         self.add(water_mark)
         self.wait()
 
-        water_mark_1=water_mark.copy()
 
         # MAIN SCENE
 
-        with RegisterFont("Fuzzy Bubbles") as fonts:
-            txt_0 = VGroup(*[Text(x, font=fonts[0]) for x in (
-               "Inner",
-               "Product" 
-            )]).arrange_submobjects(DOWN).shift(5.75*LEFT).scale(.5)
+        rect=Rectangle(height=4.5, width=8).shift(UP+3*RIGHT)
+        self.play(
+            Create(rect)
+        )
 
 
 
@@ -8217,16 +8215,25 @@ class TransitionTemplate_2(Scene):
             ["Dimension"],
             ["Pythagoras","Theorem"]
         ]
+        ch_points = [
+            # use a list if we want multiple lines
+            ["a1","b1","c1"],
+            ["a2","b2","c2"],
+            ["a3","b3","c3"],
+            ["a4","b4","c4"],
+            ["a5","b5","c5"]
+        ]
         for i in range(len(transition_points)):
             self.transition(
                 transition_name=transition_points[i],
+                ch_name=ch_points[i],
                 index=i + 1,
                 total=len(transition_points),
             )
 
 
 
-    def transition(self, transition_name, index, total):
+    def transition(self, transition_name,ch_name, index, total):
         """
         Create transitions easily.
 
@@ -8260,6 +8267,26 @@ class TransitionTemplate_2(Scene):
 
         title_ref=title.copy().shift(5.75*LEFT)
 
+        if isinstance(ch_name, list):
+            with RegisterFont("Courier Prime") as fonts:
+                ch_subtitles = [
+                    Text(t,font=fonts[0])
+                    for t in ch_name
+                ]
+
+                ch_title = (
+                    VGroup(*ch_subtitles)
+                    .scale(.45)
+                    #.arrange(DOWN)
+                )
+        else:
+            ch_title = (
+                MarkupText(ch_name, weight=BOLD)
+                .set_stroke(BLACK, width=10, background=True)
+                .scale_to_fit_width(config.frame_width - 3)
+                .shift(UP)
+            )
+
         nodes_and_lines = VGroup()
         for n in range(1, total + 1):
             if n == index:
@@ -8291,6 +8318,7 @@ class TransitionTemplate_2(Scene):
         ).to_edge(DOWN, buff=1)
 
         title.next_to(nodes_and_lines[2*(index-1)],UP)
+        
 
         
         
@@ -8305,6 +8333,8 @@ class TransitionTemplate_2(Scene):
                 lag_ratio=.35
             )
         )
+
+        ###
 
         s0=AnnularSector(inner_radius=2,angle=2*PI).set_stroke(width=10, color=[REANLEA_AQUA,REANLEA_PURPLE]).shift(6*LEFT)
 
@@ -8357,6 +8387,21 @@ class TransitionTemplate_2(Scene):
 
         self.add(s_grp)
 
+
+        ###
+
+        grid=NumberPlane()
+
+        dt_1=Dot(grid.polar_to_point(2, PI+(5*PI/12)+(2*PI/7)+(PI/18)-5*DEGREES)).shift(6*LEFT).set_color(PURE_GREEN).set_sheen(-.4,DOWN)
+
+        dt_2=Dot(grid.polar_to_point(2, PI+(5*PI/12)+(2*PI/7)+(PI/18)+(3*PI/14)+(PI/18)-5*DEGREES)).shift(6*LEFT).set_color(REANLEA_WHITE).set_sheen(-.4,DOWN)
+
+        dt_3=Dot(grid.polar_to_point(2, PI+(5*PI/12)+(2*PI/7)+((3*PI/7)+(PI/18))+(2*PI/18)-5*DEGREES)).shift(6*LEFT).set_color(REANLEA_YELLOW ).set_sheen(-.4,DOWN)
+
+        dt_grp=VGroup(dt_1,dt_2,dt_3)
+
+        
+
         self.play(
             AnimationGroup(
                 x_trac_1.animate.set_value((3*PI/10)+(5*PI/12)),
@@ -8367,12 +8412,38 @@ class TransitionTemplate_2(Scene):
             run_time=1.35
         )
 
+        self.play(
+            AnimationGroup(
+                Write(dt_1),
+                Write(dt_2),
+                Write(dt_3)
+            ),
+            AnimationGroup(
+                Flash(dt_1, color=PURE_GREEN),
+                Flash(dt_2, color=REANLEA_WHITE),
+                Flash(dt_3, color=REANLEA_YELLOW)
+            ),
+            lag_ratio=.75
+        )
+
+        ch_title[0].next_to(dt_3)
+        ch_title[1].next_to(dt_2)
+        ch_title[2].next_to(dt_1)
+
+        self.play(
+            Write(ch_title)
+        )
+
 
         self.wait(2)
         self.play(
-            FadeOut(title),
-            FadeOut(title_ref),
-            FadeOut(s_grp)
+            AnimationGroup(
+                FadeOut(title),
+                FadeOut(title_ref),
+                FadeOut(dt_grp),
+                FadeOut(s_grp),
+                FadeOut(ch_title)
+            )
         )
         
         
@@ -8381,6 +8452,8 @@ class TransitionTemplate_2(Scene):
 
 
 # manim -pqh test2.py TransitionTemplate_2
+
+# manim -sqk test2.py TransitionTemplate_2
 
 
 ###################################################################################################################
