@@ -8142,8 +8142,8 @@ class TransitionTemplate_1(Scene):
                 node = (
                     Circle()
                     .scale(0.2)
-                    .set_stroke(REANLEA_YELLOW)
-                    .set_fill(REANLEA_YELLOW_DARKER, opacity=1)
+                    .set_stroke(REANLEA_SLATE_BLUE)
+                    .set_fill(REANLEA_VIOLET, opacity=1)
                 )
                 nodes_and_lines.add(node)
                 
@@ -8199,7 +8199,29 @@ class TransitionTemplate_2(Scene):
 
         # MAIN SCENE
 
-        rect=Rectangle(height=4.5, width=8).scale(.8).shift(UP+3*RIGHT)
+        '''with RegisterFont("Homemade Apple") as fonts:
+            txt_cs_0 = Text("EUCLIDEAN SPACE" , font=fonts[0])
+            
+
+        self.play(
+            Write(txt_cs_0)
+        )
+        
+        undr_bez_0=underline_bez_curve().next_to(txt_cs_0,DOWN).scale(2)
+
+        self.play(
+            Write(undr_bez_0)
+        )
+
+        self.wait(2)
+
+        txt_cs_grp_0=VGroup(txt_cs_0,undr_bez_0)
+
+        self.play(
+            txt_cs_grp_0.animate.shift(2.5*UP).scale(.5)
+        )'''
+
+        rect=Rectangle(height=4.5, width=8).scale(.8).shift(.75*UP+3*RIGHT)
         self.play(
             Create(rect)
         )
