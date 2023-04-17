@@ -7982,6 +7982,107 @@ class mathbb_X(Scene):
         self.add(a)
 
     # manim -pqh test2.py mathbb_X  
+
+
+
+class TransitionTemplate(Scene):
+    def construct(self):
+
+        transition_points = [
+            # use a list if we want multiple lines
+            ["Defining", "Ideal Behavior"],
+            ["Defining an", "Initial Transform"],  # cross out and show it is wrong
+            ["Where Does Our", "Transform Break?"],
+            ["Solving The", "Phase Problem"],
+            ["Defining The", "True DFT"],
+        ]
+        for i in range(len(transition_points)):
+            self.transition(
+                transition_name=transition_points[i],
+                index=i + 1,
+                total=len(transition_points),
+            )
+
+            self.wait()
+
+    def transition(self, transition_name, index, total):
+        """
+        Create transitions easily.
+
+        - Transition name — string, self explanatory
+        - Index correspond to the position of this transition on the video
+        - Total corresponds to the total amount of transitions there will be
+
+        Total will generate a number of nodes and index will highlight that specific
+        node, showing the progress.
+        """
+
+        if isinstance(transition_name, list):
+            subtitles = [
+                Text(t, weight=BOLD).set_stroke(
+                    BLACK, width=9, background=True
+                )
+                for t in transition_name
+            ]
+
+            title = (
+                VGroup(*subtitles)
+                .arrange(DOWN)
+                .scale_to_fit_width(config.frame_width - 3)
+                .shift(UP)
+            )
+        else:
+            title = (
+                MarkupText(transition_name, weight=BOLD)
+                .set_stroke(BLACK, width=10, background=True)
+                .scale_to_fit_width(config.frame_width - 3)
+                .shift(UP)
+            )
+
+        nodes_and_lines = VGroup()
+        for n in range(1, total + 1):
+            if n == index:
+                node = (
+                    Circle()
+                    .scale(0.2)
+                    .set_stroke(REANLEA_YELLOW)
+                    .set_fill(REANLEA_YELLOW_DARKER, opacity=1)
+                )
+                nodes_and_lines.add(node)
+            else:
+                nodes_and_lines.add(
+                    Circle()
+                    .scale(0.2)
+                    .set_stroke(REANLEA_PURPLE)
+                    .set_fill(REANLEA_AQUA, opacity=1)
+                )
+
+            nodes_and_lines.add(Line().set_color(REANLEA_PURPLE))
+
+        nodes_and_lines.remove(nodes_and_lines[-1])
+
+        nodes_and_lines.arrange(RIGHT, buff=0.5).scale_to_fit_width(
+            config.frame_width - 5
+        ).to_edge(DOWN, buff=1)
+
+        self.play(
+            FadeIn(title, shift=UP * 0.3), LaggedStartMap(FadeIn, nodes_and_lines)
+        )
+
+        cross = None
+        if index == 2:
+            cross = Cross(title[-1], color=REANLEA_RED)
+            self.play(Write(cross))
+            self.wait()
+
+        additional_anim = [FadeOut(cross)] if cross is not None else []
+
+        self.play(FadeOut(title), FadeOut(nodes_and_lines), *additional_anim)
+
+
+# manim -pqh test2.py TransitionTemplate
+
+
 ###################################################################################################################
 
 

@@ -1470,6 +1470,8 @@ class Scene6(MovingCameraScene):
         
 
 
+
+
         # length tracker updaters
 
         self.add(line1_ex,line2_ex, dot_ex2, dot_ex3, line3_ex)
@@ -1564,32 +1566,38 @@ class Scene6(MovingCameraScene):
         self.play(
             Create(sr_tri_inq_grp)
         )
+        self.wait(3)
+
         self.play(
             AddTextLetterByLetter(text_prop)
         )
         self.play(Write(under_line_bezier))
+        self.wait(3)
 
         '''self.play(
             tri_inq_gr.animate.scale(0.4).move_to(4.75*RIGHT+2*UP)
         )'''
     
         self.play(
-            AddTextLetterByLetter(dis_prop_3_1)
+            Write(dis_prop_3_1)
         )
-        self.play(Write(eq5))
+        self.play(
+            Write(eq5),
+            run_time=2
+        )
         self.play(AddTextLetterByLetter(eq6))
-        self.wait()
         
         sr_eq5=SurroundingRectangle(eq5, color=REANLEA_AQUA_GREEN, buff=.15, corner_radius=.15)
         self.play(
             Write(sr_eq5)
         )
-        self.wait(2)
+        self.wait(5)
 
         self.play(
             Write(text_3)
         )
         sr_text3=get_surround_bezier(text_3).rotate(PI/4)
+
         self.play(
             Create(sr_text3)
         )
@@ -1668,10 +1676,14 @@ class Scene6(MovingCameraScene):
         self.play(
             Create(sr_grp_p2)
         )
+        self.wait(2)
+
         self.play(
             Write(dis_prop_3_2),
-            run_time=2
+            run_time=3
         )
+        self.wait(2)
+
         sr_eq7=SurroundingRectangle(eq7, color=REANLEA_MAGENTA, buff=.15, corner_radius=.15)
         self.play(
             Write(sr_eq7)
@@ -1739,9 +1751,11 @@ class Scene6(MovingCameraScene):
         self.play(
             Create(sr_grp_p3)
         )
+        self.wait(3)
 
         self.play(
-            Write(dis_prop_3_3)
+            Write(dis_prop_3_3),
+            run_time=2.5
         )
         sr_eq9=SurroundingRectangle(eq9, color=REANLEA_SLATE_BLUE, buff=.15, corner_radius=.15)
         self.play(
@@ -1787,6 +1801,7 @@ class Scene6(MovingCameraScene):
         eq13[0][0].scale(0.6)
 
         self.play(Write(eq13))
+        self.wait(4)
 
         ulba2=under_line_bezier_arrow().next_to(eq12[0][3]).flip(LEFT).scale(.9).rotate(30*DEGREES).shift(0.4*UP+0.2*LEFT).set_color_by_gradient(REANLEA_SLATE_BLUE, PURE_GREEN)
 
@@ -1810,7 +1825,7 @@ class Scene6(MovingCameraScene):
             TransformMatchingShapes(eq1213,eq14)      
         )
 
-        self.wait(2)
+        self.wait(4)
 
         eq15=MathTex(r"\in \mathbb{R}^{+} \cup \{0\}").scale(1.3).next_to(eq14,RIGHT).set_color_by_tex("",color=(REANLEA_PURPLE,REANLEA_PURPLE_LIGHTER,))
         
@@ -1830,6 +1845,7 @@ class Scene6(MovingCameraScene):
             eq145.animate.scale(0.5).move_to(UP).set_color(REANLEA_WHITE).set_opacity(0.7),
             Write(eq16)
         )
+        self.wait(4)
 
 
         eq17=MathTex(r"(\mathbb{X},d)").scale(1.3).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_CHARM).move_to(1.5*DOWN)
@@ -1858,7 +1874,7 @@ class Scene6(MovingCameraScene):
         self.play(
             Write(eq17)
         )
-        self.wait(2)
+        self.wait(4)
         
         sr_eq17=get_surround_bezier(eq17).set_color(REANLEA_SLATE_BLUE).scale(1.3)
 
@@ -1875,7 +1891,7 @@ class Scene6(MovingCameraScene):
         )
         self.play(FadeOut(eq18))
 
-        self.wait(3)
+        self.wait(5)
 
 
         self.play(
@@ -1928,7 +1944,7 @@ class Scene6(MovingCameraScene):
             grp_p2.animate.move_to(ORIGIN).scale(1.5),
         )
         self.play(Write(text_19))
-        self.wait(2)
+        self.wait(4)
 
         self.play(
             grp_p2.animate.shift(0.5*DOWN).scale(1.3),
@@ -1952,7 +1968,7 @@ class Scene6(MovingCameraScene):
         self.play(
             Write(text_20)
         )
-        self.wait(2)
+        self.wait(5)
 
         with RegisterFont("Cousine") as fonts:
             text_21=Text("What if we Upgrade the dimension ...", font=fonts[0]).scale(.55)
