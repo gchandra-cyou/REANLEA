@@ -8805,10 +8805,6 @@ class TransitionTemplate_4(Scene):
                 total=len(transition_points),
             )
 
-            self.wait()
-
-        
-
 
     def transition(self, transition_name, index, total):
         """
