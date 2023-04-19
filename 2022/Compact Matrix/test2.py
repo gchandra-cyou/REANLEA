@@ -8171,19 +8171,16 @@ class TransitionTemplate_1(Scene):
 
         title.next_to(nodes_and_lines[2*(index-1)],UP)
 
-        
-        
-
         self.play(
             FadeIn(title),LaggedStartMap(FadeIn, nodes_and_lines)
         )
         self.wait(2)
-        self.play(
-            FadeOut(title),
-            run_time=2
-        )
-
-        
+            self.play(
+                FadeOut(title),
+                run_time=2
+            )
+            
+               
         
 
     
