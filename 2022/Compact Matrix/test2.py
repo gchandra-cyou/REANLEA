@@ -8803,7 +8803,7 @@ class TransitionTemplate_4(Scene):
                 transition_name=transition_points[i],
                 index=i + 1,
                 total=len(transition_points),
-            )
+            )        
 
 
     def transition(self, transition_name, index, total):
@@ -8843,8 +8843,8 @@ class TransitionTemplate_4(Scene):
                 node = (
                     Circle()
                     .scale(0.2)
-                    .set_stroke(REANLEA_RED)
-                    .set_fill(REANLEA_GOLDENROD, opacity=1)
+                    .set_stroke(PURE_RED)
+                    .set_fill(PURE_GREEN, opacity=1)
                 )
                 nodes_and_lines.add(node)
                 
@@ -8869,13 +8869,16 @@ class TransitionTemplate_4(Scene):
 
         title.next_to(nodes_and_lines[2*(index-1)],UP)
 
+        dt=Dot()
+
         self.play(
-                FadeIn(title),LaggedStartMap(FadeIn, nodes_and_lines)
+                FadeIn(title),#LaggedStartMap(FadeIn, nodes_and_lines)
+                FadeIn(nodes_and_lines)
         )
         self.wait(2)
-        if index != 3:
+        if index == 2:
             self.play(
-                FadeOut( title),
+                FadeOut(title),
                 run_time=2
             )
         else:
@@ -8885,13 +8888,89 @@ class TransitionTemplate_4(Scene):
             self.wait()
             self.play(
                 FadeOut(title),
+                nodes_and_lines.animate.shift(index*UP),
                 run_time=2
             )
+            self.wait(2)
             
                
 
 
 # manim -pqh test2.py TransitionTemplate_4
+
+
+
+class LaggedStartMapExample(Scene):
+            def construct(self):
+                title = Tex("LaggedStartMap").to_edge(UP, buff=LARGE_BUFF)
+                dots = VGroup(
+                    *[Dot(radius=0.16) for _ in range(35)]
+                    ).arrange_in_grid(rows=5, cols=7, buff=MED_LARGE_BUFF)
+                self.add(dots, title)
+
+                # Animate yellow ripple effect
+                for mob in dots, title:
+                    self.play(LaggedStartMap(
+                        ApplyMethod, mob,
+                        lambda m : (m.set_color, YELLOW),
+                        lag_ratio = 0.1,
+                        rate_func = there_and_back,
+                        run_time = 10
+                    ))
+                
+                self.wait()
+
+                self.play(
+                    FadeOut(dots)
+                )
+                self.wait(2)
+
+# manim -pqh test2.py LaggedStartMapExample
+
+class LaggedStartExample(Scene):
+            def construct(self):
+                title = Text("lag_ratio = 0.25").to_edge(UP)
+
+                dot1 = Dot(point=LEFT * 2 + UP, radius=0.16)
+                dot2 = Dot(point=LEFT * 2, radius=0.16)
+                dot3 = Dot(point=LEFT * 2 + DOWN, radius=0.16)
+                line_25 = DashedLine(
+                    start=LEFT + UP * 2,
+                    end=LEFT + DOWN * 2,
+                    color=RED
+                )
+                label = Text("25%", font_size=24).next_to(line_25, UP)
+                self.add(title, dot1, dot2, dot3, line_25, label)
+
+                self.play(LaggedStart(
+                    dot1.animate.shift(RIGHT * 4),
+                    dot2.animate.shift(RIGHT * 4),
+                    dot3.animate.shift(RIGHT * 4),
+                    lag_ratio=0.25,
+                    run_time=4
+                ))
+
+
+# manim -pqh test2.py LaggedStartExample
+
+
+class SuccessionExample(Scene):
+            def construct(self):
+                dot1 = Dot(point=LEFT * 2 + UP * 2, radius=0.16, color=BLUE)
+                dot2 = Dot(point=LEFT * 2 + DOWN * 2, radius=0.16, color=MAROON)
+                dot3 = Dot(point=RIGHT * 2 + DOWN * 2, radius=0.16, color=GREEN)
+                dot4 = Dot(point=RIGHT * 2 + UP * 2, radius=0.16, color=YELLOW)
+                self.add(dot1, dot2, dot3, dot4)
+
+                self.play(Succession(
+                    dot1.animate.move_to(dot2),
+                    dot2.animate.move_to(dot3),
+                    dot3.animate.move_to(dot4),
+                    dot4.animate.move_to(dot1)
+                ))
+
+
+# manim -pqh test2.py SuccessionExample
 
 
 ###################################################################################################################
