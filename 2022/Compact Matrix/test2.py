@@ -8105,6 +8105,9 @@ class TransitionTemplate_1(Scene):
 
             self.wait()
 
+        
+
+
     def transition(self, transition_name, index, total):
         """
         Create transitions easily.
@@ -8179,6 +8182,17 @@ class TransitionTemplate_1(Scene):
             FadeOut(title),
             run_time=2
         )
+
+        for n in range(1, total + 1):
+            if n == 4:
+                self.play(
+                    FadeOut(nodes_and_lines)
+                )
+        
+
+    
+
+        
         
 
         
