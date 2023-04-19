@@ -90,10 +90,20 @@ class Trailer(Scene):
             # use a list if we want multiple lines
             ["Distance"],
             ["Space"],
+            ["Cartesian Product"],
+            ["Dimension"],
+            ["Pythagoras Theorem"]
+        ]
+
+        transition_points_ref = [
+            # use a list if we want multiple lines
+            ["Distance"],
+            ["Space"],
             ["Cartesian" ,"Product"],
             ["Dimension"],
             ["Pythagoras","Theorem"]
         ]
+
         ch_points = [
             # use a list if we want multiple lines
             ["a1","b1","c1"],
@@ -102,9 +112,11 @@ class Trailer(Scene):
             ["a4","b4","c4"],
             ["a5","b5","c5"]
         ]
+
         for i in range(len(transition_points)):
             self.transition(
                 transition_name=transition_points[i],
+                transition_name_ref=transition_points_ref[i],
                 ch_name=ch_points[i],
                 index=i + 1,
                 total=len(transition_points),
@@ -112,7 +124,7 @@ class Trailer(Scene):
 
 
 
-    def transition(self, transition_name,ch_name, index, total):
+    def transition(self, transition_name, transition_name_ref, ch_name, index, total):
         """
         Create transitions easily.
 
@@ -136,7 +148,19 @@ class Trailer(Scene):
                     .scale(.45)
                     .arrange(DOWN)
                 )
+
+                subtitles_ref = [
+                    Text(t,font=fonts[0])
+                    for t in transition_name_ref
+                ]
+
+                title_ref = (
+                    VGroup(*subtitles_ref)
+                    .scale(.45)
+                    .arrange(DOWN)
+                )
         else:
+
             title = (
                 MarkupText(transition_name, weight=BOLD)
                 .set_stroke(BLACK, width=10, background=True)
@@ -144,7 +168,14 @@ class Trailer(Scene):
                 .shift(UP)
             )
 
-        title_ref=title.copy().shift(5.75*LEFT)
+            title_ref = (
+                MarkupText(transition_name_ref, weight=BOLD)
+                .set_stroke(BLACK, width=10, background=True)
+                .scale_to_fit_width(config.frame_width - 3)
+                .shift(UP)
+            )
+
+        title_ref.shift(5.75*LEFT)
 
         if isinstance(ch_name, list):
             with RegisterFont("Courier Prime") as fonts:
