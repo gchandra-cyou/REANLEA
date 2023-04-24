@@ -9116,7 +9116,16 @@ class SuccessionExample(Scene):
 
 # manim -pqh test2.py SuccessionExample
 
+class Img_bg(Scene):
+    def construct(self):
+        bg = ImageMobject("tran.png").scale(.5).set_z_index(-100)
+        self.add(bg)
 
+        cir=Circle()
+
+        self.add(cir)
+
+    # manim -pqh test2.py Img_bg
 ###################################################################################################################
 
 

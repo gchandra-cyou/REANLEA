@@ -55,7 +55,7 @@ import itertools as it
 
 
 
-config.background_color= '#ffffff'
+config.background_color= WHITE
 config.max_files_cached=500
 
 
@@ -86,6 +86,77 @@ class CoordSysExample(Scene):
 
 
 
+class CodeFromString(Scene):
+    def construct(self):
+        code = '''from reanlea import Scene, Square
+
+class CoordSysExample(Scene):
+            def construct(self):
+
+                graphs = VGroup()
+                for n in np.arange(1,15):                    
+                    graphs += ImplicitFunction(
+                        lambda x,y : np.abs(x)**n + np.abs(y)**n -1 ,
+                    ).scale(3).set_stroke(width=1.25)
+                
+                graphs.set_color_by_gradient(REANLEA_BLUE,REANLEA_BLUE_SKY)
+
+                self.wait()
+                self.play(
+                    Create(graphs, run_time=20)
+                )
+                self.wait(2)
+'''
+        rendered_code = Code(code=code,
+                            language="Python", font="Monospace").scale(.5)
+        self.add(rendered_code)
+
+
+        # manim -sqk banner.py CodeFromString
+
+
+class Rotation3DExample(ThreeDScene):
+    def construct(self):
+
+        bg = ImageMobject("tran.png").scale(.15).set_z_index(-100)
+        #self.add(bg)
+
+        cube = Cube(side_length=3, fill_opacity=1).set_z_index(1).set_color_by_gradient(REANLEA_BLUE_LAVENDER).rotate(65*DEGREES, X_AXIS).rotate(59*DEGREES, Y_AXIS)
+
+
+        self.add(cube)
+
+
+
+        # manim -sqk banner.py Rotation3DExample
+
+class ax_ex(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("water_mark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.35).set_z_index(-100)
+        self.add(water_mark)
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5)
+
+        bg = ImageMobject("cube.png").scale(.3).shift(.25*UP).set_z_index(5)
+        self.add(bg)
+
+        self.add(ax_1)
+    
+    # manim -sqk banner.py ax_ex
+        
+      
 ###################################################################################################################
 
 # Changing FONTS : import any font from Google
