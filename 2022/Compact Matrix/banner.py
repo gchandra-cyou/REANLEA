@@ -55,7 +55,7 @@ import itertools as it
 
 
 
-config.background_color= WHITE
+config.background_color= PURE_GREEN
 config.max_files_cached=500
 
 
@@ -107,8 +107,8 @@ class CoordSysExample(Scene):
                 )
                 self.wait(2)
 '''
-        rendered_code = Code(code=code,
-                            language="Python", font="Monospace").scale(.5)
+        rendered_code = Code(code=code, style=Code.styles_list[5],
+            language="Python", font="Monospace").scale(.5)
         self.add(rendered_code)
 
 
@@ -121,7 +121,7 @@ class Rotation3DExample(ThreeDScene):
         bg = ImageMobject("tran.png").scale(.15).set_z_index(-100)
         #self.add(bg)
 
-        cube = Cube(side_length=3, fill_opacity=1).set_z_index(1).set_color_by_gradient(REANLEA_BLUE_LAVENDER).rotate(65*DEGREES, X_AXIS).rotate(59*DEGREES, Y_AXIS)
+        cube = Cube(side_length=3, fill_opacity=1).set_z_index(1).set_color_by_gradient(REANLEA_VIOLET).rotate(65*DEGREES, X_AXIS).rotate(60*DEGREES, Y_AXIS)
 
 
         self.add(cube)
@@ -130,12 +130,33 @@ class Rotation3DExample(ThreeDScene):
 
         # manim -sqk banner.py Rotation3DExample
 
+class dim(Scene):
+     def construct(self):
+        dim_r2=MathTex(
+            "dim",r"(\mathbb{R}^2)","=","2"
+        ).set_z_index(16).scale(2).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_MAGENTA)
+        dim_r2[1:].shift(.1*RIGHT)
+        self.play(
+            Write(dim_r2),
+            lag_ratio=.7
+        )
+
+        b2=underline_bez_curve().next_to(dim_r2,DOWN).scale(2).set_z_index(16)
+        self.play(
+            Create(b2)
+        )
+
+        self.wait(2)
+
+        # manim -sqk banner.py dim
+        
+
 class ax_ex(Scene):
     def construct(self):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("water_mark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.35).set_z_index(-100)
+        water_mark=ImageMobject("water_mark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(1).set_z_index(-4)
         self.add(water_mark)
 
         ax_1=Axes(
@@ -147,10 +168,41 @@ class ax_ex(Scene):
                 "font_size": 24,
                 #"include_ticks": False,
             }, 
-        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5)
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(-3)
 
-        bg = ImageMobject("cube.png").scale(.3).shift(.25*UP).set_z_index(5)
-        self.add(bg)
+        cube = ImageMobject("cube.png").scale(.3).shift(.25*UP).set_z_index(5)
+        self.add(cube)
+
+        eu_sp = ImageMobject("eu_sp_1.png").scale(.5).shift(1.75*UP).set_z_index(-1)
+        self.add(eu_sp)
+
+        sx_1 = ImageMobject("sx_1.png").scale(.25).shift(2*DOWN+5*RIGHT).rotate(-30*DEGREES).set_opacity(.25).set_z_index(-2)
+        self.add(sx_1)
+
+        sx_2 = ImageMobject("sx_2.png").scale(.25).shift(4*LEFT).set_opacity(.25).set_z_index(-2)
+        self.add(sx_2)
+
+        sx_3 = ImageMobject("sx_3.png").scale(.25).shift(2.5*DOWN).set_opacity(.25).set_z_index(-2)
+        self.add(sx_3)
+
+        sx_4 = ImageMobject("sx_4.png").scale(.25).shift(4*RIGHT+1.5*UP).set_opacity(.25).set_z_index(-2)
+        self.add(sx_4)
+
+        sx_5 = ImageMobject("sx_5.png").scale(.25).shift(4*LEFT+2.5*DOWN).set_opacity(.25).set_z_index(-2)
+        self.add(sx_5)
+
+        bg_1 = ImageMobject("code.png").scale(.25).shift(4*LEFT+2.5*DOWN).set_opacity(.15).set_z_index(-5)
+        self.add(bg_1)
+
+        stripe1=get_stripe(factor=.05, buff_max=3,color=REANLEA_GOLD).shift(5.75*LEFT+2*UP)
+
+        stripe2=get_stripe(factor=.05, buff_max=3,color=REANLEA_WELDON_BLUE).shift(2.75*LEFT+UP).rotate(PI)
+
+        with RegisterFont("Montserrat") as fonts:
+            txt_0 = Text("EUCLIDEAN SPACE" , font=fonts[0], color=GREEN)
+
+        txt_0.next_to(stripe1,DOWN)
+        
 
         self.add(ax_1)
     

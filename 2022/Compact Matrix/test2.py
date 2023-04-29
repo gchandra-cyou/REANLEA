@@ -9126,6 +9126,577 @@ class Img_bg(Scene):
         self.add(cir)
 
     # manim -pqh test2.py Img_bg
+
+class text_test_00(Scene):
+    def construct(self):
+        with RegisterFont("Cousine") as fonts:
+            con_tex_1 = Text("what about the distance in the space", font=fonts[0]).scale(0.55).shift(.1*LEFT).set_color(REANLEA_TXT_COL)
+        con_tex_2=MathTex(r"\mathbb{R}^{n}").next_to(con_tex_1,RIGHT).shift(.125*LEFT+.035*UP).scale(.75).set_color(REANLEA_TXT_COL)
+        con_tex_3 = Text("?", font=fonts[0]).scale(0.55).next_to(con_tex_2).set_color(REANLEA_TXT_COL).shift(.1*LEFT)
+        con_tex=VGroup(con_tex_1,con_tex_2,con_tex_3).move_to(ORIGIN)
+
+        self.add(con_tex)
+
+
+
+    # manim -pqh test2.py text_test_00
+
+
+class Scene4_3(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+
+        # Group-I
+        with RegisterFont("Montserrat") as fonts:
+            txt_1=Text("C A R T E S I A N    P R O D U C T", font=fonts[0])#.to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            txt_1.set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE_LIGHTER).to_edge(UP).scale(.5)
+
+
+        strp_1=get_stripe(factor=0.05, buff_max=5.2).move_to(3*UP+.2*RIGHT)
+
+        self.add(txt_1,strp_1)
+
+
+        # Group-II
+
+        grid = NumberPlane(axis_config={"include_tip":True},
+            background_line_style={
+                "stroke_color": BLUE,
+                "stroke_width": 0.8,
+                "stroke_opacity": 0.2
+            }
+        )
+
+
+        r1 = lambda theta: 2 + 0.2 * np.sin(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
+        grph_1 = grid.plot_polar_graph(r1, [0, 2 * PI])
+        grph_1.set_stroke(width=7, color=[REANLEA_GREEN_AUQA,REANLEA_SLATE_BLUE]).scale(.75).shift(4*LEFT).scale(.5).set_stroke(width=5),
+        grph_1_lbl=MathTex("A").shift(grph_1.get_center()).set_color(REANLEA_GREEN_AUQA).shift(2*UP)
+
+        r2 = lambda theta: 2 + 0.2 * np.cos(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
+        grph_2 = grid.plot_polar_graph(r2, [0, 2 * PI])
+        grph_2.set_stroke(width=7, color=[REANLEA_SLATE_BLUE, REANLEA_BLUE_SKY]).scale(.75).shift(4.5*RIGHT).scale(.5).set_stroke(width=5),
+        grph_2_lbl=MathTex("B").shift(grph_2.get_center()).set_color(REANLEA_BLUE_SKY).shift(2*UP)
+
+
+
+        dot_1=Dot(radius=0.125, color=REANLEA_GREEN_AUQA).move_to(grph_1.get_center()).set_sheen(-0.6,DOWN)
+        dot_1_lbl=MathTex("x").set_color(REANLEA_GREEN_AUQA).move_to(grph_1.get_center()+.5*DOWN).scale(.6)
+
+        dot_2=Dot(radius=0.125, color=REANLEA_BLUE_SKY).move_to(grph_2.get_center()).set_sheen(-0.6,DOWN)
+        dot_2_lbl=MathTex("y").set_color(REANLEA_BLUE_SKY).move_to(grph_2.get_center()+.5*DOWN).scale(.6)
+
+        eqn_1=MathTex("A",r"\times","B","=",r"\{", r"(x,y)",r"\mid", r"x \in A",",", r"y \in B", r"\}").shift(2*DOWN)
+        eqn_1[0].set_color(REANLEA_GREEN_AUQA)
+        eqn_1[1].set_color(PURE_RED)
+        eqn_1[2].set_color(REANLEA_BLUE_SKY)
+        eqn_1[5:10].scale(.9)
+        eqn_1[5][1].set_color(REANLEA_GREEN_AUQA)
+        eqn_1[5][3].set_color(REANLEA_BLUE_SKY)
+        eqn_1[7].set_color(REANLEA_GREEN_AUQA)
+        eqn_1[7][1].set_color(PURE_RED).scale(.65)
+        eqn_1[9].set_color(REANLEA_BLUE_SKY)
+        eqn_1[9][1].set_color(PURE_RED).scale(.65)
+        eqn_1[8:].shift(0.15*RIGHT)
+        eqn_1[9:].shift(0.1*RIGHT)
+
+        eqn_1[3:5].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[5][0].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[5][4].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[6].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[8].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[10].set_color(REANLEA_PURPLE_LIGHTER)
+
+        set_a_grp=VGroup(grph_1,grph_1_lbl,dot_1,dot_1_lbl).shift(2*RIGHT)
+        set_b_grp=VGroup(grph_2,grph_2_lbl,dot_2,dot_2_lbl).shift(2*LEFT)
+        cp_grp_1=VGroup(set_a_grp,set_b_grp,eqn_1).scale(.65).move_to(4.5*RIGHT)
+    
+        self.add(cp_grp_1)
+
+        #Group-III
+
+        tbl_AB=MathTable(
+            [
+                ["(a,1)", "(a,2)","(a,3)"],
+                ["(b,1)", "(b,2)","(b,3)"]
+            ]
+        )
+        tbl_AB.get_vertical_lines().set_stroke(width=2, color=REANLEA_BLUE_SKY)
+        tbl_AB.get_horizontal_lines().set_stroke(width=2, color=REANLEA_SLATE_BLUE)
+        ent_tbl_AB=tbl_AB.get_entries_without_labels()
+
+        for k in range(len(ent_tbl_AB)):
+            ent_tbl_AB[k][0][1].set_color(REANLEA_GREEN_AUQA)
+            ent_tbl_AB[k][0][3].set_color(REANLEA_BLUE_SKY)
+
+        tbl_AB_lbl=MathTex(r"A \times B").next_to(tbl_AB, 2.5*DOWN + RIGHT).scale(.75).set_color(PURE_RED)
+        tbl_AB_lbl[0][0].set_color(REANLEA_GREEN_AUQA)
+        tbl_AB_lbl[0][2].set_color(REANLEA_BLUE_SKY)
+        tbl_AB_lbl_ln=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(3*PI/4).next_to(tbl_AB_lbl, .5*UP+.5*LEFT).set_z_index(2)
+        sr_tbl_AB=SurroundingRectangle(tbl_AB, color=REANLEA_WELDON_BLUE ,corner_radius=.25).set_fill(color=REANLEA_WELDON_BLUE, opacity=0.25)
+        t_AB=VGroup(tbl_AB,tbl_AB_lbl,tbl_AB_lbl_ln,sr_tbl_AB)
+
+
+        tbl_A=MathTable(
+            [
+              ["a"],
+              ["b"]  
+            ],
+            v_buff=0.85
+        ).next_to(tbl_AB, LEFT).set_color(REANLEA_GREEN_AUQA)
+        tbl_A.get_horizontal_lines().set_opacity(0)
+
+        tbl_A_lbl=MathTex("A").next_to(tbl_A, 2*UP+LEFT).scale(.75).set_color(REANLEA_GREEN_AUQA)
+        tbl_A_lbl_ln=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(3*PI/4).next_to(tbl_A_lbl, .5*DOWN+.5*RIGHT).set_z_index(2)
+        sr_tbl_A=Ellipse(width=3, color=REANLEA_WELDON_BLUE).set_fill(color=REANLEA_GREEN_AUQA, opacity=0.15).move_to(tbl_A.get_center()).rotate(PI/2)
+
+        t_A=VGroup(tbl_A,tbl_A_lbl,tbl_A_lbl_ln,sr_tbl_A)
+
+
+
+
+        tbl_B=MathTable(
+            [
+                ["1","2","3"]
+            ],
+            h_buff=2.25
+        ).next_to(tbl_AB,UP).set_color(REANLEA_BLUE_SKY)
+        tbl_B.get_vertical_lines().set_opacity(0)
+
+        tbl_B_lbl=Text("B").next_to(tbl_B, UP+4*RIGHT).scale(.75).set_color(REANLEA_BLUE_SKY)
+        tbl_B_lbl_ln=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(PI/4).next_to(tbl_B_lbl, .5*DOWN+.5*LEFT).set_z_index(2)
+        sr_tbl_B=Ellipse(width=8, color=REANLEA_WELDON_BLUE).set_fill(color=REANLEA_BLUE_SKY, opacity=0.25).move_to(tbl_B.get_center())
+                    
+        t_B=VGroup(tbl_B,tbl_B_lbl,tbl_B_lbl_ln,sr_tbl_B)
+
+
+
+        eqn_2_ref=MathTex("A","=",r"\{","2,4", r"\}").set_color(REANLEA_GREEN_AUQA).scale(.7).to_edge(LEFT, buff=.5).shift(2.5*UP)
+
+        tbl_AB_ref=MathTable(
+            [
+                ["(2,1)", "(2,2)","(2,3)"],
+                ["(4,1)", "(4,2)","(4,3)"]
+            ]
+        )
+        tbl_AB_ref.get_vertical_lines().set_stroke(width=2, color=REANLEA_BLUE_SKY)
+        tbl_AB_ref.get_horizontal_lines().set_stroke(width=2, color=REANLEA_SLATE_BLUE)
+        ent_tbl_AB_ref=tbl_AB_ref.get_entries_without_labels()
+
+        for k in range(len(ent_tbl_AB_ref)):
+            ent_tbl_AB_ref[k][0][1].set_color(REANLEA_GREEN_AUQA)
+            ent_tbl_AB_ref[k][0][3].set_color(REANLEA_BLUE_SKY)
+
+        tbl_AB_lbl_ref=MathTex(r"A \times B").next_to(tbl_AB_ref, 2.5*DOWN + RIGHT).scale(.75).set_color(PURE_RED)
+        tbl_AB_lbl_ref[0][0].set_color(REANLEA_GREEN_AUQA)
+        tbl_AB_lbl_ref[0][2].set_color(REANLEA_BLUE_SKY)
+        tbl_AB_lbl_ln_ref=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(3*PI/4).next_to(tbl_AB_lbl_ref, .5*UP+.5*LEFT).set_z_index(2)
+        sr_tbl_AB_ref=SurroundingRectangle(tbl_AB, color=REANLEA_WELDON_BLUE ,corner_radius=.25).set_fill(color=REANLEA_WELDON_BLUE, opacity=0.25)
+        t_AB_ref=VGroup(tbl_AB_ref,tbl_AB_lbl_ref,tbl_AB_lbl_ln_ref,sr_tbl_AB_ref)
+
+
+        tbl_A_ref=MathTable(
+            [
+              ["2"],
+              ["4"]  
+            ],
+            v_buff=0.85
+        ).next_to(tbl_AB_ref, LEFT).set_color(REANLEA_GREEN_AUQA)
+        tbl_A_ref.get_horizontal_lines().set_opacity(0)
+
+        tbl_A_lbl_ref=MathTex("A").next_to(tbl_A, 2*UP+LEFT).scale(.75).set_color(REANLEA_GREEN_AUQA)
+        tbl_A_lbl_ln_ref=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(3*PI/4).next_to(tbl_A_lbl, .5*DOWN+.5*RIGHT).set_z_index(2)
+        sr_tbl_A_ref=Ellipse(width=3, color=REANLEA_WELDON_BLUE).set_fill(color=REANLEA_GREEN_AUQA, opacity=0.15).move_to(tbl_A.get_center()).rotate(PI/2)
+
+        t_A_ref=VGroup(tbl_A_ref,tbl_A_lbl_ref,tbl_A_lbl_ln_ref,sr_tbl_A_ref)
+
+
+        tbl_B_ref=MathTable(
+            [
+                ["1","2","3"]
+            ],
+            h_buff=2.25
+        ).next_to(tbl_AB_ref,UP).set_color(REANLEA_BLUE_SKY)
+        tbl_B_ref.get_vertical_lines().set_opacity(0)
+
+        tbl_B_lbl_ref=Text("B").next_to(tbl_B_ref, UP+4*RIGHT).scale(.75).set_color(REANLEA_BLUE_SKY)
+        tbl_B_lbl_ln_ref=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(PI/4).next_to(tbl_B_lbl_ref, .5*DOWN+.5*LEFT).set_z_index(2)
+        sr_tbl_B_ref=Ellipse(width=8, color=REANLEA_WELDON_BLUE).set_fill(color=REANLEA_BLUE_SKY, opacity=0.25).move_to(tbl_B.get_center())
+                    
+        t_B_ref=VGroup(tbl_B_ref,tbl_B_lbl_ref,tbl_B_lbl_ln_ref,sr_tbl_B_ref)
+
+        tbl_grp=VGroup(t_AB,t_A,t_B).scale(0.75).shift(2*LEFT+DOWN)
+
+        tbl_grp_ref=VGroup(t_AB_ref,t_A_ref,t_B_ref).scale(0.75).shift(2*LEFT+DOWN)
+
+        eqn_3=MathTex("B","=",r"\{","1,2,3", r"\}").set_color(REANLEA_BLUE_SKY).scale(.7).to_edge(LEFT, buff=.5).shift(2*UP)
+
+        cp_grp_2_ref=VGroup(eqn_2_ref,eqn_3,tbl_grp_ref).scale(.6).next_to(cp_grp_1, DOWN).shift(1.25*UP)
+
+        self.add(cp_grp_2_ref)
+
+        # Group-IV
+
+        sep_ln=Line().scale(2).rotate(PI/2).set_stroke(width=5, color=[REANLEA_MAGENTA,REANLEA_WARM_BLUE]).shift(1.5*RIGHT)
+
+        self.add(sep_ln)
+
+        self.play(
+            cp_grp_1.animate.shift(1.5*UP),
+            cp_grp_2_ref.animate.scale(.6).next_to(cp_grp_1, DOWN).shift(1.25*UP)
+        )
+
+        eqn_8=MathTex(r"\mathbb{R}",r"\times",r"\mathbb{R}",r"\times",r"\mathbb{R}","=",r"\{", r"(x,y,z)",r"\mid", r"x, y, z \in \mathbb{R}", r"\}")
+        eqn_8.scale(.6).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_AQUA).shift(0.5*UP).save_state()
+
+        self.add(eqn_8)
+        eqn_8.move_to(2.57049457*DOWN+2.62319193*LEFT)
+
+        a=MathTex(eqn_8.get_center())
+
+        self.add(a)
+
+
+        # manim -sqk test2.py Scene4_3
+
+        # manim -pqk test2.py Scene4_3
+
+
+
+class Scene4_4(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+
+        # Group-I
+        with RegisterFont("Montserrat") as fonts:
+            txt_1=Text("C A R T E S I A N    P R O D U C T", font=fonts[0])#.to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            txt_1.set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE_LIGHTER).to_edge(UP).scale(.5)
+
+
+        strp_1=get_stripe(factor=0.05, buff_max=5.2).move_to(3*UP+.2*RIGHT)
+
+        self.add(txt_1,strp_1)
+
+
+        # Group-II
+
+        grid = NumberPlane(axis_config={"include_tip":True},
+            background_line_style={
+                "stroke_color": BLUE,
+                "stroke_width": 0.8,
+                "stroke_opacity": 0.2
+            }
+        )
+
+
+        r1 = lambda theta: 2 + 0.2 * np.sin(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
+        grph_1 = grid.plot_polar_graph(r1, [0, 2 * PI])
+        grph_1.set_stroke(width=7, color=[REANLEA_GREEN_AUQA,REANLEA_SLATE_BLUE]).scale(.75).shift(4*LEFT).scale(.5).set_stroke(width=5),
+        grph_1_lbl=MathTex("A").shift(grph_1.get_center()).set_color(REANLEA_GREEN_AUQA).shift(2*UP)
+
+        r2 = lambda theta: 2 + 0.2 * np.cos(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
+        grph_2 = grid.plot_polar_graph(r2, [0, 2 * PI])
+        grph_2.set_stroke(width=7, color=[REANLEA_SLATE_BLUE, REANLEA_BLUE_SKY]).scale(.75).shift(4.5*RIGHT).scale(.5).set_stroke(width=5),
+        grph_2_lbl=MathTex("B").shift(grph_2.get_center()).set_color(REANLEA_BLUE_SKY).shift(2*UP)
+
+
+
+        dot_1=Dot(radius=0.125, color=REANLEA_GREEN_AUQA).move_to(grph_1.get_center()).set_sheen(-0.6,DOWN)
+        dot_1_lbl=MathTex("x").set_color(REANLEA_GREEN_AUQA).move_to(grph_1.get_center()+.5*DOWN).scale(.6)
+
+        dot_2=Dot(radius=0.125, color=REANLEA_BLUE_SKY).move_to(grph_2.get_center()).set_sheen(-0.6,DOWN)
+        dot_2_lbl=MathTex("y").set_color(REANLEA_BLUE_SKY).move_to(grph_2.get_center()+.5*DOWN).scale(.6)
+
+        eqn_1=MathTex("A",r"\times","B","=",r"\{", r"(x,y)",r"\mid", r"x \in A",",", r"y \in B", r"\}").shift(2*DOWN)
+        eqn_1[0].set_color(REANLEA_GREEN_AUQA)
+        eqn_1[1].set_color(PURE_RED)
+        eqn_1[2].set_color(REANLEA_BLUE_SKY)
+        eqn_1[5:10].scale(.9)
+        eqn_1[5][1].set_color(REANLEA_GREEN_AUQA)
+        eqn_1[5][3].set_color(REANLEA_BLUE_SKY)
+        eqn_1[7].set_color(REANLEA_GREEN_AUQA)
+        eqn_1[7][1].set_color(PURE_RED).scale(.65)
+        eqn_1[9].set_color(REANLEA_BLUE_SKY)
+        eqn_1[9][1].set_color(PURE_RED).scale(.65)
+        eqn_1[8:].shift(0.15*RIGHT)
+        eqn_1[9:].shift(0.1*RIGHT)
+
+        eqn_1[3:5].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[5][0].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[5][4].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[6].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[8].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[10].set_color(REANLEA_PURPLE_LIGHTER)
+
+        set_a_grp=VGroup(grph_1,grph_1_lbl,dot_1,dot_1_lbl).shift(2*RIGHT)
+        set_b_grp=VGroup(grph_2,grph_2_lbl,dot_2,dot_2_lbl).shift(2*LEFT)
+        cp_grp_1=VGroup(set_a_grp,set_b_grp,eqn_1).scale(.65).move_to(4.5*RIGHT)
+
+    
+        self.add(cp_grp_1)
+
+        #Group-III
+
+        tbl_AB=MathTable(
+            [
+                ["(a,1)", "(a,2)","(a,3)"],
+                ["(b,1)", "(b,2)","(b,3)"]
+            ]
+        )
+        tbl_AB.get_vertical_lines().set_stroke(width=2, color=REANLEA_BLUE_SKY)
+        tbl_AB.get_horizontal_lines().set_stroke(width=2, color=REANLEA_SLATE_BLUE)
+        ent_tbl_AB=tbl_AB.get_entries_without_labels()
+
+        for k in range(len(ent_tbl_AB)):
+            ent_tbl_AB[k][0][1].set_color(REANLEA_GREEN_AUQA)
+            ent_tbl_AB[k][0][3].set_color(REANLEA_BLUE_SKY)
+
+        tbl_AB_lbl=MathTex(r"A \times B").next_to(tbl_AB, 2.5*DOWN + RIGHT).scale(.75).set_color(PURE_RED)
+        tbl_AB_lbl[0][0].set_color(REANLEA_GREEN_AUQA)
+        tbl_AB_lbl[0][2].set_color(REANLEA_BLUE_SKY)
+        tbl_AB_lbl_ln=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(3*PI/4).next_to(tbl_AB_lbl, .5*UP+.5*LEFT).set_z_index(2)
+        sr_tbl_AB=SurroundingRectangle(tbl_AB, color=REANLEA_WELDON_BLUE ,corner_radius=.25).set_fill(color=REANLEA_WELDON_BLUE, opacity=0.25)
+        t_AB=VGroup(tbl_AB,tbl_AB_lbl,tbl_AB_lbl_ln,sr_tbl_AB)
+
+
+        tbl_A=MathTable(
+            [
+              ["a"],
+              ["b"]  
+            ],
+            v_buff=0.85
+        ).next_to(tbl_AB, LEFT).set_color(REANLEA_GREEN_AUQA)
+        tbl_A.get_horizontal_lines().set_opacity(0)
+
+        tbl_A_lbl=MathTex("A").next_to(tbl_A, 2*UP+LEFT).scale(.75).set_color(REANLEA_GREEN_AUQA)
+        tbl_A_lbl_ln=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(3*PI/4).next_to(tbl_A_lbl, .5*DOWN+.5*RIGHT).set_z_index(2)
+        sr_tbl_A=Ellipse(width=3, color=REANLEA_WELDON_BLUE).set_fill(color=REANLEA_GREEN_AUQA, opacity=0.15).move_to(tbl_A.get_center()).rotate(PI/2)
+
+        t_A=VGroup(tbl_A,tbl_A_lbl,tbl_A_lbl_ln,sr_tbl_A)
+
+
+
+
+        tbl_B=MathTable(
+            [
+                ["1","2","3"]
+            ],
+            h_buff=2.25
+        ).next_to(tbl_AB,UP).set_color(REANLEA_BLUE_SKY)
+        tbl_B.get_vertical_lines().set_opacity(0)
+
+        tbl_B_lbl=Text("B").next_to(tbl_B, UP+4*RIGHT).scale(.75).set_color(REANLEA_BLUE_SKY)
+        tbl_B_lbl_ln=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(PI/4).next_to(tbl_B_lbl, .5*DOWN+.5*LEFT).set_z_index(2)
+        sr_tbl_B=Ellipse(width=8, color=REANLEA_WELDON_BLUE).set_fill(color=REANLEA_BLUE_SKY, opacity=0.25).move_to(tbl_B.get_center())
+                    
+        t_B=VGroup(tbl_B,tbl_B_lbl,tbl_B_lbl_ln,sr_tbl_B)
+
+
+
+        eqn_2_ref=MathTex("A","=",r"\{","2,4", r"\}").set_color(REANLEA_GREEN_AUQA).scale(.7).to_edge(LEFT, buff=.5).shift(2.5*UP)
+
+        tbl_AB_ref=MathTable(
+            [
+                ["(2,1)", "(2,2)","(2,3)"],
+                ["(4,1)", "(4,2)","(4,3)"]
+            ]
+        )
+        tbl_AB_ref.get_vertical_lines().set_stroke(width=2, color=REANLEA_BLUE_SKY)
+        tbl_AB_ref.get_horizontal_lines().set_stroke(width=2, color=REANLEA_SLATE_BLUE)
+        ent_tbl_AB_ref=tbl_AB_ref.get_entries_without_labels()
+
+        for k in range(len(ent_tbl_AB_ref)):
+            ent_tbl_AB_ref[k][0][1].set_color(REANLEA_GREEN_AUQA)
+            ent_tbl_AB_ref[k][0][3].set_color(REANLEA_BLUE_SKY)
+
+        tbl_AB_lbl_ref=MathTex(r"A \times B").next_to(tbl_AB_ref, 2.5*DOWN + RIGHT).scale(.75).set_color(PURE_RED)
+        tbl_AB_lbl_ref[0][0].set_color(REANLEA_GREEN_AUQA)
+        tbl_AB_lbl_ref[0][2].set_color(REANLEA_BLUE_SKY)
+        tbl_AB_lbl_ln_ref=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(3*PI/4).next_to(tbl_AB_lbl_ref, .5*UP+.5*LEFT).set_z_index(2)
+        sr_tbl_AB_ref=SurroundingRectangle(tbl_AB, color=REANLEA_WELDON_BLUE ,corner_radius=.25).set_fill(color=REANLEA_WELDON_BLUE, opacity=0.25)
+        t_AB_ref=VGroup(tbl_AB_ref,tbl_AB_lbl_ref,tbl_AB_lbl_ln_ref,sr_tbl_AB_ref)
+
+
+        tbl_A_ref=MathTable(
+            [
+              ["2"],
+              ["4"]  
+            ],
+            v_buff=0.85
+        ).next_to(tbl_AB_ref, LEFT).set_color(REANLEA_GREEN_AUQA)
+        tbl_A_ref.get_horizontal_lines().set_opacity(0)
+
+        tbl_A_lbl_ref=MathTex("A").next_to(tbl_A, 2*UP+LEFT).scale(.75).set_color(REANLEA_GREEN_AUQA)
+        tbl_A_lbl_ln_ref=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(3*PI/4).next_to(tbl_A_lbl, .5*DOWN+.5*RIGHT).set_z_index(2)
+        sr_tbl_A_ref=Ellipse(width=3, color=REANLEA_WELDON_BLUE).set_fill(color=REANLEA_GREEN_AUQA, opacity=0.15).move_to(tbl_A.get_center()).rotate(PI/2)
+
+        t_A_ref=VGroup(tbl_A_ref,tbl_A_lbl_ref,tbl_A_lbl_ln_ref,sr_tbl_A_ref)
+
+
+        tbl_B_ref=MathTable(
+            [
+                ["1","2","3"]
+            ],
+            h_buff=2.25
+        ).next_to(tbl_AB_ref,UP).set_color(REANLEA_BLUE_SKY)
+        tbl_B_ref.get_vertical_lines().set_opacity(0)
+
+        tbl_B_lbl_ref=Text("B").next_to(tbl_B_ref, UP+4*RIGHT).scale(.75).set_color(REANLEA_BLUE_SKY)
+        tbl_B_lbl_ln_ref=Line().set_stroke(width=2,color=REANLEA_GREY).scale(.5).rotate(PI/4).next_to(tbl_B_lbl_ref, .5*DOWN+.5*LEFT).set_z_index(2)
+        sr_tbl_B_ref=Ellipse(width=8, color=REANLEA_WELDON_BLUE).set_fill(color=REANLEA_BLUE_SKY, opacity=0.25).move_to(tbl_B.get_center())
+                    
+        t_B_ref=VGroup(tbl_B_ref,tbl_B_lbl_ref,tbl_B_lbl_ln_ref,sr_tbl_B_ref)
+
+        tbl_grp=VGroup(t_AB,t_A,t_B).scale(0.75).shift(2*LEFT+DOWN)
+
+        tbl_grp_ref=VGroup(t_AB_ref,t_A_ref,t_B_ref).scale(0.75).shift(2*LEFT+DOWN)
+
+        eqn_3=MathTex("B","=",r"\{","1,2,3", r"\}").set_color(REANLEA_BLUE_SKY).scale(.7).to_edge(LEFT, buff=.5).shift(2*UP)
+
+        cp_grp_2_ref=VGroup(eqn_2_ref,eqn_3,tbl_grp_ref)
+
+        self.add(cp_grp_2_ref)
+        
+
+        # Group-IV
+
+        sep_ln=Line().scale(2).rotate(PI/2).set_stroke(width=5, color=[REANLEA_MAGENTA,REANLEA_WARM_BLUE]).shift(1.5*RIGHT)
+
+        self.add(sep_ln)
+
+        self.play(
+            cp_grp_1.animate.shift(1.5*UP),
+            cp_grp_2_ref.animate.scale(.6).next_to(cp_grp_1, DOWN).shift(1.25*UP)
+        )
+
+
+        eqn_8=MathTex(r"\mathbb{R}",r"\times",r"\mathbb{R}",r"\times",r"\mathbb{R}","=",r"\{", r"(x,y,z)",r"\mid", r"x, y, z \in \mathbb{R}", r"\}")
+        eqn_8.scale(.6).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_AQUA).shift(0.5*UP).save_state()
+
+        self.add(eqn_8)
+        eqn_8.move_to(2.57049457*DOWN+2.62319193*LEFT)
+
+        
+
+        # anim 
+
+        eqn_6=MathTex(r"\mathbb{R}",r"\times",r"\mathbb{R}",r"\times","...",r"\times",r"\mathbb{R}","=",r"\{", r"(x_{1},x_{2}, ... , x_{n})",r"\mid", r"x_{i} \in \mathbb{R}","","for","","i=1,2,...,n", r"\}")
+        eqn_6[12].scale(.5)
+        eqn_6[4].scale(.5)
+        eqn_6[9][7:10].scale(.5)
+        eqn_6[13][6:9].scale(.5)
+
+        br_6=Brace(eqn_6[0:7], buff=.05).set_color(REANLEA_TXT_COL_DARKER)
+
+        br_6_lbl=MathTex("n").scale(.55).next_to(br_6,DOWN).shift(.15*UP).set_color(REANLEA_AQUA)
+
+        eqn_9=MathTex(r"\mathbb{R}^{n}").next_to(eqn_6[7],LEFT).shift(.2*RIGHT)
+        eqn_9.scale(.6).set_color_by_gradient(REANLEA_AQUA)
+
+        eqn_10=VGroup(eqn_9,eqn_6[7:])
+
+        self.play(
+            TransformMatchingShapes(eqn_8,eqn_6)
+        )
+        self.play(
+            Write(br_6)
+        )
+        self.play(
+            Write(br_6_lbl)
+        )
+
+        self.wait(10)
+
+        r_n_lbl=VGroup(br_6,br_6_lbl,eqn_6[0:7])
+
+        self.play(
+            TransformMatchingShapes(r_n_lbl,eqn_9)
+        )
+        self.play(
+            eqn_10.animate.shift(LEFT)
+        )
+        self.wait(5)
+
+        bend_bez_arrow=bend_bezier_arrow().rotate(-30*DEGREES).scale(0.55).set_color(REANLEA_TXT_COL).next_to(eqn_10[0],DOWN).shift(.4*RIGHT)
+
+        self.play(
+            Create(bend_bez_arrow)
+        )
+
+        with RegisterFont("Cedarville Cursive") as fonts:
+            txt_2=Text("Vector Space", font=fonts[0]).scale(.5)#.to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
+            txt_2.set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE_LIGHTER)
+            txt_2.next_to(bend_bez_arrow,RIGHT).shift(.1*LEFT+.05*DOWN).rotate(10*DEGREES)
+
+        self.play(
+            Create(txt_2)
+        )
+        self.wait(10)
+
+        with RegisterFont("Cousine") as fonts:
+
+            vs_dfn_tx_1 = Text("vector addition : ", font=fonts[0]).scale(0.35).set_color(REANLEA_SLATE_BLUE_LIGHTEST)
+
+            vs_dfn_tx_2 = Text("& scalar multiplication : ", font=fonts[0]).scale(0.35).shift(.55*RIGHT).set_color(REANLEA_SLATE_BLUE_LIGHTEST)
+        
+        with RegisterFont("Caveat") as fonts:
+
+            vs_dfn_tx_3 = Text("where,", font=fonts[0]).scale(0.5).shift(.1*LEFT).set_color(REANLEA_TXT_COL)
+
+        vs_dfn_mtx_1=MathTex(r"(x_{1},x_{2}, ... , x_{n})","+",r"(y_{1},y_{2}, ... , y_{n})",r"=",r"(x_{1}+y_{1},x_{2}+y_{2}, ... , x_{n}+y_{n})").scale(0.45).next_to(vs_dfn_tx_1,DOWN).shift(3*RIGHT)
+        vs_dfn_mtx_2=MathTex(r"\lambda",r"\cdot",r"(x_{1},x_{2}, ... , x_{n})",r"=",r"(\lambda \cdot x_{1},\lambda \cdot x_{2}, ... , \lambda \cdot x_{n})").scale(0.45).next_to(vs_dfn_tx_1,DOWN).shift(2.1*RIGHT)
+        vs_dfn_mtx_3_1=MathTex(r"(x_{1},x_{2}, ... , x_{n})", ",",r"(y_{1},y_{2}, ... , y_{n})", r"\in \mathbb{R}^{n}").scale(0.45).next_to(vs_dfn_tx_3,DOWN).shift(RIGHT)
+        vs_dfn_mtx_3_2=MathTex(r"\lambda",r"\in \mathbb{R}").scale(0.45).next_to(vs_dfn_tx_3,DOWN).shift(.35*DOWN+.35*RIGHT)
+        vs_dfn_mtx_3=VGroup(vs_dfn_mtx_3_1,vs_dfn_mtx_3_2).shift(.15*UP+.35*RIGHT)
+
+        vs_dfn_1=VGroup(vs_dfn_tx_1,vs_dfn_mtx_1).shift(5*LEFT)
+        vs_dfn_2=VGroup(vs_dfn_tx_2,vs_dfn_mtx_2).shift(5*LEFT+DOWN)
+        vs_dfn_3=VGroup(vs_dfn_tx_3,vs_dfn_mtx_3).shift(2*DOWN+3*LEFT)
+        vs_dfn=VGroup(vs_dfn_1,vs_dfn_2,vs_dfn_3)
+
+        self.play(
+            Write(vs_dfn),
+            run_time=7
+        )
+        self.wait(15)
+
+        con_grp=VGroup(vs_dfn,txt_2,bend_bez_arrow,eqn_10,sep_ln,cp_grp_1,cp_grp_2_ref,txt_1,strp_1)
+        self.play(
+            FadeOut(con_grp)
+        )
+        self.wait()
+
+        with RegisterFont("Cousine") as fonts:
+            con_tex_1 = Text("what about the distance in the space", font=fonts[0]).scale(0.55).shift(.1*LEFT).set_color(REANLEA_TXT_COL)
+        con_tex_2=MathTex(r"\mathbb{R}^{n}").next_to(con_tex_1,RIGHT).shift(.125*LEFT+.035*UP).scale(.75).set_color(REANLEA_TXT_COL)
+        con_tex_3 = Text("?", font=fonts[0]).scale(0.55).next_to(con_tex_2).set_color(REANLEA_TXT_COL).shift(.1*LEFT)
+        con_tex=VGroup(con_tex_1,con_tex_2,con_tex_3).move_to(ORIGIN)
+
+        self.play(
+            Write(con_tex),
+            run_time=2
+        )
+        
+
+
+        self.wait(10)
+        
+
+
+        # manim -sqk anim1.py Scene4_4
+
+        # manim -pqh anim1.py Scene4_4
+
+    
+
 ###################################################################################################################
 
 

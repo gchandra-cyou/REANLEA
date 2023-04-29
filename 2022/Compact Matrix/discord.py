@@ -7310,6 +7310,255 @@ class rideAlong(Scene):
 
         # manim -pqh discord.py rideAlong
 
+
+from manim.mobject.text.text_mobject import remove_invisible_chars
+class MyCode(Code):
+    def __init__(
+        self,
+        highlight_color=YELLOW,
+        bg_color=BLUE,
+        bg_opacity=0.2,
+        blocked_color=GRAY,
+        blocked_opacity=1,
+        arrow_color=RED_E,
+        arrow_length=1,
+        arrow_width=5,
+        *args,
+        **kwargs
+    ):
+        params = {
+            "tab_width": 2,
+            "background": "rectangle",
+            "language": "python",
+            "font": "Monospace",
+            "line_spacing": 1.1,
+            "style": "pastie",
+        }
+        params.update(kwargs)
+        super().__init__(*args, **params)
+        self.bg_color = bg_color
+        self.bg_opacity = bg_opacity
+        self.blocked_color = blocked_color
+        self.blocked_opacity = blocked_opacity
+        self.clean_lines = remove_invisible_chars(self.code)
+        if bg_color is None:
+            bg_color = self.background_mobject.get_color()
+        if bg_opacity is None:
+            bg_opacity = self.background_mobject.get_fill_opacity()
+        self.background_mobject.set_fill(bg_color, bg_opacity).set_z_index(-2)
+        self.highlight_color = highlight_color
+        self.higlighted_lines = []
+        self.arr = None
+        self.arrow_color = arrow_color
+        self.arrow_length = arrow_length
+        self.arrow_width = arrow_width
+
+    def create_higlight_rectangle(self, n, subline):
+        if subline:
+            line_str = self.code_string.split("\n")[n - 1]
+            words = line_str.split()
+            start = 0
+            for w in words:
+                sstart = w.find(subline)
+                if sstart != -1:
+                    start = start + sstart
+                    end = start + len(subline)
+                    break
+                start += len(w)
+            else:
+                start = 0
+                end = len(line_str)
+            selection = self.clean_lines[n - 1][start:end]
+        else:
+            selection = self.clean_lines[n - 1]
+        return SurroundingRectangle(
+            selection,
+            color=self.highlight_color,
+            fill_opacity=0.4,
+            z_index=-1,
+            stroke_width=1,
+        )
+
+    def indicate_line(self, n, subline=None):
+        hl = self.create_higlight_rectangle(n, subline)
+        return Succession(Write(hl, run_time=0.5), Wait(0.5), FadeOut(hl, run_time=0.5))
+
+    def highlight_line(self, n, subline=None, clear=True, full_width=False):
+        anims = []
+        if clear:
+            anims.append(self.clear_highlights())
+        hl = self.create_higlight_rectangle(n, subline)
+        if full_width:
+            hl.stretch_to_fit_width(self.background_mobject.get_width()).align_to(self.background_mobject, LEFT)
+        self.add(hl)
+        self.higlighted_lines.append(hl)
+        anims.append(FadeIn(hl, run_time=0.5))
+        return AnimationGroup(*anims)
+
+    def clear_highlights(self):
+        anim = FadeOut(Group(*self.higlighted_lines), run_time=0.5)
+        for h in self.higlighted_lines:
+            self.remove(h)
+        self.higlighted_lines = []
+        return anim
+
+    def block(self):
+        self.background_mobject.set_fill(self.blocked_color, self.blocked_opacity)
+
+    def unblock(self):
+        self.background_mobject.set_fill(self.bg_color, self.bg_opacity)
+
+    def move_arrow_to_line(self, n):
+        arr = (
+            Arrow(
+                start=ORIGIN,
+                end=RIGHT * self.arrow_length,
+                color=self.arrow_color,
+                stroke_width=self.arrow_width,
+                max_tip_length_to_length_ratio=2,
+                max_stroke_width_to_length_ratio=10,
+            )
+            .move_to(self.clean_lines[n - 1])
+            .align_to(self.background_mobject, LEFT)
+            .shift(0.5 * LEFT)
+            .set_z_index(5)
+        )
+        if not self.arr:
+            self.arr = arr
+            return FadeIn(arr, run_time=0.5)
+        return Transform(self.arr, arr)
+
+
+    def remove_arrow(self):
+        if self.arr:
+            anim = FadeOut(self.arr, run_time=0.5)
+            self.remove(self.arr)
+            return anim
+        return Wait(0.01)
+    
+
+class TestCodeScene(Scene):
+    def construct(self):
+        code = '''from reanlea import Scene, Square
+
+class CoordSysExample(Scene):
+            def construct(self):
+
+                graphs = VGroup()
+                for n in np.arange(1,15):                    
+                    graphs += ImplicitFunction(
+                        lambda x,y : np.abs(x)**n + np.abs(y)**n -1 ,
+                    ).scale(3).set_stroke(width=1.25)
+                
+                graphs.set_color_by_gradient(REANLEA_BLUE,REANLEA_BLUE_SKY)
+
+                self.wait()
+                self.play(
+                    Create(graphs, run_time=20)
+                )
+                self.wait(2)
+'''
+        c = MyCode(code=code, style="solarized-light",
+            bg_color=None, bg_opacity=None, line_spacing=0.7, 
+            tab_width=4, insert_line_no=True, arrow_length=1.1)
+        self.add(c)
+
+        for i in [1,2,4,1,2,3,4,1,2,4,5,6]:
+            c.highlight_line(i, full_width=True)
+            self.wait()
+        c.clear_highlights(); self.wait(2)
+        
+        for i in [1,2,4,1,2,3,4,1,2,4,5,6]:
+            self.play(c.move_arrow_to_line(i))
+        self.play(c.remove_arrow())
+        self.wait(2)
+
+        for i in range(1,7):
+            c.highlight_line(i, full_width=False)
+            self.wait()
+        c.clear_highlights();
+        self.wait(2)
+        
+        c.highlight_line(1, "range"); self.wait()
+        c.highlight_line(3, "print"); self.wait()
+        c.clear_highlights();         self.wait(2)
+
+        c.highlight_line(1, "3", clear=False)
+        c.highlight_line(2, "1", clear=False)
+        c.highlight_line(4, "2", clear=False)
+        self.wait(2)
+        c.clear_highlights()
+        self.wait(2)
+    
+
+
+        # manim -pqh discord.py TestCodeScene
+
+
+
+class PolarCurve4(Scene):
+    def construct(self):
+        plane = PolarPlane(azimuth_step=20,
+                           radius_step=1,
+                           radius_max=2,
+                           radius_config={"font_size": 12},
+                           azimuth_label_font_size=18,
+                           ).add_coordinates()
+        plane.shift(LEFT * 2).scale(1.5)
+
+        def curve_func(t):
+            return [(2*math.sin(5*t))*math.cos(t), (2*math.sin(5*t))*math.sin(t)]
+        def polar_curve_func(t):
+            return 2*math.sin(5*t)
+
+        points = []
+        for i in range(11):
+            points.append(Dot(point=plane.c2p(*curve_func(i*PI/10)), color=RED))
+            # print(curve_func(i*PI/10))
+        t0 = MathTable(
+            [["\\theta", "r = 2 \sin(5\\theta)"],
+                ["0", f"{round(polar_curve_func(0*PI/10))}"],
+                ["\\frac{\pi}{10}", f"{round(polar_curve_func(1*PI/10))}"],
+                ["\\frac{2\pi}{10}", f"{round(polar_curve_func(2*PI/10))}"],
+                ["\\frac{3\pi}{10}", f"{round(polar_curve_func(3*PI/10))}"],
+                ["\\frac{4\pi}{10}", f"{round(polar_curve_func(4*PI/10))}"],
+                ["\\frac{5\pi}{10}", f"{round(polar_curve_func(5*PI/10))}"],
+                ["\\frac{6\pi}{10}", f"{round(polar_curve_func(6*PI/10))}"],
+                ["\\frac{7\pi}{10}", f"{round(polar_curve_func(7*PI/10))}"],
+                ["\\frac{8\pi}{10}", f"{round(polar_curve_func(8*PI/10))}"],
+                ["\\frac{9\pi}{10}", f"{round(polar_curve_func(9*PI/10))}"],
+                ["\\frac{9\pi}{10}", f"{round(polar_curve_func(10*PI/10))}"],
+             ])
+        t0.scale(0.35).shift(RIGHT * 4)
+        curve = plane.plot_parametric_curve(
+                                lambda t: [(2*math.sin(5*t))*math.cos(t), (2*math.sin(5*t))*math.sin(t), 0],
+                                t_range=[0, PI],
+                                color=RED)
+        curve_components = [plane.plot_parametric_curve(
+                                lambda t: [(2*math.sin(5*t))*math.cos(t), (2*math.sin(5*t))*math.sin(t), 0],
+                                t_range=[k*PI/10, (k+1)*PI/10],
+                                color=RED) for k in range(10)
+                            ]
+
+        self.add(plane)
+        self.add(t0)
+        box_runtime = 0.75
+        box_to_point_runtime = 1
+        rectangle = SurroundingRectangle(t0.get_rows()[1], color=RED)
+        self.play(Create(rectangle), run_time=box_runtime)
+        self.play(Transform(rectangle, points[0]), run_time=box_to_point_runtime)
+        for i in range(len(points)-1):
+
+            rectangle = SurroundingRectangle(t0.get_rows()[i + 2], color=RED)
+            self.play(Create(rectangle), run_time=box_runtime)
+            self.play(Transform(rectangle, points[i+1]), run_time=box_to_point_runtime)
+            self.play(Create(curve_components[i]), run_time=1)
+        self.wait(1)
+
+
+        # manim -pqh discord.py PolarCurve4
+
+
 ###################################################################################################################
 
 # NOTE :-

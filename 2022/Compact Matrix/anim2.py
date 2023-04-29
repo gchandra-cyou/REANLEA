@@ -38,7 +38,7 @@ from PIL import Image
 
 config.max_files_cached=500
 
-config.background_color= REANLEA_BACKGROUND_COLOR
+config.background_color= WHITE
 
 
 ###################################################################################################################
@@ -332,7 +332,7 @@ class Scene2(Scene):
         # WATER MARK 
 
         water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        #self.add(water_mark)
 
 
         ## PREVIOUS LAST SCENE  ##
@@ -1574,7 +1574,7 @@ class Scene2(Scene):
         ).set_z_index(16).scale(2).set_color_by_gradient(REANLEA_BLUE_SKY,REANLEA_MAGENTA)
         dim_r2[1:].shift(.1*RIGHT)
 
-        r_tot_1=Rectangle(width=16, height=9, color=REANLEA_BACKGROUND_COLOR).set_opacity(.75).set_z_index(15)
+        r_tot_1=Rectangle(width=16, height=9, color=WHITE).set_opacity(.75).set_z_index(15)
         self.play(
             water_mark.animate.set_z_index(16),
         )
@@ -7059,7 +7059,7 @@ class Scene6_1(Scene):
         # WATER MARK 
 
         water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        #self.add(water_mark)
 
         water_mark_1=water_mark.copy()
 
@@ -7439,13 +7439,13 @@ class Scene6_1(Scene):
             AnimationGroup(
             *[FadeOut(mobj) for mobj in self.mobjects]
             ),
-            FadeIn(water_mark_1),
+            #FadeIn(water_mark_1),
             graphs_ref.animate.scale(1.5).move_to(ORIGIN+.5*DOWN),
             eqn_1_x_ref.animate.move_to(2.75*UP)
         )
         self.wait(4)
 
-        water_mark_2=water_mark.copy()
+        '''water_mark_2=water_mark.copy()
 
         self.play(
             AnimationGroup(
@@ -7460,7 +7460,7 @@ class Scene6_1(Scene):
 
 
 
-        self.wait(10)
+        self.wait(10)'''
 
         
 
