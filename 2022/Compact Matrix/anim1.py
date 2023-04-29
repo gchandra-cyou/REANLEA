@@ -2078,10 +2078,6 @@ class Scene3(Scene):
         )
         
         self.play(
-            Write(r_1),
-        )
-        
-        self.play(
             Write(txt_3),
             Create(dts),
             run_time=3,
