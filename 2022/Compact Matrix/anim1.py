@@ -3715,6 +3715,10 @@ class Scene4_3(Scene):
         self.add(eqn_8)
         eqn_8.move_to(2.57049457*DOWN+2.62319193*LEFT)
 
+        self.wait(10)
+
+        # anim zone
+
 
         eqn_6=MathTex(r"\mathbb{R}",r"\times",r"\mathbb{R}",r"\times","...",r"\times",r"\mathbb{R}","=",r"\{", r"(x_{1},x_{2}, ... , x_{n})",r"\mid", r"x_{i} \in \mathbb{R}","","for","","i=1,2,...,n", r"\}")
         eqn_6[12].scale(.5)
