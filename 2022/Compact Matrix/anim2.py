@@ -5878,10 +5878,12 @@ class Scene5(Scene):
         self.play(
             Write(ax_1)
         )
+
         dt_0=Dot(point=ax_1.c2p(0,0), color=REANLEA_GREY, radius=DEFAULT_SMALL_DOT_RADIUS*1.25).set_z_index(1).set_sheen(.4,UP)
         self.play(
             FadeIn(dt_0)
         )
+        self.wait(2)
 
         dt_1=Dot(point=ax_1.c2p(-1,2), color=REANLEA_AQUA).set_sheen(-.4,DOWN)
 
@@ -5899,7 +5901,7 @@ class Scene5(Scene):
             Write(dt_1_lbl)
         )
         self.add(arr_1_copy_1)
-        self.wait(2)
+        self.wait(10)
 
         nrm_def_0=MathTex(r"\langle v,v \rangle","=",r"\lVert v \rVert ^{2}").set_color(REANLEA_TXT_COL).shift(3*UP+4*RIGHT)
         nrm_def_0_copy_1=nrm_def_0.copy()
@@ -5909,7 +5911,7 @@ class Scene5(Scene):
             Write(nrm_def_0)
         )
         self.play(FadeOut(nrm_def_0_copy_1))
-        self.wait(2)
+        self.wait(10)
 
         nrm_def_1=MathTex(r"\Rightarrow",r"\lVert v \rVert","=",r"\sqrt{\langle v,v \rangle}").set_color(REANLEA_TXT_COL).next_to(nrm_def_0,DOWN).shift(.175*RIGHT)
         nrm_def_1_ref=nrm_def_1.copy().set_z_index(11)
@@ -5918,7 +5920,7 @@ class Scene5(Scene):
             Write(nrm_def_1),
             nrm_def_0.animate.scale(.75)
         )
-        self.wait(2)
+        self.wait(10)
 
         dt_2=Dot(point=ax_1.c2p(2,3), color=REANLEA_GOLD).set_sheen(-.4,DOWN).set_z_index(-1)
         arr_2=Arrow(start=ax_1.c2p(0,0),end=ax_1.c2p(2,3),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_YELLOW)
@@ -5932,7 +5934,7 @@ class Scene5(Scene):
             Write(arr_2),
             Write(dt_2_lbl)
         )
-        self.wait()
+        self.wait(5)
 
         dt_3=Dot(point=ax_1.c2p(3,1), color=REANLEA_GREEN).set_sheen(-.4,DOWN)
 
@@ -5943,19 +5945,19 @@ class Scene5(Scene):
         self.play(
             Write(dt_3)
         )
-        self.wait()
-
         self.play(
             Write(arr_3),
             Write(dt_3_lbl)
         )
+        self.wait(5)
+
         self.play(
             arr_1.animate.shift(
                 (ax_1.c2p(3,1)[0]-ax_1.c2p(0,0)[0])*RIGHT+
                 (ax_1.c2p(3,1)[1]-ax_1.c2p(0,0)[1])*UP
             )
         )
-        self.wait(2)
+        self.wait(10)
 
         v_equal_1=MathTex("v","=","X-Y").scale(.75).move_to(ax_1.c2p(4,2))
         v_equal_1[0].set_color(REANLEA_AQUA).scale(1.25)
@@ -5965,7 +5967,7 @@ class Scene5(Scene):
         self.play(
             Write(v_equal_1)
         )
-        self.wait(2)
+        self.wait(5)
 
         dt_2_lbl_1=MathTex(r"(x_{1},x_{2})").scale(.5).set_color(REANLEA_YELLOW).move_to(ax_1.c2p(2.15,3.5))
 
@@ -5975,6 +5977,7 @@ class Scene5(Scene):
             Write(dt_2_lbl_1),
             Write(dt_3_lbl_1)
         )
+        self.wait(5)
 
         dt_2_3_lbl_1_grp=VGroup(dt_2_lbl_1,dt_3_lbl_1)
 
@@ -5987,7 +5990,7 @@ class Scene5(Scene):
         self.play(
             ReplacementTransform(dt_2_3_lbl_1_grp.copy(),v_equal_2)
         )
-        self.wait(2)
+        self.wait(10)
 
         v_equal_grp=VGroup(v_equal_1,v_equal_2)
         #v_equal_grp_1=VGroup(v_equal_1,v_equal_2).move_to(3*UP+2.75*LEFT).set_z_index(11)
@@ -6016,6 +6019,7 @@ class Scene5(Scene):
         self.play(
             Create(sep_ln_1)
         )
+        self.wait(5)
 
         eqn_1=MathTex(r"\lVert X-Y \rVert ^{2}&",r"= \langle X-Y , X-Y \rangle \\ &",r"= \langle X , X \rangle - \langle X , Y \rangle - \langle Y , X \rangle + \langle Y , Y \rangle \\ &",r"= \lVert X \rVert ^{2} + \lVert Y \rVert ^{2} - \langle X , Y \rangle - \langle X , Y \rangle \\ &",r"= \lVert X \rVert ^{2} + \lVert Y \rVert ^{2} - 2 \langle X , Y \rangle ").scale(.75).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER).set_z_index(11)
 
@@ -6026,6 +6030,7 @@ class Scene5(Scene):
             ReplacementTransform(v_eq_nrm_grp.copy(), eqn_1_ref),
             run_time=2
         )
+        self.wait(5)
 
         self.play(
             AnimationGroup(
@@ -6037,7 +6042,7 @@ class Scene5(Scene):
         self.play(
             FadeOut(eqn_1_ref)
         )
-        self.wait(2)
+        self.wait(10)
 
         self.play(
             eqn_1.animate.scale(.75).shift(3.75*LEFT+.5*UP)
@@ -6057,6 +6062,7 @@ class Scene5(Scene):
         self.play(
             ReplacementTransform(v_eq_nrm_grp_2.copy(),eqn_2_ref_0)
         )
+        self.wait(5)
 
 
         with RegisterFont("Cousine") as fonts:
@@ -6065,7 +6071,7 @@ class Scene5(Scene):
         self.play(
             Write(txt_x_1)
         )
-        self.wait()
+        self.wait(10)
 
         self.play(
             AnimationGroup(
@@ -6083,7 +6089,7 @@ class Scene5(Scene):
             FadeOut(eqn_2_ref_0),
             FadeOut(eqn_2_ref_1)
         )
-        self.wait(2)
+        self.wait(10)
 
         eqn_1_x_0=eqn_1[-1].copy()
         eqn_2_x_0=eqn_2[-1].copy()
@@ -6095,13 +6101,14 @@ class Scene5(Scene):
         self.play(
             ReplacementTransform(eqn_1_2_x_0_grp,eqn_3)
         )
-        self.wait(2)
+        self.wait(10)
 
         eqn_4=MathTex(r"\langle X , Y \rangle ","=",r"(x_{1}y_{1}+x_{2}y_{2})").set_z_index(11).shift(2.75*DOWN).scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE)
 
         self.play(
             ReplacementTransform(eqn_3,eqn_4)
         )
+        self.wait(5)
 
         sr_eqn_4=SurroundingRectangle(eqn_4, buff=.25, corner_radius=.125).set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_VIOLET])
 
@@ -6127,7 +6134,7 @@ class Scene5(Scene):
             eqn_4_grp.animate.shift(4.5*RIGHT)
         )
 
-        self.wait(2)
+        self.wait(10)
 
         angl_1=Angle(arr_3,arr_2, radius=.5).set_color(REANLEA_YELLOW_GREEN).set_stroke(width=3.5).set_z_index(-1)
         
@@ -6140,7 +6147,7 @@ class Scene5(Scene):
             Write(angl_1_lbl)
         )
 
-        self.wait(2)
+        self.wait(10)
 
         eqn_6=MathTex(r"\langle X,Y \rangle","=",r" \lVert X \rVert \cdot \lVert Y \rVert \cdot cos\theta ").shift(2.75*DOWN+4.5*LEFT).scale(.6)
 
@@ -6149,7 +6156,7 @@ class Scene5(Scene):
         self.play(
             ReplacementTransform(dt_angl_lbl_grp.copy(),eqn_6)
         )
-        self.wait(2)
+        self.wait(10)
 
         eqn_6_ref=eqn_6[-1].copy()
 
@@ -6160,10 +6167,11 @@ class Scene5(Scene):
                 lag_ratio=.25
             )
         )
-        self.wait()
+
         self.play(
             FadeOut(eqn_5_ref_copy)
         )
+        self.wait(5)
         
         dt_2_3_grp_1=VGroup(dt_2_lbl,dt_3_lbl)
 
@@ -6189,7 +6197,7 @@ class Scene5(Scene):
             ReplacementTransform(trans_grp_1,dt_lbl_grp),
             ReplacementTransform(eqn_5,eqn_7)
         )
-        self.wait(2)
+        self.wait(10)
 
         bez_arr_1=bend_bezier_arrow().flip(UP).rotate(-45*DEGREES).scale(.5).next_to(eqn_7,DOWN).set_z_index(11)
 
@@ -6233,7 +6241,7 @@ class Scene5(Scene):
             )
         )
 
-        self.wait(2)
+        self.wait(10)
 
         remain_grp_1=VGroup()
 
@@ -6259,10 +6267,10 @@ class Scene5(Scene):
         
 
 
-        self.wait(4)
+        self.wait(10)
 
 
-        # manim -pqh anim2.py Scene5
+        # manim -pqk anim2.py Scene5
 
         # manim -pql anim2.py Scene5
 
@@ -6307,17 +6315,19 @@ class Scene5_1(Scene):
         self.play(
             ReplacementTransform(eqn_0.copy(),eqn_2_0)
         )
+        self.wait(5)
 
         eqn_2_1=MathTex(r"\langle X , X \rangle &",r"= x_{1}^{2}+x_{2}^{2} \\ &",r"= \lVert X \rVert ^{2}").scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE)
 
         self.play(
             ReplacementTransform(eqn_2_0,eqn_2_1[0:2])
         )
-        self.wait(2)
+        self.wait(10)
 
         self.play(
             Write(eqn_2_1[2])
         )
+        self.wait(5)
 
         eqn_3_0=MathTex(r"\Rightarrow \lVert X \rVert",r"= \sqrt{ x_{1}^{2}+x_{2}^{2} }").scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE).next_to(eqn_2_1,DOWN).shift(.15*RIGHT)
 
@@ -6326,12 +6336,12 @@ class Scene5_1(Scene):
         self.play(
             TransformMatchingShapes(eqn_2_1.copy(),eqn_3_0)
         )
-        self.wait(2)
+        self.wait(5)
 
         self.play(
             Write(eqn_3_1)
         )
-        self.wait(2)
+        self.wait(10)
 
 
 
@@ -6350,7 +6360,7 @@ class Scene5_1(Scene):
         self.play(
             Write(txt_0)
         )
-        self.wait(2)
+        self.wait(10)
 
 
 
@@ -6365,6 +6375,7 @@ class Scene5_1(Scene):
         self.play(
             Create(sep_ln_0)
         )
+        self.wait(5)
 
         eqn_4=MathTex(r"\lVert X \rVert",r"= \Biggl\lbrack \sum_{i=1}^{n} x_{i}^{2} \Biggr\rbrack ^{1/2} ").scale(.75).set_color_by_gradient(REANLEA_WARM_BLUE,REANLEA_VIOLET_LIGHTER,REANLEA_WARM_BLUE).next_to(sep_ln_0).shift(1.5*RIGHT)
 
@@ -6372,7 +6383,7 @@ class Scene5_1(Scene):
             TransformMatchingShapes(VGroup(eqn_3_0[0].copy(),eqn_3_1.copy()),eqn_4)
         )
 
-        self.wait(2)
+        self.wait(5)
 
         indct_ln_1=Line().scale(.35).rotate(-115*DEGREES).next_to(eqn_4,DOWN).shift(.25*LEFT).set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_ORANGE])
 
@@ -6388,7 +6399,7 @@ class Scene5_1(Scene):
         self.play(
             Write(txt_1)
         )
-        self.wait(2)
+        self.wait(10)
 
         rect_overlap_0=Rectangle(width=16, height=9, color=REANLEA_BACKGROUND_COLOR).to_edge(RIGHT, buff=0).set_opacity(.825).set_z_index(10)
 
@@ -6442,24 +6453,28 @@ class Scene5_1(Scene):
         
 
         self.play(
-            Write(txt_2_0_grp)
+            Write(txt_2_0_grp),
+            run_time=2
         )
         self.wait()
 
         self.play(
-            Write(txt_2_1_grp)
+            Write(txt_2_1_grp),
+            run_time=2
         )
         self.wait()
 
         self.play(
-            Write(txt_2_2_grp)
+            Write(txt_2_2_grp),
+            run_time=2
         )
         self.wait()
 
         self.play(
-            Write(txt_2_3_grp)
+            Write(txt_2_3_grp),
+            run_time=2
         )
-        self.wait(4)
+        self.wait(10)
 
         with RegisterFont("Fuzzy Bubbles") as fonts:
             txt_3 = Text("Cauchy-Schwarz Inequality", font=fonts[0]).set_z_index(11)
@@ -6468,7 +6483,7 @@ class Scene5_1(Scene):
             ReplacementTransform(txt_2_grp,txt_3)
         )
 
-        self.wait(2)
+        self.wait(10)
 
         water_mark_2=water_mark.copy()
 
@@ -6481,12 +6496,12 @@ class Scene5_1(Scene):
         )
 
 
-        self.wait(4)
+        self.wait(10)
 
 
 
 
-        # manim -pqh anim2.py Scene5_1
+        # manim -pqk anim2.py Scene5_1
 
         # manim -pql anim2.py Scene5_1
 

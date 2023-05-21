@@ -7559,6 +7559,59 @@ class PolarCurve4(Scene):
         # manim -pqh discord.py PolarCurve4
 
 
+
+class normalDist(Scene):
+    def construct(self):
+        bins = [i for i in range(12)]
+        count = ValueTracker(50)
+        values = np.random.normal(loc=5.5, scale=1.5, size=int(count.get_value()))
+        probs, edges = np.histogram(values, bins=bins, density=True)
+
+        chart = BarChart(
+            values=probs,
+            y_range=[0,.5,.1],
+            y_length=6,
+            x_length=12,
+            x_axis_config={"font_size": 36},
+        ).add_coordinates()
+        self.add(chart)
+
+        meanText = MathTex(r"\bar x =").to_edge(UP)
+        mean = DecimalNumber(np.mean(values), num_decimal_places=2).next_to(meanText, RIGHT)
+        stdText = MathTex(r"\sigma =").next_to(mean, RIGHT)
+        std = DecimalNumber(np.mean(values), num_decimal_places=2).next_to(stdText, RIGHT)
+        self.play(Write(VGroup(meanText,mean)))
+        self.play(Write(VGroup(stdText,std)))
+
+        mu = ValueTracker(np.mean(values))
+        sigma = ValueTracker(np.std(values))
+        curve = always_redraw(lambda:
+            chart.plot(lambda x: np.exp(-0.5*((x-mu.get_value())/sigma.get_value())**2)/(sigma.get_value()*np.sqrt(2*PI))).set_color(YELLOW)                   
+        )
+        self.add(curve)
+
+        self.wait(2)
+        chart.generate_target()
+
+        for n in range(10):
+            values = np.random.normal(loc=5.5, scale=1.5, size=int(count.get_value()))
+            probs, edges = np.histogram(values, bins=bins, density=True)
+
+            chart.target.change_bar_values(probs)
+            meanVal = np.mean(values)
+            stdVal  = np.std(values)
+            self.play(
+                MoveToTarget(chart),
+                mu.animate.set_value(meanVal),
+                sigma.animate.set_value(stdVal),
+                mean.animate.set_value(meanVal),
+                std.animate.set_value(stdVal),
+            )
+            self.wait()
+
+
+            # manim -pqh discord.py normalDist
+
 ###################################################################################################################
 
 # NOTE :-
