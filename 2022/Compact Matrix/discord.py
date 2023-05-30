@@ -7610,7 +7610,9 @@ class normalDist(Scene):
             self.wait()
 
 
-            # manim -pqh discord.py normalDist
+            # manim -pql discord.py normalDist
+
+            # manim -sql discord.py normalDist
 
 ###################################################################################################################
 

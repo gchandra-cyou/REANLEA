@@ -55,7 +55,7 @@ import itertools as it
 
 
 
-config.background_color= PURE_GREEN
+config.background_color= REANLEA_BACKGROUND_COLOR
 config.max_files_cached=500
 
 
@@ -207,8 +207,21 @@ class ax_ex(Scene):
         self.add(ax_1)
     
     # manim -sqk banner.py ax_ex
-        
-      
+
+
+class banner1(Scene):
+     def construct(self):
+          
+        im_1 = ImageMobject("title_1.png").scale(.5)
+
+        self.play(
+            FadeIn(im_1)
+        )
+          
+    # manim -sqk banner.py banner1
+
+    # manim -pqk banner.py banner1
+
 ###################################################################################################################
 
 # Changing FONTS : import any font from Google
