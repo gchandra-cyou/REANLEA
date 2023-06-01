@@ -49,9 +49,9 @@ class Scene1(Scene):
         
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
         self.add(water_mark)
-        self.wait(5)
+        self.wait(5)'''
 
 
         ## CUT - I  ##
@@ -361,8 +361,8 @@ class Scene2(Scene):
         
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)'''
 
 
         ## PREVIOUS LAST SCENE  ##
@@ -1623,9 +1623,9 @@ class Scene2(Scene):
         dim_r2[1:].shift(.1*RIGHT)
 
         r_tot_1=Rectangle(width=16, height=9, color=REANLEA_BACKGROUND_COLOR).set_opacity(.75).set_z_index(15)
-        self.play(
+        '''self.play(
             water_mark.animate.set_z_index(16),
-        )
+        )'''
         self.play(
             FadeIn(r_tot_1),
             run_time=2
@@ -1685,8 +1685,8 @@ class Scene2_1(Scene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)'''
         self.wait()
 
         ## PREVIOUS LAST SCENE  ##
@@ -1707,7 +1707,7 @@ class Scene2_1(Scene):
 
         # manim -pqh anim2.py Scene2_1
 
-        # manim -pql anim2.py Scene2_1
+        # manim -pqk anim2.py Scene2_1
 
         # manim -sqk anim2.py Scene2_1
 
@@ -1719,8 +1719,8 @@ class Scene2_ref(Scene):
         
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)'''
 
 
         ## PREVIOUS LAST SCENE  ##
@@ -1979,10 +1979,10 @@ class Scene2_nxt(Scene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)'''
 
-        water_mark_1=water_mark.copy()
+        #water_mark_1=water_mark.copy()
 
 
         ## PREVIOUS LAST SCENE  ##
@@ -2037,8 +2037,8 @@ class Scene3(Scene):
         
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)'''
         self.wait(5)
 
 
@@ -2097,9 +2097,9 @@ class Scene3(Scene):
 
 
         r_tot_1=Rectangle(width=16, height=9, color=REANLEA_BACKGROUND_COLOR).set_opacity(.75).set_z_index(2)
-        self.play(
+        '''self.play(
             water_mark.animate.set_z_index(3),
-        )
+        )'''
         self.play(
             FadeIn(r_tot_1),
             run_time=2
@@ -2151,7 +2151,7 @@ class Scene3(Scene):
             FadeOut(txt_2),
             FadeOut(sym_1),
             hed_txt_bez.animate.scale(.6).move_to(5*LEFT+3*DOWN),
-            water_mark.animate.set_z_index(-100)
+            #water_mark.animate.set_z_index(-100)
         )
         self.wait(10)
 
@@ -2687,8 +2687,8 @@ class Scene3_1(Scene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)'''
         
 
 

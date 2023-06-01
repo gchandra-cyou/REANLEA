@@ -7614,6 +7614,48 @@ class normalDist(Scene):
 
             # manim -sql discord.py normalDist
 
+
+# manim -pql discord.py lorenz
+
+from scipy.integrate import odeint
+class lorenz(ThreeDScene):
+    def construct(self):
+        ax = ThreeDAxes(
+            x_range=[-40,40,10],
+            y_range=[-40,40,10],
+            z_range=[-40,40,10]
+        ).set_color(BLUE)
+        ax.add_coordinates()
+
+        rho = 28.0
+        sigma = 10.0
+        beta = 8/3
+
+        def f(state, t):
+            x,y,z = state
+            return sigma * (y-x), x*(rho-z)-y, x*y-beta*z
+        state0 =[1.0, 1.0, 1.0]
+        ts = np.arange(0, 40, 0.01)
+        states = odeint(f, state0, ts)
+
+        plt = ax.plot_parametric_curve(
+            lambda t: [states[int(t)][0],states[int(t)][1],states[int(t)][2],], 
+            t_range=[0, len(ts)-1, 1]
+        ).set_color(YELLOW)
+
+        self.add(ax, plt)   
+
+        self.move_camera(phi=75 * DEGREES, theta=30 * DEGREES, run_time=3)
+        self.begin_ambient_camera_rotation(rate=0.1)
+        self.wait(5)
+        self.stop_ambient_camera_rotation()
+        self.wait()
+
+
+        # manim -pql discord.py lorenz
+
+        # manim -pqk discord.py lorenz
+
 ###################################################################################################################
 
 # NOTE :-

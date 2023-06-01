@@ -78,10 +78,11 @@ class Trailer(Scene):
             txt_cs_grp_0.animate.shift(2.5*UP).scale(.5)
         )'''
 
-        rect=Rectangle(height=4.5, width=8).scale(.8).shift(.75*UP+3*RIGHT).set_stroke(opacity=0.5)
-        self.add(rect)
+        rect=Rectangle(height=4.5, width=8).scale(.8).shift(.75*UP+3*RIGHT).set_stroke(opacity=1, color=[REANLEA_VIOLET,REANLEA_AQUA])
 
-
+        self.play(
+            Create(rect)
+        )
 
         
         transition_points = [
@@ -104,11 +105,11 @@ class Trailer(Scene):
 
         ch_points = [
             # use a list if we want multiple lines
-            ["a1","b1","c1"],
-            ["a2","b2","c2"],
-            ["a3","b3","c3"],
-            ["a4","b4","c4"],
-            ["a5","b5","c5"]
+            ["static point and vector","geometry of distance","generalization to metric"],
+            ["1+1= ? & how -(-1)=1","appliation on vectors","properties of vector space"],
+            ["define cartesian product","new space construction","relation wih vector addition & coordinate representation"],
+            ["geometry of function","geometry of linearity","base and dimension"],
+            ["geometric proof","how to determine norm","Notion of vector addition and components"]
         ]
 
         for i in range(len(transition_points)):
@@ -184,7 +185,7 @@ class Trailer(Scene):
 
                 ch_title = (
                     VGroup(*ch_subtitles)
-                    .scale(.45)
+                    .scale(.35)
                     #.arrange(DOWN)
                 )
         else:
@@ -234,6 +235,10 @@ class Trailer(Scene):
             nodes_and_lines_ref[7:].set_opacity(0)   
 
         title.next_to(nodes_and_lines[2*(index-1)],UP)
+
+        rect_2=Rectangle(height=4.5, width=8).scale(.8).shift(.75*UP+3*RIGHT).set_stroke(opacity=1, color=[REANLEA_VIOLET,REANLEA_AQUA])
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
         
 
         
@@ -244,7 +249,7 @@ class Trailer(Scene):
                 LaggedStartMap(FadeIn, nodes_and_lines),
                 AnimationGroup(
                     FadeIn(title),
-                    FadeIn(title_ref)
+                    FadeIn(title_ref),
                 ),
                 lag_ratio=.35
             )
@@ -361,9 +366,7 @@ class Trailer(Scene):
         )
         self.wait(2)
 
-
-
-        self.wait(2)
+        
         
 
         if index != 5:
@@ -379,6 +382,8 @@ class Trailer(Scene):
             )
         else:
             self.play(
+                FadeIn(rect_2),
+                FadeIn(water_mark),
                 AnimationGroup(
                     *[FadeOut(mobj) for mobj in self.mobjects],
                     FadeIn(nodes_and_lines_ref)
@@ -390,7 +395,7 @@ class Trailer(Scene):
         
 
         
-
+# manim -pqk anim3.py Trailer
 
 # manim -pqh anim3.py Trailer
 
@@ -431,8 +436,11 @@ class Trailer_1(Scene):
             txt_cs_grp_0.animate.shift(2.5*UP).scale(.5)
         )'''
 
-        rect=Rectangle(height=4.5, width=8).scale(.8).shift(.75*UP+3*RIGHT).set_stroke(opacity=0.5)
-        self.add(rect)
+        rect=Rectangle(height=4.5, width=8).scale(.8).shift(.75*UP+3*RIGHT).set_stroke(opacity=1, color=[REANLEA_VIOLET,REANLEA_AQUA])
+
+        self.play(
+            Create(rect)
+        )
 
 
 
@@ -442,7 +450,7 @@ class Trailer_1(Scene):
             [""],
             ["Inner Product"],
             ["Norm"],
-            ["Cauchy-SChwarz Inequality"],
+            ["Cauchy-Schwarz Inequality"],
             [""]
         ]
 
@@ -458,9 +466,9 @@ class Trailer_1(Scene):
         ch_points = [
             # use a list if we want multiple lines
             ["","",""],
-            ["a2","b2","c2"],
-            ["a3","b3","c3"],
-            ["a4","b4","c4"],
+            ["projection and generalization","geometry of inner product","defining euclidean space"],
+            ["norms & inner product","coordinate representation","norm, inner product, Pythagoras theorem and law of cosines"],
+            ["geometric proof","Triangle inequality","Notion of d–infinite metric"],
             ["","",""]
         ]
 
@@ -537,7 +545,7 @@ class Trailer_1(Scene):
 
                 ch_title = (
                     VGroup(*ch_subtitles)
-                    .scale(.45)
+                    .scale(.325)
                     #.arrange(DOWN)
                 )
         else:
@@ -584,6 +592,9 @@ class Trailer_1(Scene):
            
 
         title.next_to(nodes_and_lines[2*(index-1)],UP)
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+
         
 
         if index == 2 :
@@ -724,7 +735,7 @@ class Trailer_1(Scene):
         self.wait(2)
         
 
-        if index != 5:
+        if index != 4:
             self.play(
                 AnimationGroup(
                     FadeOut(title),
@@ -737,6 +748,7 @@ class Trailer_1(Scene):
             )
         else:
             self.play(
+                FadeIn(water_mark),
                 AnimationGroup(
                     *[FadeOut(mobj) for mobj in self.mobjects]
                 ),
@@ -751,6 +763,8 @@ class Trailer_1(Scene):
 
 # manim -pqh anim3.py Trailer_1
 
+# manim -pqk anim3.py Trailer_1
+
 # manim -sqk anim3.py Trailer_1
 
 ###################################################################################################################
@@ -760,10 +774,10 @@ class Scene1_intro_1(MovingCameraScene):
 
         self.camera.frame.save_state()
 
-        # WATER MARK 
+        '''# WATER MARK 
 
         water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        water_mark.save_state()
+        water_mark.save_state()'''
         
 
         scene = VGroup()
@@ -862,7 +876,7 @@ class Scene1_intro_1(MovingCameraScene):
 
        
         # play region
-        self.add(water_mark)
+        #self.add(water_mark)
         self.wait()
 
         self.play(
@@ -887,7 +901,7 @@ class Scene1_intro_1(MovingCameraScene):
 
         self.play(
             self.camera.frame.animate.scale(0.5).move_to(DOWN + 1.5*RIGHT),
-            water_mark.animate.scale(0.5).move_to(0.5*UP + LEFT),
+            #water_mark.animate.scale(0.5).move_to(0.5*UP + LEFT),
         )
         self.wait(5)
 
@@ -903,7 +917,7 @@ class Scene1_intro_1(MovingCameraScene):
         self.play(Write(d_line_label))
         self.wait(5)
 
-        self.play(Restore(self.camera.frame), Restore(water_mark))
+        self.play(Restore(self.camera.frame))
         self.wait(5)
 
         self.play(
@@ -1003,8 +1017,8 @@ class Scene1_intro_1(MovingCameraScene):
 
 class Scene1_intro_2(Scene):
     def construct(self):
-        # WATER-MARK
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        '''# WATER-MARK
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)'''
 
         # Tracker 
         x=ValueTracker(-3)
@@ -1101,7 +1115,7 @@ class Scene1_intro_2(Scene):
 
         # play region
 
-        self.add(water_mark, grp1, dot1_lbl,dot3_lbl)
+        self.add(grp1, dot1_lbl,dot3_lbl)
         self.wait()
         self.play(Write(grp2))
         self.add(dot3)
@@ -1197,6 +1211,477 @@ class Scene1_intro_2(Scene):
     # manim -pqk anim3.py Scene1_intro_2
 
     # manim -sqk anim3.py Scene1_intro_2
+
+###################################################################################################################
+
+class trailer_0(Scene):
+    def construct(self):
+
+        # water mark 
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        self.wait()
+
+        # SCENE
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(-5)
+
+        dt_0=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(0,0)).set_z_index(2)
+
+        self.play(
+            Write(ax_1),
+            run_time=2
+        )
+        self.play(
+            Write(dt_0)
+        )
+        
+        self.wait(2)
+        
+        
+        dt_1=Dot().set_color(REANLEA_GOLD).move_to(ax_1.c2p(3,2)).set_z_index(2)
+        dt_2=Dot().set_color(REANLEA_SLATE_BLUE).move_to(ax_1.c2p(2,1)).set_z_index(2)
+        dt_2_ref=Dot().set_color(REANLEA_BLUE).move_to(ax_1.c2p(2,1)).set_z_index(2)
+
+        dt_1_lbl=MathTex("(","3",",","2",")").scale(.45).set_color(REANLEA_GOLD).next_to(dt_1,UR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+        dt_2_lbl=MathTex("(","2",",","1",")").scale(.45).set_color(REANLEA_SLATE_BLUE).next_to(dt_2,RIGHT, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+        dt_2_lbl_ref=MathTex("(","2",",","1",")").scale(.45).set_color(REANLEA_BLUE).next_to(dt_2,RIGHT, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+
+        ln_1=Line(start=dt_0.get_center(), end=dt_1.get_center()).set_stroke(width=5, color=[REANLEA_GOLD,REANLEA_AQUA])
+        ln_2=Line(start=dt_0.get_center(), end=dt_2.get_center()).set_stroke(width=5, color=[REANLEA_SLATE_BLUE_LIGHTER,REANLEA_AQUA])
+        ln_2_ref=Line(start=dt_0.get_center(), end=dt_2.get_center()).set_stroke(width=5, color=[REANLEA_BLUE,REANLEA_AQUA])
+
+        self.play(
+            Write(dt_1),
+            Write(dt_2)
+        )
+        self.wait(2)
+        self.play(
+            AnimationGroup(
+                Create(dt_1_lbl),
+                Create(dt_2_lbl)
+            ),
+            AnimationGroup(
+                Create(ln_1),
+                Create(ln_2)
+            )
+        )
+        self.wait(2)
+
+        txt_1=MathTex(r"\langle","(3,2)",",","(2,1)",r"\rangle").scale(.65).shift(2.75*UP+3*RIGHT).set_color(REANLEA_CYAN_LIGHT)
+        txt_1[1].set_color(REANLEA_GOLD)
+        txt_1[3].set_color(REANLEA_SLATE_BLUE_LIGHTER)
+
+        self.play(
+            ReplacementTransform(VGroup(dt_1_lbl.copy(),dt_2_lbl.copy()),txt_1[1:4]),
+            FadeIn(txt_1[0]),
+            FadeIn(txt_1[4])
+        )
+        self.wait(2)
+
+        ind_ln_0=Line().scale(.25).set_stroke(width=1).rotate(-35*DEGREES).next_to(txt_1,DOWN).shift(.35*RIGHT)
+
+        with RegisterFont("Cousine") as fonts:
+            ind_ln_0_lbl = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "measures the projection",
+                "of one vector onto another"
+            )]).arrange_submobjects(DOWN).scale(.25).set_color_by_gradient(REANLEA_BLUE_LAVENDER).next_to(ind_ln_0.get_end()).shift(.1875*LEFT+.1875*DOWN)
+            ind_ln_0_lbl[1].shift(.15*RIGHT)
+
+        self.play(
+            Create(ind_ln_0)
+        )
+        self.play(
+            Write(ind_ln_0_lbl),
+            run_time=2
+        ) 
+        self.wait(2)
+        
+        dt_3=Dot().set_color(REANLEA_SLATE_BLUE).move_to(ax_1.c2p(1,0)).set_z_index(2)
+        dt_3_lbl=MathTex("(","1",",","0",")").scale(.45).set_color(REANLEA_SLATE_BLUE).next_to(dt_3,DR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+        ln_3=Line(start=dt_0.get_center(), end=dt_3.get_center()).set_stroke(width=5, color=[REANLEA_SLATE_BLUE_LIGHTER,REANLEA_AQUA])
+
+        txt_2=MathTex(r"\langle","(3,2)",",","(1,0)",r"\rangle").scale(.65).shift(2.75*UP+3*RIGHT).set_color(REANLEA_CYAN_LIGHT)
+        txt_2[1].set_color(REANLEA_GOLD)
+        txt_2[3].set_color(REANLEA_SLATE_BLUE_LIGHTER)
+
+        txt_2_ref=MathTex(r"\langle","(3,2)",",","(2,1)",r"\rangle").scale(.65).shift(2.75*UP+3*RIGHT).set_color(REANLEA_CYAN_LIGHT)
+        txt_2_ref[1].set_color(REANLEA_GOLD)
+        txt_2_ref[3].set_color(REANLEA_BLUE)
+
+        self.play(
+            AnimationGroup(
+                ReplacementTransform(dt_2,dt_3),
+                ReplacementTransform(ln_2,ln_3),
+                ReplacementTransform(dt_2_lbl,dt_3_lbl)
+            ),
+            ReplacementTransform(txt_1,txt_2)
+        )
+        self.wait(2)
+
+        dissipating_dt_1=Dot().move_to(ax_1.c2p(3,2)).set_opacity(opacity=0)
+        dissipating_path_1 = TracedPath(dissipating_dt_1.get_center, dissipating_time=0.5, stroke_color=[REANLEA_GOLD],stroke_opacity=[1, 0])
+        self.add(dissipating_dt_1,dissipating_path_1)
+        ln_dis_1=Line(ax_1.c2p(3,2),ax_1.c2p(3,0))
+
+        dt_4=Dot().set_color(PURE_RED).move_to(ax_1.c2p(3,0)).set_z_index(2)
+        dt_4_lbl=MathTex("(","3",",","0",")").scale(.45).set_color(PURE_RED).next_to(dt_4,DOWN, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+
+        self.play(
+            AnimationGroup(
+                MoveAlongPath(dissipating_dt_1,ln_dis_1),
+                AnimationGroup(
+                    Flash(point=Dot().move_to(ax_1.c2p(3,0)), color=PURE_GREEN),
+                    FadeIn(dt_4)
+                ),               
+                lag_ratio=0.5
+            )
+        )
+        self.play(
+            Write(dt_4_lbl)
+        )
+
+        d_ln_1=DashedDoubleArrow(
+            start=dt_0.get_center(), end=dt_4.get_center(), dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).shift(.75*DOWN).set_color_by_gradient(REANLEA_AQUA,REANLEA_GOLD)
+
+        d_ln_1_lbl=MathTex("3","=",r"\sqrt{3^{2} + 2^{2}}",r"\cdot",r"cos(tan^{-1}(\frac{2}{3}))").scale(.4).next_to(d_ln_1,DOWN).shift(1.2*RIGHT+.175*UP)
+
+        self.play(
+            Create(d_ln_1)
+        )
+        self.play(
+            Write(d_ln_1_lbl[0])
+        )
+        self.wait(2)
+
+        self.play(
+            Write(d_ln_1_lbl[1:])
+        )
+        self.wait(2)
+
+        self.play(
+            AnimationGroup(
+                Indicate(dt_1),
+                Indicate(dt_3),
+            ),
+            AnimationGroup(
+                Indicate(dt_1_lbl),
+                Indicate(dt_3_lbl),
+            ),
+            AnimationGroup(
+                Indicate(txt_2[1]),
+                Indicate(txt_2[3]),
+            ),
+            run_time=1.25
+        )
+        self.wait(2)
+
+        txt_3= MathTex(r"=",r"\lVert (3,2) \rVert",r"\cdot",r"\lVert (1,0) \rVert",r"\cdot",r"cos\theta").scale(.475).next_to(txt_2).set_color(REANLEA_CYAN_LIGHT)
+        txt_3[1][1:6].set_color(REANLEA_GOLD)
+        txt_3[3][1:6].set_color(REANLEA_SLATE_BLUE_LIGHTER)
+        txt_3[5][-1].set_color(REANLEA_YELLOW_GREEN)
+
+
+        self.play(
+            Write(txt_3)
+        )
+
+        angl_1=Angle(ln_2,ln_1).set_color(REANLEA_YELLOW_GREEN).set_stroke(width=3.5).set_z_index(-1)
+        
+        angl_1_lbl=MathTex(r"\theta").scale(.4).set_color(REANLEA_YELLOW_GREEN).next_to(angl_1,UR, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2).shift(.25*DOWN).set_z_index(2)
+
+        self.play(
+            Create(angl_1)
+        )
+        self.play(
+            Write(angl_1_lbl)
+        )
+        self.wait(2)
+
+
+
+        eqn_1_0=txt_2.copy().scale(.8).move_to(4.25*LEFT+2.75*UP)
+
+        ind_ln_1_0=Line().scale(.75).set_stroke(width=1).rotate(-135*DEGREES).next_to(eqn_1_0,DOWN).shift(.7*LEFT)
+
+        eqn_1_1=txt_3[1:].copy().scale(.9).next_to(ind_ln_1_0.get_end()).shift(.25*DOWN+1.35*LEFT)
+
+        ind_ln_1_1=Line().scale(.75).set_stroke(width=1).rotate(-45*DEGREES).next_to(ind_ln_1_0)
+
+        ind_ln_1_2=Line().scale(.35).set_stroke(width=1).next_to(eqn_1_1)
+
+        eqn_1_2= MathTex(r"3 \cdot 1",r"+",r"2 \cdot 0").scale(.4275).next_to(ind_ln_1_2).set_color(REANLEA_CYAN_LIGHT)
+        eqn_1_2[0][0].set_color(REANLEA_GOLD)
+        eqn_1_2[2][0].set_color(REANLEA_GOLD)
+        eqn_1_2[0][2].set_color(REANLEA_SLATE_BLUE_LIGHTER)
+        eqn_1_2[2][2].set_color(REANLEA_SLATE_BLUE_LIGHTER)
+        
+        
+        self.play(
+            ReplacementTransform(txt_2.copy(),eqn_1_0)
+        )
+        self.play(
+            Create(ind_ln_1_0)
+        )
+        self.play(
+            ReplacementTransform(txt_3[1:],eqn_1_1),
+            FadeOut(txt_3[0])
+        )
+        self.wait(2)
+
+        txt_4= MathTex(r"=",r"3 \cdot 1",r"+",r"2 \cdot 0").scale(.65).next_to(txt_2).set_color(REANLEA_CYAN_LIGHT)
+        txt_4[1:].shift(.1*RIGHT)
+        txt_4[1][0].set_color(REANLEA_GOLD)
+        txt_4[3][0].set_color(REANLEA_GOLD)
+        txt_4[1][2].set_color(REANLEA_SLATE_BLUE_LIGHTER)
+        txt_4[3][2].set_color(REANLEA_SLATE_BLUE_LIGHTER)
+
+        txt_4_ref= MathTex(r"=",r"3 \cdot 2",r"+",r"2 \cdot 1").scale(.65).next_to(txt_2).set_color(REANLEA_CYAN_LIGHT)
+        txt_4_ref[1:].shift(.1*RIGHT)
+        txt_4_ref[1][0].set_color(REANLEA_GOLD)
+        txt_4_ref[3][0].set_color(REANLEA_GOLD)
+        txt_4_ref[1][2].set_color(REANLEA_BLUE)
+        txt_4_ref[3][2].set_color(REANLEA_BLUE)
+
+        self.play(
+            AnimationGroup(
+                AnimationGroup(
+                    Create(ind_ln_1_1),
+                    Create(ind_ln_1_2)
+                ),
+                AnimationGroup(
+                    Write(txt_4),
+                    Write(eqn_1_2)
+                ),
+                lag_ratio=.75
+            )
+        )
+        self.wait(2)
+
+        ind_ln_2_1=Line().scale(.75).set_stroke(width=1).rotate(-45*DEGREES).next_to(eqn_1_1,DOWN).shift(.61*RIGHT+.125*UP) 
+
+        ind_ln_2_2=Line().scale(.75).set_stroke(width=1).rotate(-135*DEGREES).next_to(ind_ln_2_1)
+
+        eqn_2_0=MathTex(r"\sqrt{3^{2} + 2^{2}}",r"\cdot",r"cos(tan^{-1}(\frac{2}{3}))").scale(.52).next_to(ind_ln_2_2.get_end(),DOWN).shift(.2*LEFT+.175*UP)
+        eqn_2_0[0][2].set_color(REANLEA_GOLD)
+        eqn_2_0[0][5].set_color(REANLEA_GOLD)
+        eqn_2_0[2][4:14].set_color(REANLEA_YELLOW_GREEN)
+
+        self.play(
+            AnimationGroup(
+                AnimationGroup(
+                    Create(ind_ln_2_1),
+                    Create(ind_ln_2_2)
+                ),
+                ReplacementTransform(d_ln_1_lbl[2:].copy(),eqn_2_0),
+                lag_ratio=.75
+            )
+        )
+        self.wait(2)
+
+        sr_eqn_2_0=SurroundingRectangle(eqn_2_0[0], color=REANLEA_PURPLE, corner_radius=.075).set_stroke(width=2)
+      
+        self.play(
+            AnimationGroup(
+                eqn_2_0[1:].animate.shift(.1*RIGHT),
+                Write(sr_eqn_2_0),
+                lag_ratio=.75
+            )
+        )
+
+        indct_arr_1=MathTex(r"\rightarrow").set_stroke(width=3, color=[REANLEA_WARM_BLUE,REANLEA_PINK]).rotate(-PI/2).scale(.75).next_to(sr_eqn_2_0,DOWN)
+
+        self.play(
+            Create(indct_arr_1)
+        )
+        with RegisterFont("Cousine") as fonts:
+            txt_pt_0 = Text("Pythagoras Theorem" , font=fonts[0]).next_to(indct_arr_1,DOWN).shift(.25*UP).scale(.3)
+        
+        self.play(
+            Write(txt_pt_0)
+        )
+
+        rel_ln_0=Line().rotate(-PI/2).scale(.35).next_to(txt_pt_0,DOWN).shift(.1*UP).set_stroke(width=2, color=[REANLEA_BLUE_SKY,REANLEA_PURPLE])
+        self.play(
+            Create(rel_ln_0)
+        )
+        
+
+        with RegisterFont("Cousine") as fonts:
+            txt_pt_1 = Text("Inner Product" , font=fonts[0]).next_to(rel_ln_0,DOWN).shift(.25*UP).scale(.3)
+        
+        self.play(
+            Write(txt_pt_1)
+        )
+
+        rel_ln_1=Line().scale(.45).next_to(txt_pt_1).shift(.1*LEFT).set_stroke(width=2, color=[REANLEA_BLUE_SKY,REANLEA_PURPLE])
+        self.play(
+            Create(rel_ln_1)
+        )
+        
+
+
+        with RegisterFont("Cousine") as fonts:
+            txt_pt_2 = Text("Norm/Length" , font=fonts[0]).scale(.3).next_to(rel_ln_1)
+        
+        self.play(
+            Write(txt_pt_2)
+        )
+
+        rel_ln_2=Line().rotate(160*DEGREES).set_stroke(width=2, color=[REANLEA_BLUE_SKY,REANLEA_PURPLE]).next_to(txt_pt_2,UP).shift(1.2*LEFT+.1*DOWN)
+        self.play(
+            Create(rel_ln_2)
+        )
+        self.wait(2)
+        
+
+        arr_circ_1=MathTex(r"\circlearrowleft").set_color(REANLEA_BLUE_SKY).scale(1.25).set_stroke(width=4.5, color=[REANLEA_BLUE_LAVENDER,REANLEA_BLUE_SKY,REANLEA_PURPLE,REANLEA_GOLD]).next_to(rel_ln_0).shift(.2*RIGHT+.125*DOWN)
+
+        self.play(
+            Write(arr_circ_1)
+        )
+        self.wait(2)
+
+        self.play(
+            AnimationGroup(
+                ReplacementTransform(dt_3.copy(),dt_2_ref),
+                ReplacementTransform(ln_3.copy(),ln_2_ref),
+                ReplacementTransform(dt_3_lbl.copy(),dt_2_lbl_ref)
+            ),
+            AnimationGroup(
+                ReplacementTransform(txt_2,txt_2_ref),
+                ReplacementTransform(txt_4,txt_4_ref)
+            )
+        )
+        self.wait(2)
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_ip_0 = Text("Inner Product" , font=fonts[0]).scale(.55).set_color(REANLEA_CYAN_LIGHT).shift(4.75*RIGHT+.5*DOWN)
+
+        dumy_ln_2=Line().rotate(-90*DEGREES).set_stroke(width=2, color=[REANLEA_BLUE_SKY,REANLEA_VIOLET]).scale(.65).shift(4.2*RIGHT+1.5*DOWN)
+
+        bulet_1=Dot(radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN).shift(4.2*RIGHT+1.15*DOWN)
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_sym_1=Text("Symmetric", font=fonts[0]).scale(.5).set_color(REANLEA_CYAN_LIGHT).next_to(bulet_1,RIGHT)
+
+        bulet_2=Dot(radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN).next_to(bulet_1,DOWN).shift(.05*DOWN)
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_sym_2=Text("Bilinear", font=fonts[0]).scale(.5).set_color(REANLEA_CYAN_LIGHT).next_to(bulet_2,RIGHT)
+
+        bulet_3=Dot(radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN).next_to(bulet_2,DOWN).shift(.05*DOWN)
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_sym_3=Text("Positive Definite", font=fonts[0]).scale(.5).set_color(REANLEA_CYAN_LIGHT).next_to(bulet_3,RIGHT)
+
+        self.play(
+            ReplacementTransform(txt_pt_1.copy(),txt_ip_0)
+        )
+        self.wait()
+
+        self.play(
+            Create(dumy_ln_2)
+        )
+
+        self.play(
+            Write(bulet_1)
+        )
+        self.play(
+            Create(txt_sym_1)
+        )
+        self.wait()
+
+        self.play(
+            Write(bulet_2)
+        )
+        self.play(
+            Create(txt_sym_2)
+        )
+        self.wait()
+
+        self.play(
+            Write(bulet_3)
+        )
+        self.play(
+            Create(txt_sym_3)
+        )
+        self.wait(2)
+
+        dt_0_lbl= MathTex("O").scale(.45).set_color(REANLEA_AQUA).next_to(dt_0,DL, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+        dt_1_lbl_1= MathTex("=","v").scale(.65).set_color(REANLEA_GOLD).next_to(dt_1_lbl, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2)
+
+        d_ln_2=DashedDoubleArrow(
+            start=dt_0.get_center(), end=dt_1.get_center(), dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).set_color_by_gradient(REANLEA_AQUA,REANLEA_GOLD).shift(.1*LEFT+.15*UP)
+
+        ln_1_lbl=MathTex("d(O,v)").scale(.5).rotate(ln_1.get_angle()).next_to(ln_1, buff=DEFAULT_MOBJECT_TO_MOBJECT_BUFFER/2).shift(2*LEFT+.3*UP)
+        ln_1_lbl[0][2].set_color(REANLEA_AQUA)
+        ln_1_lbl[0][4].set_color(REANLEA_GOLD)
+
+        self.play(
+            AnimationGroup(
+                Write(dt_0_lbl),
+                Write(dt_1_lbl_1)
+            )
+        )
+
+        self.play(
+            AnimationGroup(
+                Create(d_ln_2),
+                Write(ln_1_lbl),
+                lag_ratio=.5
+            )
+        )
+        self.wait(2)
+
+        water_mark_2=water_mark.copy()
+        im_1 = ImageMobject("title_1.png").scale(.5)
+
+        self.play(            
+            AnimationGroup(
+                *[FadeOut(mobj) for mobj in self.mobjects],
+            ),
+            FadeIn(water_mark_2),
+            run_time=3
+        )
+        self.play(
+            FadeIn(im_1),
+            run_time=2
+        )
+        self.wait(2)
+
+        self.play(
+            FadeOut(im_1)
+        )
+
+
+
+
+
+        
+
+        self.wait(4)
+
+
+    # manim -pqh anim3.py trailer_0
+
+    # manim -pqk anim3.py trailer_0
+
+    # manim -sqk anim3.py trailer_0
+        
 
 ###################################################################################################################
 

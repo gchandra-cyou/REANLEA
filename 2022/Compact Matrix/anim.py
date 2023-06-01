@@ -57,23 +57,28 @@ class Scene1(Scene):
             
         with RegisterFont("Courier Prime") as fonts:
             text_3 = VGroup(*[Text(x, font=fonts[0]) for x in (
-                "You MAY KNOW almost EVERYTHING if you want.",
-                "But without investing ENOUGH TIME you CAN'T LEARN anything... "
+                "Geometry is an Art of Imagination.",
+                "- D. Hilbert"
             )]).arrange_submobjects(DOWN).to_edge(UP).shift(0.5*DOWN).scale(0.4).set_color(REANLEA_GREY)
             text_3.move_to(ORIGIN)
             
         grp=VGroup(text_1,text_2).arrange(DOWN)
 
+        with RegisterFont("Courier Prime") as fonts:
+            text_4 = Text("Geometry is an Art of Imagination.", font=fonts[0]).scale(0.4).set_color(REANLEA_GREY).move_to(ORIGIN)
+
 
 
         self.add(water_mark)
+        self.wait(2)
         self.play(
-            AddTextWordByWord(text_3),
+            AddTextLetterByLetter(text_4),
+            run_time=2.5
         )
-        self.wait(3)
+        self.wait(2)
 
         self.play(
-            FadeOut(text_3),
+            FadeOut(text_4),
             run_time=1.5
         )
         self.wait()
@@ -87,6 +92,41 @@ class Scene1(Scene):
         # manim -sqk anim.py Scene1
 
 
+
+class Scene1_0(Scene):
+    def construct(self):
+
+        # WATER-MARK
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+
+
+        with RegisterFont("Courier Prime") as fonts:
+            text_1 = Text("Shape Your Imagination.", font=fonts[0]).scale(0.4).set_color(REANLEA_GREY).move_to(ORIGIN)
+
+
+
+        self.wait(2)
+        self.play(
+            AddTextLetterByLetter(text_1),
+            run_time=2.5
+        )
+        self.wait(2)
+
+        self.play(
+            FadeOut(text_1),
+            run_time=1.5
+        )
+        self.wait(4)
+
+
+
+        # manim -pqh anim.py Scene1_0
+
+        # manim -pqk anim.py Scene1_0
+
+        # manim -sqk anim.py Scene1_0
+
 ###################################################################################################################
 
 
@@ -99,7 +139,7 @@ class Scene2(Scene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)'''
 
         #object region
 
@@ -231,7 +271,7 @@ class Scene2(Scene):
 
         ####play region
 
-        self.add(water_mark)
+        #self.add(water_mark)
         
         
         self.play(
@@ -322,7 +362,7 @@ class Scene3(Scene):
     def construct(self):
          
         # WATER-MARK
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)'''
 
         # HEADING
         with RegisterFont("Montserrat") as fonts:
@@ -337,7 +377,7 @@ class Scene3(Scene):
         ann=VGroup(s1,s2,s3)
 
         # PLAY REGION
-        self.add(water_mark)
+        #self.add(water_mark)
         self.wait(2)
 
         self.play(
@@ -374,8 +414,8 @@ class Scene4(MovingCameraScene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        water_mark.save_state()
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        water_mark.save_state()'''
         
 
         scene = VGroup()
@@ -621,7 +661,7 @@ class Scene4(MovingCameraScene):
 
         #### play region
 
-        self.add(water_mark)
+        #self.add(water_mark)
         self.play(Write(text_1))
         
         self.wait()
@@ -638,7 +678,7 @@ class Scene4(MovingCameraScene):
         self.play(
             self.camera.frame.animate.scale(0.5).move_to(DOWN + 1.5*RIGHT),
             text_1.animate.scale(0.5).move_to(0.425*UP + 1.5 *RIGHT),
-            water_mark.animate.scale(0.5).move_to(0.5*UP + LEFT),
+            #water_mark.animate.scale(0.5).move_to(0.5*UP + LEFT),
         )
         
         self.wait()
@@ -647,7 +687,11 @@ class Scene4(MovingCameraScene):
         self.play(Write(d_line))
         self.play(Write(d_line_label))
         self.wait(10)
-        self.play(Restore(self.camera.frame), Restore(text_1), Restore(water_mark))
+        self.play(
+            Restore(self.camera.frame), 
+            Restore(text_1), 
+            #Restore(water_mark)
+        )
 
         self.wait(2)
         self.play(Write(grp3), run_time=2.5)
@@ -861,7 +905,7 @@ class Scene5(Scene):
     def construct(self):
 
         # WATER-MARK
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)'''
 
         # Tracker 
         x=ValueTracker(-3)
@@ -999,8 +1043,11 @@ class Scene5(Scene):
 
 
         # play region
-
-        self.add(water_mark, grp1, dot1_lbl,dot3_lbl)
+        
+        self.add(
+            #water_mark, 
+            grp1, dot1_lbl,dot3_lbl
+        )
         self.wait()
         self.play(Write(grp2))
         self.add(dot3)
@@ -1122,7 +1169,7 @@ class Scene6(MovingCameraScene):
     def construct(self):
 
         # WATER-MARK
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)'''
 
 
         # Tracker 
@@ -1372,7 +1419,7 @@ class Scene6(MovingCameraScene):
 
 
         # PLAY REGION
-        self.add(water_mark)
+        #self.add(water_mark)
 
         self.add(grp,dot1_lbl,dot2_lbl)
         self.wait(2)

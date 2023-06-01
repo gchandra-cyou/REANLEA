@@ -676,8 +676,8 @@ class Scene2(Scene):
         
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)'''
 
 
 
@@ -1601,8 +1601,8 @@ class Scene3(Scene):
         
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)'''
 
 
 
@@ -2231,21 +2231,21 @@ class Scene4(Scene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)'''
 
 
         # HEADING
 
-        with RegisterFont("Montserrat") as fonts:
+        '''with RegisterFont("Montserrat") as fonts:
             txt_1=Text("C A R T E S I A N    P R O D U C T", font=fonts[0])#.to_edge(UP).shift(.5*DOWN)             # to_edge(UP) == move_to(3.35*UP)
-            txt_1.set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE_LIGHTER)
+            txt_1.set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_SLATE_BLUE_LIGHTER)'''
 
 
 
         # OBJECT REGION
 
-        strp_1=get_stripe(factor=0.05, buff_max=5.2).move_to(3*UP+.2*RIGHT)
+        #strp_1=get_stripe(factor=0.05, buff_max=5.2).move_to(3*UP+.2*RIGHT)
 
         grid = NumberPlane(axis_config={"include_tip":True},
             background_line_style={
@@ -2698,7 +2698,7 @@ class Scene4(Scene):
 
         # GROUP REGION
 
-        txt_1_grp=VGroup(txt_1,strp_1)
+        #txt_1_grp=VGroup(txt_1,strp_1)
         dot_lbl_grp=VGroup(dot_1_lbl,dot_2_lbl)
         set_a_grp=VGroup(grph_1,grph_1_lbl,dot_1,dot_1_lbl)
         set_b_grp=VGroup(grph_2,grph_2_lbl,dot_2,dot_2_lbl)
@@ -2732,7 +2732,7 @@ class Scene4(Scene):
         # PLAY REGION
         self.wait()
 
-        self.play(
+        '''self.play(
             AddTextLetterByLetter(txt_1)
         )
         self.wait()
@@ -2744,7 +2744,7 @@ class Scene4(Scene):
         self.play(
             Create(strp_1)
         )
-        self.wait()
+        self.wait()'''
 
         self.play(
             Create(grph_1)
@@ -3307,7 +3307,10 @@ class Scene4(Scene):
         )
         self.wait(15)
 
-        con_grp=VGroup(vs_dfn,txt_2,bend_bez_arrow,eqn_10,sep_ln,cp_grp_1,cp_grp_2_ref,txt_1,strp_1)
+        con_grp=VGroup(
+            vs_dfn,txt_2,bend_bez_arrow,eqn_10,sep_ln,cp_grp_1,cp_grp_2_ref,
+            #txt_1,strp_1
+        )
         self.play(
             FadeOut(con_grp)
         )
@@ -3503,8 +3506,8 @@ class Scene4_3(Scene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)'''
 
         # Group-I
         with RegisterFont("Montserrat") as fonts:
