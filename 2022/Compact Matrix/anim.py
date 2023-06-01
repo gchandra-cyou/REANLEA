@@ -70,8 +70,6 @@ class Scene1(Scene):
         self.play(
             AddTextWordByWord(text_3),
         )
-
-
         self.wait(3)
 
         self.play(
