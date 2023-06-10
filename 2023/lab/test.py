@@ -90,6 +90,99 @@ class dim2_ex(Scene):
         # manim -pqh test.py dim2_ex
 
 
+class sq_cloud_ex(Scene):
+    def construct(self):
+
+        np=NumberPlane(
+            axis_config={
+                "stroke_width":DEFAULT_STROKE_WIDTH*1.15,
+                "color": REANLEA_YELLOW_CREAM
+            },
+            background_line_style={
+                "stroke_width": DEFAULT_STROKE_WIDTH*.1,
+                "stroke_color": REANLEA_GREY_DARKER,
+            },
+            tips=False,
+        ).set_z_index(-5)
+
+        np_1=NumberPlane(
+            axis_config={
+                "stroke_width":DEFAULT_STROKE_WIDTH*.75,
+                "color": REANLEA_YELLOW_CREAM
+            },
+            background_line_style={
+                "stroke_width": 0,
+                "stroke_color": REANLEA_GREY_DARKER,
+            },
+            tips=False
+        ).set_z_index(-6)
+        np_1.add_coordinates()
+
+        arr_1=Arrow(start=np.c2p(0,0),end=np.c2p(2,1),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_CYAN_LIGHT)
+
+        s_fact=np.c2p(0,0)[0]*RIGHT+np.c2p(0,0)[1]*UP
+
+        def sq_cld(
+            eps=1,
+            **kwargs
+        ):  
+            n=.75*(1/eps)
+            dots_A_1=square_cloud(x_min=-7,x_max=7,x_eps=eps, y_max=0, col=REANLEA_GREEN_AUQA, rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
+            dots_B_1=square_cloud(x_max=0,y_min=-4,y_max=4, y_eps=eps, col=REANLEA_BLUE_SKY,rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
+            dots_C_1=square_cloud(x_min=-7,x_max=7, x_eps=eps, y_min=-4,y_max=4, y_eps=eps, rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
+
+            dots=VGroup(dots_A_1,dots_B_1,dots_C_1)
+
+            return dots
+
+        
+        dots_2=sq_cld(eps=.5)#.set_color_by_gradient(PURE_GREEN,PURE_RED)
+        dots_3=sq_cld(eps=.25)#.set_color_by_gradient(PURE_GREEN,PURE_RED)
+        dots_4=sq_cld(eps=.125)
+        dots_5=sq_cld(eps=.0625)
+
+        self.play(
+            Write(np)
+        )
+        self.play(
+            Write(np_1)
+        )
+        self.wait()
+
+        self.play(
+            Write(arr_1)
+        )
+
+        self.play(
+            Write(dots_2)
+        )
+
+        self.play(
+            ReplacementTransform(dots_2,dots_3)
+        )
+
+        matrix = [[1, .5], [.5, 1.5]]
+        self.play(ApplyMatrix(matrix, dots_3), ApplyMatrix(matrix, np),ApplyMatrix(matrix, arr_1))   
+        
+        self.wait()
+
+        ln_1=DashedLine(start=arr_1.get_end(),end=[arr_1.get_end()[0],0,0])
+
+        self.play(
+            Write(ln_1)
+        )
+
+        x=arr_1.get_end()[0]
+
+        lbl_1=MathTex("(",x,r",0,0",")").scale(.5).next_to(ln_1.get_end(),UR)
+        self.add(lbl_1)
+
+        
+
+        # manim -pqh test.py sq_cloud_ex
+
+        # manim -sqk test.py sq_cloud_ex 
+
 
 ###################################################################################################################
 

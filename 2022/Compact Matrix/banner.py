@@ -222,6 +222,55 @@ class banner1(Scene):
 
     # manim -pqk banner.py banner1
 
+
+class esp_ex(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("background_4.png").scale(.5).set_z_index(-10)
+        self.add(water_mark)
+
+        
+
+        graphs = VGroup()
+        for n in np.arange(1,15):    
+            if n==1:
+                graphs += ImplicitFunction(lambda x,y : np.abs(x)**n + np.abs(y)**n -1).scale(3).set_stroke(width=2)
+            else:
+                graphs += ImplicitFunction(lambda x,y : np.abs(x)**n + np.abs(y)**n -1).scale(3).set_stroke(width=7/n)
+                
+        graphs.scale(.70).set_color_by_gradient(REANLEA_BLUE,REANLEA_BLUE_SKY).move_to(ORIGIN)
+        #.next_to(eqn_1,DOWN).shift(.5*DOWN)
+        graphs[0].set_color_by_gradient(REANLEA_RED,REANLEA_BLUE_SKY)
+
+        eqn_1=MathTex(r"d_{k}(x,y)",r"= \lVert x-y \rVert",r"= \Biggl\lbrack \sum_{i=1}^{n} \lvert x_{i}-y_{i} \rvert ^{k} \Biggr\rbrack ^{1/k} ").scale(.75).set_color_by_gradient(REANLEA_YELLOW, REANLEA_BLUE_LAVENDER).next_to(graphs,UP).set_stroke(width=1.25).shift(.25*RIGHT)
+
+        with RegisterFont("Cousine") as fonts:
+            txt_1 = Text("Geometry of Euclidean Space." , font=fonts[0]).set_color_by_gradient(REANLEA_BLUE_LAVENDER)
+
+        self.add(eqn_1)
+        graphs.shift(.35*DOWN)
+        txt_1.scale(.65).next_to(graphs,DOWN).shift(.35*DOWN)
+
+        dot1= Dot(radius=.25).scale(.85).set_color(REANLEA_PURPLE_LIGHTER).set_sheen(-0.4,DOWN).move_to(graphs.get_center())
+        glowing_circle_1=get_glowing_surround_circle(dot1, color=REANLEA_YELLOW)
+
+        self.play(
+            Create(graphs[0:]), 
+            run_rime=18
+        )
+
+        self.add(txt_1,dot1,glowing_circle_1)
+
+
+
+
+        
+
+    
+    # manim -sqk banner.py esp_ex
+
 ###################################################################################################################
 
 # Changing FONTS : import any font from Google

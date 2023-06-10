@@ -3276,8 +3276,8 @@ class Scene4(Scene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)'''
         
 
 
@@ -3715,8 +3715,8 @@ class Scene4_1(Scene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)'''
         
 
 
@@ -4690,8 +4690,8 @@ class Scene4_2(Scene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)'''
         
 
 
@@ -5568,10 +5568,10 @@ class Scene4_3(Scene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
         self.add(water_mark)
 
-        water_mark_1=water_mark.copy()
+        water_mark_1=water_mark.copy()'''
         
 
 
@@ -5763,7 +5763,7 @@ class Scene4_3(Scene):
             AnimationGroup(
                 *[FadeOut(mobj) for mobj in self.mobjects],
             ),
-            FadeIn(water_mark_1),
+            #FadeIn(water_mark_1),
             Write(txt_x_0),
             run_time=3
         )
@@ -5857,8 +5857,8 @@ class Scene5(Scene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)'''
         self.wait()
 
 
@@ -6248,14 +6248,14 @@ class Scene5(Scene):
         eqn_4_grp_copy=eqn_4_grp.copy().set_z_index(12)
         eqn_6_copy=eqn_6.copy().set_z_index(12)
         nrm_def_0_copy_3=nrm_def_0.copy()
-        water_mark_1=water_mark.copy()
+        #water_mark_1=water_mark.copy()
 
 
         self.play(            
             AnimationGroup(
                 *[FadeOut(mobj) for mobj in self.mobjects],
             ),
-            FadeIn(water_mark_1),
+            #FadeIn(water_mark_1),
             FadeIn(nrm_def_0_copy_3),
             eqn_4_grp_copy.animate.move_to(ORIGIN).shift(1.25*UP),
             eqn_6_copy.animate.move_to(2.25*UP+4.5*LEFT),
@@ -6288,8 +6288,8 @@ class Scene5_1(Scene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
-        self.add(water_mark)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)'''
         self.wait()
 
 
@@ -6403,10 +6403,10 @@ class Scene5_1(Scene):
 
         rect_overlap_0=Rectangle(width=16, height=9, color=REANLEA_BACKGROUND_COLOR).to_edge(RIGHT, buff=0).set_opacity(.825).set_z_index(10)
 
-        water_mark_1=water_mark.copy().set_z_index(11)
+        #water_mark_1=water_mark.copy().set_z_index(11)
 
         self.play(
-            FadeIn(water_mark_1),
+            #FadeIn(water_mark_1),
             FadeIn(rect_overlap_0)
         )
 
@@ -6485,13 +6485,13 @@ class Scene5_1(Scene):
 
         self.wait(10)
 
-        water_mark_2=water_mark.copy()
+        #water_mark_2=water_mark.copy()
 
         self.play(            
             AnimationGroup(
                 *[FadeOut(mobj) for mobj in self.mobjects],
             ),
-            FadeIn(water_mark_2),
+            #FadeIn(water_mark_2),
             run_time=3
         )
 
@@ -6518,11 +6518,11 @@ class Scene6(Scene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
         self.add(water_mark)
         self.wait()
 
-        water_mark_1=water_mark.copy()
+        water_mark_1=water_mark.copy()'''
 
 
         # MAIN SCENE
@@ -7546,7 +7546,7 @@ class Scene6(Scene):
             AnimationGroup(
             *[FadeOut(mobj) for mobj in self.mobjects]
             ),
-            FadeIn(water_mark_1),
+            #FadeIn(water_mark_1),
             txt_cs_grp_ref.animate.move_to(3*UP)
         )
 
@@ -7576,10 +7576,10 @@ class Scene6_1(Scene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        '''water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
         #self.add(water_mark)
 
-        water_mark_1=water_mark.copy()
+        water_mark_1=water_mark.copy()'''
 
 
         # PREVIOUS SCENE
@@ -7613,7 +7613,10 @@ class Scene6_1(Scene):
 
         txt_cs_grp_1=VGroup(txt_cs_grp_0,txt_cs_def).scale(.5).move_to(3*UP)
 
-        self.add(water_mark,txt_cs_grp_1)
+        self.add(
+            #water_mark,
+            txt_cs_grp_1
+        )
 
 
         # MAIN SCENE 
@@ -7993,19 +7996,19 @@ class Scene6_1(Scene):
             AnimationGroup(
             *[FadeOut(mobj) for mobj in self.mobjects]
             ),
-            FadeIn(water_mark_1),
+            #FadeIn(water_mark_1),
             graphs_ref.animate.scale(1.5).move_to(ORIGIN+.5*DOWN),
             eqn_1_x_ref.animate.move_to(2.75*UP)
         )
         self.wait(4)
 
-        water_mark_2=water_mark.copy()
+        #water_mark_2=water_mark.copy()
 
         self.play(
             AnimationGroup(
             *[FadeOut(mobj) for mobj in self.mobjects]
             ),
-            FadeIn(water_mark_2)
+            #FadeIn(water_mark_2)
         )
 
 

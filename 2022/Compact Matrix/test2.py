@@ -9695,7 +9695,95 @@ class Scene4_4(Scene):
 
         # manim -pqh anim1.py Scene4_4
 
-    
+
+class ApplyMatrixExample(Scene):
+    def construct(self):
+        np=NumberPlane(
+            axis_config={
+                "stroke_width":DEFAULT_STROKE_WIDTH*1.5,
+                "color": PURE_RED
+            },
+            background_line_style={
+                "stroke_width": DEFAULT_STROKE_WIDTH*.35,
+                "stroke_color": PURE_GREEN,
+            }
+        )
+        matrix = [[1, 1], [0, 2/3]]
+        self.play(ApplyMatrix(matrix, Text("Hello World!")), ApplyMatrix(matrix, np)) 
+
+    # manim -pqh test2.py ApplyMatrixExample
+
+
+class sq_cloud_ex(Scene):
+    def construct(self):
+        
+        ax_2=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+            }, 
+        ).set_color(REANLEA_YELLOW_CREAM).scale(.5).set_z_index(-1)
+
+        s_fact=ax_2.c2p(0,0)[0]*RIGHT+ax_2.c2p(0,0)[1]*UP
+
+        dots_A_1=square_cloud(x_min=-5.5,x_max=9,x_eps=1, y_max=0, col=REANLEA_GREEN_AUQA, rad=DEFAULT_DOT_RADIUS).shift(s_fact).set_z_index(2)
+        dots_B_1=square_cloud(x_max=0,y_min=-5.5,y_max=5.5, y_eps=1, col=REANLEA_BLUE_SKY,rad=DEFAULT_DOT_RADIUS).shift(s_fact).set_z_index(2)
+        dots_C_1=square_cloud(x_min=-5.5,x_max=9, x_eps=1, y_min=-5.5,y_max=5.5, y_eps=1, rad=DEFAULT_DOT_RADIUS).shift(s_fact).set_z_index(2)
+
+        dots_in_grp=VGroup(dots_A_1,dots_B_1,dots_C_1)
+
+        def sq_cld(
+            eps=1,
+            **kwargs
+        ):  
+            n=.75*(1/eps)
+            dots_A_1=square_cloud(x_min=-5.5,x_max=9,x_eps=eps, y_max=0, col=REANLEA_GREEN_AUQA, rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
+            dots_B_1=square_cloud(x_max=0,y_min=-5.5,y_max=5.5, y_eps=eps, col=REANLEA_BLUE_SKY,rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
+            dots_C_1=square_cloud(x_min=-5.5,x_max=9, x_eps=eps, y_min=-5.5,y_max=5.5, y_eps=eps, rad=DEFAULT_DOT_RADIUS/n).shift(s_fact).set_z_index(2)
+
+            dots=VGroup(dots_A_1,dots_B_1,dots_C_1)
+
+            return dots
+
+        
+        dots_2=sq_cld(eps=.5)
+        dots_3=sq_cld(eps=.25)
+        dots_4=sq_cld(eps=.125)
+        dots_5=sq_cld(eps=.0625)
+
+        x_grp=VGroup(ax_2,dots_5).save_state()
+
+        self.play(
+            Write(ax_2)
+        )
+        self.wait()
+
+        self.play(
+            Write(dots_in_grp)
+        )
+        self.wait()
+
+        self.play(
+            ReplacementTransform(dots_in_grp, dots_2)
+        )
+        self.play(
+            ReplacementTransform(dots_2,dots_3)
+        )
+
+        '''matrix = [[1, 1], [0, 2/3]]
+        self.play(ApplyMatrix(matrix, dots_3), ApplyMatrix(matrix, ax_2))'''
+        
+        
+        self.wait()
+
+        # manim -pqh test2.py sq_cloud_ex 
+
+        # manim -pql myscene --format=gif -n 2,6 test2.py sq_cloud_ex
+
+        # manim -sqk test2.py sq_cloud_ex
 
 ###################################################################################################################
 
