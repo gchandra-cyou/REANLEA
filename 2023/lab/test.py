@@ -3,6 +3,7 @@ from __future__ import annotations
 import sys
 sys.path.insert(1,'C:\\Users\\gchan\\Desktop\\REANLEA\\2023\\common')
 
+# from "common" we're importing "reanlea_colors" & "func" here.
 from reanlea_colors  import*
 from func import*
 
@@ -16,6 +17,8 @@ from math import pi
 
 
 from manim import *
+from manim_physics import *
+import pandas
 
 
 from numpy import array
@@ -59,6 +62,11 @@ from enum import Enum
 from scipy.stats import norm, gamma
 from scipy.optimize import fsolve
 import random
+
+import matplotlib.colors as mc
+import colorsys
+
+
 
 
 config.background_color= REANLEA_BACKGROUND_COLOR
@@ -161,7 +169,7 @@ class sq_cloud_ex(Scene):
             ReplacementTransform(dots_2,dots_3)
         )
 
-        matrix = [[1, .5], [.5, 1.5]]
+        matrix = [[1/sqrt(2), 1/sqrt(2)], [-1/sqrt(2), 1/sqrt(2)]]
         self.play(ApplyMatrix(matrix, dots_3), ApplyMatrix(matrix, np),ApplyMatrix(matrix, arr_1))   
         
         self.wait()
@@ -182,6 +190,146 @@ class sq_cloud_ex(Scene):
         # manim -pqh test.py sq_cloud_ex
 
         # manim -sqk test.py sq_cloud_ex 
+
+
+class defFun(Scene):
+    def construct(self):
+        def f(x):
+            if x < 0.5:
+                return 0
+            else:
+                return 2*(x-0.5)
+
+        ax = Axes(
+            x_range = [0, 1, 1],
+            y_range = [0, 1, 1],
+            tips=False
+        )
+
+        plt = ax.plot(f, discontinuities = [0.5]).set_stroke(width=15, color=[PURE_GREEN,REANLEA_WARM_BLUE])
+
+
+        self.play(
+            Create(plt)
+        )
+
+        self.wait(3)
+
+
+        # manim -pqh test.py defFun
+
+
+class constrct_fnx(Scene):
+    def construct(self):
+
+        ax=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(-5)
+
+        self.add(ax)
+
+        graph = VGroup(
+            ax.plot(
+                lambda x: 0,
+                x_range=[-1,0,0.01]
+            ).set_stroke(width=1,color=REANLEA_GREY),
+            ax.plot(
+                lambda x: 2*x,
+                x_range=[0,.5,0.01]
+            ).set_stroke(width=1,color=BLUE),
+            ax.plot(
+                lambda x: 1,
+                x_range=[.5,1,0.01]
+            ).set_stroke(width=1,color=GREEN)
+        )
+
+        self.play(
+            Create(graph)
+        )
+
+        self.wait(2)
+
+
+        # manim -pqh test.py constrct_fnx
+
+        # manim -sqk test.py constrct_fnx
+
+
+
+class constrct_fnxz(Scene):
+    def construct(self):
+
+        ax=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(-5)
+
+        
+        def graph(n=1,stroke_width=3):
+            grph = VGroup(
+                ax.plot(
+                    lambda x: 0,
+                    x_range=[-1,1,0.01]
+                ).set_z_index(-1).set_stroke(width=2.5,color=REANLEA_GREY),
+                ax.plot(
+                    lambda x: 0,
+                    x_range=[-1,0,0.01]
+                ).set_stroke(width=stroke_width/n, color=REANLEA_WARM_BLUE),
+                ax.plot(
+                    lambda x: n*x,
+                    x_range=[0,1/n,0.01]
+                ).set_stroke(width=stroke_width/n,color=REANLEA_WARM_BLUE),
+                ax.plot(
+                    lambda x: 1,
+                    x_range=[1/n,1,0.01]
+                ).set_stroke(width=stroke_width/n,color=REANLEA_WARM_BLUE)
+            )
+            return grph
+        
+        x1=graph(n=1).scale(4)
+        x2=graph(n=2).scale(4)
+        
+        self.play(
+            Create(x1)
+        )
+        self.play(
+            Create(x2)
+        )
+
+        x=VGroup(
+            *[
+                graph(n=i).scale(4)
+                for i in range(3,50)
+            ]
+        )
+        self.play(
+            Create(x)
+        )
+
+        self.wait(2)
+
+
+        # manim -pqh test.py constrct_fnxz
+
+        # manim -sqk test.py constrct_fnxz
+        
+
+###################################################################################################################
+
+
 
 
 ###################################################################################################################
