@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import sys
 sys.path.insert(1,'C:\\Users\\gchan\\Desktop\\REANLEA\\2023\\common')
+sys.path.insert(1,'C:\\Users\\gchan\\Desktop\\REANLEA\\2023')
 
 # from "common" we're importing "reanlea_colors" & "func" here.
 from reanlea_colors  import*
@@ -327,6 +328,631 @@ class constrct_fnxz(Scene):
         # manim -sqk test.py constrct_fnxz
         
 
+class constrct_xsqsin1byx(Scene):
+    def construct(self):
+
+        ax=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(-5)     
+
+        graph_1=ax.plot(
+            lambda x : np.sin(1/x)*x**2,
+            discontinuities=[0],
+        ).scale(5)
+
+        self.add(graph_1)
+        
+        self.wait(2)
+
+        # manim -sqk test.py constrct_xsqsin1byx
+
+
+class Grafik(MovingCameraScene):       
+    def construct(self): 
+
+        ax = Axes(
+            x_range = [0.001,3,0.01],
+            y_range = [-2,2,1.0],
+            x_axis_config = {
+                "numbers_to_include": [0,1,2,3],
+                "include_ticks" : False
+            },
+            y_axis_config = {"numbers_to_include": [-2,-1,0,1,2]},
+            tips = False
+        )
+        
+        #Defining graph function
+        def func2(x):
+            if x == 0:
+                return 0
+            else:
+                return np.sin(1/x)
+            
+
+        #Get the graph
+        graph2 = ax.plot(func2)
+        graph2.set_stroke(width = 1.5)
+        
+        
+        #Set up its label
+        axes_labels2 = ax.get_axis_labels()
+        
+        #Show animate
+        self.play(Create(ax), run_time=2)
+        self.play(Create(graph2),run_time=5)
+        self.wait(2)
+
+        # manim -pqh test.py Grafik
+
+
+class Grafik_1(MovingCameraScene):       
+    def construct(self): 
+
+        ax = Axes(
+            x_range = [0.0001,1.5,0.01],
+            y_range = [-2,2,1.0],
+            x_axis_config = {
+                "numbers_to_include": [0,1,2,3],
+                "include_ticks" : False
+            },
+            y_axis_config = {"numbers_to_include": [-2,-1,0,1,2]},
+            tips = False
+        ).set_color(GREY)
+
+        dt=Dot(radius=.125/4,color=PURE_RED).move_to(ax.c2p(0,0)).set_z_index(2)
+        
+        #Defining graph function
+        def func2(x):
+            if x == 0:
+                return 0
+            else:
+                return np.sin(1/x)
+            
+
+        #Get the graph
+        graph2 = VGroup(
+            ax.plot(func2, x_range=[0.0005, 0.1, 0.00001]),
+            ax.plot(func2, x_range=[0.1, 1.5, 0.01])
+        )
+
+        graph2.set_stroke(width = 1.5, color=BLUE)
+        
+        #Show animate
+        self.play(Create(ax), run_time=2)
+        self.play(Write(dt))
+        self.play(Create(graph2),run_time=5)
+        self.wait(2)
+
+
+        # manim -pqh test.py Grafik_1
+
+
+class Grafik_2(MovingCameraScene):       
+    def construct(self): 
+
+        ax = Axes(
+            x_range = [0.000,0.1,0.005],
+            y_range = [-.01,.01,.005],
+            x_axis_config = {
+                "numbers_to_include": [0.0,.05,0.1],
+                #"include_ticks" : False,
+                "font_size" : 18
+            },
+            y_axis_config = {"numbers_to_include": [-.01,-.005,0,.005,.01],"font_size" : 18},
+            tips = False
+        ).set_color(GREY)
+
+
+        #Get the graph
+
+        graph = VGroup(
+            ax.plot(
+                lambda x: x**2,
+                x_range=[0.00,0.1,0.0001],
+                color=RED,
+            ),
+            ax.plot(
+                lambda x: np.sin(1/x)*x**2,
+                x_range=[0.000001,0.1,0.00001],
+                color=BLUE,
+            ).set_z_index(2),
+            ax.plot(
+                lambda x: - x**2,
+                x_range=[0.00,0.1,0.0001],
+                color=RED,
+            )
+        )
+
+        
+        #Show animate
+        self.play(Create(ax), run_time=2)
+        self.play(Create(graph),run_time=5)
+        self.wait(2)
+
+
+        # manim -pqh test.py Grafik_2
+
+        # manim -sqk test.py Grafik_2
+
+
+class Grafik_3(MovingCameraScene):       
+    def construct(self): 
+
+        ax = Axes(
+            x_range = [0.00001,1.00001,0.2],
+            y_range = [0,.4,.1],
+            x_axis_config = {
+                "numbers_to_include": [0.0,.2,0.4,0.6,0.8,1.0],
+                #"include_ticks" : False,
+                "font_size" : 18
+            },
+            y_axis_config = {"numbers_to_include": [.1,.2,.3,.4],"font_size" : 18},
+            tips = False
+        ).set_color(GREY)
+
+
+        #Get the graph
+
+        def func(x):
+            if x > 0:
+                return np.exp(-1/x)
+            else:
+                0
+
+        graph= ax.plot(
+                func,
+                color=RED,
+            )
+        
+        #Show animate
+        self.play(Create(ax), run_time=2)
+        self.play(Create(graph),run_time=5)
+        self.wait(2)
+
+
+        # manim -pqh test.py Grafik_3
+
+        # manim -sqk test.py Grafik_3
+
+
+class post_6_tst(Scene):
+    def construct(self):
+
+        ax=Axes(
+            x_range=[0,1.5,1],
+            y_range=[0,10,4],
+            x_length=5,
+            tips=False, 
+            x_axis_config={
+                "numbers_to_include": [0.0,1],
+                "font_size": 18,
+            },
+            y_axis_config={
+                "numbers_to_include": [0.0,4,8],
+                "font_size": 18,
+            }
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(-5)
+
+        self.add(ax)
+
+        
+        def graph(n=1,stroke_width=5):
+            grph = VGroup(
+                ax.plot(
+                    lambda x: n*n*x,
+                    x_range=[0,1/n,0.001]
+                ).set_stroke(width=stroke_width/n,color=REANLEA_WARM_BLUE),
+                ax.plot(
+                    lambda x: 2*n -n*n*x,
+                    x_range=[1/n,2/n,0.001]
+                ).set_stroke(width=stroke_width/n,color=REANLEA_WARM_BLUE),
+                ax.plot(
+                    lambda x: 0,
+                    x_range=[2/n,1,0.001]
+                ).set_stroke(width=stroke_width/n,color=REANLEA_WARM_BLUE)
+            )
+            return grph
+        
+        x2=graph(n=2)
+
+        
+        self.play(
+            Create(x2)
+        )
+
+        x=VGroup(
+            *[
+                graph(n=i)
+                for i in range(3,15)
+            ]
+        )
+
+        self.play(
+            Create(x)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            txt_1 = Text("(on) the space of continuous functions C[-1,1] with 1-norm is (Cauchy but) not Complete." , font=fonts[0]).set_color_by_gradient("#AEAEAE")
+
+        txt_1.scale(.35).shift(3*DOWN)
+
+        q1= MathTex(r"f_{n}(x) := \begin{cases}"
+                r"0  &  \text{ if} \ \ \ -1 \leq x < 0 \\"
+                r"nx &  \text{ if} \ \ \ 0 \leq x \leq \frac{1}{n} \\"
+                r"1 &  \text{ if} \ \ \ \frac{1}{n} < x \leq 1 \\"
+                r"\end{cases}"
+        ).set_color("#000000").scale(.5).next_to(txt_1,UP).shift(.5*UP)
+
+        #self.add(txt_1,q1)
+        '''self.play(
+            Write(q1)
+        )
+        self.play(
+            Write(txt_1)
+        )'''
+
+
+        self.wait(2)
+
+
+        # manim -pqh test.py post_6_tst
+
+        # manim -sqk test.py post_6_tst
+
+class post_7_tst(Scene):
+    def construct(self):
+
+        ax=Axes(
+            x_range=[-2,2],
+            y_range=[-2,2],
+            x_length=5,
+            tips=False, 
+            x_axis_config={
+                "numbers_to_include": [0.0,1],
+                "font_size": 18,
+            },
+            y_axis_config={
+                "numbers_to_include": [0.0,4,8],
+                "font_size": 18,
+            }
+        )
+
+
+        
+        def graph(n=1,stroke_width=2):
+            grph = VGroup(
+                ax.plot(
+                    lambda x: sqrt((x**2)+1/n),
+                    x_range=[-2,2,0.001]
+                ).set_stroke(width=stroke_width,color=REANLEA_WARM_BLUE)
+            )
+            return grph
+        
+        grph_1= VGroup(
+                ax.plot(
+                    lambda x: x,
+                    x_range=[0,2,0.001]
+                ).set_stroke(width=2,color=PURE_RED),
+                ax.plot(
+                    lambda x: -x,
+                    x_range=[-2,0,0.001]
+                ).set_stroke(width=2,color=PURE_RED)
+            )
+        
+        
+        x1=graph(n=1)
+        x2=graph(n=2)
+
+        self.play(
+            Create(x1)
+        )
+        self.play(
+            Create(x2)
+        )
+
+        x=VGroup(
+            *[
+                graph(n=i)
+                for i in range(3,15)
+            ]
+        )
+
+        self.play(
+            Create(x)
+        )
+        self.play(
+            Create(grph_1)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            txt_1 = Text("sequence of functions converges pointwise to zero function, but not uniformly." , font=fonts[0]).set_color_by_gradient(GREY)
+
+        txt_1.scale(.35).shift(3*DOWN)
+
+        q1= MathTex(r"f_{n}(x) := \begin{cases}"
+                r"n^{2}x  &  \text{ if} \ \ \ 0 \leq x \leq \frac{1}{n} \\"
+                r"2n-n^{2}x &  \text{ if} \ \ \ \frac{1}{n} \leq x \leq \frac{2}{n} \\"
+                r"0 &  \text{ if} \ \ \ \frac{2}{n} < x \leq 1 \\"
+                r"\end{cases}"
+        ).set_color(REANLEA_WARM_BLUE_DARKER).scale(.5).shift(1.5*UP+3*RIGHT)
+
+        
+        '''self.play(
+            Write(q1)
+        )
+        self.play(
+            Write(txt_1)
+        )'''
+
+
+        self.wait(2)
+
+
+        # manim -sqk test.py post_7_tst
+
+
+class weier(Scene):
+    def construct(self):
+        n = 300
+        a = ValueTracker(0.5)
+        b = ValueTracker(0.6)
+        xrng = ValueTracker(4)
+
+        ax = Axes()
+        func = VMobject()
+        def axUpdater(mobj):
+            xmin = -xrng.get_value()
+            xmax = +xrng.get_value()
+            newax =Axes(x_range=[xmin,xmax,10**int(np.log10(xmax)-1)],y_range=[-1,4])
+            newax.add_coordinates()
+            newfunc = newax.plot(
+                lambda x: sum([a.get_value()**k*np.cos(b.get_value()**k*PI*x) for k in range(n)]),
+                x_range=[xmin,xmax,xrng.get_value()/200],
+                use_smoothing=False,
+                ).set_color(RED).set_stroke(width=3)
+            mobj.become(newax)
+            func.become(newfunc)            
+        ax.add_updater(axUpdater)
+
+        self.add(ax,func)
+
+        self.play(
+            b.animate.set_value(7),
+            run_time=2
+        )        
+        self.wait(2)
+        self.play(
+            xrng.animate.set_value(0.01),
+            run_time=10
+        ) 
+
+        '''Ref : https://www.whitman.edu/documents/Academics/Mathematics/2019/Vesneske-Gordon.pdf'''
+
+
+        # manim -pqh test.py weier
+
+        # manim -sqk test.py weier
+
+
+class post_9_tst(ZoomedScene):
+    def construct(self):
+
+        n = 300
+        a = ValueTracker(0.5)
+        b = ValueTracker(0.6)
+        xrng = ValueTracker(4.5)
+
+        ax=Axes(
+            x_range=[-4.5,4.5],
+            y_range=[-2.5,4.5],
+            y_length=(round(config.frame_width)-2)*7/9,
+            tips=False, 
+            axis_config={
+                "font_size": 18,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(1).set_z_index(-5)
+       
+        func = VMobject()
+        def axUpdater(mobj):
+            xmin = -xrng.get_value()
+            xmax = +xrng.get_value()
+            newax =Axes(
+                x_range=[xmin,xmax,10**int(np.log10(xmax)-1)],
+                y_range=[-2.5,2.5],
+                y_length=(round(config.frame_width)-2)*5/9,
+                tips=False, 
+                axis_config={
+                    "font_size": 18,
+                    #"include_ticks": False,
+                },
+            ).set_color(REANLEA_TXT_COL_DARKER).scale(1).set_z_index(-5)
+            newax.add_coordinates()
+
+            newfunc = newax.plot(
+                lambda x: sum([a.get_value()**k*np.cos(b.get_value()**k*PI*x) for k in range(n)]),
+                x_range=[xmin,xmax,xrng.get_value()/200],
+                use_smoothing=False,
+                ).set_color(PURE_RED).set_stroke(width=3)
+            mobj.become(newax)
+            func.become(newfunc)            
+        ax.add_updater(axUpdater)
+
+        self.add(ax,func)
+
+        self.play(
+            b.animate.set_value(7),
+            run_time=2
+        )   
+
+
+        self.wait(2)
+
+       # manim -pqh test.py post_9_tst
+
+       # manim -sqk test.py post_9_tst
+
+
+class MovingZoomedSceneAround(ZoomedScene):
+    def __init__(self, **kwargs):
+        ZoomedScene.__init__(
+            self,
+            zoom_factor=0.3,
+            zoomed_display_height=1,
+            zoomed_display_width=6,
+            image_frame_stroke_width=20,
+            zoomed_camera_config={
+                "default_frame_stroke_width": 3,
+                "background_opacity": 1,
+                },
+            **kwargs
+        )
+
+    def construct(self):
+        dot = Dot().shift(LEFT * 3 + UP)
+        image=ImageMobject("ganesh.png")
+        image.height=7
+        
+
+        self.add(image,dot)
+        zoomed_camera = self.zoomed_camera
+        zoomed_display = self.zoomed_display
+        frame = zoomed_camera.frame
+        zoomed_display_frame = zoomed_display.display_frame
+
+        frame.move_to(dot)
+        frame.set_color(PURPLE)
+        zoomed_display_frame.set_color(RED)
+        zoomed_display.shift(DOWN)
+
+        zd_rect = BackgroundRectangle(zoomed_display, color=WHITE, fill_opacity=0, buff=MED_SMALL_BUFF)
+        self.add_foreground_mobject(zd_rect)
+
+        unfold_camera = UpdateFromFunc(zd_rect, lambda rect: rect.replace(zoomed_display))
+
+
+        self.play(Create(frame))
+        self.activate_zooming()
+
+        self.play(self.get_zoomed_display_pop_out_animation(), unfold_camera)
+        # Scale in        x   y  z
+        scale_factor = [0.5, 1.5, 0]
+        self.play(
+            frame.animate.scale(scale_factor),
+            zoomed_display.animate.scale(scale_factor)
+        )
+        self.wait()
+        self.play(ScaleInPlace(zoomed_display, 2))
+        self.wait()
+        self.play(frame.animate.shift(2.5 * DOWN))
+        self.wait()
+        self.play(self.get_zoomed_display_pop_out_animation(), unfold_camera, rate_func=lambda t: smooth(1 - t))
+        self.play(Uncreate(zoomed_display_frame), FadeOut(frame))
+        self.wait()
+
+
+
+        # manim -pqh test.py MovingZoomedSceneAround
+
+class UseZoomedScene(ZoomedScene):
+        def construct(self):
+            dot = Dot().set_color(GREEN)
+
+            self.add(dot)
+            self.wait(1)
+            self.activate_zooming(animate=False)
+            self.wait(1)
+            
+
+
+            # manim -pqh test.py UseZoomedScene
+
+class post_4(Scene):       
+    def construct(self): 
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("water_mark_white.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(1).set_z_index(-100)
+        self.add(water_mark)
+
+        ax = Axes(
+            x_range = [0.000,0.1,0.005],
+            y_range = [-.01,.01,.005],
+            x_axis_config = {
+                "numbers_to_include": [0.0,.05,0.1],
+                #"include_ticks" : False,
+                "font_size" : 18
+            },
+            y_axis_config = {"numbers_to_include": [-.01,-.005,0,.005,.01],"font_size" : 18},
+            tips = False
+        ).set_color(REANLEA_GREY)
+
+        dt=Dot(radius=.125/4,color=PURE_RED).move_to(ax.c2p(0.0,0)).set_z_index(5)
+
+
+        #Get the graph
+
+        graph = VGroup(
+            ax.plot(
+                lambda x: x**2,
+                x_range=[0.00,0.1,0.0001],
+                color=GREY,
+            ).set_stroke(width=1),
+            ax.plot(
+                lambda x: np.sin(1/x)*x**2,
+                x_range=[0.000001,0.1,0.00001],
+                color=REANLEA_WARM_BLUE_DARKER,
+            ).set_z_index(2),
+            ax.plot(
+                lambda x: - x**2,
+                x_range=[0.00,0.1,0.0001],
+                color=GREY,
+            ).set_stroke(width=1)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            txt_1 = Text("Geometric foundation of Mathematics and Physics with Animated visuals." , font=fonts[0]).set_color_by_gradient("#AEAEAE").scale(.35).shift(3.35*DOWN)
+
+            txt_2 = Text("Is" , font=fonts[0]).set_color_by_gradient(REANLEA_INK_BLUE).scale(.4)
+
+
+        q1= MathTex(r"f(x) := \begin{cases}"
+                r"x^{2}sin(1/x)  &  \text{ if} \ \ \  x > 0 \\"
+                r"0 &  \text{ if} \ \ \ x=0 \\"
+                r"\end{cases}"
+        ).set_color("#000000").scale(.5).next_to(txt_1,UP)
+
+        q2= MathTex(r"\lim\limits_{x \to 0} f'(x)=f'(0)","?"
+        ).set_color(REANLEA_INK_BLUE).scale(.5).next_to(txt_2).shift(.05*DOWN)
+
+        q2[1].shift(.1*RIGHT)
+
+        eq_2_grp=VGroup(q2,txt_2).shift(3*UP+LEFT)
+
+
+
+        
+        
+        #Show animate
+        self.play(Create(ax), run_time=2)
+        self.play(
+            Create(dt)
+        )
+        self.play(Create(graph),run_time=5)
+        self.add(txt_1)
+        self.wait(2)
+
+
+        # manim -pqh test.py post_4
+
+        # manim -sqk test.py post_4
 ###################################################################################################################
 
 

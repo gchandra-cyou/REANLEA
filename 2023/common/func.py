@@ -595,3 +595,29 @@ def lighten_color(color, amount=0.5):
         c = color
     c = np.array(colorsys.rgb_to_hls(*mc.to_rgb(c)))
     return colorsys.hls_to_rgb(c[0],1-amount * (1-c[1]),c[2])
+
+
+
+class SquigglyArrow(Line):
+    def __init__(self, *args, period=0.2, amplitude=0.2, num_wiggles=None, tip_length=0.2, **kwargs):
+        self.period = period
+        self.num_wiggles = num_wiggles
+        self.amplitude = amplitude
+        self._tip_length = tip_length
+        print(f"{self._tip_length=}")
+        super().__init__(*args, **kwargs)
+        self.add_tip(StealthTip(color=self.color, fill_opacity=1))
+
+    def set_points_by_ends(self, start, end, buff=0, path_arc=0, n_end=0):
+        length = np.linalg.norm(end - start)
+        length_ = length - self._tip_length
+        if self.num_wiggles is not None:
+            self.period = length_ / self.num_wiggles
+        angle = angle_of_vector(end - start)
+        squiggle = FunctionGraph(
+            lambda x: self.amplitude * np.sin(2*np.pi*x/self.period)
+            if x < length_ else 0,
+            x_range=[0, length, 0.01],
+        ).shift(start).rotate(angle, about_point=start)
+        self.set_points(squiggle.points)
+        self._account_for_buff(buff)

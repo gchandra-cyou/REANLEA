@@ -1,0 +1,10 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/AnimSine/2349863586_2282379244_223132457.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/AnimSine/1802680366_2424025467_1554174957.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/AnimSine/1802680366_345352296_4142017500.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/AnimSine/1802680366_1809400763_1588219792.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/AnimSine/1802680366_345352296_1146002078.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/AnimSine/1802680366_4289802435_2358046732.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/AnimSine/1802680366_345352296_1648265640.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/AnimSine/1802680366_4096629808_502941758.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/AnimSine/1802680366_190800790_3703819370.mp4'

@@ -1,0 +1,4 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/line_with_moving_dot/2349863586_1533233214_1425475419.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/line_with_moving_dot/1802680366_3294508434_328414338.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/line_with_moving_dot/1802680366_3315967912_1573815153.mp4'

@@ -1,0 +1,2 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/latex_tex_shape_template/2349863586_345352296_3397639687.mp4'
