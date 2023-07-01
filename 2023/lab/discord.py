@@ -1716,7 +1716,792 @@ class cu_vector_field(ThreeDScene):
         # manim -pqh discord.py cu_vector_field
 
         # manim -sqk discord.py cu_vector_field
-       
+
+
+class randomFlag(Scene):
+    def construct(self):
+        flagnames = [
+            r"img\earth.png",
+            r"img\ganesh.png",            
+        ]
+        flags = Group(
+            Square(side_length=3, color=BLACK, fill_opacity=1).set_z_index(0), # visual blocker
+            *[ImageMobject(filename).scale_to_fit_width(2).set_z_index(-10) for filename in flagnames]
+        )
+        self.add(flags)
+        previousFlag = -1
+        for i in range(20):
+            flagNum = np.random.random_integers(1, len(flagnames))
+            if previousFlag > 0:
+                flags[previousFlag].set_z_index(-10)
+            flags[flagNum].set_z_index(1)
+            previousFlag = flagNum
+            self.wait(3/15)
+
+
+        # manim -pqh discord.py randomFlag
+
+        # manim -sqk discord.py randomFlag
+
+class get_length_Test(Scene):
+    def construct(self):
+        line = Line([-3,2,0], [2,-2,0]) 
+
+        print(line.get_length())
+        print(np.linalg.norm(line.get_start()))               
+        print(np.linalg.norm(line.get_start()))               
+        print(np.linalg.norm(line.get_start()-line.get_end())) 
+
+        a=MathTex(line.get_length())
+        b=MathTex(np.linalg.norm(line.get_start()))
+        c=MathTex(np.linalg.norm(line.get_start()))
+        d=MathTex(np.linalg.norm(line.get_start()-line.get_end()))
+
+        grp=VGroup(a,b,c,d).arrange_submobjects(DOWN)
+
+        self.add(grp)
+
+        # manim -pqh discord.py get_length_Test
+
+        # manim -sqk discord.py get_length_Test
+
+
+class Rot_AdS_normal_vec(AnimationGroup):
+    def __init__(self, vgroup, action = None, **kwargs):
+        self.vgroup = vgroup
+        center = vgroup[0].get_center()
+        if action == "RandalSundrum":
+                super().__init__(
+                    Succession(
+                    vgroup[-1].animate.move_to(center).build(),
+                    Rotate(vgroup[-1], angle= PI, about_point= center),
+                    vgroup[-1].animate.rotate(PI).move_to(4*RIGHT).build()),
+                **kwargs)
+
+class AdS_Jc(VGroup):   
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        #Geometry
+        brane = Line(start= [0,-2.5,0], end = [0,2.5,0], color = GREEN, stroke_width = 3)
+        adskp= RoundedRectangle(corner_radius=0.2, height=4,  width=4, stroke_width=1, color= DARK_BLUE, fill_opacity=0.2)
+        adskm= RoundedRectangle(corner_radius=0.2, height=4,  width=4, stroke_width=1, color= RED_D, fill_opacity=0.2)
+        adskp.shift([2.1,0,0])
+        adskm.shift([-2.1,0,0])
+        
+        #Text
+        in_text = MathTex("-6 k_{-}^{2}").move_to(adskm.get_center())
+        out_text = MathTex("-6 k_{+}^{2}").move_to(adskp.get_center())
+        sym = MathTex("\mathbb{Z}_{2}").move_to(brane.get_corner(UL))
+        
+        #Arrow
+        arrow = Arrow(max_tip_length_to_length_ratio=2, color= BLACK, start = LEFT, end= [0.5,0,0]).move_to(adskm.get_left())
+        
+        self.add(brane, adskm, in_text, adskp, out_text, sym, arrow)
+        
+class arr_rect_continuous_Test(Scene):
+    def construct(self):
+        self.camera.background_color = "#FFFFDC"
+        Tex.set_default(color = BLACK, font_size = 25)
+        MathTex.set_default(color = BLACK, font_size = 35)
+        qua = AdS_Jc()
+        self.add (qua[:-1])
+        self.wait()
+        self.play(Rot_AdS_normal_vec(qua, action = "RandalSundrum"))
+
+
+        # manim -pqh discord.py arr_rect_continuous_Test
+
+        # manim -sqk discord.py arr_rect_continuous_Test
+
+
+class AdS_Jc_1(VGroup):   
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        #Geometry
+        brane = Line(start= [0,-2.5,0], end = [0,2.5,0], color = GREEN, stroke_width = 3)
+        adskp= RoundedRectangle(corner_radius=0.2, height=4,  width=4, stroke_width=1, color= DARK_BLUE, fill_opacity=0.2)
+        adskm= RoundedRectangle(corner_radius=0.2, height=4,  width=4, stroke_width=1, color= RED_D, fill_opacity=0.2)
+        adskp.shift([2.1,0,0])
+        adskm.shift([-2.1,0,0])
+        
+        #Text
+        in_text = MathTex("-6 k_{-}^{2}").move_to(adskm.get_center())
+        out_text = MathTex("-6 k_{+}^{2}").move_to(adskp.get_center())
+        sym = MathTex("\mathbb{Z}_{2}").move_to(brane.get_corner(UL))
+        
+        #Arrow
+        arrow = Arrow(max_tip_length_to_length_ratio=2, color= BLACK, start = LEFT, end= [0.5,0,0]).move_to(adskm.get_left())
+        
+        self.add(brane, adskm, in_text, adskp, out_text, sym, arrow)
+        
+class arr_rect_continuous_Test_1(Scene):
+    def construct(self):
+        self.camera.background_color = "#FFFFDC"
+        Tex.set_default(color = BLACK, font_size = 25)
+        MathTex.set_default(color = BLACK, font_size = 35)
+        qua = AdS_Jc_1()
+        self.add (qua[:-1])
+        self.wait()
+
+        x_pos = ValueTracker(-4.1)
+        def arrowUpdater(mobj):
+            x = x_pos.get_value()
+            angle = 0 if x < -0.2 else PI/0.4*(x+0.2) if x < 0.2 else PI
+            mobj.rotate(angle = angle-mobj.get_angle(), about_point=mobj.get_center())
+            mobj.shift((x-mobj.get_center()[0])*RIGHT)
+        qua[-1].add_updater(arrowUpdater)
+
+        self.add(qua[-1])
+        self.play(x_pos.animate.set_value(4.1), rate_func=rate_functions.linear, run_time=4)
+        self.wait()
+
+        # manim -pqh discord.py arr_rect_continuous_Test_1
+
+        # manim -sqk discord.py arr_rect_continuous_Test_1
+
+
+class squaresAlongLine(Scene):
+    def construct(self):
+        ax = Axes(
+            x_range=[0,20,1],
+            y_range=[0,20,1],
+            x_length=7,
+            y_length=7,
+        )            
+        self.add(ax)
+        unitLengths = ax.c2p(1,1)-ax.c2p(0,0)
+        
+        x1 = ValueTracker(20)
+        y1 = ValueTracker(5)
+
+        line = always_redraw(lambda:
+            Line(ax.c2p(0,0), ax.c2p(x1.get_value(),y1.get_value()))            
+        )
+        
+        squares = VGroup()
+        def squaresUpdater(mobj):
+            group = VGroup()
+            x0 = 0
+            y0 = 0
+            dx = abs(x1.get_value() - x0)
+            sx = 1 if x0 < x1.get_value() else -1
+            dy = -abs(y1.get_value() - y0)
+            sy = 1 if y0 < y1.get_value() else -1
+            error = dx + dy
+            
+            while True:
+
+                group += Rectangle(width=unitLengths[0],height=unitLengths[1]).move_to(ax.c2p(x0,y0))
+                if (x0 >= x1.get_value()) and (y0 >= y1.get_value()):
+                    break
+                e2 = 2 * error
+                if e2 >= dy:
+                    if x0 == x1.get_value():
+                        break
+                    error = error + dy
+                    x0 = x0 + sx
+                if e2 <= dx:
+                    if y0 == y1.get_value():
+                        break
+                    error = error + dx
+                    y0 = y0 + sy
+            mobj.become(group)
+        squares.add_updater(squaresUpdater, call_updater=True)
+        
+        self.add(squares, line)
+        self.wait()
+        
+        self.play(y1.animate.set_value(20), run_time=5, rate_func=rate_functions.linear)
+        self.play(x1.animate.set_value(5), run_time=5, rate_func=rate_functions.linear)
+        self.wait()
+
+
+        # manim -pqh discord.py squaresAlongLine
+
+        # manim -sqk discord.py squaresAlongLine
+
+class showBresenham(Scene):
+    def construct(self):
+
+        unitLengths = [0.2, 0.2]
+        
+        start = Dot(color=YELLOW).move_to([-5,-2,0])
+        end   = Dot(color=BLUE).move_to([6,3,0])
+        
+        line = always_redraw(lambda:
+            Line(start=start.get_center(), end=end.get_center())            
+        )
+        
+        squares = VGroup()
+        def squaresUpdater(mobj):
+            group = VGroup()
+            x0 = int(start.get_center()[0]/unitLengths[0])
+            y0 = int(start.get_center()[1]/unitLengths[1])
+            x1 = int(end.get_center()[0]/unitLengths[0])
+            y1 = int(end.get_center()[1]/unitLengths[1])
+            dx = abs(x1 - x0)
+            sx = 1 if x0 < x1 else -1
+            dy = -abs(y1 - y0)
+            sy = 1 if y0 < y1 else -1
+            error = dx + dy
+            
+            while True:
+                group += Rectangle(width=unitLengths[0],height=unitLengths[1]).move_to([x0*unitLengths[0],y0*unitLengths[1],0])
+                if (x0 == x1) and (y0 == y1):
+                    break
+                e2 = 2 * error
+                if e2 >= dy:
+                    if x0 == x1:
+                        break
+                    error = error + dy
+                    x0 = x0 + sx
+                if e2 <= dx:
+                    if y0 == y1:
+                        break
+                    error = error + dx
+                    y0 = y0 + sy
+            mobj.become(group)
+        squares.add_updater(squaresUpdater, call_updater=True)
+        
+        self.add(start, end, squares, line)
+        self.wait()
+        for i in range(6):
+            self.play(end.animate.move_to([np.random.uniform(low=-7,high=7),np.random.uniform(low=-4,high=4),0]), run_time=2, rate_func=rate_functions.linear)
+            self.play(start.animate.move_to([np.random.uniform(low=-7,high=7),np.random.uniform(low=-4,high=4),0]), run_time=2, rate_func=rate_functions.linear)
+        self.wait()
+
+        # manim -pqh discord.py showBresenham
+
+        # manim -sqk discord.py showBresenham
+
+
+class gaussLaw(ThreeDScene):
+    def construct(self):
+        axes = ThreeDAxes(x_range = [-10, 10],
+                          y_range = [-10, 10],
+                          z_range = [-10, 10],
+                          x_length = 20,
+                          y_length = 20,
+                          z_length = 20,
+                          z_axis_config= {"include_ticks":True},
+                          axis_config = {"include_ticks":True})
+        self.play(Create(axes))
+        self.move_camera(phi = 60 * DEGREES, theta = 30 * DEGREES, zoom = 0.5, run_time = 2)
+        self.wait(1)
+        self.move_camera(zoom = 0.5, run_time = 2)
+
+
+        #objects to be created
+        charge1 = Dot3D(point = axes.coords_to_point(0, 0, 0), color = YELLOW)
+        gaussianSurface = Sphere(charge1.get_center(), radius = 3, fill_opacity = 0.5, checkerboard_colors = None, stroke_width = 0)
+
+        #func = lambda pos: (pos * (1 / ((pos[0] ** 2 + pos[1] ** 2 + pos[2] ** 2 + 1e-10) ** (3/2))))
+        func1 = lambda pos: (100 * axes.c2p(*pos) * (1 / ((axes.c2p(*pos)[0] ** 2 + axes.c2p(*pos)[1] ** 2 + axes.c2p(*pos)[2] ** 2 + 1e-10) ** (3/2))))
+        
+        
+        self.play(Create(ArrowVectorField(func1, x_range=[-2, 2, 1], y_range=[-2, 2, 1],z_range=[-2,2, 1], vector_config = {})))
+
+        self.play(Create(charge1))
+        self.move_camera(frame_center = charge1.get_center(), zoom = 0.8)
+        self.play(Create(gaussianSurface))
+        self.wait(1)
+        self.begin_ambient_camera_rotation(rate = 0.2)
+        self.wait(3)
+        self.move_camera(zoom = 4)
+
+
+        # manim -pqh discord.py gaussLaw
+
+        # manim -sqk discord.py gaussLaw
+
+
+class Spring(Line):
+    def __init__(self, start=LEFT, end=RIGHT, num_loops=5, loop_radius=0.3, color=GREY, **kwargs):
+        self.num_loops = num_loops
+        self.loop_radius = loop_radius        
+        super().__init__(start, end, color=color, **kwargs)
+
+    def init_points(self):
+        ## self.start, self.end
+        length = np.linalg.norm(self.end-self.start)
+        angle = angle_of_vector(self.end-self.start)
+        micro_radius = self.loop_radius/length
+        m = 2*np.pi*(self.num_loops+0.5)
+        def loop(t):
+            return t*RIGHT + micro_radius*(
+                RIGHT + np.cos(m*t)*LEFT + np.sin(m*t)*UP
+            )
+        new_epsilon = 0.1/(m*micro_radius)/length
+        p = ParametricFunction(loop, t_range=[0,1,new_epsilon])
+        self.points = p.points.copy()
+        self.move_to(self.start, aligned_edge=LEFT)
+        self.scale(length/(1+2*micro_radius), about_point=self.start)
+        self.rotate(angle, about_point=self.start)
+
+    generate_points=init_points
+    
+
+class Spring_Test(Scene):
+    def construct(self):
+        bottom = ValueTracker(0)
+        spring = always_redraw(lambda:
+                    Spring(2*UP, [0, bottom.get_value(), 0], num_loops=4, loop_radius=0.5, color=RED)
+        )
+        self.add(spring)
+        self.wait()
+        self.play(bottom.animate.set_value(-4), run_time=2)
+        self.wait()
+
+
+        # manim -pqh discord.py Spring_Test
+
+        # manim -sqk discord.py Spring_Test
+
+
+
+
+
+class ColoredPlanes(ThreeDScene):
+    def construct(self):
+        axes = ThreeDAxes()
+
+
+
+# Start: code for horizontal and vertical plane coloring
+
+        # Create the xy plane
+        xy_plane = Polygon(
+            RIGHT*4 + DOWN*4, RIGHT*4 + UP*4, UP*4 , DOWN*4,
+            color=GRAY, fill_opacity=0.5
+        )
+
+        # Create the yz plane
+        yz_plane = Polygon(
+            DOWN * 4 , UP * 4 , UP * 4 + OUT * 4, OUT * 4 + DOWN * 4,
+            color=GRAY, fill_opacity=0.5
+        )
+
+        # # Create the xz plane
+        # xz_plane = Polygon(
+        #     ORIGIN, RIGHT * 4, RIGHT * 4 + OUT * 4, OUT * 4,
+        #     color=GREEN, fill_opacity=0.5
+        # )
+        plane=VGroup(xy_plane,yz_plane,axes)
+        self.set_camera_orientation(phi=60 * DEGREES, theta=-70 * DEGREES)
+        self.add(plane)
+
+# End : code for horizontal and plane colouring 
+
+
+# start: Code for creating shape or plane
+        k=int(input("enter no of sides of plane "))
+        shape=RegularPolygon(n=k,color=RED,fill_color=YELLOW,fill_opacity=1,)
+        shape.move_to([2,2,2])
+        self.add(shape)
+# End : Code for creating plane or shape
+
+# Start : code for drawing projections line onto HP and VP       
+        i=0
+        shape_points=[]
+        t_points=[]
+        f_points=[]
+        for vertex in shape.get_vertices():
+            print(f"Vertex is {vertex}")
+            x1,y1,z1 = vertex
+            shape_point=[x1,y1,z1]
+            shape_points.append(shape_point)
+
+            t_point=[x1,y1,0]
+            t_line=Line3D(start=shape_point,end=t_point,color=BLUE)
+            t_dot=Dot(t_point)
+            t_points.append(t_point)
+            
+          
+
+
+            f_point=[0,y1,z1]
+            f_line=Line3D(start=shape_point,end=f_point,color=BLUE)
+            f_dot=Dot(f_point)
+            f_points.append(f_point)
+            
+            
+
+            self.add(t_dot,f_dot)
+            self.add(t_line,f_line)
+            i=i+1
+# End : code for drawing projections line onto HP and VP                
+
+
+# Start : code for creating Top View                        
+        for l in range(len(t_points)):
+            
+            t_view=Line3D(start=t_points[l-1],end=t_points[l])
+            self.add(t_view)
+# End : code for creating Top view  
+
+#Start : Code for creating front view
+        for l in range(len(f_points)):
+            
+            f_view=Line3D(start=f_points[l-1],end=f_points[l])
+            self.add(f_view)
+#End : COde for creating front view
+
+        # self.begin_ambient_camera_rotation(rate=0.2)
+        # self.wait(10)
+        # self.stop_ambient_camera_rotation()
+        self.wait()
+
+
+        # manim -pqh discord.py ColoredPlanes
+
+        # manim -sqk discord.py ColoredPlanes
+
+
+
+class plot_product_grph(Scene):
+    def construct(self):
+        axes = Axes(
+            x_range=[0, 200,10],
+            y_range=[0, 5,],
+            axis_config={"include_numbers" : True,"color": BLUE}
+        )
+        axes.center()
+        approximation = axes.plot(lambda x: 2*np.prod([(4*n**2)/(4*n**2-1) for n in range(1,int(x)+1)]),
+                                  x_range= [0,200,10])
+        pidroite = axes.plot(lambda x : np.pi,
+                             x_range=[0,200])
+        tex = MathTex(r"f:x \rightarrow \prod_{k =1}{x}\frac{4x^2}{4x^2-1}")
+        self.add(axes, pidroite, tex)
+
+        self.play(
+            Write(approximation )
+        )
+
+
+        # manim -pqh discord.py plot_product_grph
+
+        # manim -sqk discord.py plot_product_grph
+
+class oneoverx(Scene):
+    def construct(self):
+        axes = Axes(x_range=[-0.5,7], y_range=[0,7])
+        graph = axes.plot(lambda x: 1 / x, discontinuities=[0], dt=0.1)
+        graph_1 = axes.plot(lambda x: 2 / x, discontinuities=[0], dt=0.5)
+        self.add(axes)
+        self.play(
+            Create(graph)
+        )
+        self.play(
+            Create(graph_1)
+        )
+
+        # manim -pqh discord.py oneoverx
+
+        # manim -sqk discord.py oneoverx
+
+
+
+def GetDragon(start=LEFT/2, end=RIGHT/2, times=13, DexOrLev=1, color='#F08080', stroke_width=2, stroke_width2=4):
+    dol = (+1,-1)if DexOrLev else (-1,+1)
+    a,b = [start, end],[]
+    for i in range(times-1):
+        for j in range(len(a)):
+            if j!=0:
+                midpoint = (a[j]+a[j-1])/2
+                b.append(rotate_vector(a[j]-midpoint, PI/2*dol[j%2!=0])+midpoint)
+            b.append(a[j])
+        a, b = b, []
+    r = Polygram(color=color, stroke_width=stroke_width)
+    r.start_new_path(a[0])
+    r.add_points_as_corners(a[1:])
+    return r
+config.background_color=WHITE
+
+class get_dragon(MovingCameraScene):
+    def construct(self):
+        self.camera.frame.move_to([2,0,0])
+        self.camera.frame.scale(.7)
+        colors = [BLUE_E, BLUE_A, BLUE_D, GREEN_A, GREEN_E, PURE_GREEN]
+        My_colors = color_gradient(colors,11)[1:-2]
+        steps = []
+        for times in range(1, 16):
+            stroke = 20/times
+            DragonCurveg = VGroup(
+                GetDragon(start=DL,end=UL,DexOrLev=0, times=times, stroke_width=stroke).set_color(My_colors[0]),
+                GetDragon(start=UR,end=UL,DexOrLev=0, times=times, stroke_width=stroke).set_color(My_colors[1]),
+                GetDragon(start=UR,end=DR,DexOrLev=0, times=times, stroke_width=stroke).set_color(My_colors[2]),
+                GetDragon(start=DL,end=DR,DexOrLev=0, times=times, stroke_width=stroke).set_color(My_colors[3]),
+                ).set_stroke(opacity=0.8)
+            tesselation = VGroup()
+            for x in [-6, -2, 2]:
+                for y in [-4, -2, 0, 2, 4]:
+                    g = DragonCurveg.copy()
+                    g.move_to(x*LEFT+y*UP)
+                    if y%4 == 0:
+                        for i in range(4,8):
+                            g[i-4].set_color(My_colors[i])
+                            g[i-4].set_color(My_colors[i])
+                    tesselation.add(g)
+            steps.append(tesselation.rotate(-PI/4))
+        previous = steps[0]
+        self.add(previous)
+        for step in steps[1:]:
+            self.play(ReplacementTransform(previous, step))
+            self.wait(.2)
+            previous = step
+        self.wait()
+
+        # manim -pqh discord.py get_dragon
+
+        # manim -sqk discord.py get_dragon
+
+class IFSTransform(object):
+    def __init__(self):
+        self.r = random.random()
+        self.g = random.random()
+        self.b = random.random()
+    def transform(self, px:float, py:float) -> tuple[float, float]:
+        # Default implementation, to be overriden in subclasses
+        return (px, py)
+    
+class IFSFern(IFSTransform):
+    def transform(self, x: float, y: float) -> tuple[float, float]:
+        # Barnsley fern
+        r = random.random()
+        if r < 0.01:
+            x, y =  0.00 * x + 0.00 * y,  0.00 * x + 0.16 * y + 0.00
+        elif r < 0.86:
+            x, y =  0.85 * x + 0.04 * y, -0.04 * x + 0.85 * y + 1.60
+        elif r < 0.93:
+            x, y =  0.20 * x - 0.26 * y,  0.23 * x + 0.22 * y + 1.60
+        else:
+            x, y = -0.15 * x + 0.28 * y,  0.26 * x + 0.24 * y + 0.44
+        return x, y
+
+
+class ifs_fern(Scene):
+    def setup(self):
+        self.WIDTH = config.pixel_width
+        self.HEIGHT = config.pixel_height
+        self.img = Image.new("RGBA", (self.WIDTH, self.HEIGHT), "#00000000")
+        self.img_mobj = ImageMobject(self.img, scale_to_resolution=self.HEIGHT)
+        self.add(self.img_mobj)
+        self.img_data = self.img.load()
+        
+
+    def ifs_points(self):
+        ifs = IFSFern()
+        px = random.uniform(-1, 1)
+        py = random.uniform(-1, 1)
+        r, g, b, a = .3, .9, .4, .99
+        while True:
+            px, py = ifs.transform(px, py)
+            yield px, py, (r, g, b, a)
+
+    def construct(self):
+        iterator = iter(self.ifs_points())
+        def updater(mobj, dt):
+            for _ in range(1500):
+                x, y, colour = next(iterator)
+                self.add_pixel(x, y, colour)
+            mobj.become(ImageMobject(self.img, scale_to_resolution=self.HEIGHT))
+        self.wait(.1)
+        self.img_mobj.add_updater(updater)
+        self.wait(10)
+
+    def add_pixel(self, x, y, colour):
+        factor = min(self.WIDTH, self.HEIGHT) / 10
+        x = int(x * factor + self.WIDTH / 2)
+        y = int(-y * factor + self.HEIGHT)
+        try:
+            self.img_data[x, y] = tuple(int(255 * c) for c in colour)
+        except IndexError:
+            pass
+
+
+        # manim -pql discord.py ifs_fern
+
+        # manim -sqk discord.py ifs_fern
+
+
+config.background_color= REANLEA_BACKGROUND_COLOR
+def exFunc(x) :
+    return (x**2-10*x+9)/(x**2-7*x+6)
+
+class graphingEx(Scene):
+    def construct(self):
+
+        plane = NumberPlane(
+            x_range = [-20, 20, 5], 
+            y_range = [-20,20,5],
+            x_length=14.1,
+            y_length=8
+        ).add_coordinates()
+        graph = plane.plot(
+            exFunc, 
+            x_range = [-20, 20, 0.01], 
+            discontinuities = [1,6],
+            dt = 0.1,
+            color=BLUE,
+            use_smoothing=False,
+        )
+        self.play(FadeIn(plane))
+        self.play(Create(graph, run_time=4))
+        dot = Dot(radius=0.1, color=RED).move_to(plane.c2p(1,exFunc(1+1e-4))) 
+        self.add(dot)
+        self.wait()         
+
+
+        # manim -pql discord.py graphingEx
+
+        # manim -sqk discord.py graphingEx
+
+class circle_inside_lines(Scene):
+    def construct(self):
+        rect = Rectangle(height=0.01).set_fill(BLUE, 1)
+        lines = VGroup(*[rect.copy() for _ in range(50)])
+        lines.arrange(DOWN, buff=0.1)
+        circle = Circle()
+        for line in lines:
+            line.become(Intersection(line, circle))
+        #self.add(lines.rotate(PI / 6), circle)
+
+        self.play(
+            Create(circle)
+        )
+        self.play(
+            Create(lines)
+        )
+    
+
+    # manim -pql discord.py circle_inside_lines
+
+    # manim -sqk discord.py circle_inside_lines
+
+
+class BeveledSquare(Square):
+    def __init__(self, bevel=0.5, **kwargs):
+        if bevel < 0 :
+            bevel = 0
+        if bevel > 1:
+            bevel = 1
+        scale = interpolate(2**.5, .5*2**.5, bevel)
+        super().__init__(**kwargs)
+        sq2 = self.copy().scale(scale).rotate(PI/4)
+        result = Intersection(self, sq2)
+        self.points = result.points[:]
+
+
+
+class BeveledSquare_scene(Scene):
+    def construct(self):
+        self.camera.background_color = WHITE
+        #The side length of the square is 1.4, and the bevel 0.2*2
+        VGIQ = VGroup(
+            *[(IQBlock := BeveledSquare(bevel = 2/7, side_length = 1.4, color = "#57585a", fill_opacity = 1))
+              .add(Square(side_length = 1, color = BLACK, fill_opacity = 1)
+                   .move_to(IQBlock.get_center())) 
+              for i in range(32)]).arrange_in_grid(rows = 4, cols = 8, buff = 0)
+        
+        PluggedHoles = VGroup(*[Polygram([[-2/7, 0, 0], [0, 2/7, 0], [2/7, 0, 0], [0, -2/7, 0]], color = "#57585a", fill_opacity = 1)
+                              .move_to(Block.get_corner(DR)) 
+                              for Block in VGroup(*[i for i in VGIQ if (list(VGIQ).index(i) + 1)%8 != 0])[:-7]])  #This is to iterate with a list that does not contain the squares of the southeast edges.
+
+        #self.add(VGIQ, PluggedHoles) 
+
+        self.play(
+            Write(VGIQ)
+        )
+        self.play(
+            Write(PluggedHoles)
+        )
+
+
+        # manim -pqh discord.py BeveledSquare_scene
+
+        # manim -sqk discord.py BeveledSquare_scene
+
+class MyCamera(ThreeDCamera):
+    def transform_points_pre_display(self, mobject, points):
+        if getattr(mobject, "fixed", False):
+            return points
+        else:
+            return super().transform_points_pre_display(mobject, points)
+      
+class MyThreeDScene(ThreeDScene):
+    def __init__(self, camera_class=MyCamera, ambient_camera_rotation=None,
+                 default_angled_camera_orientation_kwargs=None, **kwargs):
+        super().__init__(camera_class=camera_class, **kwargs)
+
+def make_fixed(*mobs):
+    for mob in mobs:
+        mob.fixed = True
+        for submob in mob.family_members_with_points():
+            submob.fixed = True
+
+class threed_txt_fxd(MyThreeDScene):
+    def construct(self):
+        r = Rectangle()
+        tex = MathTex("{{f(x,y)}} = {{ e^{-(x^2 + y^2)} }}").to_edge(UP * 1.1)
+        tex[2].set_color(YELLOW)
+        texN = MathTex( "{{f(x,y)}} = " 
+            "{{\\int_{-2}^2 \\int_{-2}^2 f(x,y) dx dy \\approx \\sum_{i=0}^{n-1} \\sum_{j=0}^{m-1} f(i^*,j^*) \\Delta a}}")
+        make_fixed(tex, texN)
+        texN.to_edge(UP * 1.1)
+        self.set_camera_orientation(phi=75 * DEGREES, theta=-45 * DEGREES)
+        self.begin_ambient_camera_rotation(rate=0.5)
+        self.add(r)
+        self.add(tex)
+        self.wait()
+        self.play(TransformMatchingTex(tex, texN))
+        self.wait()
+
+        # manim -pqh discord.py threed_txt_fxd
+
+        # manim -sqk discord.py threed_txt_fxd
+
+
+class Brace_cube(ThreeDScene):
+    def construct(self):
+        axes = ThreeDAxes(x_range=(0, 1, 1), 
+                          y_range=(0, 1, 1),
+                          z_range=(0, 1, 1),
+                          x_length=1, y_length=1,z_length=1).scale(0.5)
+        labels = axes.get_axis_labels().scale(0.5)
+        Tex.set_default(font_size=30)
+        MathTex.set_default(font_size=30)
+
+        self.camera.background_color = DARKER_GRAY
+
+        Titolo = Title("Cubo di un binomio",     font_size=35).set_color(RED).shift(DOWN*0.5)
+        self.camera.add_fixed_in_frame_mobjects(Titolo)
+
+        cube = Cube(side_length=2, fill_opacity=0.1, stroke_width=0.5)
+        self.set_camera_orientation(phi=60 * DEGREES, theta=30* DEGREES)
+        
+        p1 = Dot3D((1, -1, -1))
+
+        l1 = Line3D(start=(1, 1, -1), end=(1, -1, -1), color=RED)
+        b1=Brace(l1,direction=(1,0,0))
+        b1t= MathTex(r"a+b").rotate(PI/2).next_to(b1,RIGHT*0.5)
+        
+
+        l2 = Line3D(start=(1, 1, -1), end=(-1, 1, -1), color=BLUE)
+        b2=Brace(l2,direction=(0,1,0))
+        b2t= MathTex(r"a+b").rotate(PI).next_to(b2,UP*0.5)
+
+        l3 = Line3D(start=(1, -1, -1), end=(1, -1, 1), color=GREEN)
+        b3 = b1.copy().rotate(PI/2, axis=(1,0,0), about_point=p1.get_center())
+        b3t= MathTex(r"a+b").next_to(l3, 1.5*RIGHT).rotate(-PI/2).rotate(-PI/2, axis=(1,0,0))
+
+        self.add(cube, Titolo, b1,p1,l1,axes,b1t, labels, l2,b2,b2t, l3,b3,b3t)
+
+
+        # manim -pqh discord.py Brace_cube
+
+        # manim -sqk discord.py Brace_cube
+
+        
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2023\lab" 
