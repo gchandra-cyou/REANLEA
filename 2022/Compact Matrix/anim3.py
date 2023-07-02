@@ -1210,7 +1210,6 @@ class Scene1_intro_2(Scene):
 
     # manim -pqk anim3.py Scene1_intro_2
 
-    # manim -sqk anim3.py Scene1_intro_2
 
 ###################################################################################################################
 
