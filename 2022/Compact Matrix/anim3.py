@@ -902,7 +902,7 @@ class Scene1_intro_1(MovingCameraScene):
 
         self.play(
             self.camera.frame.animate.scale(0.5).move_to(DOWN + 1.5*RIGHT),
-            #water_mark.animate.scale(0.5).move_to(0.5*UP + LEFT),
+            water_mark.animate.scale(0.5).move_to(0.5*UP + LEFT),
         )
         #self.wait(5)
 
@@ -918,7 +918,7 @@ class Scene1_intro_1(MovingCameraScene):
         self.play(Write(d_line_label))
         #self.wait(5)
 
-        self.play(Restore(self.camera.frame))
+        self.play(Restore(self.camera.frame),Restore(water_mark))
         #self.wait(5)
 
         self.play(
