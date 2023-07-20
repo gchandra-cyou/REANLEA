@@ -953,6 +953,129 @@ class post_4(Scene):
         # manim -pqh test.py post_4
 
         # manim -sqk test.py post_4
+
+config.background_color="#F4F7FE"
+config.pixel_width=1080*2
+config.pixel_height=1080*2
+
+class pitch_deck(Scene):
+    def construct(self):
+
+        np=NumberPlane(
+            axis_config={
+                "stroke_width":DEFAULT_STROKE_WIDTH*.4,
+                "color": REANLEA_BLUE_DARKEST
+            },
+            background_line_style={
+                "stroke_width": DEFAULT_STROKE_WIDTH*.25,
+                "stroke_color": REANLEA_GREY_DARKER
+            },
+            tips=False,
+        ).set_z_index(-5)
+
+        #self.add(np)
+
+        ax=Axes(
+            x_range=[-.5,4.5],
+            y_range=[-.5,4.5],
+            y_length=(round(config.frame_width)-2),
+            tips=False, 
+            axis_config={
+                "font_size": 18,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.65).set_z_index(-5).shift(LEFT)
+
+        ln=Line(start=ax.c2p(0,0),end=ax.c2p(4,4)).set_stroke(width=1.5).set_color(REANLEA_TXT_COL_DARKER)
+
+        with RegisterFont("Cousine") as fonts:
+            txt_1 = Text("serious learners." , font=fonts[0]).set_color_by_gradient("#AEAEAE").scale(.35).next_to(ax.c2p(4.5,0))
+            num_1=Text("3%" , font=fonts[0]).set_color_by_gradient("#AEAEAE").scale(.35).next_to(ax.c2p(4,0),DOWN)
+
+            txt_2 = Text("youtube viewers" , font=fonts[0]).set_color_by_gradient("#AEAEAE").scale(.35).next_to(ax.c2p(0,4.5),UP)
+            num_2=Text("0.1%" , font=fonts[0]).set_color_by_gradient("#AEAEAE").scale(.35).next_to(ax.c2p(0,4),LEFT)
+
+        self.add(ax,ln,txt_1,txt_2,num_1,num_2)
+
+
+        # manim -pqh test.py pitch_deck
+
+        # manim -sqk test.py pitch_deck
+
+class post_1(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("water_mark_white.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(1).set_z_index(-100)
+        self.add(water_mark)
+
+        # MAIN SCENE
+
+        np=NumberPlane(
+            axis_config={
+                "stroke_width":DEFAULT_STROKE_WIDTH*.4,
+                "color": REANLEA_BLUE_DARKEST
+            },
+            background_line_style={
+                "stroke_width": DEFAULT_STROKE_WIDTH*.25,
+                "stroke_color": REANLEA_GREY_DARKER
+            },
+            tips=False,
+        ).set_z_index(-5)
+
+        np_1=NumberPlane(
+            axis_config={
+                "stroke_width":DEFAULT_STROKE_WIDTH*.15,
+                "color": REANLEA_BLUE_DARKEST
+            },
+            background_line_style={
+                "stroke_width": DEFAULT_STROKE_WIDTH*.085,
+                "stroke_color": REANLEA_GREY_DARKER,
+            },
+            tips=False
+        ).set_z_index(-6)
+        np_1.add_coordinates()
+
+        cir_1=Circle(color=REANLEA_BACKGROUND_COLOR_OXFORD_BLUE)
+        cir_2=Circle().set_stroke(width=DEFAULT_STROKE_WIDTH,color=[REANLEA_WARM_BLUE,REANLEA_BLUE_DARKER]).scale(.5)
+
+        
+        self.play(
+            Write(np)
+        )
+        self.play(
+            Write(np_1)
+        )
+        self.play(
+            Write(cir_1),
+            Write(cir_2)
+        )
+        self.wait()
+
+        matrix_1 = [[2.5,0], [0, 6]]
+        matrix_2 = [[2/sqrt(5), 1/sqrt(5)], [-1/sqrt(5), 2/sqrt(5)]]
+
+        cir_1.scale(.5)
+
+        self.play(ApplyMatrix(matrix_1, np),ApplyMatrix(matrix_1, cir_1))   
+        self.play(ApplyMatrix(matrix_2, np),ApplyMatrix(matrix_2, cir_1))   
+
+        with RegisterFont("Cousine") as fonts:
+            txt_1 = Text("Circle & Ellipse are equivalent under an affine transformation." , font=fonts[0]).set_color_by_gradient("#A8A8A8")
+
+        txt_1.scale(.35).shift(3.35*DOWN)
+
+        self.add(txt_1)
+        
+        
+        self.wait()
+
+        
+
+        # manim -pqh post.py post_1
+
+        # manim -sqk post.py post_1
 ###################################################################################################################
 
 

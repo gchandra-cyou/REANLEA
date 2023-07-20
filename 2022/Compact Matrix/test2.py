@@ -9785,6 +9785,53 @@ class sq_cloud_ex(Scene):
 
         # manim -sqk test2.py sq_cloud_ex
 
+
+
+class circ_spoke(Scene):
+    def construct(self):
+
+        cir=Circle(radius=2, color=REANLEA_SLATE_BLUE_LIGHTEST)
+        ln_1=Line(start=ORIGIN,end=RIGHT).scale(cir.get_radius(), about_point=cir.get_center()).rotate(PI/6,about_point=ORIGIN)
+
+        rays=get_rays(color=PURE_GREEN, factor=cir.get_radius(),n=100)
+
+        self.add(cir,ln_1,rays)
+    
+    
+
+    # manim -pqh test2.py circ_spoke
+
+    # manim -pql test2.py circ_spoke
+
+    # manim -sqk test2.py circ_spoke
+
+
+
+class planetTimed(Scene):
+    def construct(self):
+
+        self.acc_time  = 0
+        def sceneUpdater(dt):
+            self.acc_time += dt
+        self.add_updater(sceneUpdater) 
+
+        pl = always_redraw(lambda:
+            VGroup(
+                Circle(radius=0.5),
+                Dot().move_to([0.5,0,0])
+            ).rotate(self.acc_time*360*DEGREES, about_point=ORIGIN)
+            .shift(3*RIGHT)
+            .rotate(self.acc_time/5*360*DEGREES, about_point=ORIGIN)
+        )        
+        self.add(pl)
+        self.wait(10)
+
+
+        # manim -pqh test2.py planetTimed
+
+        # manim -pql test2.py planetTimed
+
+        # manim -sqk test2.py planetTimed
 ###################################################################################################################
 
 

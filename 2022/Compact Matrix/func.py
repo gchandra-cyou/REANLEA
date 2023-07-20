@@ -220,7 +220,19 @@ def get_stripe(
     return stripe.rotate(PI/2).move_to(ORIGIN).set_z_index(-10)
 
 
+def get_rays(
+        factor=1,scale_about_point=ORIGIN,rotate_about_point=ORIGIN, buff_min=0, buff_max=360, color=REANLEA_TXT_COL_DARKER, n=10
+):
+    line=DashedLine(ORIGIN,RIGHT, stroke_width=1).set_color(color).scale(factor,about_point=scale_about_point)
 
+    rays=VGroup(
+        *[
+            line.copy().rotate(k*DEGREES, about_point=rotate_about_point)
+            for k in np.linspace(buff_min,buff_max,n)
+        ]
+    )
+
+    return rays
     
 def get_surround_bezier(text):
 
