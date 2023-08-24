@@ -961,13 +961,22 @@ class esp_ex_3_0(Scene):
         self.add(strp_1)
 
 
+        #BOX
+
+        rect=Rectangle(height=4.5, width=8).scale(.8).shift(2.75*LEFT).set_stroke(opacity=1, color=[REANLEA_VIOLET,REANLEA_AQUA])
+
+        self.play(
+            Create(rect)
+        )
+
+
 
     
     # manim -sqk banner.py esp_ex_3_0
 
-
+config.background_color="#00003c"
 class esp_ex_3_1(ThreeDScene):
-    def construct(self):
+    def construct(self):     
 
         #self.set_camera_orientation(phi=95 * DEGREES, theta=30 * DEGREES)
 
@@ -1062,15 +1071,7 @@ class esp_ex_3_1(ThreeDScene):
             run_time=2
         )
 
-        self.wait(3)
-
-        x_grp=VGroup(grp,ax_lbl).scale(.5)
-
-        self.wait(2)
-
-        
-
-
+        self.wait(3.5)
 
 
         # manim -sqk banner.py esp_ex_3_1
