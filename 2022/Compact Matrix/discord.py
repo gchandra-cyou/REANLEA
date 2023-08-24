@@ -7656,6 +7656,114 @@ class lorenz(ThreeDScene):
 
         # manim -pqk discord.py lorenz
 
+
+
+class FFTCirclesDotScene(MovingCameraScene):
+    center_point = ORIGIN
+    slow_factor = 0.1
+
+    def get_fft_coefficients_of_path(self, path, n_samples=32768, n_freqs = 200):
+        dt = 1 / n_samples
+        ts = np.arange(0, 1, dt)
+        samples = np.array([
+            path.point_from_proportion(t)
+            for t in ts
+        ])
+        samples -= self.center_point
+        complex_samples = samples[:, 0] + 1j * samples[:, 1]
+        
+        coeffs = np.fft.fft(complex_samples)
+        freqs  = np.fft.fftfreq(n_samples, 1/n_samples)
+
+        sfreqs = zip(coeffs,freqs)
+        p = sorted(sfreqs, key=lambda f: abs(f[1]))
+        cs = [a[0]/n_samples for a in p]
+        fs = [a[1] for a in p]
+        return cs[:n_freqs], fs[:n_freqs]
+    
+    def get_path(self):
+        svg_mob = SVGMobject(r"Mia-Sprung_2.svg").scale_to_fit_height(6)
+        svg_mob.scale_to_fit_height(6)
+        path = svg_mob #.family_members_with_points()[0]
+        path.set_fill(opacity=0)
+        path.set_stroke(WHITE, 1)
+        return path
+        
+    def construct(self):
+        npl = NumberPlane()
+        npl.add_coordinates()
+        self.add(npl)
+
+        paths  = self.get_path()
+        for path in paths:
+            coefs, freqs = self.get_fft_coefficients_of_path(path, n_samples=512, n_freqs=64)
+
+            self.play(Create(path))
+            self.wait(2)
+
+            vectorsCircles = VGroup()
+            origin = ORIGIN
+            strokewidth = 4
+            for i in range(len(freqs)):
+                print("{:3.0f}: abs = {:5.3f}  Z = {:-5.3f} + {:-5.3f}j".format(
+                    freqs[i], 
+                    np.abs(coefs[i]), 
+                    np.real(coefs[i]), 
+                    np.imag(coefs[i])))
+                dummy = Line(
+                        start = ORIGIN, 
+                        end   = [np.real(coefs[i]), np.imag(coefs[i]), 0],
+                        stroke_width = strokewidth
+                )
+                circ = Circle(radius=np.abs(coefs[i])).set_stroke(width=0.5*strokewidth, color=RED)
+                strokewidth *= 0.9
+                vectorsCircles += VGroup(dummy, circ).shift(origin)
+                origin = dummy.get_end()
+
+            self.add(vectorsCircles)
+            self.wait()
+
+            dot = always_redraw(lambda: Dot(vectorsCircles[-1][0].get_end(), radius=0.04, color=GREEN))
+
+            trace = VMobject().set_points([vectorsCircles[-1][0].get_end()]).set_color(YELLOW)
+            self.add(trace,dot)
+
+            def vectorsUpdater(mobj, dt):
+                origin = mobj[0][0].get_end()
+                for i in range(1, len(freqs)):
+                    mobj[i][0].rotate(2*PI*dt*freqs[i]*self.slow_factor, about_point=mobj[i][0].get_start())
+                    mobj[i].shift(origin - mobj[i][0].get_start())
+                    origin = mobj[i][0].get_end()
+                trace.add_smooth_curve_to(mobj[-1][0].get_end())    
+            vectorsCircles.add_updater(vectorsUpdater)
+
+            self.wait(1/self.slow_factor)
+            self.camera.frame.save_state()
+
+            vectorsCircles.remove_updater(vectorsUpdater)
+            self.play(self.camera.frame.animate.scale(0.2).move_to(dot))
+            vectorsCircles.add_updater(vectorsUpdater)
+
+            def update_camera(mob):
+                mob.move_to(dot.get_center())
+
+            self.camera.frame.add_updater(update_camera)
+            self.slow_factor=1/30
+
+            self.wait(1/self.slow_factor)
+
+            self.camera.frame.remove_updater(update_camera)
+
+            self.play(Restore(self.camera.frame))
+            vectorsCircles.remove_updater(vectorsUpdater)
+        self.wait(2)
+
+
+        # manim -pqh discord.py FFTCirclesDotScene
+
+        # manim -pqk discord.py FFTCirclesDotScene
+
+
 ###################################################################################################################
 
 # NOTE :-

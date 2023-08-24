@@ -223,6 +223,9 @@ class banner1(Scene):
     # manim -pqk banner.py banner1
 
 
+###################################################################################################################
+
+
 class esp_ex(Scene):
     def construct(self):
 
@@ -266,6 +269,21 @@ class esp_ex(Scene):
 
     
     # manim -sqk banner.py esp_ex
+
+
+def get_rays(
+        factor=1,scale_about_point=ORIGIN,rotate_about_point=ORIGIN, buff_min=0, buff_max=360, color=REANLEA_TXT_COL_DARKER, n=10
+):
+    line=DashedLine(ORIGIN,RIGHT, stroke_width=1).set_color(color).scale(factor,about_point=scale_about_point)
+
+    rays=VGroup(
+        *[
+            line.copy().rotate(k*DEGREES, about_point=rotate_about_point)
+            for k in np.linspace(buff_min,buff_max,n)
+        ]
+    )
+
+    return rays
 
 class esp_ex_1(Scene):
     def construct(self):
@@ -357,6 +375,390 @@ class esp_ex_1(Scene):
     
     # manim -sqk banner.py esp_ex_1
 
+
+class esp_ex_2(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("background_4.png").scale(.5).set_z_index(-100)
+        self.add(water_mark)
+
+        
+        # MOBJECTS
+
+        line_1= NumberLine(
+            x_range=[-8, 8, 1],
+            length=32,
+            include_ticks=False,
+        ).set_color(REANLEA_BLUE_LAVENDER).set_stroke(width=4).move_to(DOWN)
+
+        zero_tick = VGroup(
+            Line(0.3 * UP, 0.3 * DOWN, stroke_width=2.0, color=REANLEA_VIOLET_LIGHTER),
+            MathTex("0"),
+        )
+        zero_tick[0].move_to(line_1.n2p(-1))
+        zero_tick[1].next_to(zero_tick[0], DOWN)
+        zero_tick.set_z_index(3)
+
+        one_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("1").scale(.5),
+        )
+        one_tick[0].move_to(line_1.n2p(0))
+        one_tick[1].next_to(one_tick[0], DOWN)
+        one_tick.set_z_index(3)
+
+        minus_one_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_YELLOW),
+            MathTex("-1").scale(.5),
+        )
+        minus_one_tick[0].move_to(line_1.n2p(-2))
+        minus_one_tick[1].next_to(minus_one_tick[0], DOWN)
+        minus_one_tick.set_z_index(3)
+
+
+        two_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("2").scale(.5),
+        )
+        two_tick[0].move_to(line_1.n2p(1))
+        two_tick[1].next_to(two_tick[0], DOWN)
+        two_tick.set_z_index(3)
+
+        three_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("3").scale(.5),
+        )
+        three_tick[0].move_to(line_1.n2p(2))
+        three_tick[1].next_to(three_tick[0], DOWN)
+        three_tick.set_z_index(3)
+
+        four_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("4").scale(.5),
+        )
+        four_tick[0].move_to(line_1.n2p(3))
+        four_tick[1].next_to(four_tick[0], DOWN)
+        four_tick.set_z_index(3)
+
+        five_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_YELLOW),
+            MathTex("-2").scale(.5),
+        )
+        five_tick[0].move_to(line_1.n2p(-3))
+        five_tick[1].next_to(five_tick[0], DOWN)
+        five_tick.set_z_index(3)
+
+        tick_grp=VGroup(zero_tick,one_tick,minus_one_tick, two_tick,three_tick,four_tick,five_tick)
+
+        sgn_pos_1=MathTex("+").scale(.75).set_color(PURE_GREEN).move_to(6.5*RIGHT)
+        sgn_pos_2=Circle(radius=0.2, color=PURE_GREEN).move_to(sgn_pos_1.get_center()).set_stroke(width= 1)
+        sgn_pos=VGroup(sgn_pos_1,sgn_pos_2)
+
+        sgn_neg_1=MathTex("-").scale(.75).set_color(REANLEA_YELLOW).move_to(6.5*LEFT)
+        sgn_neg_2=Circle(radius=0.2, color=REANLEA_YELLOW).move_to(sgn_neg_1.get_center()).set_stroke(width= 1)
+        sgn_neg=VGroup(sgn_neg_1,sgn_neg_2)
+
+        sgn_grp=VGroup(sgn_pos,sgn_neg)
+
+        so_on_txt_symbol=Text("...").move_to(0.9*DOWN+6.9*RIGHT).scale(0.5).set_color(REANLEA_GREEN)
+
+        mirror_1=get_mirror().move_to(line_1.n2p(-1)).shift(.12*LEFT)
+
+        vect_1=Arrow(start=line_1.n2p(-1),end=line_1.n2p(0),max_tip_length_to_length_ratio=0.125, buff=0).set_color(PURE_GREEN).set_opacity(1)
+        vect_1.set_z_index(4)
+        vect_1_lbl=MathTex("u").scale(.85).next_to(vect_1,0.5*DOWN).set_color(PURE_GREEN)
+
+        vect_1_moving=Arrow(start=line_1.n2p(-1),end=line_1.n2p(0),max_tip_length_to_length_ratio=0.125, buff=0).set_color(REANLEA_YELLOW).rotate(137.2*DEGREES,about_point=line_1.n2p(-1)).set_z_index(3)
+
+        ang=Angle(vect_1, vect_1_moving, radius=0.5, other_angle=False).set_stroke(color=REANLEA_SAFRON_LIGHTER, width=3).set_z_index(-1)
+
+        ang_lbl = MathTex(r"\theta =").move_to(
+            Angle(
+                vect_1, vect_1_moving, radius=.85 + 3 * SMALL_BUFF, other_angle=False
+            ).point_from_proportion(.5)                         # Gets the point at a proportion along the path of the VMobject.
+        ).scale(.5).set_color(REANLEA_YELLOW)
+
+        ang_theta=DecimalNumber(137.29,unit="^o").scale(.5).set_color(REANLEA_YELLOW).next_to(ang_lbl).shift(.175*LEFT)
+
+        projec_line=always_redraw(
+            lambda : DashedLine(start=vect_1_moving.get_end(), end=np.array((vect_1_moving.get_end()[0],line_1.n2p(0)[1],0))).set_stroke(color=REANLEA_AQUA_GREEN, width=1)
+        )
+
+        bra_1=always_redraw(
+            lambda : BraceBetweenPoints(
+                point_1=vect_1.get_start(),
+                point_2=np.array((vect_1_moving.get_end()[0],0,0)),
+                direction=DOWN,
+                color=REANLEA_YELLOW
+            ).set_stroke(width=0.1).set_z_index(5)
+        )
+
+        vect_grp=VGroup(vect_1,vect_1_lbl,vect_1_moving,ang,ang_lbl,ang_theta,projec_line,bra_1)
+
+        ang_theta_cos_lbl_left=MathTex("u","\cdot",r"cos(\theta)").arrange(RIGHT,buff=0.2).move_to(UP +RIGHT)
+        ang_theta_cos_lbl_right=MathTex("\cdot","u").arrange(RIGHT, buff=0.2).set_color(PURE_GREEN).move_to(UP +4.55*RIGHT)
+        ang_theta_cos=MathTex("=-0.735").arrange(RIGHT, buff=0.2).set_color(REANLEA_YELLOW).next_to(ang_theta_cos_lbl_right,LEFT).shift(.1*RIGHT)
+        ang_theta_cos_lbl_left[0:2].set_color(PURE_GREEN)
+        ang_theta_cos_lbl_left[2][0:3].set_color(REANLEA_WARM_BLUE)
+        ang_theta_cos_lbl_left[2][4].set_color(REANLEA_SAFRON_LIGHTER)
+        ang_theta_cos_grp=VGroup(ang_theta_cos_lbl_left,ang_theta_cos,ang_theta_cos_lbl_right).scale(.65)
+        sur_ang_theta_cos_grp=SurroundingRectangle(ang_theta_cos_grp, color=REANLEA_TXT_COL,corner_radius=0.125, buff=0.2)
+
+        ang_lbl=VGroup(ang_theta_cos_grp,sur_ang_theta_cos_grp)
+
+
+        with RegisterFont("Cousine") as fonts:
+            text_1 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "Scaling Factor",
+            )]).scale(0.24).set_color(REANLEA_GREY)
+
+        text_1.move_to(1.8*UP+5.5*RIGHT)
+
+        txt_blg_1=MathTex(r"\in", r"\mathbb{R}").set_color(REANLEA_TXT_COL).scale(0.7).next_to(text_1,DOWN)
+        txt_blg_1[0].scale(0.65)
+        txt_blg_1[1].set_color(REANLEA_CYAN_LIGHT)
+
+        bez=bend_bezier_arrow_indicate().flip(RIGHT).move_to(1.5*UP+ 4*RIGHT).scale(.75).rotate(-20*DEGREES).set_color(REANLEA_TXT_COL)
+
+        txt_grp=VGroup(text_1,bez,txt_blg_1)
+
+        ang_lbl_grp=VGroup(txt_grp,ang_lbl).scale(.9).shift(DOWN)
+
+        fld_exp_1=MathTex(r"(\mathbb{R},+,\cdot)").set_color_by_gradient(REANLEA_GOLD,REANLEA_PINK)
+
+        vsp_exp_1=MathTex(r"\mathbb{R}").set_color_by_gradient(REANLEA_GREEN)
+
+        with RegisterFont("Pacifico") as fonts:
+            fld_exp_2=Text(" is a Field", font=fonts[0]).scale(0.65).set_color_by_gradient(REANLEA_PINK,REANLEA_MAGENTA).move_to(5.5*LEFT+3.35*UP)
+            
+        with RegisterFont("Cousine") as fonts:
+            vsp_exp_2=Text(" - Vector Space", font=fonts[0]).scale(0.65).set_color_by_gradient(REANLEA_GREEN,REANLEA_AQUA)
+
+
+        fld_exp=VGroup(fld_exp_1,fld_exp_2).arrange(RIGHT, buff=0.2).shift(1.75*UP+.5*RIGHT).scale(1)
+
+        vsp_exp=VGroup(vsp_exp_1,vsp_exp_2).arrange(RIGHT, buff=0.2).shift(3.25*UP+.45*RIGHT).scale(.75)
+
+        l_1=Line().rotate(PI/2).set_stroke(width=5, color=(PURE_GREEN,REANLEA_BLUE_SKY)).scale(0.35).next_to(fld_exp,UP).shift(1.45*LEFT)
+
+        dot_1=Dot(radius=0.125, color=PURE_RED).move_to(line_1.n2p(-1)).set_sheen(-0.4,DOWN).set_opacity(1).set_z_index(5)
+        dot_2=Dot(radius=0.2, color=REANLEA_VIOLET_LIGHTER).move_to(line_1.n2p(0)).set_sheen(-0.4,DOWN).set_z_index(3)
+        glowing_circle_2=get_glowing_surround_circle(dot_2, color=REANLEA_YELLOW).set_z_index(-20)
+
+        rays=get_rays(n=100,color=PURE_GREEN,factor=.65).move_to(dot_2.get_center()).set_z_index(4)
+
+        dot_grp=VGroup(dot_1,dot_2,glowing_circle_2,rays)
+
+        d_line_1=DashedLine(line_1.n2p(1.77), end=line_1.n2p(1.77)+.3*UP, stroke_width=1).set_color(PURE_RED)
+
+        d_d_arr_1=DashedDoubleArrow(
+            start=line_1.n2p(-1.35)+.75*DOWN, end=line_1.n2p(0.77)+.5*UP, dash_length=2.0,stroke_width=2, 
+            max_tip_length_to_length_ratio=0.015, buff=10
+        ).shift(0.3*UP).set_color_by_gradient(REANLEA_YELLOW_GREEN)
+
+        ind_ln_0=Line().scale(.85).set_stroke(width=1).rotate(105*DEGREES).move_to(line_1.n2p(-1.35)+UP).shift(2.5*LEFT)
+
+        with RegisterFont("Cousine") as fonts:
+            txt_2 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "each of its points",
+                "represents a vector"
+            )]).scale(0.2).set_color(REANLEA_WHITE).arrange_submobjects(.25*DOWN).move_to(1.75*UP+3.75*RIGHT)
+
+        sr_bez_1=get_surround_bezier(txt_2).set_color(REANLEA_GREY_DARKER)
+
+        txt_2_grp=VGroup(txt_2,sr_bez_1).next_to(ind_ln_0,UP)
+
+
+        self.add(line_1,tick_grp,sgn_grp,so_on_txt_symbol,mirror_1,vect_grp,ang_lbl_grp,fld_exp,l_1,vsp_exp,dot_grp,d_d_arr_1,ind_ln_0,txt_2_grp)
+
+
+    
+    # manim -sqk banner.py esp_ex_2
+
+
+class esp_ex_2_1(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("background_4.png").scale(.5).set_z_index(-100)
+        self.add(water_mark)
+
+        
+        # MOBJECTS
+
+        line_1= NumberLine(
+            x_range=[-8, 8, 1],
+            length=32,
+            include_ticks=False,
+        ).set_color(REANLEA_BLUE_LAVENDER).set_stroke(width=4).move_to(DOWN)
+
+        zero_tick = VGroup(
+            Line(0.3 * UP, 0.3 * DOWN, stroke_width=2.0, color=REANLEA_VIOLET_LIGHTER),
+            MathTex("0"),
+        )
+        zero_tick[0].move_to(line_1.n2p(-1))
+        zero_tick[1].next_to(zero_tick[0], DOWN)
+        zero_tick.set_z_index(3)
+
+        one_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("1").scale(.5),
+        )
+        one_tick[0].move_to(line_1.n2p(0))
+        one_tick[1].next_to(one_tick[0], DOWN)
+        one_tick.set_z_index(3)
+
+        minus_one_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_YELLOW),
+            MathTex("-1").scale(.5),
+        )
+        minus_one_tick[0].move_to(line_1.n2p(-2))
+        minus_one_tick[1].next_to(minus_one_tick[0], DOWN)
+        minus_one_tick.set_z_index(3)
+
+
+        two_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("2").scale(.5),
+        )
+        two_tick[0].move_to(line_1.n2p(1))
+        two_tick[1].next_to(two_tick[0], DOWN)
+        two_tick.set_z_index(3)
+
+        three_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("3").scale(.5),
+        )
+        three_tick[0].move_to(line_1.n2p(2))
+        three_tick[1].next_to(three_tick[0], DOWN)
+        three_tick.set_z_index(3)
+
+        four_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_GREEN),
+            MathTex("4").scale(.5),
+        )
+        four_tick[0].move_to(line_1.n2p(3))
+        four_tick[1].next_to(four_tick[0], DOWN)
+        four_tick.set_z_index(3)
+
+        five_tick = VGroup(
+            Line(0.15 * UP, 0.15 * DOWN, stroke_width=2.0, color=REANLEA_YELLOW),
+            MathTex("-2").scale(.5),
+        )
+        five_tick[0].move_to(line_1.n2p(-3))
+        five_tick[1].next_to(five_tick[0], DOWN)
+        five_tick.set_z_index(3)
+
+        tick_grp=VGroup(zero_tick,one_tick,minus_one_tick, two_tick,three_tick,four_tick,five_tick)
+
+        sgn_pos_1=MathTex("+").scale(.75).set_color(PURE_GREEN).move_to(6.5*RIGHT)
+        sgn_pos_2=Circle(radius=0.2, color=PURE_GREEN).move_to(sgn_pos_1.get_center()).set_stroke(width= 1)
+        sgn_pos=VGroup(sgn_pos_1,sgn_pos_2)
+
+        sgn_neg_1=MathTex("-").scale(.75).set_color(REANLEA_YELLOW).move_to(6.5*LEFT)
+        sgn_neg_2=Circle(radius=0.2, color=REANLEA_YELLOW).move_to(sgn_neg_1.get_center()).set_stroke(width= 1)
+        sgn_neg=VGroup(sgn_neg_1,sgn_neg_2)
+
+        sgn_grp=VGroup(sgn_pos,sgn_neg)
+
+        so_on_txt_symbol=Text("...").move_to(0.9*DOWN+6.9*RIGHT).scale(0.5).set_color(REANLEA_GREEN)
+
+        mirror_1=get_mirror().move_to(line_1.n2p(-1)).shift(.12*LEFT)
+
+        vect_1=Arrow(start=line_1.n2p(-1),end=line_1.n2p(0),max_tip_length_to_length_ratio=0.125, buff=0).set_color(PURE_GREEN).set_opacity(1)
+        vect_1.set_z_index(4)
+        vect_1_lbl=MathTex("u").scale(.85).next_to(vect_1,0.5*DOWN).set_color(PURE_GREEN)
+
+        vect_1_moving=Arrow(start=line_1.n2p(-1),end=line_1.n2p(0),max_tip_length_to_length_ratio=0.125, buff=0).set_color(REANLEA_YELLOW).rotate(137.2*DEGREES,about_point=line_1.n2p(-1)).set_z_index(3)
+
+        ang=Angle(vect_1, vect_1_moving, radius=0.5, other_angle=False).set_stroke(color=REANLEA_SAFRON_LIGHTER, width=3).set_z_index(-1)
+
+        ang_lbl = MathTex(r"\theta =").move_to(
+            Angle(
+                vect_1, vect_1_moving, radius=.85 + 3 * SMALL_BUFF, other_angle=False
+            ).point_from_proportion(.5)                         # Gets the point at a proportion along the path of the VMobject.
+        ).scale(.5).set_color(REANLEA_YELLOW)
+
+        ang_theta=DecimalNumber(137.29,unit="^o").scale(.5).set_color(REANLEA_YELLOW).next_to(ang_lbl).shift(.175*LEFT)
+
+        projec_line=always_redraw(
+            lambda : DashedLine(start=vect_1_moving.get_end(), end=np.array((vect_1_moving.get_end()[0],line_1.n2p(0)[1],0))).set_stroke(color=REANLEA_AQUA_GREEN, width=1)
+        )
+
+        bra_1=always_redraw(
+            lambda : BraceBetweenPoints(
+                point_1=vect_1.get_start(),
+                point_2=np.array((vect_1_moving.get_end()[0],0,0)),
+                direction=DOWN,
+                color=REANLEA_YELLOW
+            ).set_stroke(width=0.1).set_z_index(5)
+        )
+
+        vect_grp=VGroup(vect_1,vect_1_lbl,vect_1_moving,ang,ang_lbl,ang_theta,projec_line,bra_1)
+
+        ang_theta_cos_lbl_left=MathTex("u","\cdot",r"cos(\theta)").arrange(RIGHT,buff=0.2).move_to(UP +RIGHT)
+        ang_theta_cos_lbl_right=MathTex("\cdot","u").arrange(RIGHT, buff=0.2).set_color(PURE_GREEN).move_to(UP +4.55*RIGHT)
+        ang_theta_cos=MathTex("=-0.735").arrange(RIGHT, buff=0.2).set_color(REANLEA_YELLOW).next_to(ang_theta_cos_lbl_right,LEFT).shift(.1*RIGHT)
+        ang_theta_cos_lbl_left[0:2].set_color(PURE_GREEN)
+        ang_theta_cos_lbl_left[2][0:3].set_color(REANLEA_WARM_BLUE)
+        ang_theta_cos_lbl_left[2][4].set_color(REANLEA_SAFRON_LIGHTER)
+        ang_theta_cos_grp=VGroup(ang_theta_cos_lbl_left,ang_theta_cos,ang_theta_cos_lbl_right).scale(.65)
+        sur_ang_theta_cos_grp=SurroundingRectangle(ang_theta_cos_grp, color=REANLEA_TXT_COL,corner_radius=0.125, buff=0.2)
+
+        ang_lbl=VGroup(ang_theta_cos_grp,sur_ang_theta_cos_grp)
+
+
+        dot_1=Dot(radius=0.125, color=PURE_RED).move_to(line_1.n2p(-1)).set_sheen(-0.4,DOWN).set_opacity(1).set_z_index(5)
+        dot_2=Dot(radius=0.2, color=REANLEA_VIOLET_LIGHTER).move_to(line_1.n2p(0)).set_sheen(-0.4,DOWN).set_z_index(3)
+        glowing_circle_2=get_glowing_surround_circle(dot_2, color=REANLEA_YELLOW).set_z_index(-20)
+
+        rays=get_rays(n=100,color=PURE_GREEN,factor=.75).move_to(dot_2.get_center()).set_z_index(4)
+
+        dot_grp=VGroup(dot_1,dot_2,glowing_circle_2,rays)
+
+        line_2= NumberLine(
+            x_range=[-2, 2, 1],
+            length=8,
+            include_ticks=False,
+        ).set_color(REANLEA_BLUE_LAVENDER).set_stroke(width=4)
+
+        line_2_grp=VGroup(line_2).move_to(.75*UP+.5*RIGHT)
+
+        grp_x=VGroup(mirror_1,vect_grp,dot_grp).move_to(.75*UP+.5*RIGHT).scale(1.5)
+        mirror_1.scale(.67).shift(.05*RIGHT)
+
+        self.add(grp_x,line_2_grp)
+
+        # line_1,tick_grp,sgn_grp,so_on_txt_symbol,
+
+
+    
+    # manim -sqk banner.py esp_ex_2_1
+
+
+
+class esp_ex_3_0(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("background_4.png").scale(.5).set_z_index(-100)
+        self.add(water_mark)
+
+        
+        # MOBJECTS
+
+
+    
+    # manim -sqk banner.py esp_ex_3_0
+
+
+
+
+###################################################################################################################
 
 class yt_banner(Scene):
     def construct(self):
@@ -629,9 +1031,6 @@ class yt_banner_2(Scene):
 # some of my fav fonts: Cinzel,Kalam,Prata,Kaushan Script,Cormorant, Handlee,Monoton, Bad Script, Reenie Beanie, 
 # Poiret One,Merienda,Julius Sans One,Merienda One,Cinzel Decorative, Montserrat, Cousine, Courier Prime , The Nautigal
 # Marcellus SC,Contrail One,Thasadith,Spectral SC,Dongle,Cormorant SC,Comfortaa, Josefin Sans (LOVE), Fuzzy Bubbles
-
-###################################################################################################################
-
 
 ###################################################################################################################
 

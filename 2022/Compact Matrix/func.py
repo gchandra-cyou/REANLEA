@@ -219,6 +219,22 @@ def get_stripe(
 #opacity=1-i/n
     return stripe.rotate(PI/2).move_to(ORIGIN).set_z_index(-10)
 
+def get_solar_ray(
+        factor=3, color=REANLEA_GREY, n=10
+):
+    ln=Line(ORIGIN,RIGHT).scale(factor).set_stroke(width=1.25,color=color)
+    dt=Dot(radius=DEFAULT_DOT_RADIUS/1.25).move_to(ln.get_end()).set_color(WHITE)
+    ln_grp=VGroup(ln,dt)
+    angl=360/n
+
+    rays=VGroup(
+        *[
+            ln_grp.copy().rotate(i*angl*DEGREES, about_point=ln.get_start())
+            for i in np.linspace(0,n,n+1)
+        ]
+    )
+
+    return rays
 
 def get_rays(
         factor=1,scale_about_point=ORIGIN,rotate_about_point=ORIGIN, buff_min=0, buff_max=360, color=REANLEA_TXT_COL_DARKER, n=10
@@ -535,7 +551,7 @@ def get_mirror(
     line=Line(ORIGIN,RIGHT).scale(factor).rotate(PI/4).set_stroke(width=1).shift(LEFT)
     
     d_line=DashedLine(start=ORIGIN, end=RIGHT, stroke_width=1.5, dashed_ratio=0.75, dash_length=0.05).scale(scale_by*1.025)
-    d_line.set_color_by_gradient(REANLEA_AQUA_GREEN,REANLEA_SLATE_BLUE_LIGHTER,REANLEA_VIOLET_LIGHTER)
+    d_line.set_color_by_gradient(REANLEA_AQUA)
     
     stripe=VGroup(
         *[
@@ -543,7 +559,7 @@ def get_mirror(
             for b in np.linspace(0,1,n)
         ]
     ).rotate(PI/2).move_to(0.575*RIGHT+0.15*DOWN)
-    stripe.set_color_by_gradient(REANLEA_AQUA_GREEN,REANLEA_SLATE_BLUE_LIGHTER,REANLEA_VIOLET_LIGHTER)
+    stripe.set_color_by_gradient(REANLEA_AQUA)
     
 
     mirror=VGroup(d_line,stripe)

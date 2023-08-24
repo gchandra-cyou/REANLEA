@@ -1382,6 +1382,200 @@ class Scene1_intro_3(Scene):
 
 ###################################################################################################################
 
+class Scene2_intro_0(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+
+        water_mark_1=water_mark.copy()
+
+
+
+        # OBJECTS
+
+        promo_img=ImageMobject("promo.jpg").scale(.545).set_z_index(-10)
+        self.add(promo_img)
+        self.wait(2)
+        self.play(
+            FadeOut(promo_img),
+            run_time=.25
+        )
+        self.wait(.25)
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_1=Text("Lec. - II", font=fonts[0]).set_color_by_gradient(REANLEA_TXT_COL).scale(0.5)
+        
+        
+        self.play(
+            AddTextLetterByLetter(txt_1),
+            run_time=1.5
+        )
+        self.wait(.5)
+        self.play(
+            FadeOut(txt_1)
+        )
+        self.wait(1.5)
+
+        eq_1_1=MathTex("1","+","1","=","2").scale(1.3).set_color(REANLEA_CYAN_LIGHT)
+        eq_1_2=MathTex("-(-1)","=","1").scale(1.3).set_color(REANLEA_CYAN_LIGHT).next_to(eq_1_1,DOWN).shift(.215*LEFT)
+        self.play(
+            Create(eq_1_1)
+        )
+        self.play(
+            AnimationGroup(
+                eq_1_1.animate.shift(.5*UP),
+                Create(eq_1_2)
+            )
+        )
+        eq_1=VGroup(eq_1_1,eq_1_2)
+
+        sep_ln_1=Line().rotate(PI/2).scale(1).set_stroke(width=2, color=REANLEA_PURPLE_LIGHTER).next_to(eq_1,RIGHT).shift(RIGHT)
+
+        self.play(
+            Create(sep_ln_1.reverse_direction())
+        )
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_2=Text("How?", font=fonts[0]).set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(1.75)
+
+            txt_2.next_to(sep_ln_1).shift(RIGHT)
+        
+        self.play(
+            AddTextLetterByLetter(txt_2),
+            run_time=1.25
+        )
+
+        sep_ln_2=Line().rotate(-90*DEGREES).set_stroke(width=2.5, color=[REANLEA_BLUE_SKY,REANLEA_VIOLET]).scale(.65).shift(2.15*DOWN)
+
+        self.play(
+            Create(sep_ln_2)
+        )
+
+        bulet_1=Dot(radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN).shift(1.85*DOWN)
+
+        self.play(
+            Write(bulet_1)
+        )
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_x_1=Text("Vector Addition", font=fonts[0]).scale(.65).set_color(REANLEA_WHITE).next_to(bulet_1,RIGHT)
+
+        self.play(
+            Write(txt_x_1)
+        )
+
+        bulet_2=Dot(radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN).next_to(bulet_1,DOWN).shift(.35*DOWN)
+
+        self.play(
+            Write(bulet_2)
+        )
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_x_2=Text("Vector Scale", font=fonts[0]).scale(.65).set_color(REANLEA_WHITE).next_to(bulet_2,RIGHT)
+
+        self.play(
+            Write(txt_x_2)
+        )
+
+        sub_def_grp=VGroup(sep_ln_2,bulet_1,bulet_2,txt_x_1,txt_x_2)
+
+
+        grp_1=VGroup(eq_1,sep_ln_1,txt_2,sub_def_grp)
+        sur_grp_1=Circle(radius=2.15).set_stroke(width=3, color=[PURE_GREEN,REANLEA_AQUA])
+
+        self.play(
+            AnimationGroup(
+                grp_1.animate.scale(.45).move_to(ORIGIN),
+                Create(sur_grp_1),
+                lag_ratio=.8
+            )
+        )
+
+        grp_1_1=VGroup(grp_1,sur_grp_1)
+        self.play(
+            grp_1_1.animate.shift(2*LEFT)
+        )
+
+        ln_1=Line().set_stroke(width=1).rotate(15*DEGREES).scale(1.5).shift(RIGHT)
+
+        self.play(
+            Create(ln_1)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            vsp_exp_1=Text("Vector Space", font=fonts[0]).scale(0.65).set_color_by_gradient(REANLEA_GREEN,REANLEA_AQUA).next_to(ln_1).shift(.4*UP)
+        
+        self.play(
+            Write(vsp_exp_1)
+        )
+
+        l_1=Line().rotate(PI/2).set_stroke(width=3, color=(REANLEA_PINK,REANLEA_YELLOW)).scale(0.75).next_to(vsp_exp_1,DOWN)
+
+        self.play(
+            Create(l_1.reverse_direction())
+        )
+
+        with RegisterFont("Pacifico") as fonts:
+            fld_exp_1=Text("Field", font=fonts[0]).scale(0.85).set_color_by_gradient(REANLEA_PINK,REANLEA_MAGENTA).next_to(l_1,DOWN)
+
+        
+        self.play(
+            Write(fld_exp_1)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            txt_3=Text("* Peano's Axiom", font=fonts[0]).set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(.2).next_to(sur_grp_1,DOWN).shift(.25*DOWN)
+
+            txt_4=Text("** Construction of Natural Numbers", font=fonts[0]).set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(.2).next_to(txt_3,DOWN).shift(.67*RIGHT)
+
+        self.play(
+            Write(txt_3)
+        )
+
+        self.play(
+            Write(txt_4)
+        )
+
+        self.wait(2)
+
+        self.play(            
+            AnimationGroup(
+                *[FadeOut(mobj) for mobj in self.mobjects],
+            ),
+            FadeIn(water_mark_1),
+            run_time=1.75
+        )
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_5=Text("Subscribe to stay connected with us.", font=fonts[0]).set_color_by_gradient(REANLEA_TXT_COL).scale(0.5)
+        
+        
+        self.play(
+            AddTextLetterByLetter(txt_5),
+            run_time=3
+        )
+        self.wait(.75)
+        
+        self.play(
+            FadeOut(txt_5)
+        ) 
+
+        self.wait(5)
+            
+
+
+
+        # manim -pqh anim3.py Scene2_intro_0
+
+        # manim -pqk anim3.py Scene2_intro_0
+
+        # manim -sqk anim3.py Scene2_intro_0
+
+###################################################################################################################
+
 class trailer_0(Scene):
     def construct(self):
 

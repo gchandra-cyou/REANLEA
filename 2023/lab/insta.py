@@ -81,6 +81,7 @@ class post_1(Scene):
         water_mark=ImageMobject("water_mark_white.png").scale(0.075).move_to(3*LEFT+6*UP).set_opacity(1).set_z_index(-100)
         self.add(water_mark)
 
+
         ax = Axes(
             x_range = [0.000,0.1,0.005],
             y_range = [-.01,.01,.005],
@@ -274,12 +275,12 @@ class post_1(Scene):
         )
         self.wait()
 
-        q5= MathTex(r"f(x) := \begin{cases}"
+        q5= MathTex(r"f'(x) := \begin{cases}"
                 r"2xsin(1/x)-cos(1/x)  &  \text{ if} \ \ \  x > 0 \\"
                 r"0 &  \text{ if} \ \ \ x \leq 0 \\"
                 r"\end{cases}"
         ).set_color("#000000").scale(.65).move_to(3.5*DOWN)
-        q5[0][31].set_color(PURE_RED)
+        q5[0][32].set_color(PURE_RED)
         q5[0][9:].shift(.075*RIGHT)
 
         ax_2 = Axes(
@@ -325,17 +326,102 @@ class post_1(Scene):
 
         self.play(
             AnimationGroup(
+                Write(ax_3),
                 AnimationGroup(
-                    Write(ax_3),
-                    Create(graph_2[0].reverse_direction()),
+                    Create(graph_2[0].reverse_direction()),  
                     run_time=5
-                ),
-                Create(dt_2),
-                lag_ratio=.9          
+                )          
             ),
             ReplacementTransform(q1,q5)     
         )
+        self.play(
+            Create(dt_2)
+        )
+        self.wait(2)
 
+        q6=MathTex(r"\nrightarrow 0").set_color("#000000").scale(1.5).next_to(q5,DOWN).rotate(-PI/4).shift(1.25*LEFT)
+        q6[0][1].rotate(PI/4)
+
+        self.play(
+            Write(q6)
+        )
+
+        q7=MathTex(r"= f'(0)").set_color("#000000").scale(.65).next_to(q6[0][1])
+
+        self.play(
+            Write(q7)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            txt_3_0 = Text(", as" , font=fonts[0]).set_color_by_gradient("#AEAEAE").scale(.35).shift(3.35*DOWN)
+        txt_3_1=MathTex(r"x \rightarrow 0").set_color("#000000").scale(.65).next_to(txt_3_0)
+
+        txt_3=VGroup(txt_3_0,txt_3_1).next_to(q7,DOWN)
+
+        self.play(
+            Write(txt_3)
+        )
+
+        x_grp_1=VGroup(q5,q6,q7,txt_3)
+
+        q8= MathTex(r"\lim_{x\to 0} f'(x) \neq f'(0)"
+        ).set_color("#000000").scale(.85).move_to(3.25*UP)
+
+        self.play(
+            AnimationGroup(
+                TransformMatchingShapes(x_grp_1.copy(),q8.copy()),
+                Write(q8)
+            )
+        )
+        self.wait(2)
+        water_mark_1=water_mark.copy()
+
+        self.play(
+            *[FadeOut(mobj) for mobj in self.mobjects],
+            FadeIn(water_mark_1)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            txt_4_0 = Text("Visit ..." , font=fonts[0]).set_color_by_gradient("#AEAEAE").scale(.45)
+            txt_4_1=Text("reanlea.com" , font=fonts[0]).set_color_by_gradient("#AEAEAE").scale(.75).move_to(ORIGIN)
+            txt_4_0.next_to(txt_4_1,UP).shift(.25*UP)
+
+        self.play(
+            AnimationGroup(
+                Write(txt_4_0),
+                Write(txt_4_1),
+                lag_ratio=.85
+            )
+        )
+        self.wait()
+
+        self.play(
+            FadeOut(txt_4_0),
+            FadeOut(txt_4_1)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            txt_5_0 = Text("Subscribe & Follow us ..." , font=fonts[0]).set_color_by_gradient("#AEAEAE").scale(.45)
+            txt_5_1=Text("youtube.com/@reanlea" , font=fonts[0]).set_color_by_gradient("#AEAEAE").scale(.75).next_to(txt_5_0,DOWN)
+            txt_5_2=Text("twitter.com/reanlea" , font=fonts[0]).set_color_by_gradient("#AEAEAE").scale(.75).next_to(txt_5_1,DOWN)
+            txt_5_3=Text("instagram.com/reanlea" , font=fonts[0]).set_color_by_gradient("#AEAEAE").scale(.75).next_to(txt_5_2,DOWN)
+
+        txt_5=VGroup(txt_5_0,txt_5_1,txt_5_2,txt_5_3).move_to(ORIGIN)
+
+        self.play(
+            Write(txt_5_0)
+        )
+        self.play(
+            Create(txt_5[1:]),
+            run_time=2.5
+        )
+        self.wait()
+
+        self.play(
+            *[FadeOut(mobj) for mobj in self.mobjects]
+        )
+        self.wait()
+            
         
 
 
