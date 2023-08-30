@@ -1576,6 +1576,251 @@ class Scene2_intro_0(Scene):
 
 ###################################################################################################################
 
+class Scene3_intro_0(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+
+        water_mark_1=water_mark.copy()
+
+
+
+        # OBJECTS
+
+        decarte_img=ImageMobject("de_carte.jpg").scale(1.25).shift(.75*UP)
+        self.play(
+            FadeIn(decarte_img)
+        )
+        with RegisterFont("Courier Prime") as fonts:
+            cap_decarte=Text("René Descartes", font=fonts[0]).set_color_by_gradient(REANLEA_TXT_COL).scale(0.65).next_to(decarte_img,DOWN).shift(.25*DOWN)
+            cap_decarte_date=Text("(31 March 1596 – 11 February 1650)", font=fonts[0]).set_color_by_gradient(REANLEA_TXT_COL).scale(0.175).next_to(cap_decarte,DOWN)
+        
+        
+        self.play(
+            AnimationGroup(
+            Write(cap_decarte),
+            FadeIn(cap_decarte_date)
+            )
+        )
+        
+        self.wait(.5)
+
+        decarte_grp=Group(decarte_img,cap_decarte,cap_decarte_date)
+        sur_grp_1=Circle(radius=2.15).set_stroke(width=3, color=[PURE_GREEN,REANLEA_AQUA]).shift(4*LEFT+.2*UP).set_z_index(10)
+
+        self.play(
+            AnimationGroup(
+            decarte_grp.animate.shift(4*LEFT).scale(.65),
+            Create(sur_grp_1),
+            lag_ratio=.35
+            )
+        )
+
+        #PORTION-II
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_1=Text("Cartesian Coordinates", font=fonts[0]).set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(.35).shift(RIGHT)
+
+        sep_ln_1=Line().rotate(PI/2).scale(1).set_stroke(width=2, color=REANLEA_PURPLE_LIGHTER).next_to(txt_1,RIGHT).shift(.5*RIGHT)
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.15).set_z_index(2).next_to(sep_ln_1).shift(.5*RIGHT)
+
+        np_1=NumberPlane(
+            background_line_style={
+                "stroke_opacity": 0.5
+            }
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.2).set_z_index(2).next_to(sep_ln_1).shift(.5*RIGHT)
+
+        self.play(
+            AnimationGroup(
+                Write(np_1),
+                Create(txt_1)
+            )
+        )
+
+        self.play(
+            Create(sep_ln_1.reverse_direction())
+        )
+        
+        self.play(
+            txt_1.animate.shift(.5*UP)
+        )
+
+        sep_ln_2=Line().rotate(-90*DEGREES).set_stroke(width=2.5, color=[REANLEA_BLUE_SKY,REANLEA_WHITE]).next_to(txt_1,DOWN).scale(.65).shift(.25*UP+.5*LEFT)
+
+        self.play(
+            Create(sep_ln_2)
+        )
+
+        bulet_1=Dot(radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN).move_to(sep_ln_2.get_start()).shift(.35*DOWN)
+
+        self.play(
+            Write(bulet_1)
+        )
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_x_1=Text("Geometry", font=fonts[0]).scale(.5).set_color(REANLEA_WHITE).next_to(bulet_1,RIGHT)
+
+        self.play(
+            Write(txt_x_1)
+        )
+
+        bulet_2=Dot(radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN).next_to(bulet_1,DOWN).shift(.35*DOWN)
+
+        self.play(
+            Write(bulet_2)
+        )
+
+        with RegisterFont("Reenie Beanie") as fonts:
+            txt_x_2=Text("Algebra", font=fonts[0]).scale(.5).set_color(REANLEA_WHITE).next_to(bulet_2,RIGHT)
+
+        self.play(
+            Write(txt_x_2)
+        )
+
+        sub_def_grp=VGroup(sep_ln_2,bulet_1,bulet_2,txt_x_1,txt_x_2)
+
+        grp_cp=VGroup(sub_def_grp,txt_1,sep_ln_1,np_1)
+
+        ind_ln_1=Line().rotate(30*DEGREES).scale(2.15).set_stroke(width=2, color=REANLEA_PURPLE_LIGHTER).next_to(sur_grp_1,RIGHT).shift(.6*LEFT+.75*UP).set_z_index(5)
+
+        self.play(
+            grp_cp.animate.scale(.5).shift(2.5*UP),
+            Create(ind_ln_1)
+        )
+
+        sur_grp_cp=SurroundingRectangle(grp_cp, corner_radius=.12).set_stroke(width=1, color=[REANLEA_WHITE,REANLEA_PINK]).scale(.75)
+
+        self.play(
+            Create(sur_grp_cp)
+        )
+
+        # Group-II
+
+        grid = NumberPlane(axis_config={"include_tip":True},
+            background_line_style={
+                "stroke_color": BLUE,
+                "stroke_width": 0.8,
+                "stroke_opacity": 0.2
+            }
+        )
+
+
+        r1 = lambda theta: 2 + 0.2 * np.sin(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
+        grph_1 = grid.plot_polar_graph(r1, [0, 2 * PI])
+        grph_1.set_stroke(width=7, color=[REANLEA_GREEN_AUQA,REANLEA_SLATE_BLUE]).scale(.75).shift(4*LEFT).scale(.5).set_stroke(width=5),
+        grph_1_lbl=MathTex("A").shift(grph_1.get_center()).set_color(REANLEA_GREEN_AUQA).shift(2*UP)
+
+        r2 = lambda theta: 2 + 0.2 * np.cos(4*theta) + 0.01*theta*theta*(theta-2*np.pi)*(theta-2*np.pi)
+        grph_2 = grid.plot_polar_graph(r2, [0, 2 * PI])
+        grph_2.set_stroke(width=7, color=[REANLEA_SLATE_BLUE, REANLEA_BLUE_SKY]).scale(.75).shift(4.5*RIGHT).scale(.5).set_stroke(width=5),
+        grph_2_lbl=MathTex("B").shift(grph_2.get_center()).set_color(REANLEA_BLUE_SKY).shift(2*UP)
+
+
+
+        dot_1=Dot(radius=0.125, color=REANLEA_GREEN_AUQA).move_to(grph_1.get_center()).set_sheen(-0.6,DOWN)
+        dot_1_lbl=MathTex("x").set_color(REANLEA_GREEN_AUQA).move_to(grph_1.get_center()+.5*DOWN).scale(.6)
+
+        dot_2=Dot(radius=0.125, color=REANLEA_BLUE_SKY).move_to(grph_2.get_center()).set_sheen(-0.6,DOWN)
+        dot_2_lbl=MathTex("y").set_color(REANLEA_BLUE_SKY).move_to(grph_2.get_center()+.5*DOWN).scale(.6)
+
+        eqn_1=MathTex("A",r"\times","B","=",r"\{", r"(x,y)",r"\mid", r"x \in A",",", r"y \in B", r"\}").shift(2*DOWN)
+        eqn_1[0].set_color(REANLEA_GREEN_AUQA)
+        eqn_1[1].set_color(PURE_RED)
+        eqn_1[2].set_color(REANLEA_BLUE_SKY)
+        eqn_1[5:10].scale(.9)
+        eqn_1[5][1].set_color(REANLEA_GREEN_AUQA)
+        eqn_1[5][3].set_color(REANLEA_BLUE_SKY)
+        eqn_1[7].set_color(REANLEA_GREEN_AUQA)
+        eqn_1[7][1].set_color(PURE_RED).scale(.65)
+        eqn_1[9].set_color(REANLEA_BLUE_SKY)
+        eqn_1[9][1].set_color(PURE_RED).scale(.65)
+        eqn_1[8:].shift(0.15*RIGHT)
+        eqn_1[9:].shift(0.1*RIGHT)
+
+        eqn_1[3:5].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[5][0].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[5][4].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[6].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[8].set_color(REANLEA_PURPLE_LIGHTER)
+        eqn_1[10].set_color(REANLEA_PURPLE_LIGHTER)
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_2=Text("Cartesian Product (Set Theory)", font=fonts[0]).set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(.65).next_to(eqn_1,DOWN).shift(.25*DOWN)
+
+        set_a_grp=VGroup(grph_1,grph_1_lbl,dot_1,dot_1_lbl).shift(2*RIGHT)
+        set_b_grp=VGroup(grph_2,grph_2_lbl,dot_2,dot_2_lbl).shift(2*LEFT)
+        cp_grp_1=VGroup(set_a_grp,set_b_grp,eqn_1,txt_2).scale(.35).move_to(4.5*RIGHT).shift(.5*DOWN+.5*RIGHT)
+
+    
+        self.add(cp_grp_1)
+
+        self.play(
+            Create(txt_2)
+        )
+
+        sur_cp_grp_1= SurroundingRectangle(cp_grp_1, corner_radius=.12).set_stroke(width=1, color=[REANLEA_WHITE,REANLEA_YELLOW_GREEN]).scale(1.25)
+
+        self.play(
+            Create(sur_cp_grp_1)
+        )
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_3=Text("Vector Addition", font=fonts[0]).set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(.35).next_to(grp_cp,DOWN).shift(4.65*DOWN+1.5*LEFT)
+
+        self.add(txt_3)
+
+        ind_ln_2=Line().rotate(90*DEGREES).scale(2.15).set_stroke(width=2, color=REANLEA_PURPLE_LIGHTER).next_to(grp_cp,DOWN).shift(1.5*LEFT+.1*DOWN).set_z_index(5)
+
+        self.add(ind_ln_2)
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_4=Text("Dimension", font=fonts[0]).set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(.35).next_to(txt_3,RIGHT).shift(2.5*RIGHT)
+
+        self.add(txt_4)
+
+        ind_ln_3=Line().rotate(90*DEGREES).scale(.6).set_stroke(width=2, color=REANLEA_PURPLE_LIGHTER).next_to(txt_4,UP).shift(.015*DOWN).set_z_index(5)
+
+        self.add(ind_ln_3)
+
+        ind_ln_4=Line().scale(1.15).set_stroke(width=2, color=REANLEA_PURPLE_LIGHTER).next_to(txt_3,RIGHT).set_z_index(5)
+
+        self.add(ind_ln_4)
+
+        ind_ln_5=Line().rotate(90*DEGREES).scale(.45).set_stroke(width=2, color=REANLEA_PURPLE_LIGHTER).next_to(grp_cp,DOWN).shift(1.5*RIGHT+.1*DOWN).set_z_index(5)
+
+        self.add(ind_ln_5)
+
+
+        
+
+
+        
+        self.wait(2)
+            
+
+
+
+        # manim -pqh anim3.py Scene3_intro_0
+
+        # manim -pqk anim3.py Scene3_intro_0
+
+        # manim -sqk anim3.py Scene3_intro_0
+
+###################################################################################################################
+
 class trailer_0(Scene):
     def construct(self):
 

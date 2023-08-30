@@ -1082,8 +1082,8 @@ class yt_banner(Scene):
     def construct(self):
         config.background_color="#000327" # secondary color : "#000658"
 
-        water_mark=ImageMobject("yt_banner_1.png").scale(.3725).set_z_index(-10)
-        self.add(water_mark)
+        '''water_mark=ImageMobject("yt_banner_1.png").scale(.3725).set_z_index(-10)
+        self.add(water_mark)'''
 
         # OBJECT ZONE
 
@@ -1149,7 +1149,7 @@ class yt_banner(Scene):
         self.add(x_grp)
 
         with RegisterFont("Cousine") as fonts:
-            txt_1 = Text("Geometric foundation of Mathematics and Physics with Animated visuals." , font=fonts[0]).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER)
+            txt_1 = Text("Animated Science" , font=fonts[0]).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER)
 
         txt_1.scale(.2).shift(.85*DOWN)
 
