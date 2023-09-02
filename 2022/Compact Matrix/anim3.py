@@ -1606,7 +1606,7 @@ class Scene3_intro_0(Scene):
             )
         )
         
-        self.wait(.5)
+        self.wait(2)
 
         decarte_grp=Group(decarte_img,cap_decarte,cap_decarte_date)
         sur_grp_1=Circle(radius=2.15).set_stroke(width=3, color=[PURE_GREEN,REANLEA_AQUA]).shift(4*LEFT+.2*UP).set_z_index(10)
@@ -1618,6 +1618,7 @@ class Scene3_intro_0(Scene):
             lag_ratio=.35
             )
         )
+        self.wait(2)
 
         #PORTION-II
 
@@ -1649,26 +1650,31 @@ class Scene3_intro_0(Scene):
                 Create(txt_1)
             )
         )
+        self.wait(2)
 
         self.play(
             Create(sep_ln_1.reverse_direction())
         )
+        self.wait(2)
         
         self.play(
             txt_1.animate.shift(.5*UP)
         )
+        self.wait(2)
 
         sep_ln_2=Line().rotate(-90*DEGREES).set_stroke(width=2.5, color=[REANLEA_BLUE_SKY,REANLEA_WHITE]).next_to(txt_1,DOWN).scale(.65).shift(.25*UP+.5*LEFT)
 
         self.play(
             Create(sep_ln_2)
         )
+        self.wait(2)
 
         bulet_1=Dot(radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN).move_to(sep_ln_2.get_start()).shift(.35*DOWN)
 
         self.play(
             Write(bulet_1)
         )
+        self.wait(2)
 
         with RegisterFont("Reenie Beanie") as fonts:
             txt_x_1=Text("Geometry", font=fonts[0]).scale(.5).set_color(REANLEA_WHITE).next_to(bulet_1,RIGHT)
@@ -1676,12 +1682,14 @@ class Scene3_intro_0(Scene):
         self.play(
             Write(txt_x_1)
         )
+        self.wait(2)
 
         bulet_2=Dot(radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN).next_to(bulet_1,DOWN).shift(.35*DOWN)
 
         self.play(
             Write(bulet_2)
         )
+        self.wait(2)
 
         with RegisterFont("Reenie Beanie") as fonts:
             txt_x_2=Text("Algebra", font=fonts[0]).scale(.5).set_color(REANLEA_WHITE).next_to(bulet_2,RIGHT)
@@ -1689,6 +1697,7 @@ class Scene3_intro_0(Scene):
         self.play(
             Write(txt_x_2)
         )
+        self.wait(2)
 
         sub_def_grp=VGroup(sep_ln_2,bulet_1,bulet_2,txt_x_1,txt_x_2)
 
@@ -1700,12 +1709,21 @@ class Scene3_intro_0(Scene):
             grp_cp.animate.scale(.5).shift(2.5*UP),
             Create(ind_ln_1)
         )
+        self.wait(2)
 
         sur_grp_cp=SurroundingRectangle(grp_cp, corner_radius=.12).set_stroke(width=1, color=[REANLEA_WHITE,REANLEA_PINK]).scale(.75)
 
         self.play(
             Create(sur_grp_cp)
         )
+        self.wait(2)
+
+        ind_ln_5=Line().rotate(90*DEGREES).scale(.45).set_stroke(width=2, color=REANLEA_PURPLE_LIGHTER).next_to(grp_cp,DOWN).shift(1.5*RIGHT+.1*DOWN).set_z_index(5)
+
+        self.play(
+            Create(ind_ln_5.reverse_direction())
+        )
+        self.wait(2)
 
         # Group-II
 
@@ -1764,51 +1782,73 @@ class Scene3_intro_0(Scene):
         set_b_grp=VGroup(grph_2,grph_2_lbl,dot_2,dot_2_lbl).shift(2*LEFT)
         cp_grp_1=VGroup(set_a_grp,set_b_grp,eqn_1,txt_2).scale(.35).move_to(4.5*RIGHT).shift(.5*DOWN+.5*RIGHT)
 
-    
-        self.add(cp_grp_1)
 
         self.play(
-            Create(txt_2)
+            Create(cp_grp_1),
+            run_time=2.5
         )
+        self.wait(2)
+
 
         sur_cp_grp_1= SurroundingRectangle(cp_grp_1, corner_radius=.12).set_stroke(width=1, color=[REANLEA_WHITE,REANLEA_YELLOW_GREEN]).scale(1.25)
 
         self.play(
             Create(sur_cp_grp_1)
         )
+        self.wait(2)
 
         with RegisterFont("Courier Prime") as fonts:
             txt_3=Text("Vector Addition", font=fonts[0]).set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(.35).next_to(grp_cp,DOWN).shift(4.65*DOWN+1.5*LEFT)
 
-        self.add(txt_3)
-
         ind_ln_2=Line().rotate(90*DEGREES).scale(2.15).set_stroke(width=2, color=REANLEA_PURPLE_LIGHTER).next_to(grp_cp,DOWN).shift(1.5*LEFT+.1*DOWN).set_z_index(5)
 
-        self.add(ind_ln_2)
+        self.play(
+            Create(ind_ln_2.reverse_direction())
+        )
+        self.wait(2)
+
+        self.play(
+            Create(txt_3)
+        )
+        self.wait(2)
 
         with RegisterFont("Courier Prime") as fonts:
             txt_4=Text("Dimension", font=fonts[0]).set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(.35).next_to(txt_3,RIGHT).shift(2.5*RIGHT)
 
-        self.add(txt_4)
 
         ind_ln_3=Line().rotate(90*DEGREES).scale(.6).set_stroke(width=2, color=REANLEA_PURPLE_LIGHTER).next_to(txt_4,UP).shift(.015*DOWN).set_z_index(5)
 
-        self.add(ind_ln_3)
+        self.play(
+            Create(ind_ln_3.reverse_direction())
+        )
+        self.wait(2)
+
+        self.play(
+            Create(txt_4)
+        )
+        self.wait(2)
 
         ind_ln_4=Line().scale(1.15).set_stroke(width=2, color=REANLEA_PURPLE_LIGHTER).next_to(txt_3,RIGHT).set_z_index(5)
 
-        self.add(ind_ln_4)
-
-        ind_ln_5=Line().rotate(90*DEGREES).scale(.45).set_stroke(width=2, color=REANLEA_PURPLE_LIGHTER).next_to(grp_cp,DOWN).shift(1.5*RIGHT+.1*DOWN).set_z_index(5)
-
-        self.add(ind_ln_5)
-
-
-        
-
-
-        
+        self.play(
+            Create(ind_ln_4)
+        )
         self.wait(2)
+
+        self.play(            
+            AnimationGroup(
+                *[FadeOut(mobj) for mobj in self.mobjects],
+            ),
+            FadeIn(water_mark_1),
+            run_time=1.75
+        )
+
+
+        
+
+
+        
+        self.wait(5)
             
 
 
