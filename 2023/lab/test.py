@@ -1076,6 +1076,211 @@ class post_1(Scene):
         # manim -pqh post.py post_1
 
         # manim -sqk post.py post_1
+
+
+class delx(Scene):
+    def construct(self):
+        
+        dt_y=PointCloudDot(color=REANLEA_BACKGROUND_COLOR_OXFORD_BLUE)
+
+        self.add(dt_y)
+
+        # manim -sqk test.py delx
+
+
+class Sierpinski(Scene):
+
+   config.disable_caching_warning=True
+  
+   def subdivide(self, square, n):
+
+   # Subdivide a square of size n into 4 equal parts of size n/2.
+   # Return the three subsquares in the upper left, lower left, and lower right corners as a VGroup.
+
+        ULsq = Square(
+            side_length=n/2, 
+            color=BLACK, 
+            fill_color=YELLOW, 
+            fill_opacity=1,
+            stroke_width=0.25
+        ).align_to(square,LEFT+UP)
+        LLsq = ULsq.copy().shift(DOWN*n/2)
+        LRsq = LLsq.copy().shift(RIGHT*n/2)
+        sqs = VGroup(ULsq,LLsq,LRsq)
+        return sqs
+ 
+    
+   def construct(self):
+
+        size = 6  # size of initial square
+        orig_size = size
+        iterations = 6  # numeber of iterations in construction
+
+        title = Text("Sierpinski Triangle").to_edge(UP)
+        self.play(Create(title))
+        self.wait()
+        S = Square(
+            side_length=size, 
+            color=BLACK, 
+            fill_color=YELLOW, 
+            fill_opacity=1,
+            stroke_width=0.5
+            ).to_edge(LEFT,buff=.75).shift(DOWN*0.3)
+        text1 = Text("Start with a square", font_size=24).move_to([2,2,0])
+        text2 = Text("Divide into 4 equal subsquares", font_size=24).align_to(text1,LEFT).shift(UP)
+        text3 = Text("Remove the upper right square",font_size=24).align_to(text1,LEFT)
+        text4 = Text("Repeat with each remaining subsquare", font_size=24).align_to(text1,LEFT).shift(DOWN*3) 
+        textct = Text("Iteration 1",color=YELLOW).align_to(text1,LEFT).shift(DOWN*2)   
+
+        # First iteration with instructions                   
+        self.add(textct)
+        self.wait(1)       
+        self.add(text1)
+        self.play(FadeIn(S))
+        self.wait(1)
+        self.add(text2)
+        self.wait(0.2)
+        vertLine = Line(S.get_left(), S.get_right(), color=BLACK,stroke_width=1)
+        horizLine = Line(S.get_top(), S.get_bottom(), color=BLACK,stroke_width=1)
+        self.play(Create(vertLine), Create(horizLine), run_time=2)                 
+        B=[0]
+        B[0] = self.subdivide(S,size)
+        self.wait(1)
+        self.add(text3)
+        self.wait(0.5)         
+        self.add(*B[0])
+        self.play(FadeOut(S), run_time=1.5)
+        self.wait(1)
+ 
+
+        # temporarily split off the three subsquares to illustrate construction on each subsquare
+        # and draw lines to split each into 4 additional subsquares
+        self.remove(textct)
+        textct = Text("Iteration "+str(2), color=YELLOW).align_to(text1,LEFT).shift(DOWN*2)
+        self.add(textct)
+        self.wait(1)
+        self.add(text4)   
+        self.wait(1) 
+        self.play(B[0][0].animate.shift(UP*0.5),B[0][2].animate.shift(RIGHT*0.5))
+        self.wait(1)
+        for k in range(3):
+           vertLine = Line(B[0][k].get_left(), B[0][k].get_right(), color=BLACK,stroke_width=1)
+           horizLine = Line(B[0][k].get_top(), B[0][k].get_bottom(), color=BLACK,stroke_width=1)
+           self.play(Create(vertLine),Create(horizLine), run_time=0.33)
+           self.wait(0.5)
+
+        # Remaining iterations
+        for m in range(0,iterations-1):
+           size=size/2
+           C = [0]*(3**(m+1))
+           if (m > 0): self.wait(1.5)
+           for k in range(3**m):
+              C[3*k]=self.subdivide(B[k][0],size)
+              C[3*k+1]=self.subdivide(B[k][1],size)
+              C[3*k+2]=self.subdivide(B[k][2],size)
+              self.add(*C[3*k],*C[3*k+1],*C[3*k+2])             
+              self.remove(*B[k]) 
+           if (m == 0): # recombine the squares of iteration 1 back into place
+              self.wait(1)
+              self.play(C[0].animate.shift(DOWN*0.5),C[2].animate.shift(LEFT*0.5))
+           self.remove(textct)
+           textct = Text("Iteration "+str(m+2), color=YELLOW).align_to(text1,LEFT).shift(DOWN*2)
+           self.add(textct)            
+           if (m < iterations-2): B = C.copy()
+        self.wait(2)
+
+        # Demonstrate self-similarity
+        self.remove(text1,text2,text3,text4,textct)
+        self.wait(1)
+
+        VGTL = VGroup()  # top left corner
+        VGBL = VGroup()  # bottom left corner
+        VGBR = VGroup()  # bottom right corner
+        m = 3**(iterations-2)
+        for k in range(m):
+           VGTL += C[k] 
+        for k in range(m,2*m):
+           VGBL += C[k]
+        for k in range(2*m,3*m):
+           VGBR += C[k]
+
+        # Method 1 - show each corner is self-similar
+
+        # set colors
+        text4 = Text("Three self-similar pieces", color=YELLOW).move_to([2,2,0])
+        self.add(text4)
+
+        self.play(VGTL.animate.set_color(PURE_RED)) 
+        self.play(VGBL.animate.set_color(PURE_GREEN)) 
+        self.play(VGBR.animate.set_color(ORANGE)) 
+        VGTL.save_state()  # save corners in current colors for method 2
+        VGBL.save_state()
+        VGBR.save_state()
+        # shift the three corners apart to illustrate self-similarity
+        self.play(VGTL.animate.shift(UP*0.5),VGBR.animate.shift(RIGHT*0.5))
+        self.wait(1.5)
+        # shift back and restore colors
+        self.play(VGTL.animate.shift(DOWN*0.5),VGBR.animate.shift(LEFT*0.5))
+        self.play(
+            VGTL.animate.set_color(YELLOW).set_fillcapacity(1), 
+            VGBL.animate.set_color(YELLOW).set_fillcapacity(1), 
+            VGBR.animate.set_color(YELLOW).set_fillcapacity(1)
+            )    
+        self.wait(1.5)  
+
+        # Method 2 - iterated function system
+
+        # Combine all corners into one mobject and make a copy
+        VGall = VGroup(*VGTL,*VGBL,*VGBR)
+        VGallcp = VGall.copy().set_color(GRAY)       
+        VGall.save_state()
+        
+        self.remove(text4)
+        text5 = Text("Iterated Function System", color=YELLOW).move_to([2,2,0])
+        self.add(text5)
+        self.wait(1)
+
+        # first scaling and translation to upper left corner
+        text5 = MarkupText(f'<span fgcolor="{PURE_RED}" weight="{BOLD}">1.</span> Scale by 1/2, translate up', 
+                           color=YELLOW, font_size=30
+                           ).move_to([2.75,1,0])
+        self.add(text5)
+        self.add(VGallcp,VGall)
+        self.play(Transform(VGall,VGBL),run_time=2)  
+        self.play(VGall.animate.set_color(PURE_RED))
+        self.play(VGall.animate.shift(UP*orig_size/2))
+        self.wait(2)
+
+        # second scaling to lower left corner (no translation)
+        text6 = MarkupText(f'<span fgcolor="{PURE_GREEN}" weight="{BOLD}">2.</span> Scale by 1/2', 
+                           color=YELLOW, font_size=30
+                           ).align_to(text5, LEFT)        
+        VGall.restore()      
+        self.add(text6)
+        self.play(Transform(VGall,VGBL),run_time=2)
+        self.play(VGall.animate.set_color(PURE_GREEN))        
+        self.wait(2)
+
+        # third scaling and translation to lower right corner
+        text7 = MarkupText(f'<span fgcolor="{ORANGE}" weight="{BOLD}">3.</span> Scale by 1/2, translate right', 
+                           color=YELLOW, font_size=30
+                           ).align_to(text5, LEFT).shift(DOWN)       
+        VGall.restore()
+        self.add(text7)
+        self.play(Transform(VGall,VGBL),run_time=2)
+        self.play(VGall.animate.set_color(ORANGE))
+        self.play(VGall.animate.shift(RIGHT*orig_size/2))
+        self.wait(2)
+
+        # restore the three (self-similar) corners to their individual colors
+        VGTL.restore()
+        VGBL.restore()
+        VGBR.restore()
+        self.wait(4)
+
+
+        # manim -sqk test.py Sierpinski
+
 ###################################################################################################################
 
 

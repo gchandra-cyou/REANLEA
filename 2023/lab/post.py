@@ -896,6 +896,66 @@ class substack_banner(Scene):
         # manim -sqk post.py substack_banner
 
 
+
+class banner_1_vid_1(Scene):       
+    def construct(self): 
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("water_mark_white.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(1).set_z_index(-100)
+        self.add(water_mark)
+
+        ax = Axes(
+            x_range = [0.000,0.15,0.005],
+            y_range = [-.01,.01,.005],
+            x_axis_config = {
+                "numbers_to_include": [0.0,.05,0.1],
+                #"include_ticks" : False,
+                "font_size" : 18
+            },
+            y_axis_config = {"numbers_to_include": [-.01,-.005,0,.005,.01],"font_size" : 18},
+            tips = False
+        ).set_color(REANLEA_GREY)
+
+        dt=Dot(radius=.125/4,color=PURE_RED).move_to(ax.c2p(0.0,0)).set_z_index(5)
+
+
+        #Get the graph
+
+        graph = VGroup(
+            ax.plot(
+                lambda x: np.sin(1/x)*x**2,
+                x_range=[0.000001,0.10585,0.00001],
+                color=REANLEA_WARM_BLUE_DARKER,
+            ).set_z_index(2)
+        )
+
+        with RegisterFont("Cousine") as fonts:
+            txt_1 = Text("Geometric foundation of Mathematics and Physics with Animated visuals." , font=fonts[0]).set_color_by_gradient("#AEAEAE").scale(.35).shift(3.35*DOWN)
+
+        
+        dts_0= MathTex(r"...").set_color(REANLEA_WARM_BLUE_DARKER).scale(1.5).next_to(ax).shift(3.5*LEFT)
+        dts_1= MathTex(r"\infty").set_color(REANLEA_WARM_BLUE_DARKER).scale(2.5).next_to(dts_0)
+
+        grp_1=VGroup(ax,dt, graph,dts_0,dts_1).scale(.65).shift(2.5*LEFT)
+
+        cir=Circle(radius=2).shift(4.25*RIGHT).set_stroke(width=10,color=[REANLEA_WELDON_BLUE,REANLEA_GREY_DARKER])
+        cir_dt_cld=PointCloudDot(center=cir.get_center(),radius=2,stroke_width=3.5,color=REANLEA_WARM_BLUE_DARKER)
+
+        
+        
+        #Show animate
+        self.add(dt, graph,dts_0,dts_1,cir,cir_dt_cld)
+        
+
+
+        # manim -pqh post.py banner_1_vid_1
+
+        # manim -sqk post.py banner_1_vid_1
+
+        # manim -sqh post.py banner_1_vid_1
+
+
 ###################################################################################################################
 
 # Changing FONTS : import any font from Google

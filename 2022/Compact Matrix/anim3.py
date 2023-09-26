@@ -1861,6 +1861,49 @@ class Scene3_intro_0(Scene):
 
 ###################################################################################################################
 
+class Scene4_intro_0(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        self.wait()
+
+        water_mark_1=water_mark.copy()
+
+        # OBJECTS
+
+        dt_1=Dot(point=4*LEFT,radius=.1,color=REANLEA_YELLOW)
+        dt_2=Dot(point=4*RIGHT,radius=.1,color=PURE_GREEN)
+        self.play(
+            Write(VGroup(dt_1,dt_2))
+        )
+        self.wait()
+
+        ln_1=Line(4*LEFT,4*RIGHT).set_stroke(width=7.5, color=[PURE_GREEN,REANLEA_YELLOW])
+        self.play(Create(ln_1))
+        self.wait()
+
+        self.play(dt_1.animate.scale(0),dt_2.animate.scale(0))
+
+        def func(t):
+            return [t,np.exp(-t ** 2),0]
+        
+        f = ParametricFunction(func, t_range=np.array([-3, 3]), fill_opacity=0).set_stroke(width=7.5, color=[PURE_GREEN,REANLEA_YELLOW])
+        self.play(ReplacementTransform(ln_1,f))
+
+
+
+
+        # manim -pqh anim3.py Scene4_intro_0
+
+        # manim -pqk anim3.py Scene4_intro_0
+
+        # manim -sqk anim3.py Scene4_intro_0
+
+###################################################################################################################
+
 class trailer_0(Scene):
     def construct(self):
 

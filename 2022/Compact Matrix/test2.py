@@ -10,6 +10,7 @@ from math import pi
 
 import os,sys
 from pickle import FRAME
+from 2022.Compact Matrix.func import get_rays
 from manim import *
 from numpy import array
 import numpy as np

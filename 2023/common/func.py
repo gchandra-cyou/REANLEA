@@ -519,7 +519,7 @@ def square_cloud(
 ):
     dots=VGroup(
         *[
-            Dot(point=i*RIGHT + j*UP,radius=rad).set_sheen(sheen_factor,sheen_dir)
+            Dot(point=np.sqrt((i*RIGHT)**2 + (j*UP)**2),radius=rad).set_sheen(sheen_factor,sheen_dir)
             for i in np.arange(x_min, x_max+x_eps, x_eps) 
             for j in np.arange(y_min, y_max+y_eps, y_eps)
         ]

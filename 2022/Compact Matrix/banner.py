@@ -1270,7 +1270,7 @@ class yt_banner_1_1(Scene):
         #Show animate
 
         with RegisterFont("Cousine") as fonts:
-            txt_1 = Text("Geometric foundation of Mathematics and Physics with Animated visuals." , font=fonts[0]).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER)
+            txt_1 = Text("Animated Visuals of Mathematics and Physics with Geometric foundation." , font=fonts[0]).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER)
         txt_1.scale(.2).shift(.85*DOWN)
 
         grp_x=VGroup(graph,dt,ax).scale(.25).shift(.25*UP)
