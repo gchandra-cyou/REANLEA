@@ -1076,6 +1076,77 @@ class esp_ex_3_1(ThreeDScene):
 
         # manim -sqk banner.py esp_ex_3_1
 
+config.background_color=WHITE
+class esp_ex_4_0(Scene):
+    def construct(self):
+        
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(-2)
+
+        ## vector field ##
+
+        func = lambda x: x - ax_1.c2p(0,0)
+        colors = [REANLEA_BLUE_LAVENDER,REANLEA_AQUA,PURE_GREEN]
+        
+        vf = ArrowVectorField(
+            func, min_color_scheme_value=2, 
+            max_color_scheme_value=10, 
+            colors=colors
+        ).set_z_index(-102)
+       
+        dots=VGroup()          
+        for obj in vf:
+            dots += Dot().move_to(obj.get_end()).set_color(obj.get_color()).scale(.75).set_sheen(-.4,DOWN)
+        dots.set_z_index(-102)
+        
+        self.wait(10)
+
+        self.play(
+            Write(dots)
+        )
+        self.wait(10)
+
+        self.play(
+            Write(vf, run_time=2)
+        )
+        self.wait(10)
+
+        self.play(
+            FadeOut(dots)
+        )
+        self.wait(10)
+
+        self.play(
+            Write(dots)
+        )
+
+        self.wait(10)
+        
+        r_tot=Rectangle(width=16, height=9, color="#F0F0F0").set_opacity(.75).set_z_index(-101)
+        self.play(
+            Create(r_tot),
+            run_time=2
+        )
+        self.wait()
+
+        def func(t):
+            return [t,np.exp(1-t ** 2),0]
+        
+        f = ParametricFunction(func, t_range=np.array([-3, 3]), fill_opacity=0).set_stroke(width=25, color=["#04ff9c","#1c00fb","#04ff9c"]).scale(1.5).shift(1.5*DOWN)
+        self.play(Write(f))
+
+        # manim -sqk banner.py esp_ex_4_0
+        
+
 ###################################################################################################################
 
 class yt_banner(Scene):

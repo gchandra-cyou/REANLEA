@@ -1885,7 +1885,15 @@ class Scene4_intro_0(Scene):
         self.play(Create(ln_1))
         self.wait()
 
-        self.play(dt_1.animate.scale(0),dt_2.animate.scale(0))
+        with RegisterFont("Courier Prime") as fonts:
+            txt_1=Text("dimension = 1", font=fonts[0]).set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(1).next_to(ln_1,DOWN).shift(1.5*DOWN)
+
+        self.play(
+            AnimationGroup(Write(txt_1),
+                AnimationGroup(dt_1.animate.scale(0),dt_2.animate.scale(0))
+            )
+        )
+        self.wait(2)
 
         def func(t):
             return [t,np.exp(-t ** 2),0]
