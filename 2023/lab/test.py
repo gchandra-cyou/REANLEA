@@ -1281,6 +1281,8 @@ class Sierpinski(Scene):
 
         # manim -sqk test.py Sierpinski
 
+        # manim -pqh test.py Sierpinski
+
 ###################################################################################################################
 
 

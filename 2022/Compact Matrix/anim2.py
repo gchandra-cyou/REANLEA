@@ -597,8 +597,7 @@ class Scene2(Scene):
         
 
         self.play(
-            Write(dt_1_dummy_lbl_1),
-            
+            Write(dt_1_dummy_lbl_1),     
         )
         
         self.wait(10)
