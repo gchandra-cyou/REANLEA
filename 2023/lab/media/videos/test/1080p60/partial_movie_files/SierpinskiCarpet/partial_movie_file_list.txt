@@ -1,0 +1,9 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/SierpinskiCarpet/2037873592_645682970_2091134985.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/SierpinskiCarpet/2321412811_2526496290_1594177971.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/SierpinskiCarpet/2321412811_2526496290_1472852595.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/SierpinskiCarpet/2321412811_2526496290_1898869366.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/SierpinskiCarpet/2321412811_2526496290_3567385815.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/SierpinskiCarpet/2321412811_2526496290_2074530537.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/SierpinskiCarpet/2321412811_2526496290_3412177207.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/SierpinskiCarpet/2321412811_2526496290_3493165549.mp4'

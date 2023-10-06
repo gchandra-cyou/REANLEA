@@ -112,9 +112,54 @@ class Mandelbrot(Scene):
 
         # manim -sqk open_ai.py Mandelbrot
 
+config.disable_caching_warning=True
+config.disable_caching=True
+class MengerSponge(ThreeDScene):
+    def construct(self):
+        cube = Cube()
+        self.play(Create(cube))
+        self.wait(1)
+
+        # Create the Menger sponge recursively
+        self.create_menger(cube, depth=3)
+
+    def create_menger(self, cube, depth):
+        if depth == 0:
+            return
+
+        new_cubes = []
+        for i in range(3):
+            for j in range(3):
+                for k in range(3):
+                    if i != 1 or j != 1 or k != 1:
+                        new_cube = cube.copy()
+                        new_cube.scale(1 / 3)
+                        new_cube.shift(
+                            cube.get_width() * (i - 1) / 3,
+                            cube.get_height() * (j - 1) / 3,
+                            cube.get_depth() * (k - 1) / 3,
+                        )
+                        new_cubes.append(new_cube)
+
+        self.play(*[Create(c) for c in new_cubes])
+
+        for c in new_cubes:
+            self.create_menger(c, depth - 1)
+
+    def camera_position(self, mob):
+        self.set_camera_orientation(
+            phi=75 * DEGREES,
+            theta=-30 * DEGREES,
+        )
+        self.begin_3dillusion_mobject(mob)
 
 
+        # manim -pqh open_ai.py MengerSponge
 
+        # manim -sqh open_ai.py MengerSponge
+
+
+ 
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2023\lab" 

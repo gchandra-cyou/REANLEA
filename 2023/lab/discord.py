@@ -2501,7 +2501,146 @@ class Brace_cube(ThreeDScene):
 
         # manim -sqk discord.py Brace_cube
 
-        
+class TriangleInsideColor(Scene):
+    def construct(self):
+        self.camera.background_color = "#140027"
+        sq3 = math.sqrt(3)
+        #   "#c7751e"
+        tri_x_offset = 0
+        tri_y_offset = 0
+        tri_len = 1.2
+        tri_p1 = [tri_x_offset, tri_len*math.sqrt(3) + tri_y_offset, 0]
+        tri_p2 = [2*tri_len + tri_x_offset, -tri_len*math.sqrt(3) + tri_y_offset, 0]
+        tri_p3 = [-2*tri_len + tri_x_offset, -tri_len*math.sqrt(3) + tri_y_offset, 0]
+
+        tri = always_redraw(
+            lambda : Polygon(
+                tri_p1, tri_p2, tri_p3,
+                color=WHITE
+            )
+        )
+
+        point = Dot([-0.5, 0.6, 0])
+        px = ValueTracker(point.get_arc_center()[0])
+        py = ValueTracker(point.get_arc_center()[1])
+        px.add_updater(lambda x: x.set_value(point.get_arc_center()[0]))
+        py.add_updater(lambda x: x.set_value(point.get_arc_center()[1]))
+
+        int_point_1 = Dot([0.25*(3*tri_x_offset + 3*tri_len + sq3*tri_y_offset + px.get_value() - sq3*py.get_value()), (1/(4*sq3))*(3*tri_x_offset + 3*tri_len + sq3*tri_y_offset + 3*sq3*py.get_value() - 3*px.get_value()), 0])
+        int_point_2 = Dot([-0.25*(3 * tri_len - 3*tri_x_offset + sq3*tri_y_offset - px.get_value() - sq3 * py.get_value()), (1/(4*sq3))*(3*tri_len - 3*tri_x_offset + sq3*tri_y_offset + 3*sq3*py.get_value() + 3*px.get_value()), 0])
+        int_point_3 = Dot([px.get_value(), -tri_len*sq3, 0])
+
+        int_point_1.add_updater(lambda x: x.move_to([0.25*(3*tri_x_offset + 3*tri_len + sq3*tri_y_offset + point.get_arc_center()[0] - sq3*point.get_arc_center()[1]), (1/(4*sq3))*(3*tri_x_offset + 3*tri_len + sq3*tri_y_offset + 3*sq3*point.get_arc_center()[1] - 3*point.get_arc_center()[0]), 0]))
+        int_point_2.add_updater(lambda x: x.move_to([-0.25*(3 * tri_len - 3*tri_x_offset + sq3*tri_y_offset - point.get_arc_center()[0] - sq3 * point.get_arc_center()[1]), (1/(4*sq3))*(3*tri_len - 3*tri_x_offset + sq3*tri_y_offset + 3*sq3*point.get_arc_center()[1] + 3*point.get_arc_center()[0]), 0]))
+        int_point_3.add_updater(lambda x: x.move_to([point.get_arc_center()[0], -tri_len*sq3, 0]))
+
+        tri1 = always_redraw(
+            lambda : Polygon(
+            tri_p1, int_point_1.get_arc_center(), point.get_arc_center(),
+            color=WHITE, fill_color="#41145e", fill_opacity=1, stroke_width=0, stroke_color=WHITE
+            )
+        )
+        tri2 = always_redraw(
+            lambda: Polygon(
+                tri_p2, int_point_1.get_arc_center(), point.get_arc_center(),
+                color=WHITE, fill_color="#7a40a1", fill_opacity=1, stroke_width=0, stroke_color=WHITE
+            )
+        )
+        tri3 = always_redraw(
+            lambda: Polygon(
+                tri_p2, int_point_3.get_arc_center(), point.get_arc_center(),
+                color=WHITE, fill_color="#41145e", fill_opacity=1, stroke_width=0, stroke_color=WHITE
+            )
+        )
+        tri4 = always_redraw(
+            lambda: Polygon(
+                tri_p3, int_point_3.get_arc_center(), point.get_arc_center(),
+                color=WHITE, fill_color="#7a40a1", fill_opacity=1, stroke_width=0, stroke_color=WHITE
+            )
+        )
+        tri5 = always_redraw(
+            lambda: Polygon(
+                tri_p3, int_point_2.get_arc_center(), point.get_arc_center(),
+                color=WHITE, fill_color="#41145e", fill_opacity=1, stroke_width=0, stroke_color=WHITE
+            )
+        )
+        tri6 = always_redraw(
+            lambda: Polygon(
+                tri_p1, int_point_2.get_arc_center(), point.get_arc_center(),
+                color=WHITE, fill_color="#7a40a1", fill_opacity=1, stroke_width=0, stroke_color=WHITE
+            )
+        )
+
+        tri_group = VGroup(tri1, tri2, tri3, tri4, tri5, tri6)
+
+        self.play(Create(tri))
+        self.play(
+            DrawBorderThenFill(tri1, run_time=0.6),
+            DrawBorderThenFill(tri2, run_time=0.9),
+            DrawBorderThenFill(tri3, run_time=1.2),
+            DrawBorderThenFill(tri4, run_time=1.5),
+            DrawBorderThenFill(tri5, run_time=1.8),
+            DrawBorderThenFill(tri6, run_time=2.1),
+            Write(point)
+        )
+        self.play(
+            Write(Dot(tri_p1).scale(0.7), run_time=0.7),
+            Write(Dot(tri_p2).scale(0.7), run_time=0.7),
+            Write(Dot(tri_p3).scale(0.7), run_time=0.7),
+            Write(int_point_1.scale(0.6), run_time=0.7),
+            Write(int_point_2.scale(0.6), run_time=0.7),
+            Write(int_point_3.scale(0.6), run_time=0.7),
+        )
+        #  self.play(
+            #  Write(Tex("A").next_to(tri_p1, UP, buff=0.1).scale(0.7), run_time=0.9),
+            #  Write(Tex("B").next_to(tri_p2, RIGHT, buff=0.1).scale(0.7), run_time=0.9),
+            #  Write(Tex("C").next_to(tri_p3, LEFT, buff=0.1).scale(0.7), run_time=0.9),
+        #  )
+        TexP = Tex("P").next_to(point.get_arc_center(), UR, buff=0.1).scale(0.7)
+        TexD = Tex("D").next_to(int_point_1.get_arc_center(), UR, buff=0.07).scale(0.7)
+        TexE = Tex("E").next_to(int_point_3.get_arc_center(), DOWN, buff=0.1).scale(0.7)
+        TexF = Tex("F").next_to(int_point_2.get_arc_center(), UL, buff=0.07).scale(0.7)
+        SecondaryTex = VGroup(TexP, TexD, TexE, TexF)
+        #  self.play(Write(SecondaryTex, run_time=0.7))
+
+        p_group = VGroup(point, TexP)
+        self.play(p_group.animate.shift(DR))
+        self.wait(2) 
+
+
+        # manim -pqh discord.py TriangleInsideColor
+
+        # manim -sqk discord.py TriangleInsideColor 
+
+
+class SierpinskiCarpet(Scene):
+    def construct(self):
+        # Set the total number of times the process will be repeated
+        total = 7
+
+        # Calculate the size of the image
+        size = 3**total
+
+        # Create an empty image
+        square = np.empty([size, size, 3], dtype=np.uint8)
+        color = np.array([255, 255, 255], dtype=np.uint8)
+
+        # Fill it with black
+        square.fill(0)
+
+        for i in range(0, total + 1):
+            stepdown = 3**(total - i)
+            for x in range(0, 3**i):
+                if x % 3 == 1:
+                    for y in range(0, 3**i):
+                        if y % 3 == 1:
+                            square[y * stepdown:(y + 1) * stepdown, x * stepdown:(x + 1) * stepdown] = color
+
+            # Convert the NumPy array to an image and display it
+            img = Image.fromarray(square)
+            self.add(ImageMobject(img))
+            self.wait(0.5)  # Adjust the animation speed as needed
+
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2023\lab" 

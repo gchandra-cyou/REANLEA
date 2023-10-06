@@ -1,0 +1,2 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/anim/1080p60/partial_movie_files/Lorenz_Attractor/3453390599_1636166871_2864116881.mp4'

@@ -1,0 +1,5 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/2160p60/partial_movie_files/ArgMinExample/3422270429_345352296_126752917.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/2160p60/partial_movie_files/ArgMinExample/1511649597_493065177_948148149.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/2160p60/partial_movie_files/ArgMinExample/1511649597_1003058442_2860456277.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/2160p60/partial_movie_files/ArgMinExample/1511649597_3315967912_716099218.mp4'

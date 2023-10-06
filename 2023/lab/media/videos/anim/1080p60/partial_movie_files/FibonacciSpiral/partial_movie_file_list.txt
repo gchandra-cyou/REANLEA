@@ -1,0 +1,4 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/anim/1080p60/partial_movie_files/FibonacciSpiral/2349863586_1115815304_2358810818.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/anim/1080p60/partial_movie_files/FibonacciSpiral/1802680366_3315967912_3070161399.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/anim/1080p60/partial_movie_files/FibonacciSpiral/1802680366_4128790431_235396432.mp4'

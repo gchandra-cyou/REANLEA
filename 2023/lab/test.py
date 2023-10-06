@@ -954,9 +954,6 @@ class post_4(Scene):
 
         # manim -sqk test.py post_4
 
-config.background_color="#F4F7FE"
-config.pixel_width=1080*2
-config.pixel_height=1080*2
 
 class pitch_deck(Scene):
     def construct(self):
@@ -1282,6 +1279,271 @@ class Sierpinski(Scene):
         # manim -sqk test.py Sierpinski
 
         # manim -pqh test.py Sierpinski
+
+
+class Sierpinski_02(Scene):
+
+   config.disable_caching_warning=True
+  
+   def subdivide(self, square, n):
+        ULsq = Square(
+            side_length=n/2, 
+            color=BLACK, 
+            fill_color=YELLOW, 
+            fill_opacity=1,
+            stroke_width=0
+        ).align_to(square,LEFT+UP)
+        LLsq = ULsq.copy().shift(DOWN*n/2)
+        LRsq = LLsq.copy().shift(RIGHT*n/2)
+        URsq = ULsq.copy().set_fill(PURE_GREEN).shift(RIGHT*n/2)
+        sqs = VGroup(ULsq,LLsq,LRsq,URsq)
+        return sqs
+ 
+    
+   def construct(self):
+
+        size = 6  
+        iterations = 7
+
+        S = Square(
+            side_length=size, 
+            color=BLACK, 
+            fill_color=YELLOW, 
+            fill_opacity=1,
+            stroke_width=0.5
+            )                      
+        
+        self.play(FadeIn(S))
+        self.wait(1)
+                         
+        B=[0]
+        B[0] = self.subdivide(S,size)
+        
+        # Remaining iterations
+        for m in range(0,iterations-1):
+           size=size/2
+           C = [0]*(3**(m+1))
+           if (m > 0): self.wait(1.5)
+           for k in range(3**m):
+              C[3*k]=self.subdivide(B[k][0],size)
+              C[3*k+1]=self.subdivide(B[k][1],size)
+              C[3*k+2]=self.subdivide(B[k][2],size)
+              #self.add(*C[3*k],*C[3*k+1],*C[3*k+2])     
+              #self.remove(*B[k]) 
+              #self.play(Write(*B[k][-1]))
+              self.add(*B[k][-1])
+           if (m == 0): # recombine the squares of iteration 1 back into place
+              self.wait(.5)
+                           
+           if (m < iterations-2): B = C.copy()
+
+        self.wait(2)
+
+
+        # manim -sqk test.py Sierpinski_02
+
+        # manim -pqh test.py Sierpinski_02
+
+
+
+
+class Sierpinski_03(Scene):
+
+   config.disable_caching_warning=True
+  
+   def subdivide(self, square, n):
+        mid_sq = Square(
+            side_length=n/3, 
+            fill_color="#E1CD00", 
+            fill_opacity=1,
+            stroke_width=0
+        ).move_to(square.get_center())
+        sq_U = mid_sq.copy().shift(UP*n/3)
+        sq_D = mid_sq.copy().shift(DOWN*n/3)
+        sq_R = mid_sq.copy().shift(RIGHT*n/3)
+        sq_L = mid_sq.copy().shift(LEFT*n/3)
+        sq_UR = sq_U.copy().shift(RIGHT*n/3)
+        sq_DR = sq_R.copy().shift(DOWN*n/3)
+        sq_DL = sq_D.copy().shift(LEFT*n/3)
+        sq_UL = sq_U.copy().shift(LEFT*n/3)
+        mid_sq.set_fill("E1CD00")
+        
+        sqs = VGroup(sq_U,sq_D,sq_R,sq_L,sq_UR,sq_DL,sq_DR,sq_UL,mid_sq)
+        return sqs
+ 
+    
+   def construct(self):
+
+        size = 6  
+        iterations = 6
+
+        S = Square(
+            side_length=size,  
+            fill_color="#00673A", 
+            fill_opacity=1,
+            stroke_width=0.5
+            )                      
+        
+        self.play(FadeIn(S))
+        self.wait(1)
+                         
+        B=[0]
+        B[0] = self.subdivide(S,size)
+        
+        # Remaining iterations
+        for m in range(0,iterations-1):
+           size=size/3
+           C = [0]*(8**(m+1))
+           if (m > 0): self.wait(1.5)
+           for k in range(8**m):
+              C[8*k]=self.subdivide(B[k][0],size)
+              C[8*k+1]=self.subdivide(B[k][1],size)
+              C[8*k+2]=self.subdivide(B[k][2],size)
+              C[8*k+3]=self.subdivide(B[k][3],size)
+              C[8*k+4]=self.subdivide(B[k][4],size)
+              C[8*k+5]=self.subdivide(B[k][5],size)
+              C[8*k+6]=self.subdivide(B[k][6],size)
+              C[8*k+7]=self.subdivide(B[k][7],size)
+              
+              #self.add(*C[3*k],*C[3*k+1],*C[3*k+2])     
+              #self.remove(*B[k]) 
+              self.add(*B[k][-1])
+              #self.play(Write(*B[k][-1]))
+              
+           if (m == 0): # recombine the squares of iteration 1 back into place
+              self.wait(.5)
+                           
+           if (m < iterations-2): B = C.copy()
+        self.wait(2)
+
+
+        # manim -sqk test.py Sierpinski_03
+
+        # manim -pqh test.py Sierpinski_03
+
+class SierpinskiCarpet(Scene):
+    def construct(self):
+        # Set the total number of times the process will be repeated
+        total = 7
+
+        # Calculate the size of the image
+        size = 3**total
+
+        # Create an empty image
+        square = np.empty([size, size, 3], dtype=np.uint8)
+        color = np.array([222, 198, 0], dtype=np.uint8)
+
+        # Fill it with black
+        square.fill(0)
+
+        for i in range(0, total + 1):
+            stepdown = 3**(total - i)
+            for x in range(0, 3**i):
+                if x % 3 == 1:
+                    for y in range(0, 3**i):
+                        if y % 3 == 1:
+                            square[y * stepdown:(y + 1) * stepdown, x * stepdown:(x + 1) * stepdown] = color
+
+            # Convert the NumPy array to an image and display it
+            img = Image.fromarray(square)
+            self.add(ImageMobject(img).scale(.2))
+            #self.play(Write(img))
+            self.wait(0.5)  # Adjust the animation speed as needed
+
+
+            # manim -pqh test.py SierpinskiCarpet
+
+
+class SierpinskiCarpet_1(Scene):
+    def construct(self):
+        # Set the total number of times the process will be repeated
+        total = 3
+
+        # Calculate the size of the image
+        size = 3**total
+
+        # Create an empty image
+        square = Square(side_length=3).set_color(WHITE)
+        col = REANLEA_GOLD
+
+        self.add(square)
+
+
+        for i in range(0, total + 1):
+            stepdown = 3**(total - i)
+            for x in range(0, 3**i):
+                if x % 3 == 1:
+                    for y in range(0, 3**i):
+                        if y % 3 == 1:
+                            len = square.get_side_length()/(3**i)
+                            sq=Square(side_length=len).set_color(color=col).set_fill(col,opacity=1)
+
+                            # Calculate the position of the square within the Sierpinski Carpet
+                            x_position = (x-1) * stepdown  # Adjusted for x % 3 == 1
+                            y_position = (y-1) * stepdown  # Adjusted for y % 3 == 1
+                            position = np.array([x_position, y_position, 0])
+
+                            # Set the position of the square
+                            sq.move_to(position)
+
+                            # Add the square to the scene
+                            
+            self.add(sq)
+            
+            self.wait(0.5)  
+
+
+            # manim -pqh test.py SierpinskiCarpet_1
+
+            # manim -sqh test.py SierpinskiCarpet_1
+
+
+#------------------------- https://github.com/Rousan99/Azazayav ------------------------
+
+
+class SierpinskiTriangleTest(Scene):
+	def construct(self):
+		tt = Title("Sierpinski Triangle")
+		tt.set_color(GREEN)
+		self.play(Write(tt))
+		a = Triangle()
+		a.scale(4)
+		self.play(Write(a))
+		self.play(FadeOut(tt))
+		p1 ,p2,p3 =(a.get_points()[0],a.get_points()[3],a.get_points()[7])#0 for 1st , 3 for 2nd and 7 for 3rd vertex
+		tit = [p1,p2,p3]
+		points=[self.generate_point_in_polygon(p1,p2,p3) for i in range(1)]
+		r = Dot(color=RED)
+		r.scale(0.20)
+		r.move_to(np.array(points[0]))
+		self.play(Write(r))
+		self.wait()
+		y = np.array(points[0])
+		X = GREEN
+		for i in range(1000):
+			ran = random.choice(tit)
+			if np.array_equal(ran,tit[0]):
+				X = RED
+			elif np.array_equal(ran,tit[1]):
+				X = BLUE
+			else:
+				X = YELLOW
+			q = Dot(color=X)
+			q.scale(0.15)
+			new = np.array([(y[0]+ran[0])/2,(y[1]+ran[1])/2,0])
+			q.move_to(new)
+			self.play(Write(q),run_time=0.002)
+			y = new
+
+
+
+
+	def generate_point_in_polygon(self,p1,p2,p3,**kwargs):
+		s ,t = sorted([random.random(),random.random()])
+		return (s*p1[0] + (t-s)*p2[0] + (1-t)*p3[0] , s*p1[1] + (t-s)*p2[1] + (1-t)*p3[1] , 0)
+    
+
+    # manim -pqh test.py SierpinskiTriangleTest
 
 ###################################################################################################################
 
