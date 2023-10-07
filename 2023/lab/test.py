@@ -1545,6 +1545,64 @@ class SierpinskiTriangleTest(Scene):
 
     # manim -pqh test.py SierpinskiTriangleTest
 
+
+class SierpinskiTriangle2(Scene):
+        
+        def sub_triangle(self,triangle):
+            vertices = triangle.get_vertices()
+            a=vertices[0]
+            b=vertices[1]
+            c=vertices[2]
+            tri_0=Polygon((a+b)/2,(b+c)/2,(c+a)/2).set_fill(color="#00673A",opacity=1).set_stroke(color="#00673A",width=0)
+            tri_1=Polygon((a+b)/2,a,(c+a)/2)
+            tri_2=Polygon((a+b)/2,(b+c)/2,b)
+            tri_3=Polygon(c,(b+c)/2,(c+a)/2)
+
+            tris=VGroup(tri_1,tri_2,tri_3,tri_0)
+
+            return tris
+        
+        def construct(self):
+            iterations=8
+
+            Tri=Triangle().scale(4).set_stroke(width=0).set_fill(color="#cca300",opacity=1)
+
+            self.play(FadeIn(Tri))
+            self.wait()
+            
+
+            B=[0]
+            B[0] = self.sub_triangle(Tri)
+
+            self.play(Write(B[0][-1]))
+
+            for m in range(0,iterations-1):
+                grp=VGroup()
+                C = [0]*(3**(m+1))
+                if (m > 0): self.wait(1.5)
+                for k in range(3**m):
+                    C[3*k]=self.sub_triangle(B[k][0])
+                    C[3*k+1]=self.sub_triangle(B[k][1])
+                    C[3*k+2]=self.sub_triangle(B[k][2])
+                     
+                    grp += VGroup(*B[k-1][-1])
+
+                self.play(Write(grp))  
+             
+                   
+                if (m == 0): # recombine the squares of iteration 1 back into place
+                 self.wait(.5)          
+                           
+                if (m < iterations-2): B = C.copy()
+            
+          
+            self.wait(2)
+
+
+
+        # manim -pqh test.py SierpinskiTriangle2
+
+
 ###################################################################################################################
 
 
