@@ -1547,6 +1547,82 @@ class SierpinskiTriangle(Scene):
 
         # manim -pqh anim.py SierpinskiTriangle
 
+
+
+config.background_color=REANLEA_BACKGROUND_COLOR_GHEE
+class Cantor_Set(Scene):
+        def subdivide(self, line):
+            len=line.get_length()/3
+
+            ln_0=Line().set_stroke(color=REANLEA_WARM_BLUE_DARKER,width=8).set_length(len).move_to(line.get_center())
+
+            ln_1=ln_0.copy().shift(LEFT*len)
+            ln_2=ln_0.copy().shift(RIGHT*len)
+
+            ln_0.set_stroke(width=9, color=REANLEA_BACKGROUND_COLOR_GHEE)
+
+            lns=VGroup(ln_1,ln_2,ln_0)
+            return lns
+        
+        def construct(self):
+
+            water_mark=ImageMobject('C:\\Users\\gchan\\Desktop\\REANLEA\\2023\\common\\watermark_ghee.png').scale(0.075).move_to(5*LEFT+3*UP).set_opacity(1).set_z_index(-100)
+            self.add(water_mark)
+
+            #anim zone 
+
+            length=12
+            iterations=9
+
+            level = Variable(0, Tex("iterations:"), var_type=Integer).set_color(REANLEA_BACKGROUND_COLOR_OXFORD_BLUE)
+            txt = (
+                VGroup(Tex("Cantor Set", font_size=60).set_color(REANLEA_BACKGROUND_COLOR_OXFORD_BLUE), level).arrange(DOWN, aligned_edge=LEFT).to_corner(UR)
+            )
+            self.play(Write(txt))
+
+            line=Line(color=WHITE).set_stroke(color=REANLEA_WARM_BLUE_DARKER,width=8).set_length(length)
+
+            self.play(Create(line))
+            self.wait()
+
+            B=[0]
+            B[0]=self.subdivide(line)
+            
+
+            for m in range(0,iterations-1):
+                grp=VGroup()
+            
+                C = [0]*(2**(m+1))
+                if (m > 0): self.wait(1.5)
+                for k in range(2**m):
+                    C[2*k]=self.subdivide(B[k][0])
+                    C[2*k+1]=self.subdivide(B[k][1])
+                                        
+                    grp += VGroup(*B[k-1])
+                
+                grp.move_to(.2*m*DOWN)
+                                         
+                self.play(FadeIn(grp),level.tracker.animate.set_value(m+1))  
+                
+                   
+                if (m == 0):
+                 grp+=VGroup(B[0])
+
+                self.play(grp.animate.shift(.2*DOWN))
+                self.wait(.15)          
+                           
+                if (m < iterations-2): B = C.copy()
+            
+            self.wait(2)
+            
+
+
+
+        #  manim -pqh anim.py Cantor_Set
+
+        #  manim -sqk anim.py Cantor_Set
+
+
 ###################################################################################################################
 
 # Changing FONTS : import any font from Google

@@ -1721,6 +1721,268 @@ class Cantor_Set(Scene):
 
         #  manim -sqk test.py Cantor_Set
 
+
+class Sierpinski_carpet(Scene):
+
+   config.disable_caching_warning=True
+  
+   def subdivide(self, square, n):
+        mid_sq = Square(
+            side_length=n/3, 
+            fill_color=REANLEA_WARM_BLUE_DARKER, 
+            fill_opacity=1,
+            stroke_width=0
+        ).move_to(square.get_center())
+        sq_R = mid_sq.copy().shift(RIGHT*n/3)
+        sq_UR = sq_R.copy().shift(UP*n/3)
+        sq_U = mid_sq.copy().shift(UP*n/3)
+        sq_UL = sq_U.copy().shift(LEFT*n/3)
+        sq_L = mid_sq.copy().shift(LEFT*n/3)
+        sq_DL = sq_L.copy().shift(DOWN*n/3)
+        sq_D = mid_sq.copy().shift(DOWN*n/3)
+        sq_DR = sq_D.copy().shift(RIGHT*n/3)
+        
+        
+        mid_sq.set_fill(WHITE)
+        
+        sqs = VGroup(sq_R,sq_UR,sq_U,sq_UL,sq_L,sq_DL,sq_D,sq_DR,mid_sq)
+        return sqs
+ 
+    
+   def construct(self):
+
+        size = 6  
+        iterations = 6
+
+        S = Square(
+            side_length=size,  
+            fill_color=REANLEA_WARM_BLUE_DARKER, 
+            fill_opacity=1,
+            stroke_width=0.5
+            )                      
+        
+        self.play(FadeIn(S))
+        self.wait(1)
+                         
+        B=[0]
+        B[0] = self.subdivide(S,size)
+        #self.play(FadeIn(B[0][-1]))
+        
+        
+        # Remaining iterations
+        
+        for m in range(0,iterations-1):
+           grp=VGroup()
+           size=size/3
+           C = [0]*(8**(m+1))
+           if (m > 0): self.wait(1.5)
+           for k in range(8**m):
+              C[8*k]=self.subdivide(B[k][0],size)
+              C[8*k+1]=self.subdivide(B[k][1],size)
+              C[8*k+2]=self.subdivide(B[k][2],size)
+              C[8*k+3]=self.subdivide(B[k][3],size)
+              C[8*k+4]=self.subdivide(B[k][4],size)
+              C[8*k+5]=self.subdivide(B[k][5],size)
+              C[8*k+6]=self.subdivide(B[k][6],size)
+              C[8*k+7]=self.subdivide(B[k][7],size)
+              
+              #self.add(*C[3*k],*C[3*k+1],*C[3*k+2])     
+              #self.remove(*B[k]) 
+              #self.add(*B[k][-1])
+              
+              #grp += VGroup(*B[k-1][-1]) 
+
+              grp += VGroup(*B[k-1][-1])
+
+           self.play(Write(grp))  
+             
+                   
+           if (m == 0): # recombine the squares of iteration 1 back into place
+              self.wait(.5)          
+                           
+           if (m < iterations-2): B = C.copy()
+            
+          
+        self.wait(2)
+
+
+        # manim -sqk test.py Sierpinski_carpet
+
+        # manim -pqh test.py Sierpinski_carpet
+
+
+
+class SierpinskiTriangle(Scene):
+        
+        def sub_triangle(self,triangle):
+            vertices = triangle.get_vertices()
+            a=vertices[0]
+            b=vertices[1]
+            c=vertices[2]
+            tri_0=Polygon((a+b)/2,(b+c)/2,(c+a)/2).set_fill(color=WHITE,opacity=1).set_stroke(width=0)
+            tri_1=Polygon((a+b)/2,a,(c+a)/2)
+            tri_2=Polygon((a+b)/2,(b+c)/2,b)
+            tri_3=Polygon(c,(b+c)/2,(c+a)/2)
+
+            tris=VGroup(tri_1,tri_2,tri_3,tri_0)
+
+            return tris
+        
+        def construct(self):
+            iterations=7
+
+            Tri=Triangle().scale(4).set_stroke(width=0).set_fill(color=REANLEA_WARM_BLUE_DARKER,opacity=1)
+
+            self.play(FadeIn(Tri))
+            self.wait()
+            
+
+            B=[0]
+            B[0] = self.sub_triangle(Tri)
+
+            for m in range(0,iterations-1):
+                grp=VGroup()
+                C = [0]*(3**(m+1))
+                if (m > 0): self.wait(1.5)
+                for k in range(3**m):
+                    C[3*k]=self.sub_triangle(B[k][0])
+                    C[3*k+1]=self.sub_triangle(B[k][1])
+                    C[3*k+2]=self.sub_triangle(B[k][2])
+                     
+                    grp += VGroup(*B[k-1][-1])
+
+                self.play(Write(grp))  
+             
+                   
+                if (m == 0): # recombine the squares of iteration 1 back into place
+                 self.wait(.5)          
+                           
+                if (m < iterations-2): B = C.copy()
+            
+          
+            self.wait(2)
+
+
+
+        # manim -pqh test.py SierpinskiTriangle
+
+        # manim -sqk test.py SierpinskiTriangle
+
+
+
+class MengerSponge(ThreeDScene):
+    def construct(self):
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+
+        def sponge(n, length=4):
+
+            cube = Cube(side_length=length, fill_opacity=1, color=RED).set_color_by_gradient(GREY,REANLEA_GREY_DARKER,REANLEA_WARM_BLUE_DARKER).set_stroke(width=.1, color=REANLEA_GREY_DARKER)
+
+            def next_level(cube):
+                mark = cube
+                pos = [RIGHT, RIGHT, DOWN, DOWN, LEFT, LEFT, UP]
+                a = VGroup(mark)
+                for i in range(len(pos)):
+                    a.add(mark.copy().next_to(a[-1], pos[i], buff=0))
+                for i in range(5):
+                    a.add(mark.copy().next_to(a[2 * i], OUT, buff=0))
+                for i in range(len(pos)):
+                    a.add(mark.copy().next_to(a[-1], pos[i], buff=0))
+                
+                return a
+            
+            for _ in range(n):
+                cube = next_level(cube)
+            
+            return cube
+
+        '''sp = sponge(n=0).move_to(ORIGIN)
+        self.play(Create(sp))
+        sp_1 = sponge(n=1).move_to(ORIGIN).scale(1/3)
+        self.play(sp.animate.scale(1/3).move_to(sp_1.copy()[0]))
+        self.wait()
+        self.play(Create(sp_1))
+        self.play(FadeOut(sp))
+        
+        sp_2 = sponge(n=2).move_to(ORIGIN).scale(1/9)
+        self.play(sp_1.animate.scale(1/3).move_to(sp_2.copy()[0]))
+        self.wait()
+        self.play(Create(sp_2))
+        self.wait()'''
+            
+        sp = sponge(n=0).move_to(ORIGIN)  
+        self.play(Create(sp))
+
+        for i in range(3):
+            sp_next=sponge(i+1).move_to(ORIGIN).scale(1/(3**(i+1)))
+            self.play(sp.animate.scale(1/3).move_to(sp_next.copy()[0]))
+            self.play(Create(sp_next))
+            self.play(FadeOut(sp))
+            sp=sp_next  
+
+        #self.begin_ambient_camera_rotation(rate=0.3)
+
+        self.wait(3)
+
+
+        # manim -sqk test.py MengerSponge
+
+        # manim -pql test.py MengerSponge
+
+
+class MengerSponge_test_1(ThreeDScene):
+    def construct(self):
+
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+
+        sponge = self.create_menger_sponge(1, 4).scale(.2)
+        self.play(Create(sponge))
+        self.wait(2)
+
+    def create_menger_sponge(self, iterations, size):
+        if iterations == 0:
+            cube = Cube(side_length=size, fill_opacity=1, color=RED).set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_MAGENTA,REANLEA_BLUE,REANLEA_CYAN_LIGHT).set_stroke(width=1,color=REANLEA_GREY_DARKER)
+            return cube
+        
+        else:
+            smaller_sponge = self.create_menger_sponge(iterations - 1, size)
+            sponge = VGroup()
+
+            for x in range(-1, 2):
+                for y in range(-1, 2):
+                    for z in range(-1, 2):
+                        if abs(x) + abs(y) + abs(z) > 1:
+                            new_sponge = smaller_sponge.copy()
+                            new_sponge.move_to([x * size, y * size, z * size])
+                            sponge.add(new_sponge)
+
+            return sponge
+        
+        # manim -sqk test.py MengerSponge_test_1
+
+        # manim -pql test.py MengerSponge_test_1
+ 
+class Rotation3D(ThreeDScene):
+    def construct(self):
+        cube = Cube(side_length=3, fill_opacity=1).set_color_by_gradient(REANLEA_BLUE_LAVENDER,REANLEA_MAGENTA,REANLEA_BLUE).set_stroke(width=1,color=BLACK)
+
+        self.begin_ambient_camera_rotation(rate=0.3)
+
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+
+        self.play(Write(cube), run_time=2)
+
+        self.wait(3)
+
+        self.play(Unwrite(cube), run_time=2)
+
+
+        # manim -sqk test.py Rotation3D
+        
+        # manim -pqh test.py Rotation3D
+
+
+    
 ###################################################################################################################
 
 
