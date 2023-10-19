@@ -2288,9 +2288,13 @@ class sierpinski_arrowhead_Curve(Scene):
             LineGrp = Line().set_length(l)
 
             def NextLevel(LineX):
-                return VGroup(
-                    *[LineX.copy().rotate(i) for i in [PI / 3,0, -PI / 3]]
-                ).arrange(RIGHT, buff=0, aligned_edge=UP)
+                grp=VGroup()
+                for _ in [0,1,2]:
+                    if LineX.get_angle()==0:
+                        grp += VGroup(
+                                    *[LineX.copy().rotate(j) for j in [PI / 3,0, -PI / 3]]
+                                ).arrange(RIGHT, buff=0, aligned_edge=UP)
+                return grp
 
             for _ in range(n):
                 LineGrp = NextLevel(LineGrp)
@@ -2320,40 +2324,6 @@ class sierpinski_arrowhead_Curve(Scene):
 
             #  manim -pqh test.py sierpinski_arrowhead_Curve
 
-
-
-
-from manim import *
-
-class SierpinskiArrowheadCurve(Scene):
-    def construct(self):
-        def SierpinskiArrowheadCurve(n, length=12, stroke_width=8, color="#0A68EF"):
-            if n == 0:
-                return Line(UP * length).set_color(color)
-
-            def next_level(curve):
-                l = length / 2
-                unit_curve = SierpinskiArrowheadCurve(n - 1, l, stroke_width, color)
-                return VGroup(
-                    curve,
-                    unit_curve,
-                    curve.copy().rotate(-PI / 3),
-                    unit_curve.copy().rotate(PI / 3),
-                )
-
-            curve = SierpinskiArrowheadCurve(n - 1, length, stroke_width, color)
-            arrowhead_curve = next_level(curve)
-
-            return arrowhead_curve
-
-        arrowhead_curve = SierpinskiArrowheadCurve(5, stroke_width=2)
-        arrowhead_curve.move_to(ORIGIN)
-
-        self.play(Create(arrowhead_curve), run_time=3)
-        self.wait()
-
-
-# manim -pqh test.py SierpinskiArrowheadCurve
 
 
 ###################################################################################################################
