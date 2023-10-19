@@ -1076,7 +1076,7 @@ class esp_ex_3_1(ThreeDScene):
 
         # manim -sqk banner.py esp_ex_3_1
 
-config.background_color=WHITE
+#config.background_color=WHITE
 class esp_ex_4_0(Scene):
     def construct(self):
         
@@ -1131,7 +1131,7 @@ class esp_ex_4_0(Scene):
 
         self.wait(10)
         
-        r_tot=Rectangle(width=16, height=9, color="#F0F0F0").set_opacity(.75).set_z_index(-101)
+        r_tot=Rectangle(width=16, height=9, color=REANLEA_BACKGROUND_COLOR).set_opacity(.25).set_z_index(-101)
         self.play(
             Create(r_tot),
             run_time=2
@@ -1141,7 +1141,7 @@ class esp_ex_4_0(Scene):
         def func(t):
             return [t,np.exp(1-t ** 2),0]
         
-        f = ParametricFunction(func, t_range=np.array([-3, 3]), fill_opacity=0).set_stroke(width=25, color=["#04ff9c","#1c00fb","#04ff9c"]).scale(1.5).shift(1.5*DOWN)
+        f = ParametricFunction(func, t_range=np.array([-3, 3]), fill_opacity=0).set_stroke(width=25, color=[REANLEA_AQUA,REANLEA_BLUE_SKY,REANLEA_AQUA_GREEN]).scale(1.5).shift(1.5*DOWN)   # "#04ff9c","#1c00fb","#04ff9c"
         self.play(Write(f))
 
         # manim -sqk banner.py esp_ex_4_0

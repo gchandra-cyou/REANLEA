@@ -67,7 +67,7 @@ from manim import *
 from random import random, seed
 from enum import Enum
 
-config.background_color= REANLEA_BACKGROUND_COLOR
+config.background_color= REANLEA_BACKGROUND_COLOR_GHEE
 config.max_files_cached=500
 
 
@@ -1411,7 +1411,7 @@ class Sierpinski_carpet(Scene):
    def subdivide(self, square, n):
         mid_sq = Square(
             side_length=n/3, 
-            fill_color="#cca300", 
+            #fill_color="#cca300", 
             fill_opacity=1,
             stroke_width=0
         ).move_to(square.get_center())
@@ -1425,7 +1425,7 @@ class Sierpinski_carpet(Scene):
         sq_DR = sq_D.copy().shift(RIGHT*n/3)
         
         
-        mid_sq.set_fill("#cca300")
+        mid_sq.set_fill(REANLEA_BACKGROUND_COLOR_GHEE)
         
         sqs = VGroup(sq_R,sq_UR,sq_U,sq_UL,sq_L,sq_DL,sq_D,sq_DR,mid_sq)
         return sqs
@@ -1438,7 +1438,7 @@ class Sierpinski_carpet(Scene):
 
         S = Square(
             side_length=size,  
-            fill_color="#00673A", 
+            fill_color=REANLEA_WARM_BLUE_DARKER, 
             fill_opacity=1,
             stroke_width=0.5
             )                      
@@ -1535,7 +1535,7 @@ class SierpinskiTriangle(Scene):
                 self.play(Write(grp))  
              
                    
-                if (m == 0): # recombine the squares of iteration 1 back into place
+                if (m == 0): 
                  self.wait(.5)          
                            
                 if (m < iterations-2): B = C.copy()
@@ -1549,7 +1549,7 @@ class SierpinskiTriangle(Scene):
 
 
 
-config.background_color=REANLEA_BACKGROUND_COLOR_GHEE
+
 class Cantor_Set(Scene):
         def subdivide(self, line):
             len=line.get_length()/3

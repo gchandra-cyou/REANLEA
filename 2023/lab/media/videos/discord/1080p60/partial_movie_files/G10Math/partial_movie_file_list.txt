@@ -1,0 +1,11 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/G10Math/3180603658_182666734_1520389519.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/G10Math/1854636345_2428381462_183663244.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/G10Math/1854636345_4017097686_2536277964.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/G10Math/1854636345_526816794_3219055359.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/G10Math/1854636345_1674265840_858005871.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/G10Math/1854636345_4017097686_3034918983.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/G10Math/1854636345_3153190363_2004400853.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/G10Math/1854636345_1416012614_164617949.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/G10Math/1854636345_2679564319_2732642162.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/G10Math/1854636345_2419551319_1424674550.mp4'

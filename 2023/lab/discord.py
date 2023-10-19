@@ -2641,6 +2641,432 @@ class SierpinskiCarpet(Scene):
             self.add(ImageMobject(img))
             self.wait(0.5)  # Adjust the animation speed as needed
 
+
+from manim import rate_functions
+
+def offset_start(offset, f=rate_functions.smooth):
+    def rate_func(alpha):
+        return (offset + f(alpha)) % 1
+    return rate_func
+
+class rotating_dot(Scene):
+    def construct(self):
+        c = Circle(radius=2).set_opacity(0)
+        num_of_point = 7
+        real_points = VGroup(*[Dot() for _ in range(num_of_point)])
+        self.add(c)
+        self.play(AnimationGroup(*[
+                MoveAlongPath(a,c, rate_func=offset_start(i/num_of_point)) 
+                for i, a in enumerate(real_points)],
+            lag_ratio=0, run_time=2))
+        self.wait()
+
+
+        # manim -pqh discord.py rotating_dot
+
+        # manim -sqk discord.py rotating_dot
+
+
+
+class G10Math(Scene):  
+
+    #try to make 2 axes to compare different reinman sums
+        
+    def construct(self): 
+        
+        a=ValueTracker(1)
+        b =ValueTracker(0)
+        h=ValueTracker(0)
+        c=ValueTracker(0)
+        
+        
+        def f(x,h,a,c):
+            return a*(x-h)**2 +c
+        
+        def f2(x,a,b,c):
+            return a*(x**2) + b*x + c
+        
+        axes = Axes(x_range = [-9,9,1], y_range = [-9,9,1],x_length=9,y_length=9)
+        
+        axes.scale_to_fit_height(6)
+        axes.shift(UP)
+        
+        graph =always_redraw(lambda: axes.plot(lambda x: f2(x,a.get_value(),b.get_value(),c.get_value()), color=RED))
+        graph2 = always_redraw(lambda: axes.plot(lambda x: b.get_value()*x,color=BLACK,x_range=[-4.5,4.5]))
+
+        
+        get = graph.get_function()
+
+        
+        axes.set_color(BLACK)
+        self.camera.background_color=WHITE
+        
+
+        numa = always_redraw( lambda: DecimalNumber(num_decimal_places=1).set_value(b.get_value()).set_color(BLACK).shift(DOWN*3.5))
+
+        tex = MathTex(r'f(x) &= b*x ', font_size=48)
+        tex.set_color(BLACK).shift(DOWN*2.5)
+        numa.set_color(BLACK)
+       
+        self.add(axes)  
+        self.add(tex)
+
+
+        self.play(FadeIn(numa))
+
+        self.play(Write(graph))
+        self.wait(1)
+        self.play(Write(graph2))
+        self.play(b.animate(rate_func=linear).set_value(2), run_time=1)
+        self.wait(1)
+        self.play(b.animate(rate_func=linear).set_value(-2), run_time=2)
+        self.wait(2)
+        self.play(c.animate.set_value(2), run_time=2)
+        
+        
+
+        self.wait(5)
+
+        # manim -pqh discord.py G10Math
+
+        # manim -sqk discord.py G10Math
+
+
+
+
+class fct(MovingCameraScene):
+    def construct(self):
+        self.camera.frame.save_state()
+        ax = Axes(x_range=[-3, 3], y_range=[-1, 2]).add_coordinates()
+
+        def func(x):
+            return np.exp(-x**2)
+
+        valuetracker = ValueTracker(-3)
+        moving_dot = always_redraw(lambda:
+            Dot(
+                ax.c2p(valuetracker.get_value(), func(valuetracker.get_value())),
+                color=ORANGE
+            )
+        )
+        graph = always_redraw(lambda:
+            ax.plot(
+                func,
+                x_range=[-3, valuetracker.get_value()],
+                color=PURPLE
+            )
+        )
+
+        self.play(Create(ax), Create(graph), Create(moving_dot), run_time=2)
+        self.play(self.camera.frame.animate.scale(0.5).move_to(moving_dot))
+        def update_curve(mob):
+            mob.move_to(moving_dot.get_center())
+
+        self.camera.frame.add_updater(update_curve)
+        self.play(valuetracker.animate.set_value(3), rate_func=linear)
+        self.camera.frame.remove_updater(update_curve)
+
+        self.play(Restore(self.camera.frame))
+        self.play(FadeOut(moving_dot))
+
+
+        dx_list = [1, 0.5, 0.3, 0.1, 0.05, 0.025, 0.01]
+        prev_rectangles = None
+        for dx in dx_list:
+            riemann_rectangles = ax.get_riemann_rectangles(
+                graph, x_range=[-3, 3], dx=dx, stroke_width=0.1, stroke_color=WHITE
+            )
+            if prev_rectangles is not None:
+                self.play(ReplacementTransform(prev_rectangles, riemann_rectangles))
+            else:
+                self.play(Create(riemann_rectangles))
+            prev_rectangles = riemann_rectangles
+            self.wait(0.5)
+
+        self.wait()
+        area = prev_rectangles.copy()
+        self.play(
+            area.animate.shift(3*LEFT+3*DOWN).set_color(YELLOW)
+        )
+        sqrtpi = MathTex(r"=\sqrt{\pi}").next_to(area, RIGHT)
+        self.play(Write(sqrtpi))
+        self.wait()
+
+
+        # manim -pqh discord.py fct
+
+        # manim -sqk discord.py fct
+
+
+
+
+class TraceTangent(Scene):
+    def construct(self):
+        # axes :
+        ax= Axes(
+            x_range=[-1, 11, 1], y_range=[-10, 110, 10], x_length=10, y_length=6, tips=True, 
+            x_axis_config={"include_numbers": True},
+            y_axis_config={"include_numbers": True}
+        ).shift(0.3*LEFT)
+
+        # object :
+        dot= Dot()
+
+        # trace :
+        k= ValueTracker(0)
+        traced_dot= Dot(color=BLUE).move_to(ax.c2p(0,0))
+        def update_position(mob):
+            mob.move_to(ax.c2p(k.get_value(), (dot.get_y())*10*2))
+        traced_dot.add_updater(update_position)
+        trace= TracedPath(traced_dot.get_center, stroke_color=BLUE, stroke_width=4)
+        gr= ax.plot_parametric_curve(lambda t: [k.get_value(), (dot.get_y())*10*2, 0], color=YELLOW)
+
+        self.add(ax, dot, traced_dot,  trace)
+        self.play(dot.animate(rate_func=smooth).shift(5*UP),
+                  k.animate(rate_func=linear).set_value(10),
+                  run_time=10)
+
+        # tangent line:
+
+        tangent= ax.get_secant_slope_group(
+            x=5,
+            graph=trace,
+            dx=0.5,
+            secant_line_color=GREEN,
+            secant_line_length=5
+        )
+        self.play(FadeIn(tangent))
+
+
+        # manim -pqh discord.py TraceTangent
+
+        # manim -sqk discord.py TraceTangent
+
+
+
+class frame_by_frame(Scene):
+    def construct(self):
+        positions = [[np.random.uniform(-5,5),np.random.uniform(-3,3),0] for i in range(30)]
+        frame = ValueTracker(0)
+        def frame_updater(dt):
+            frame.increment_value(1)
+        self.add_updater(frame_updater)
+
+        dot = Dot()
+        def dot_updater(mobj):
+            mobj.move_to(positions[int(frame.get_value()) % len(positions)])
+        dot.add_updater(dot_updater, call_updater=True)
+
+        self.add(dot)
+        self.wait(3)
+
+        # manim -pqh discord.py frame_by_frame
+
+        # manim -sqk discord.py frame_by_frame
+
+
+
+class LorenzMoving(ThreeDScene):
+    def construct(self):
+        r = 50
+        x = float(25)
+        y = float(15)
+        z = float(15)
+        a = 10
+        b = 28
+        c = 8/3
+        camP = PI/3
+        i = 0
+        di = 0.01
+        self.set_camera_orientation(phi=camP,theta=-PI/4)
+        axis = ThreeDAxes(x_range=(- r, r , r/10), y_range=(- r, r, r/10), z_range=(- r, r, r/10))
+        self.add(axis)
+        points = []
+        while i<10:
+            pnt = axis.coords_to_point(x, y, z)
+            points.append(pnt)
+            i = i + di
+            dx = a*(y-x)
+            dy = x*(b-z) - y
+            dz = x*y - c*z
+            x += di*dx
+            y += di*dy
+            z += di*dz
+        LorenzPath = VMobject(color=RED)
+        LorenzPath.set_points_smoothly(points)
+
+        self.begin_ambient_camera_rotation(rate=0.25)
+        self.play(
+            Create(LorenzPath), rate_func=linear, run_time=10
+        )
+
+
+        # manim -pqh discord.py LorenzMoving
+
+        # manim -sqk discord.py LorenzMoving
+
+
+        
+
+
+from PIL import Image, ImageEnhance
+class Mandelbrot_1(Scene):
+    def setup(self):
+        self.WIDTH = config.pixel_width
+        self.HEIGHT = config.pixel_height
+        self.img = Image.new("RGBA", (self.WIDTH, self.HEIGHT), BLUE)
+        self.img_mobj = ImageMobject(self.img, scale_to_resolution=self.HEIGHT)
+        self.add(self.img_mobj)
+        self.img_data = self.img.load()
+    
+    def build_mandelbrot(self, xmin, xmax, ymin, ymax, max_iterations=100):
+        for x in range(self.WIDTH):
+            for y in range(self.HEIGHT):
+                c = complex(x / self.WIDTH * (xmax - xmin) + xmin,
+                            y / self.HEIGHT * (ymax - ymin) + ymin)
+                z = complex(0, 0)
+                for i in range(max_iterations):
+                    z = z * z + c
+                    if abs(z) > 2:
+                        break
+                self.add_pixel(x, y, (i / max_iterations,)*4 )
+
+    def construct(self):
+        self.build_mandelbrot(-2.5, 1, -1, 1, 100)
+        enhancer = ImageEnhance.Brightness(self.img)
+        result = enhancer.enhance(20)
+        self.img_mobj.become(ImageMobject(result, scale_to_resolution=self.HEIGHT))
+
+    def add_pixel(self, x, y, colour):
+        try:
+            self.img_data[x, y] = tuple(int(255 * c) for c in colour)
+        except IndexError:
+            pass
+
+        # manim -pqh discord.py Mandelbrot_1
+
+        # manim -sqk discord.py Mandelbrot_1
+
+from PIL import Image, ImageEnhance
+
+class Mandelbrot_2(Scene):
+    def setup(self):
+        self.WIDTH = config.pixel_width
+        self.HEIGHT = config.pixel_height
+        self.img = Image.new("RGBA", (self.WIDTH, self.HEIGHT))
+        self.img_mobj = ImageMobject(self.img, scale_to_resolution=self.HEIGHT)
+        self.add(self.img_mobj)
+        self.img_data = self.img.load()
+
+    def color_map(self, value, max_value):
+        # Define your own color mapping logic here
+        # Example: Map the value to a gradient from blue to red
+        normalized_value = value / max_value
+        r = int(.1*255 * normalized_value/5)
+        g = int(0.75*255 * normalized_value/5)
+        b = int(255 * (1 - normalized_value)*.021)
+        return (r,g,b, 255)
+
+    def build_mandelbrot(self, xmin, xmax, ymin, ymax, max_iterations=100):
+        for x in range(self.WIDTH):
+            for y in range(self.HEIGHT):
+                c = complex(x / self.WIDTH * (xmax - xmin) + xmin,
+                            y / self.HEIGHT * (ymax - ymin) + ymin)
+                z = complex(0, 0)
+                for i in range(max_iterations):
+                    z = z * z + c
+                    if abs(z) > 2:
+                        break
+                color = self.color_map(i, max_iterations)
+                self.add_pixel(x, y, color)
+
+    def construct(self):
+        self.build_mandelbrot(-2.5, 1, -1, 1, 100)
+        enhancer = ImageEnhance.Brightness(self.img)
+        result = enhancer.enhance(20)
+        self.img_mobj.become(ImageMobject(result, scale_to_resolution=self.HEIGHT))
+
+    def add_pixel(self, x, y, color):
+        try:
+            self.img_data[x, y] = color
+        except IndexError:
+            pass
+
+        # manim -pqh discord.py Mandelbrot_2
+
+        # manim -sqk discord.py Mandelbrot_2
+
+
+
+
+class Mandelbrot_3(Scene):
+    def setup(self):
+        self.WIDTH = config.pixel_width
+        self.HEIGHT = config.pixel_height
+        self.img = Image.new("RGBA", (self.WIDTH, self.HEIGHT))
+        self.img_mobj = ImageMobject(self.img, scale_to_resolution=self.HEIGHT)
+        self.add(self.img_mobj)
+        self.img_data = self.img.load()
+
+    def color_map(self, value, max_value):
+        # Define your own color mapping logic here
+        # Example: Map the value to a gradient from blue to red
+        normalized_value = value / max_value
+        r = int(.1*255 * normalized_value/5)
+        g = int(0.75*255 * normalized_value/5)
+        b = int(255 * (1 - normalized_value)*.021)
+        return (r, g, b, 255)
+
+    def build_mandelbrot(self, xmin, xmax, ymin, ymax, max_iterations=10):
+        for x in range(self.WIDTH):
+            for y in range(self.HEIGHT):
+                c = complex(x / self.WIDTH * (xmax - xmin) + xmin,
+                            y / self.HEIGHT * (ymax - ymin) + ymin)
+                z = complex(0, 0)
+                for i in range(max_iterations):
+                    z = z * z + c
+                    if abs(z) > 2:
+                        break
+                color = self.color_map(i, max_iterations)
+                self.add_pixel(x, y, color)
+                self.update_mandelbrot()  # Update the Mandelbrot set at each step
+
+    def construct(self):
+        self.build_mandelbrot(-2.5, 1, -1, 1, 10)
+        enhancer = ImageEnhance.Brightness(self.img)
+        result = enhancer.enhance(2)
+        self.img_mobj.become(ImageMobject(result, scale_to_resolution=self.HEIGHT))
+
+    def add_pixel(self, x, y, color):
+        try:
+            self.img_data[x, y] = color
+        except IndexError:
+            pass
+
+    def update_mandelbrot(self):
+        # Create a copy of the current image data
+        img_copy = self.img.copy()
+        img_copy_data = img_copy.load()
+        
+        for x in range(self.WIDTH):
+            for y in range(self.HEIGHT):
+                color = self.img_data[x, y]
+                img_copy_data[x, y] = color
+        
+        self.img_mobj.become(ImageMobject(img_copy, scale_to_resolution=self.HEIGHT))
+
+        # Add a pause to control the animation speed
+        self.wait(0.01)
+
+    def play_animation(self):
+        # Call this method to play the animation
+        self.build_mandelbrot(-2.5, 1, -1, 1, 10)
+
+
+        # manim -pql discord.py Mandelbrot_3
+
+        # manim -sql discord.py Mandelbrot_3
+
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2023\lab" 

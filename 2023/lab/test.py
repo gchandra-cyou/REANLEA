@@ -1648,7 +1648,7 @@ class CW_KochCurve(Scene):
             #  manim -pqh test.py CW_KochCurve
 
 
-config.background_color=WHITE
+config.background_color=REANLEA_BACKGROUND_COLOR_GHEE
 class Cantor_Set(Scene):
         def subdivide(self, line):
             len=line.get_length()/3
@@ -1658,14 +1658,14 @@ class Cantor_Set(Scene):
             ln_1=ln_0.copy().shift(LEFT*len)
             ln_2=ln_0.copy().shift(RIGHT*len)
 
-            ln_0.set_stroke(width=9, color=WHITE)
+            ln_0.set_stroke(width=9, color=REANLEA_BACKGROUND_COLOR_GHEE)
 
             lns=VGroup(ln_1,ln_2,ln_0)
             return lns
         
         def construct(self):
 
-            water_mark=ImageMobject("water_mark_white.png").scale(0.075).move_to(5*LEFT+3*UP).set_opacity(1).set_z_index(-100)
+            water_mark=ImageMobject("C:\\Users\\gchan\\Desktop\\REANLEA\\2023\\common\\watermark_ghee.png").scale(0.075).move_to(5*LEFT+3*UP).set_opacity(1).set_z_index(-100)
             self.add(water_mark)
 
             #anim zone 
@@ -1982,7 +1982,380 @@ class Rotation3D(ThreeDScene):
         # manim -pqh test.py Rotation3D
 
 
+def GetDragon(start=LEFT/2, end=RIGHT/2, times=13, DexOrLev=1, color='#F08080', stroke_width=2, stroke_width2=4):
+    dol = (+1,-1)if DexOrLev else (-1,+1)
+    a,b = [start, end],[]
+    for i in range(times-1):
+        for j in range(len(a)):
+            if j!=0:
+                midpoint = (a[j]+a[j-1])/2
+                b.append(rotate_vector(a[j]-midpoint, PI/2*dol[j%2!=0])+midpoint)
+            b.append(a[j])
+        a, b = b, []
+    r = Polygram(color=color, stroke_width=stroke_width)
+    r.start_new_path(a[0])
+    r.add_points_as_corners(a[1:])
+    return r
+
+
+class get_dragon(MovingCameraScene):
+    def construct(self):
+        
+        self.camera.frame.move_to([2,0,0])
+        self.camera.frame.scale(.7)
+        colors = [BLUE_E, BLUE_A, BLUE_D, GREEN_A, GREEN_E, PURE_GREEN]
+        My_colors = color_gradient(colors,11)[1:-2]
+        steps = []
+
+        for times in range(2,3):
+            stroke = 20/times
+            DragonCurveg = VGroup(
+                GetDragon(start=DL,end=UL,DexOrLev=0, times=times, stroke_width=stroke).set_color(REANLEA_WARM_BLUE_DARKER),
+                GetDragon(start=UR,end=UL,DexOrLev=0, times=times, stroke_width=stroke).set_color(REANLEA_WARM_BLUE_DARKER),
+                GetDragon(start=UR,end=DR,DexOrLev=0, times=times, stroke_width=stroke).set_color(REANLEA_WARM_BLUE_DARKER),
+                GetDragon(start=DL,end=DR,DexOrLev=0, times=times, stroke_width=stroke).set_color(REANLEA_WARM_BLUE_DARKER),
+                ).set_stroke(opacity=0.8)
+            tesselation = VGroup()
+            for x in [-6, -2, 2]:
+                for y in [-4, -2, 0, 2, 4]:
+                    g = DragonCurveg.copy()
+                    g.move_to(x*LEFT+y*UP)
+                    if y%4 == 0:
+                        for i in range(4,8):
+                            g[i-4].set_color(REANLEA_WARM_BLUE_DARKER)
+                            g[i-4].set_color(REANLEA_WARM_BLUE_DARKER)
+                    tesselation.add(g)
+            steps.append(tesselation.rotate(-PI/4))
+        previous = steps[0]
+        self.play(Create(previous))
+        for step in steps[1:]:
+            self.play(ReplacementTransform(previous, step))
+            self.wait(.2)
+            previous = step
+        self.wait()
+
+        '''for times in range(2, 16):
+            stroke = 20/times
+            DragonCurveg = VGroup(
+                GetDragon(start=DL,end=UL,DexOrLev=0, times=times, stroke_width=stroke).set_color(My_colors[0]),
+                GetDragon(start=UR,end=UL,DexOrLev=0, times=times, stroke_width=stroke).set_color(My_colors[1]),
+                GetDragon(start=UR,end=DR,DexOrLev=0, times=times, stroke_width=stroke).set_color(My_colors[2]),
+                GetDragon(start=DL,end=DR,DexOrLev=0, times=times, stroke_width=stroke).set_color(My_colors[3]),
+                ).set_stroke(opacity=0.8)
+            tesselation = VGroup()
+            for x in [-6, -2, 2]:
+                for y in [-4, -2, 0, 2, 4]:
+                    g = DragonCurveg.copy()
+                    g.move_to(x*LEFT+y*UP)
+                    if y%4 == 0:
+                        for i in range(4,8):
+                            g[i-4].set_color(My_colors[i])
+                            g[i-4].set_color(My_colors[i])
+                    tesselation.add(g)
+            steps.append(tesselation.rotate(-PI/4))
+        previous = steps[0]
+        self.add(previous)
+        for step in steps[1:]:
+            self.play(ReplacementTransform(previous, step))
+            self.wait(.2)
+            previous = step
+        self.wait()'''
+
+        # manim -pqh test.py get_dragon
+
+        # manim -sqh test.py get_dragon 
+
+
+
+class Dragon(MovingCameraScene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject('C:\\Users\\gchan\\Desktop\\REANLEA\\2023\\common\\watermark_ghee.png').scale(6).set_opacity(0.15).set_z_index(-1)
+        
+
+        dragon_curve = VMobject(stroke_color=[REANLEA_PURPLE,REANLEA_SLATE_BLUE,REANLEA_WELDON_BLUE])
+        dragon_curve_points = [LEFT, RIGHT]
+        dragon_curve.set_points_as_corners(dragon_curve_points)
+        dragon_curve.corners = dragon_curve_points
+        self.add(dragon_curve)
+        dragon_curve.add_updater(
+            lambda mobject: mobject.set_style(stroke_width=self.camera.frame.width / 5),              #stroke_width=self.camera.frame.width / 10
+        )
+        dragon_curve.update()
+        self.wait()
+
+        def rotate_half_points(points, alpha):
+            static_part = points[:len(points)//2]
+            about_point = points[len(points)//2]
+            mat = rotation_matrix(-PI/2 * alpha, OUT)
+            rotated_part = [
+                np.dot((point - about_point), mat.T) + about_point
+                for point in reversed(static_part)
+            ]
+            return static_part + [about_point] + rotated_part
+
+        def rotate_half_curve(mobject, alpha):
+            corners = mobject.corners
+            new_corners = rotate_half_points(corners, alpha)
+            mobject.set_points_as_corners(new_corners)
+            return mobject
+
+        for it in range(15):
+            rotated_curve = VMobject().set_points_as_corners(rotate_half_points(dragon_curve.corners, 1))
+            self.play(
+                UpdateFromAlphaFunc(dragon_curve, rotate_half_curve),
+                self.camera.auto_zoom(rotated_curve, margin=1),
+            )
+            current_corners = rotate_half_points(dragon_curve.corners, 1)
+            current_corners = current_corners + current_corners[-1::-1]
+            dragon_curve.set_points_as_corners(current_corners)
+            dragon_curve.corners = current_corners
+
+        self.add(water_mark.shift(350*RIGHT+35*UP))
+        self.wait()
+
+
+
+        # manim -pqh test.py Dragon
+
+        # manim -sqk test.py Dragon
+
+
+config.background_color=WHITE
+class Sierpinski_Banner(Scene):
+
+   config.disable_caching_warning=True
+  
+   def subdivide(self, square, n):
+        mid_sq = Square(
+            side_length=n/3, 
+            #fill_color="#cca300", 
+            fill_opacity=1,
+            stroke_width=0
+        ).move_to(square.get_center())
+        sq_R = mid_sq.copy().shift(RIGHT*n/3)
+        sq_UR = sq_R.copy().shift(UP*n/3)
+        sq_U = mid_sq.copy().shift(UP*n/3)
+        sq_UL = sq_U.copy().shift(LEFT*n/3)
+        sq_L = mid_sq.copy().shift(LEFT*n/3)
+        sq_DL = sq_L.copy().shift(DOWN*n/3)
+        sq_D = mid_sq.copy().shift(DOWN*n/3)
+        sq_DR = sq_D.copy().shift(RIGHT*n/3)
+        
+        
+        mid_sq.set_fill(WHITE)
+        
+        sqs = VGroup(sq_R,sq_UR,sq_U,sq_UL,sq_L,sq_DL,sq_D,sq_DR,mid_sq)
+        return sqs
+   
+   def sub_triangle(self,triangle):
+            vertices = triangle.get_vertices()
+            a=vertices[0]
+            b=vertices[1]
+            c=vertices[2]
+            tri_0=Polygon((a+b)/2,(b+c)/2,(c+a)/2).set_fill(color=WHITE,opacity=1).set_stroke(width=0)
+            tri_1=Polygon((a+b)/2,a,(c+a)/2)
+            tri_2=Polygon((a+b)/2,(b+c)/2,b)
+            tri_3=Polygon(c,(b+c)/2,(c+a)/2)
+
+            tris=VGroup(tri_1,tri_2,tri_3,tri_0)
+
+            return tris
+ 
     
+   def construct(self):
+
+        size = 4.25 
+        iterations = 6
+
+        S = Square(
+            side_length=size,  
+            fill_color=REANLEA_WARM_BLUE_DARKER, 
+            fill_opacity=1,
+            stroke_width=0.5
+            ).shift(3.95*LEFT+.5*DOWN)                
+        
+        self.play(FadeIn(S))
+        self.wait(1)
+                         
+        B=[0]
+        B[0] = self.subdivide(S,size)
+        #self.play(FadeIn(B[0][-1]))
+
+
+        
+        
+        # Remaining iterations
+        
+        for m in range(0,iterations-1):
+           grp=VGroup()
+           size=size/3
+           C = [0]*(8**(m+1))
+           if (m > 0): self.wait(1.5)
+           for k in range(8**m):
+              C[8*k]=self.subdivide(B[k][0],size)
+              C[8*k+1]=self.subdivide(B[k][1],size)
+              C[8*k+2]=self.subdivide(B[k][2],size)
+              C[8*k+3]=self.subdivide(B[k][3],size)
+              C[8*k+4]=self.subdivide(B[k][4],size)
+              C[8*k+5]=self.subdivide(B[k][5],size)
+              C[8*k+6]=self.subdivide(B[k][6],size)
+              C[8*k+7]=self.subdivide(B[k][7],size)
+              
+              #self.add(*C[3*k],*C[3*k+1],*C[3*k+2])     
+              #self.remove(*B[k]) 
+              #self.add(*B[k][-1])
+              
+              #grp += VGroup(*B[k-1][-1]) 
+
+              grp += VGroup(*B[k-1][-1])
+
+           self.play(Write(grp))  
+             
+                   
+           if (m == 0): # recombine the squares of iteration 1 back into place
+              self.wait(.5)          
+                           
+           if (m < iterations-2): B = C.copy()
+
+           
+            
+          
+        self.wait(2)
+
+        
+
+        
+        
+        
+        iteration=6
+
+        Tri=Triangle().scale(2.85).set_stroke(width=0).set_fill(color=REANLEA_WARM_BLUE_DARKER,opacity=1).shift(3.95*RIGHT+.75*DOWN)
+
+        self.play(FadeIn(Tri))
+        self.wait()
+            
+
+        B=[0]
+        B[0] = self.sub_triangle(Tri)
+
+        for m in range(0,iteration-1):
+            grp=VGroup()
+            C = [0]*(3**(m+1))
+            if (m > 0): self.wait(1.5)
+            for k in range(3**m):
+                    C[3*k]=self.sub_triangle(B[k][0])
+                    C[3*k+1]=self.sub_triangle(B[k][1])
+                    C[3*k+2]=self.sub_triangle(B[k][2])
+                     
+                    grp += VGroup(*B[k-1][-1])
+
+            self.play(Write(grp))  
+             
+                   
+            if (m == 0): 
+                 self.wait(.5)          
+                           
+            if (m < iteration-2): B = C.copy()
+            
+          
+        self.wait(2)
+        
+
+        eq_txt=MathTex("=").set_color(REANLEA_WARM_BLUE_DARKER).scale(3).shift(.5*DOWN)
+        txt=Tex("not Equal").set_color(REANLEA_WARM_BLUE_DARKER).scale(2).shift(3*UP)
+        ln=Line().set_color(PURE_RED).rotate(30*DEGREES).scale(.65).shift(3*UP+1.5*LEFT)
+
+        self.add(eq_txt,txt,ln)
+
+
+
+        # manim -sql test.py Sierpinski_Banner
+
+        # manim -pqh test.py Sierpinski_Banner
+
+
+class sierpinski_arrowhead_Curve(Scene):
+    def construct(self):
+        def KochCurve(
+            n, length=12, stroke_width=8, color=("#0A68EF", "#4AF1F2", "#0A68EF")
+        ):
+
+            l = length / (3 ** n)
+
+            LineGrp = Line().set_length(l)
+
+            def NextLevel(LineX):
+                return VGroup(
+                    *[LineX.copy().rotate(i) for i in [PI / 3,0, -PI / 3]]
+                ).arrange(RIGHT, buff=0, aligned_edge=UP)
+
+            for _ in range(n):
+                LineGrp = NextLevel(LineGrp)
+
+            KC = (
+                VMobject(stroke_width=stroke_width)
+                .set_points(LineGrp.get_all_points())
+                .set_color(color)
+            )
+            return KC
+
+        
+        kc = KochCurve(0, stroke_width=12).to_edge(DOWN, buff=2.5)
+
+        self.add(kc)
+        self.wait()
+
+        for i in range(1, 6):
+            self.play(
+                kc.animate.become(
+                    KochCurve(i, stroke_width=12 - (2 * i)).to_edge(DOWN, buff=2.5)
+                ),
+            )
+            self.wait()
+
+
+
+            #  manim -pqh test.py sierpinski_arrowhead_Curve
+
+
+
+
+from manim import *
+
+class SierpinskiArrowheadCurve(Scene):
+    def construct(self):
+        def SierpinskiArrowheadCurve(n, length=12, stroke_width=8, color="#0A68EF"):
+            if n == 0:
+                return Line(UP * length).set_color(color)
+
+            def next_level(curve):
+                l = length / 2
+                unit_curve = SierpinskiArrowheadCurve(n - 1, l, stroke_width, color)
+                return VGroup(
+                    curve,
+                    unit_curve,
+                    curve.copy().rotate(-PI / 3),
+                    unit_curve.copy().rotate(PI / 3),
+                )
+
+            curve = SierpinskiArrowheadCurve(n - 1, length, stroke_width, color)
+            arrowhead_curve = next_level(curve)
+
+            return arrowhead_curve
+
+        arrowhead_curve = SierpinskiArrowheadCurve(5, stroke_width=2)
+        arrowhead_curve.move_to(ORIGIN)
+
+        self.play(Create(arrowhead_curve), run_time=3)
+        self.wait()
+
+
+# manim -pqh test.py SierpinskiArrowheadCurve
+
+
 ###################################################################################################################
 
 
