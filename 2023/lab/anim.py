@@ -1623,6 +1623,82 @@ class Cantor_Set(Scene):
         #  manim -sqk anim.py Cantor_Set
 
 
+
+A="+B-A-B+"
+B="-A+B+A-"
+
+ANGLE = math.radians(60)
+
+def flow_snake_inc(current):
+    new_string = ""
+    for c in current:
+        if c == 'A':
+            new_string += A
+        elif c == 'B':
+            new_string += B
+        else:
+            new_string += c
+    return new_string
+
+def flow_snake(order):
+    if order < 1:
+        print("must be a number larger than 0")
+        raise SystemExit()
+    if order == 1:
+        return A
+    else:
+        return flow_snake_inc(flow_snake(order-1))
+
+class FlowSnakeCurve(VMobject):
+    def __init__(self, order=2, size=5, color=REANLEA_WARM_BLUE_DARKER, **kwargs):
+        super().__init__(stroke_color=color, **kwargs)
+        
+        flow_snake_c = flow_snake(order)
+        points = [UP]
+        
+        angle = PI/2
+        previous = UP
+        for c in flow_snake_c:
+            if c == '+':
+                angle -= ANGLE
+            elif c == '-':
+                angle += ANGLE
+            else:
+                new_point = [math.sin(angle), math.cos(angle), 0]
+                previous = previous + new_point
+                points.append(previous)
+
+        self.set_points_as_corners(
+            points     
+        ).scale_to_fit_width(size).scale_to_fit_height(size).move_to(0)
+
+class FS_Curve(Scene):
+    def construct(self):
+
+        water_mark=ImageMobject('C:\\Users\\gchan\\Desktop\\REANLEA\\2023\\common\\watermark_ghee.png').scale(0.075).move_to(5*LEFT+3*UP).set_opacity(1).set_z_index(-100)
+        self.add(water_mark)
+        
+        line = Line(color=REANLEA_WARM_BLUE_DARKER).scale(5.75).shift(2.5*DOWN) #line will be scaled twice as that of the snakeflow
+
+        line_1=line.copy()
+        #self.add(line_1)
+        self.play(Create(line), rate_func=smooth)
+
+        for order in range(1,9):
+            curve = FlowSnakeCurve(order)
+            self.play(ReplacementTransform(line, curve))
+            line = curve  # Update the line for the next iteration
+            self.wait(1)
+        
+        self.wait(2)
+        
+
+
+        # manim -pqh anim.py FS_Curve
+
+        # manim -sqk anim.py FS_Curve
+
+
 ###################################################################################################################
 
 # Changing FONTS : import any font from Google

@@ -2283,18 +2283,14 @@ class sierpinski_arrowhead_Curve(Scene):
             n, length=12, stroke_width=8, color=("#0A68EF", "#4AF1F2", "#0A68EF")
         ):
 
-            l = length / (3 ** n)
+            l = length / (2 ** n)
 
             LineGrp = Line().set_length(l)
 
             def NextLevel(LineX):
-                grp=VGroup()
-                for _ in [0,1,2]:
-                    if LineX.get_angle()==0:
-                        grp += VGroup(
-                                    *[LineX.copy().rotate(j) for j in [PI / 3,0, -PI / 3]]
-                                ).arrange(RIGHT, buff=0, aligned_edge=UP)
-                return grp
+                return VGroup(
+                    *[LineX.copy().rotate(i) for i in [PI / 3, 0, -PI / 3]]
+                ).arrange(RIGHT, buff=0, aligned_edge=UP)
 
             for _ in range(n):
                 LineGrp = NextLevel(LineGrp)
@@ -2306,25 +2302,94 @@ class sierpinski_arrowhead_Curve(Scene):
             )
             return KC
 
-        
-        kc = KochCurve(0, stroke_width=12).to_edge(DOWN, buff=2.5)
+        kc_1 = KochCurve(1, stroke_width=12).to_edge(DOWN, buff=2.5)
+        kc_2 = KochCurve(2, stroke_width=12).to_edge(DOWN, buff=2.5)
 
-        self.add(kc)
+        self.add(kc_1,kc_2)
         self.wait()
 
-        for i in range(1, 6):
+        '''for i in range(2,3):
             self.play(
                 kc.animate.become(
                     KochCurve(i, stroke_width=12 - (2 * i)).to_edge(DOWN, buff=2.5)
                 ),
             )
-            self.wait()
+            self.wait()'''
 
 
 
             #  manim -pqh test.py sierpinski_arrowhead_Curve
 
 
+
+A="+B-A-B+"
+B="-A+B+A-"
+
+ANGLE = math.radians(60)
+
+def flow_snake_inc(current):
+    new_string = ""
+    for c in current:
+        if c == 'A':
+            new_string += A
+        elif c == 'B':
+            new_string += B
+        else:
+            new_string += c
+    return new_string
+
+def flow_snake(order):
+    if order < 1:
+        print("must be a number larger than 0")
+        raise SystemExit()
+    if order == 1:
+        return A
+    else:
+        return flow_snake_inc(flow_snake(order-1))
+
+class FlowSnakeCurve(VMobject):
+    def __init__(self, order=2, size=7, color=BLUE, **kwargs):
+        # Credit to uwezi for the original logic :)
+        super().__init__(stroke_color=color, **kwargs)
+        
+        flow_snake_c = flow_snake(order)
+        points = [UP]
+        
+        angle = PI/2
+        previous = UP
+        for c in flow_snake_c:
+            if c == '+':
+                angle -= ANGLE
+            elif c == '-':
+                angle += ANGLE
+            else:
+                new_point = [math.sin(angle), math.cos(angle), 0]
+                previous = previous + new_point
+                points.append(previous)
+
+        self.set_points_as_corners(
+            points     
+        ).scale_to_fit_width(size).scale_to_fit_height(size).move_to(0)
+
+class FS_Curve(Scene):
+    def construct(self):
+        line = Line(2.5 * LEFT, 2.5 * RIGHT, color=BLUE)
+        
+        self.play(Create(line), rate_func=smooth)
+
+        for i in range(1, 9):
+            curve = FlowSnakeCurve(i)
+            self.play(ReplacementTransform(line, curve))
+            line = curve  # Update the line for the next iteration
+            self.wait(1)
+        
+        self.wait(2)
+        
+
+
+        # manim -pqh test.py FS_Curve
+
+        # manim -sqk test.py FS_Curve
 
 ###################################################################################################################
 

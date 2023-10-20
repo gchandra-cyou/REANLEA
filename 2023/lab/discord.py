@@ -3067,6 +3067,121 @@ class Mandelbrot_3(Scene):
 
         # manim -sql discord.py Mandelbrot_3
 
+
+from math import sqrt
+
+NDD_RED = "#E65C5C"  # 0, 60, 90
+NDD_DARK_RED = "#990F0F"  # 0, 90, 60
+NDD_ORANGE = "#E6955C"  # 25, 60, 90
+NDD_DARK_ORANGE = "#99490F"  # 25, 90, 60
+NDD_YELLOW = "#ffff00"  # 60, 100, 100
+NDD_GREEN = "#5CE667"  # 125, 60, 90
+NDD_DARK_GREEN = "#0F991B"  # 125, 90, 60
+NDD_BLUE = "#5CB8E6"  # 200, 60, 90
+NDD_DARK_BLUE = "#0F6B99"  # 200, 90, 60
+NDD_PURPLE = "#B85CE6"  # 280, 60, 90
+NDD_DARK_PURPLE = "#6B0F99"  # 280, 90, 60
+NDD_PINK = "#E65CC3"  # 315, 60, 90
+NDD_GRAY = "#4B526D"
+
+def dragon_curve(i, prev=None, **kwargs):
+    if i == 0:
+        return VMobject(**kwargs).set_points_as_corners([LEFT, RIGHT])
+    if prev is None:
+        prev = dragon_curve(i - 1)
+    prev = prev.copy().scale(1 / sqrt(2))
+    dup = prev.copy().rotate(PI / 2, about_point=prev.points[-1])
+    res = VMobject(**kwargs).set_points_as_corners(np.concatenate((prev.points[:-1], dup.points[::-1])))
+    res.rotate(PI / 4).center()
+    return res
+
+class fractals_1(Scene):
+    def construct(self):
+        dc = dragon_curve(5, stroke_width=8).scale(3).set_color_by_gradient(color_gradient([NDD_BLUE, NDD_PURPLE, NDD_RED], 3))
+        self.play(
+            Create(dc)
+        )
+
+
+        # manim -pqh discord.py fractals_1
+
+        # manim -sql discord.py fractals_1import math
+
+
+
+A = "A-B--B+A++AA+B-"
+B = "+A-BB--B-A++A+B"
+
+ANGLE = math.radians(60)
+
+def flow_snake_inc(current):
+    new_string = ""
+    for c in current:
+        if c == 'A':
+            new_string += A
+        elif c == 'B':
+            new_string += B
+        else:
+            new_string += c
+    return new_string
+
+def flow_snake(order):
+    if order < 1:
+        print("must be a number larger than 0")
+        raise SystemExit()
+    if order == 1:
+        return A
+    else:
+        return flow_snake_inc(flow_snake(order-1))
+
+class FlowSnakeCurve(VMobject):
+    def __init__(self, order=2, size=5, color=BLUE, **kwargs):
+        # Credit to uwezi for the original logic :)
+        super().__init__(stroke_color=color, **kwargs)
+        
+        flow_snake_c = flow_snake(order)
+        points = [UP]
+        
+        angle = 0
+        previous = UP
+        for c in flow_snake_c:
+            if c == '+':
+                angle -= ANGLE
+            elif c == '-':
+                angle += ANGLE
+            else:
+                new_point = [math.sin(angle), math.cos(angle), 0]
+                previous = previous + new_point
+                points.append(previous)
+
+        self.set_points_as_corners(
+            points     
+        ).scale_to_fit_width(size).scale_to_fit_height(size).move_to(0)
+
+class FS_Curve(Scene):
+    def construct(self):
+        line = Line(2.5 * LEFT, 2.5 * RIGHT, color=BLUE)
+        order1 = FlowSnakeCurve(1, 5)
+        order2 = FlowSnakeCurve(2, 5)
+        order3 = FlowSnakeCurve(3, 5)
+        order4 = FlowSnakeCurve(4, 5)
+        order5 = FlowSnakeCurve(5, 5)
+        self.play(Create(line), rate_func=smooth)
+        self.play(ReplacementTransform(line, order1))
+        self.play(ReplacementTransform(order1, order2))
+        self.play(ReplacementTransform(order2, order3))
+        self.play(ReplacementTransform(order3, order4))
+        #self.play(ReplacementTransform(order4, order5))
+        self.wait(2)
+        self.play(FadeOut(order5))
+
+
+        # manim -pqh discord.py FS_Curve
+
+        # manim -sql discord.py FS_Curve
+
+
+
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2023\lab" 

@@ -1,12 +1,2 @@
 # This file is used internally by FFMPEG.
-file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/sierpinski_arrowhead_Curve/3405002780_329969645_1073992242.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/sierpinski_arrowhead_Curve/680023278_4132046856_2577122923.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/sierpinski_arrowhead_Curve/680023278_3315967912_2345396185.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/sierpinski_arrowhead_Curve/680023278_3438503737_1356443635.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/sierpinski_arrowhead_Curve/680023278_3315967912_833942037.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/sierpinski_arrowhead_Curve/680023278_2401360688_3389183692.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/sierpinski_arrowhead_Curve/680023278_3315967912_2731891835.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/sierpinski_arrowhead_Curve/680023278_1080913912_1828279939.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/sierpinski_arrowhead_Curve/680023278_3315967912_2079674699.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/sierpinski_arrowhead_Curve/680023278_2045977070_3249838763.mp4'
-file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/sierpinski_arrowhead_Curve/680023278_3315967912_1417056831.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/sierpinski_arrowhead_Curve/3405002780_329969645_885142535.mp4'

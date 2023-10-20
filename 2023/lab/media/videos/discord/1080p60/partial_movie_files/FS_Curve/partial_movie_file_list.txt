@@ -1,0 +1,9 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/FS_Curve/2349863586_2216703613_223132457.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/FS_Curve/1802680366_1961538263_2648214471.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/FS_Curve/1802680366_1147634345_2129525254.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/FS_Curve/1802680366_3935977147_2129525254.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/FS_Curve/1802680366_2399711543_2129525254.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/FS_Curve/1802680366_2036447031_2129525254.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/FS_Curve/1802680366_190800790_720557152.mp4'
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/discord/1080p60/partial_movie_files/FS_Curve/1802680366_3441318169_3340882156.mp4'
