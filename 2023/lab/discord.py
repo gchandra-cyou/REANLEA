@@ -3505,6 +3505,73 @@ class DotCircler(Scene):
         # manim -sql discord.py DotCircler
 
 
+class raster(Scene):
+    def construct(self):
+        circ = Circle(radius=2)
+        self.add(circ)
+
+        sq_length = 0.2
+        sq = Square(side_length=sq_length, stroke_width=1)
+        def sqUpdater(mobj):
+            diff = Intersection(circ,mobj)
+            if (len(diff)):
+                mobj.set_fill(color=YELLOW, opacity=1)
+            else:
+                mobj.set_fill(color=BLUE, opacity=1)
+        sq.add_updater(sqUpdater)
+
+        grid = VGroup()
+        y = -4
+        while (y <= (4-sq_length)):
+            x = -7
+            while (x <= (7-sq_length)):
+                grid += sq.copy().move_to([x,y,0],aligned_edge=DL)
+                x += sq_length
+            y += sq_length
+        grid.update()
+        self.add(grid)  
+        self.wait(2)
+        self.play(circ.animate.shift(3*RIGHT+2*UP))
+        self.wait(2)
+
+        # manim -pqh discord.py raster
+
+class raster_perimeter(Scene):
+    def construct(self):
+        circ = Circle(radius=2)
+        self.add(circ)
+
+        sq_length = 0.2
+        sq = Square(side_length=sq_length, stroke_width=1)
+
+        def is_at_perimeter(mobj):
+            # Calculate the distance from the center of the circle to the center of the square
+            center_distance = np.linalg.norm(mobj.get_center() - circ.get_center())
+            return abs(center_distance - circ.radius) < 0.1
+
+        def sqUpdater(mobj):
+            if is_at_perimeter(mobj):
+                mobj.set_fill(color=YELLOW, opacity=1)
+            else:
+                mobj.set_fill(color=BLUE, opacity=1)
+
+        sq.add_updater(sqUpdater)
+
+        grid = VGroup()
+        y = -4
+        while (y <= (4-sq_length)):
+            x = -7
+            while (x <= (7-sq_length)):
+                grid += sq.copy().move_to([x,y,0],aligned_edge=DL)
+                x += sq_length
+            y += sq_length
+        grid.update()
+        self.add(grid)  
+        self.wait(2)
+        self.play(circ.animate.shift(3*RIGHT+2*UP))
+        self.wait(2)
+
+        # manim -pqh discord.py raster_perimeter
 
 
 ###################################################################################################################
