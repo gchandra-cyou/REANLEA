@@ -2391,6 +2391,92 @@ class FS_Curve(Scene):
 
         # manim -sqk test.py FS_Curve
 
+
+#A = "+BF-AFA-FB+"
+#B = "-AF+BFB+FA-"
+# L-systems Logics
+
+A="AFBFA-FF-BFAFB+FF+AFBFA"
+B="BFAFB+FF+AFBFA-FF-BFAFB"
+
+#A="+BF-AFA-FB+"
+#B="-AF+BFB+FA-"
+
+#A="AFBFA+F+BFAFB-F-AFBFA"
+#B="BFAFB-F-AFBFA+F+BFAFB"
+
+
+
+ANGLE = math.radians(90)
+
+def peano_curve_inc(current):
+    new_string = ""
+    for c in current:
+        if c == 'A':
+            new_string += A
+        elif c == 'B':
+            new_string += B
+        else:
+            new_string += c
+    return new_string
+
+def peano_curve(order):
+    if order < 1:
+        print("must be a number larger than 0")
+        raise SystemExit()
+    if order == 1:
+        return A
+    else:
+        return peano_curve_inc(peano_curve(order-1))
+
+class Peano_Curve(VMobject):
+    def __init__(self, order=2, size=5, color=BLUE, **kwargs):
+        # Credit to uwezi for the original logic :)
+        super().__init__(stroke_color=color, **kwargs)
+        
+        peano_c = peano_curve(order)
+        points = [UP]
+        
+        angle = 0
+        previous = UP
+        for c in peano_c:
+            if c == '+':
+                angle -= ANGLE
+            elif c == '-':
+                angle += ANGLE
+            else:
+                new_point = [math.sin(angle), math.cos(angle), 0]
+                previous = previous + new_point
+                points.append(previous)
+
+        self.set_points_as_corners(
+            points     
+        ).scale_to_fit_width(size).scale_to_fit_height(size).move_to(0)
+
+class Peano_Curve_ex(Scene):
+    def construct(self):
+        line = Line(2.5 * LEFT, 2.5 * RIGHT, color=BLUE)
+        order1 = Peano_Curve(1, 5)
+        order2 = Peano_Curve(2, 5)
+        order3 = Peano_Curve(3, 5)
+        order4 = Peano_Curve(4, 5)
+        order5 = Peano_Curve(5, 5)
+        
+        self.play(Create(line), rate_func=smooth)
+        self.play(ReplacementTransform(line, order1))
+        self.play(ReplacementTransform(order1, order2))
+        self.play(ReplacementTransform(order2, order3))
+        self.play(ReplacementTransform(order3, order4))
+        #self.play(ReplacementTransform(order4, order5))
+    
+        self.wait(2)
+
+
+        # manim -pqh test.py Peano_Curve_ex
+
+        # manim -sqk test.py Peano_Curve_ex
+
+
 ###################################################################################################################
 
 

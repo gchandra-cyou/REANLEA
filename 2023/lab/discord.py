@@ -3180,6 +3180,331 @@ class FS_Curve(Scene):
 
         # manim -sql discord.py FS_Curve
 
+import random
+random.seed(42)
+
+class SurroundingCloud(SurroundingRectangle):
+    def __init__(self, mobject, num_puffs=20, puffiness=0.3, puff_angle=10*DEGREES, 
+                 randomness=0.5, **kwargs):
+        super().__init__(mobject, **kwargs)
+
+        #try randomness=.5, num_puffs=20, puffiness=0.3 || randomness=.1, num_puffs=10, puffiness=0.4 
+
+        def r():
+            # Random multiplier
+            return 1 + random.random() * randomness
+        def rp(p):
+            # Randomize proportion
+            p += (random.random() - 0.5) * 2 * randomness/10
+            return p%1
+        points = [self.point_from_proportion(rp(i / num_puffs)) for i in range(num_puffs)]
+        points += [points[0]]
+        bezier_points = []
+        for s, e in zip(points, points[1:]):
+            vect = e - s
+            normal = rotate_vector(vect, -90 * DEGREES)
+            c1 = s + r() * puffiness* rotate_vector(normal, puff_angle*r())
+            c2 = e + r()* puffiness* rotate_vector(normal, -puff_angle*r())
+            bezier_points.extend([s, c1, c2, e])
+        self.points = bezier_points
+
+class SurroundingCloud_Test(Scene):
+    def construct(self):
+        line0 = MathTex(r"1 + \displaystyle\frac{1}{1 + \displaystyle \frac{1}{1 + \frac{1}{1 + \cdots } } } }",
+                        color = WHITE, font_size = 100).move_to([0,0,0])
+        self.add(line0)
+        r = SurroundingCloud(line0, buff = .7,
+                             color = BLUE, stroke_width = 8,
+                             fill_color=BLUE_A, fill_opacity=0.5,
+                             z_index=-1)
+        self.add(r)
+
+
+        # manim -pqh discord.py SurroundingCloud_Test
+
+        # manim -sqk discord.py SurroundingCloud_Test
+
+
+class SurroundingCloud_1(SurroundingRectangle):
+    def __init__(self, mobject, num_puffs=10, puffiness=0.4, puff_angle=10*DEGREES, 
+                 angle_randomness=0.1, pos_randomness=0.1, **kwargs):
+        super().__init__(mobject, **kwargs)
+
+        def r():
+            return 1 + random.random() * angle_randomness
+
+        def generate_divisions():
+            random_numbers = np.array([random.random() ** pos_randomness 
+                for _ in range(num_puffs)])
+            random_numbers /= sum(random_numbers)
+            return np.clip(np.cumsum(random_numbers), 0, 1)
+        
+        points = [self.point_from_proportion(p) for p in generate_divisions()]
+        points += [points[0]]
+        bezier_points = []
+        for s, e in zip(points, points[1:]):
+            vect = e - s
+            normal = rotate_vector(vect, -90 * DEGREES)
+            c1 = s + r() * puffiness* rotate_vector(normal, puff_angle*r())
+            c2 = e + r()* puffiness* rotate_vector(normal, -puff_angle*r())
+            bezier_points.extend([s, c1, c2, e])
+        self.points = bezier_points
+
+
+class SurroundingCloud_Test_1(Scene):
+    def construct(self):
+        line0 = MathTex(r"1 + \displaystyle\frac{1}{1 + \displaystyle \frac{1}{1 + \frac{1}{1 + \cdots } } } }",
+                        color = WHITE, font_size = 100).move_to([0,0,0])
+        self.add(line0)
+        r = SurroundingCloud_1(line0, buff = .7,
+                             color = BLUE, stroke_width = 8,
+                             fill_color=BLUE_A, fill_opacity=0.5,
+                             z_index=-1)
+        self.add(r)
+
+
+        # manim -pqh discord.py SurroundingCloud_Test_1
+
+        # manim -sql discord.py SurroundingCloud_Test_1
+
+
+class EllipticCurvey2_x3_x(Scene):
+    def construct(self):
+        number_plane = NumberPlane(
+            background_line_style={
+            "stroke_color": TEAL,
+            "stroke_width": 4,
+            "stroke_opacity": 0.6
+            }
+        )
+        t = MathTex("y^{2} = x^{3} - x").move_to([0,3,0], [0,0,0])
+        text_rect = Rectangle(width=4.0, height=1.0, color=WHITE, fill_color=BLACK, fill_opacity=1).move_to(t)
+        graph = ImplicitFunction(
+            lambda x, y: x ** 3 - y ** 2 - x,
+            color=YELLOW
+        )
+        self.bring_to_back(number_plane)
+        self.bring_to_front(text_rect)
+
+        self.bring_to_front(t)
+        self.play(
+            Create(graph)
+        )
+
+        # manim -pqh discord.py EllipticCurvey2_x3_x
+
+        # manim -sql discord.py EllipticCurvey2_x3_x
+
+from math import floor
+
+class Type(Animation):
+        def __init__(self, textmo: Text, **kwargs) -> None:
+                super().__init__(textmo, **kwargs)
+                self.cursor = Text("█", font_size=textmo.font_size, font=textmo.font)
+                self.mobject.add(self.cursor)
+                self.mobject.set_opacity(0)                
+                
+        def interpolate_mobject(self, alpha: float) -> None:
+                if alpha==0 or alpha==1: return
+                self.blink = rate_functions.ease_out_circ(abs((alpha * self.run_time % 1.06)/0.53-1))
+                char = floor(alpha * (len(self.mobject)-1))
+                self.mobject[char].set_opacity(1)
+                self.cursor.set_opacity(self.blink).next_to(
+                    self.mobject[char], RIGHT, buff=0)
+                
+        def clean_up_from_scene(self, scene: "Scene") -> None:
+                self.cursor.set_opacity(0)
+                super().clean_up_from_scene(scene)
+                
+class TypeWriter(Scene):
+    def construct(self):
+        text = Text("this should be typing out code\nlike a typewriter\n\nwow, very nice",
+                        font_size=35, font="Monospace")
+        self.play(Type(text), run_time=8)
+        self.wait(0.5)
+        self.play(text.animate.to_edge(UP), run_time=1)
+        self.wait()
+
+        # manim -pqh discord.py TypeWriter
+
+        # manim -sql discord.py TypeWriter
+
+
+class Circle_Variable_Radius(Scene):
+    def construct(self):
+        r = ValueTracker(2)
+        c = VGroup(VMobject())
+        def update(mob, dt):
+            if dt==0: opacity = 0
+            else: opacity = 1
+            mob[0] = Circle(radius=r.get_value()).set_stroke(opacity=opacity)
+        c.add_updater(update, call_updater=True)
+        self.add(c)
+        print(c[0].radius)   #  -----------> 2.0
+        self.play(r.animate.set_value(3))
+        print(c[0].radius)   # ------------> 3.0
+
+
+        # manim -pqh discord.py Circle_Variable_Radius
+
+        # manim -sql discord.py Circle_Variable_Radius
+
+
+class BallT3(Circle):
+    def __init__(self, ** kwargs):
+        Circle.__init__(self, ** kwargs)
+        self.velocity = np.array((1, 0, 0))
+    def get_y(self):
+        return self.get_center()[1]
+    def get_x(self):
+        return self.get_center()[0]
+
+class Collision_counted(Scene):
+    def construct(self):
+        rad_target = 1
+        rad_ball = 0.1
+        target = Circle(radius=rad_target, color=YELLOW, fill_color=YELLOW, fill_opacity=1, stroke_width=0).to_edge(RIGHT)
+        ball = BallT3(radius=rad_ball, color=BLUE, fill_color=BLUE, fill_opacity=1, stroke_width=0).shift(DOWN)
+        self.play(FadeIn(target))
+
+        h_label = Tex("Hits").to_corner(UR).shift(DOWN * .5)
+        hits = DecimalNumber(0, num_decimal_places=0, group_with_commas=False).to_corner(UR)
+
+        def collision(ball,dt):
+            ball.shift(ball.velocity * dt)
+            cc_line = Line(ball.get_center(),target.get_center())
+            if cc_line.get_length() <= (rad_target + rad_ball):
+                self.add(cc_line.set_color(RED))
+                velocity = Line(ORIGIN, ball.velocity)
+                angle = cc_line.get_angle()-velocity.get_angle()
+                velocity.rotate(2*angle, about_point=velocity.get_end()).reverse_direction()
+                velocity.shift(-velocity.get_start())
+                lc = velocity.copy().shift(ball.get_center()-velocity.get_start()).set_color(GREEN)
+                self.add(lc)
+                ball.velocity = velocity.get_end()
+                ball.shift(dt*ball.velocity)
+                hits.increment_value(1)
+        # Counters
+        a_label = Tex("Attempts").to_corner(UL).shift(DOWN * .5)
+        attempt = ValueTracker(0)
+        attempts = DecimalNumber(0, num_decimal_places=0, group_with_commas=False).to_corner(UL)
+        attempts.add_updater(lambda m: m.set_value(attempt.get_value()))
+
+        h_label = Tex("Hits").to_corner(UR).shift(DOWN * .5)
+        hits = DecimalNumber(0, num_decimal_places=0, group_with_commas=False).to_corner(UR)
+
+        self.add(attempts, hits, a_label, h_label)
+
+        ball.add_updater(collision)
+
+        balls = [ball.copy().shift(UP*(.1*i)) for i in range(20)]
+        for i in range(len(balls)):
+            self.add(balls[i])
+            attempt += 1
+            self.wait(.1)
+
+        self.wait(10)
+
+
+        # manim -pqh discord.py Collision_counted
+
+        # manim -sql discord.py Collision_counted
+
+
+class SpeechBubble(VGroup):
+    def __init__(self, text, buff=0.5, corner_radius_fraction=0.4, tip_width=0.5, 
+                 tip_rotation=-30*DEGREES, fill_color=WHITE, fill_opacity=1,
+                 stroke_color=BLUE, stroke_width=4, tip_at_edge=DOWN, tip_at_proportion=None,
+                 *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.text = text
+        frame = SurroundingRectangle(text, buff=buff)
+        radius = min(frame.width * corner_radius_fraction, frame.height * corner_radius_fraction)
+        bubble_frame = SurroundingRectangle(text, buff=buff, corner_radius=radius)
+        bubble_tip = Triangle().stretch_to_fit_width(tip_width).rotate(PI).rotate(tip_rotation)
+        self._tip = bubble_tip.set_opacity(0)
+        if tip_at_proportion == None:
+            bubble_tip.move_to(bubble_frame.get_edge_center(tip_at_edge))
+        else:
+            bubble_tip.move_to(bubble_frame.point_from_proportion(tip_at_proportion))
+        self.bubble_frame = Union(bubble_frame, bubble_tip).set_fill(fill_color, fill_opacity).set_stroke(stroke_color, stroke_width)        
+        self.add(self._tip, self.bubble_frame, text)
+
+    @property
+    def tip_coords(self):
+        return self._tip.get_vertices()[0]
+
+    def move_relative_to_tip(self, pos):
+        return self.shift(np.array(pos) - self.tip_coords)
+
+    def popup_animation(self, lag_ratio=0.8):
+        return AnimationGroup(
+            GrowFromPoint(self.bubble_frame, self.tip_coords),
+            Write(self.text),
+            lag_ratio=lag_ratio
+        )
+    
+class Speech_Bubble_Test(Scene):
+    def construct(self):
+        c = Circle().scale(.5).move_to(LEFT*2+DOWN)
+        text = Tex(r"\centering This is a rather long text to be placed in a speech bubble, but anyway...", 
+                   tex_environment="{minipage}{5.5cm}",
+                   color=BLACK)
+        bubble = (SpeechBubble(text, 
+                               buff=0.8,
+                               tip_rotation=-60*DEGREES,
+                               corner_radius_fraction=0.3,
+                               tip_at_proportion=0.65)
+                  .move_relative_to_tip(c.get_critical_point(UR))
+        )
+        self.play(FadeIn(c))
+        self.wait()
+        self.play(bubble.popup_animation())
+        self.wait()
+        self.play(FadeOut(bubble))
+        self.wait()
+
+
+        # manim -pqh discord.py Speech_Bubble_Test
+
+        # manim -sql discord.py Speech_Bubble_Test
+
+class DotCircler(Scene):
+    def construct(self):
+        n = 1000
+        def random_location(step=1/8):
+            X = np.random.choice(np.arange(-7,7+step,step))
+            Y = np.random.choice(np.arange(-4,4+step,step))
+            return X*RIGHT + Y*UP
+
+        grid = NumberPlane().set_opacity(0.5)
+        self.add(grid)
+
+        Dots = VGroup(*[
+            Dot(random_location(), radius=0.05)
+            for i in range(n)
+        ])
+        self.play(Create(Dots))
+        self.wait()
+
+        Dots_at_1 = VGroup(*[
+            d for d in Dots
+            if d.get_center()[0] == 1
+        ])
+        self.play(*[
+            Create(Circle(radius=0.2).move_to(d))
+            for d in Dots_at_1
+            ])
+        self.wait()
+
+        self.play(Create(Line(RIGHT+4*DOWN, RIGHT+4*UP, color=RED)))
+        self.wait()
+
+        # manim -pqh discord.py DotCircler
+
+        # manim -sql discord.py DotCircler
+
+
 
 
 ###################################################################################################################

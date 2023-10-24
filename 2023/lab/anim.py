@@ -1548,8 +1548,6 @@ class SierpinskiTriangle(Scene):
         # manim -pqh anim.py SierpinskiTriangle
 
 
-
-
 class Cantor_Set(Scene):
         def subdivide(self, line):
             len=line.get_length()/3
@@ -1622,7 +1620,67 @@ class Cantor_Set(Scene):
 
         #  manim -sqk anim.py Cantor_Set
 
+class MengerSponge(ThreeDScene):
+    def construct(self):
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
 
+        def sponge(n, length=4):
+
+            cube = Cube(side_length=length, fill_opacity=1, color=RED).set_color_by_gradient(GREY,REANLEA_GREY_DARKER,REANLEA_WARM_BLUE_DARKER).set_stroke(width=.1, color=REANLEA_GREY_DARKER)
+
+            def next_level(cube):
+                mark = cube
+                pos = [RIGHT, RIGHT, DOWN, DOWN, LEFT, LEFT, UP]
+                a = VGroup(mark)
+                for i in range(len(pos)):
+                    a.add(mark.copy().next_to(a[-1], pos[i], buff=0))
+                for i in range(5):
+                    a.add(mark.copy().next_to(a[2 * i], OUT, buff=0))
+                for i in range(len(pos)):
+                    a.add(mark.copy().next_to(a[-1], pos[i], buff=0))
+                
+                return a
+            
+            for _ in range(n):
+                cube = next_level(cube)
+            
+            return cube
+
+        '''sp = sponge(n=0).move_to(ORIGIN)
+        self.play(Create(sp))
+        sp_1 = sponge(n=1).move_to(ORIGIN).scale(1/3)
+        self.play(sp.animate.scale(1/3).move_to(sp_1.copy()[0]))
+        self.wait()
+        self.play(Create(sp_1))
+        self.play(FadeOut(sp))
+        
+        sp_2 = sponge(n=2).move_to(ORIGIN).scale(1/9)
+        self.play(sp_1.animate.scale(1/3).move_to(sp_2.copy()[0]))
+        self.wait()
+        self.play(Create(sp_2))
+        self.wait()'''
+            
+        sp = sponge(n=0).move_to(ORIGIN)  
+        self.play(Create(sp))
+
+        for i in range(3):
+            sp_next=sponge(i+1).move_to(ORIGIN).scale(1/(3**(i+1)))
+            self.play(sp.animate.scale(1/3).move_to(sp_next.copy()[0]))
+            self.play(Create(sp_next))
+            self.play(FadeOut(sp))
+            sp=sp_next  
+
+        #self.begin_ambient_camera_rotation(rate=0.3)
+
+        self.wait(3)
+
+
+        # manim -sqk anim.py MengerSponge
+
+        # manim -pqh anim.py MengerSponge
+
+
+#----------------------------------------------------------------------------#
 
 A="+B-A-B+"
 B="-A+B+A-"
@@ -1697,6 +1755,91 @@ class FS_Curve(Scene):
         # manim -pqh anim.py FS_Curve
 
         # manim -sqk anim.py FS_Curve
+
+
+#------------------------------------------------------------------------------------------------#
+# L-systems Logics
+
+A="AFBFA-FF-BFAFB+FF+AFBFA"
+B="BFAFB+FF+AFBFA-FF-BFAFB"
+
+
+
+
+ANGLE = math.radians(90)
+
+def peano_curve_inc(current):
+    new_string = ""
+    for c in current:
+        if c == 'A':
+            new_string += A
+        elif c == 'B':
+            new_string += B
+        else:
+            new_string += c
+    return new_string
+
+def peano_curve(order):
+    if order < 1:
+        print("must be a number larger than 0")
+        raise SystemExit()
+    if order == 1:
+        return A
+    else:
+        return peano_curve_inc(peano_curve(order-1))
+
+class Peano_Curve(VMobject):
+    def __init__(self, order=2, size=5, color=REANLEA_WARM_BLUE_DARKER, **kwargs):
+        # Credit to uwezi for the original logic :)
+        super().__init__(stroke_color=color, **kwargs)
+        
+        peano_c = peano_curve(order)
+        points = [UP]
+        
+        angle = 0
+        previous = UP
+        for c in peano_c:
+            if c == '+':
+                angle -= ANGLE
+            elif c == '-':
+                angle += ANGLE
+            else:
+                new_point = [math.sin(angle), math.cos(angle), 0]
+                previous = previous + new_point
+                points.append(previous)
+
+        self.set_points_as_corners(
+            points     
+        ).scale_to_fit_width(size).scale_to_fit_height(size).move_to(0)
+
+class Peano_Curve_ex(Scene):
+    def construct(self):
+
+        level = Variable(0, Tex("iteration:"), var_type=Integer).set_color(REANLEA_WARM_BLUE_DARKER).scale(.7)
+        txt = (
+            VGroup(Tex("Peano's Space Filling Curve", font_size=45).set_color(REANLEA_WARM_BLUE_DARKER), level)
+            .arrange(DOWN, aligned_edge=LEFT)
+            .to_corner(UL)
+        )
+
+        line = Line(2.5 * LEFT, 2.5 * RIGHT, color=REANLEA_WARM_BLUE_DARKER)
+        
+        self.play(Create(line), rate_func=smooth)
+        self.play(FadeIn(txt))
+
+        for i in range(1,5):
+            od=Peano_Curve(i)
+            self.play(ReplacementTransform(line,od),level.tracker.animate.set_value(i),)
+            line=od
+        
+        
+    
+        self.wait(2)
+
+
+        # manim -pqh anim.py Peano_Curve_ex
+
+        # manim -sqk anim.py Peano_Curve_ex
 
 
 ###################################################################################################################
