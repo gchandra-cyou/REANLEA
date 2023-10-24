@@ -2476,6 +2476,37 @@ class Peano_Curve_ex(Scene):
 
         # manim -sqk test.py Peano_Curve_ex
 
+config.background_color=REANLEA_BACKGROUND_COLOR_DARK_GHEE
+class ChangingDotsColor(Scene):
+    def construct(self):
+
+        moving_line = Line([-7, -5, 0], [-7, 5, 0]).set_color(REANLEA_WARM_BLUE_DARKER)
+        moving_line.nv = np.array([10, 0, 0])
+
+        def color_updater(obj):
+            if np.dot(moving_line.get_start(), moving_line.nv) > np.dot(obj.get_center(), moving_line.nv):
+                obj.set_color(REANLEA_WARM_BLUE_DARKER)
+                label = MathTex(f"({obj.get_center()[0]:.1f}, {obj.get_center()[1]:.1f})").move_to(obj.get_center(),  buff=0.1)
+                self.add(label)
+            else:
+                obj.set_color(PURE_GREEN)
+
+
+        for i in range(10):
+            p = Dot(radius=.5).move_to([random.uniform(-6, 6), random.uniform(-4, 4), 0])
+            p.add_updater(color_updater)
+            # Create a label for displaying coordinates
+            
+            self.add(p)
+            #self.add(p)
+        
+    
+        self.play(moving_line.animate.shift(14*RIGHT), run_time=5)
+        self.play(moving_line.animate.shift(14*LEFT), run_time=5)
+
+        # manim -pqh test.py ChangingDotsColor
+
+
 
 ###################################################################################################################
 
