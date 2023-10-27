@@ -1,0 +1,2 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/gchan/Desktop/REANLEA/2023/lab/media/videos/test/1080p60/partial_movie_files/ChangingDotsLabel/1909694385_3188974271_751113691.mp4'

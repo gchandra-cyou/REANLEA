@@ -2508,6 +2508,116 @@ class ChangingDotsColor(Scene):
 
 
 
+# ----------------- Hilbert's Space Filing Curve -------------------------------#
+
+A="-BF+AFA+FB-"
+B="+AF-BFB-FA+"
+
+
+ANGLE = math.radians(90)
+
+def hilbert_curve_inc(current):
+    new_string = ""
+    for c in current:
+        if c == 'A':
+            new_string += A
+        elif c == 'B':
+            new_string += B
+        else:
+            new_string += c
+    return new_string
+
+def hilbert_curve(order):
+    if order < 1:
+        print("must be a number larger than 0")
+        raise SystemExit()
+    if order == 1:
+        return A
+    else:
+        return hilbert_curve_inc(hilbert_curve(order-1))
+
+class Hilbert_Curve(VMobject):
+    def __init__(self, order=2, size=6, color=BLUE, **kwargs):
+        # Credit to uwezi for the original logic :)
+        super().__init__(stroke_color=color, **kwargs)
+        
+        hilbert_c = hilbert_curve(order)
+        points = [UP]
+        
+        angle = 0
+        previous = UP
+        for c in hilbert_c:
+            if c == '+':
+                angle -= ANGLE
+            elif c == '-':
+                angle += ANGLE
+            else:
+                new_point = [math.sin(angle), math.cos(angle), 0]
+                previous = previous + new_point
+                points.append(previous)
+
+        self.set_points_as_corners(
+            points     
+        ).scale_to_fit_width(size).scale_to_fit_height(size).move_to(0)
+
+class Hilbert_Curve_ex(Scene):
+    def construct(self):
+        line = Line(2.5 * LEFT, 2.5 * RIGHT, color=BLUE)
+        order1 = Hilbert_Curve(1, 5)
+        order2 = Hilbert_Curve(2, 5)
+        order3 = Hilbert_Curve(3, 5)
+        order4 = Hilbert_Curve(4, 5)
+        order5 = Hilbert_Curve(5, 5)
+        
+        #self.play(Create(line), rate_func=smooth)
+        #self.play(ReplacementTransform(line, order1))
+        #self.play(ReplacementTransform(order1, order2))
+        #self.play(ReplacementTransform(order2, order3))
+        #self.play(ReplacementTransform(order3, order4))
+        #self.play(ReplacementTransform(order4, order5))
+        self.play(Create(order2))
+    
+        self.wait(2)
+
+
+        # manim -pqh test.py Hilbert_Curve_ex
+
+        # manim -sqk test.py Hilbert_Curve_ex
+
+#------------------------------------------------------------------------------------------------#
+
+class ChangingDotsLabel(Scene):
+    def construct(self):
+
+        moving_line = Line([-7, -5, 0], [-7, 5, 0]).set_color(REANLEA_WARM_BLUE_DARKER)
+        moving_line.nv = np.array([10, -.5, 0])
+
+        def color_updater(obj):
+            if np.dot(moving_line.get_start(), moving_line.nv) > np.dot(obj.get_center(), moving_line.nv):
+                obj.set_color(REANLEA_WARM_BLUE_DARKER)
+                label = MathTex(f"{obj.get_center()[0]:.1f}").move_to(obj.get_center()).scale(.45).set_color(REANLEA_GOLDENROD)
+                self.add(label)
+            else:
+                obj.set_color("#A5A5A5")
+
+
+        for i in range(10):
+            p = Dot(radius=.5).move_to([random.uniform(-5, 5), random.uniform(-3, 3), 0])
+            p.add_updater(color_updater)
+            # Create a label for displaying coordinates
+            
+            self.add(p)
+            #self.add(p)
+        
+    
+        self.play(moving_line.animate.shift(14*RIGHT), run_time=5)
+        #self.play(moving_line.animate.shift(14*LEFT), run_time=5)
+
+        # manim -pqh test.py ChangingDotsLabel
+
+        # manim -sqk test.py ChangingDotsLabel
+
+
 ###################################################################################################################
 
 
