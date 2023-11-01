@@ -1144,6 +1144,12 @@ class esp_ex_4_0(Scene):
         f = ParametricFunction(func, t_range=np.array([-3, 3]), fill_opacity=0).set_stroke(width=25, color=[REANLEA_AQUA,REANLEA_BLUE_SKY,REANLEA_AQUA_GREEN]).scale(1.5).shift(1.5*DOWN)   # "#04ff9c","#1c00fb","#04ff9c"
         self.play(Write(f))
 
+        with RegisterFont("Cousine") as fonts:
+            txt_1 = Text("Linearity, Basis, & Dimension." , font=fonts[0]).set_color_by_gradient(REANLEA_TXT_COL_LIGHTER)
+        txt_1.shift(3*UP)
+
+       
+
         # manim -sqk banner.py esp_ex_4_0
         
 

@@ -2048,6 +2048,192 @@ class Scene4_intro_0(Scene):
 
 ###################################################################################################################
 
+class Scene5_intro_0(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        self.add(water_mark)
+        self.wait()
+
+        water_mark_1=water_mark.copy()
+
+        # OBJECTS
+
+        ln_1_1=Line().set_stroke(width=7.5, color=["#C1FFFF","#C1FFFF","#C4C1FF","#C4C1FF"]).scale(7.25).set_z_index(-2).shift(.75*DOWN)
+        self.play(Create(ln_1_1))
+        self.wait()
+
+        ln_1=Line(4*LEFT,4*RIGHT).set_stroke(width=7.5, color=["#C1FFFF","#C4C1FF"]).shift(.75*DOWN)
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_1=Text("dimension = 1", font=fonts[0]).set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(.75).next_to(ln_1,DOWN).shift(2*UP)
+
+            txt_2=Text("dimension = ?", font=fonts[0]).set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(.75)
+
+        self.play(
+            Write(txt_1)
+        )
+        self.wait(2)
+
+        self.play(ReplacementTransform(ln_1_1,ln_1))
+        self.wait()
+
+        def func(t):
+            return [t,np.exp(1-t ** 2),0]
+        
+        f = ParametricFunction(func, t_range=np.array([-3, 3]), fill_opacity=0).set_stroke(width=7.5, color=["#C1FFFF","#C4C1FF"]).shift(.75*DOWN)
+        self.play(
+            AnimationGroup(FadeOut(txt_1),ReplacementTransform(ln_1,f))
+        )
+        self.wait()
+
+        arr_1=MathTex(r"\longrightarrow").rotate(-135*DEGREES).next_to(f,RIGHT).set_stroke(width=2.5, color=["#C1FFFF","#C4C1FF"]).shift(1.5*UP+2.5*LEFT)
+
+        self.play(Create(arr_1))
+
+        txt_2.next_to(arr_1,RIGHT).shift(.5*UP)
+
+        self.play(Create(txt_2))
+
+        grp_1=VGroup(f,arr_1,txt_2)
+
+        self.play(
+            grp_1.animate.shift(3*LEFT)
+        )
+
+        self.wait(2)
+
+        sep_ln_2=Line().rotate(-90*DEGREES).set_stroke(width=2.5, color=[REANLEA_BLUE_SKY,REANLEA_WHITE]).next_to(txt_1,DOWN).scale(1.5).shift(2*RIGHT)
+
+        self.play(
+            Create(sep_ln_2)
+        )
+        self.wait(2)
+
+        bulet_1=Dot(radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN).move_to(sep_ln_2.get_start()).shift(.5*DOWN)
+
+        self.play(
+            Write(bulet_1)
+        )
+        self.wait(2)
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_x_1=Text("What is 'dimension'?", font=fonts[0]).scale(.5).set_color(REANLEA_WHITE).next_to(bulet_1,RIGHT)
+
+        self.play(
+            Write(txt_x_1)
+        )
+        self.wait(2)
+
+        bulet_2=Dot(radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN).next_to(bulet_1,DOWN).shift(.6*DOWN)
+
+        self.play(
+            Write(bulet_2)
+        )
+        self.wait(2)
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_x_2=Text("What is linearity?", font=fonts[0]).scale(.5).set_color(REANLEA_WHITE).next_to(bulet_2,RIGHT)
+
+        self.play(
+            Write(txt_x_2)
+        )
+        self.wait(2)
+
+        bulet_3=Dot(radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN).next_to(bulet_2,DOWN).shift(.6*DOWN)
+
+        self.play(
+            Write(bulet_3)
+        )
+        self.wait(2)
+
+        with RegisterFont("Courier Prime") as fonts:
+            txt_x_3 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "How does a st. line",
+                "determine 'dimension'?",
+            )]).scale(.5).set_color(REANLEA_WHITE).arrange_submobjects(DOWN)
+
+            txt_x_3[0].next_to(bulet_3,RIGHT)
+            txt_x_3[1].next_to(txt_x_3[0],DOWN).shift(.25*RIGHT)
+
+        self.play(
+            Write(txt_x_3)
+        )
+        self.wait(2)
+
+        sub_def_grp=VGroup(sep_ln_2,bulet_1,bulet_2,bulet_3,txt_x_1,txt_x_2,txt_x_3)
+
+        self.play(
+            AnimationGroup(
+                FadeOut(sub_def_grp),
+                FadeOut(grp_1)
+            )
+        )
+        self.wait()
+
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                "include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(-2)
+
+        func = lambda x: x - ax_1.c2p(0,0)
+        colors = [REANLEA_BLUE_LAVENDER,REANLEA_AQUA,PURE_GREEN]
+        
+        vf = ArrowVectorField(
+            func, min_color_scheme_value=2, 
+            max_color_scheme_value=10, 
+            colors=colors
+        ).set_z_index(-102)
+       
+        dots=VGroup()          
+        for obj in vf:
+            dots += Dot().move_to(obj.get_end()).set_color(obj.get_color()).scale(.75).set_sheen(-.4,DOWN)
+        dots.set_z_index(-102)
+        
+        self.wait()
+
+        self.play(
+            Write(dots)
+        )
+        self.wait()
+
+        self.play(
+            Write(vf, run_time=2)
+        )
+        self.wait()
+
+        self.play(
+            FadeOut(dots)
+        )
+        self.wait()
+
+        self.play(
+            Write(dots)
+        )
+
+        self.wait()
+
+
+
+
+
+        # manim -pqh anim3.py Scene5_intro_0
+
+        # manim -pqk anim3.py Scene5_intro_0
+
+        # manim -sqk anim3.py Scene5_intro_0
+
+###################################################################################################################
+
 class trailer_0(Scene):
     def construct(self):
 
