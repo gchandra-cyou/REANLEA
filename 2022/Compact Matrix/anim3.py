@@ -2061,51 +2061,133 @@ class Scene5_intro_0(Scene):
 
         # OBJECTS
 
-        ln_1_1=Line().set_stroke(width=7.5, color=["#C1FFFF","#C1FFFF","#C4C1FF","#C4C1FF"]).scale(7.25).set_z_index(-2).shift(.75*DOWN)
-        self.play(Create(ln_1_1))
-        self.wait()
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(2)
 
-        ln_1=Line(4*LEFT,4*RIGHT).set_stroke(width=7.5, color=["#C1FFFF","#C4C1FF"]).shift(.75*DOWN)
 
-        with RegisterFont("Courier Prime") as fonts:
-            txt_1=Text("dimension = 1", font=fonts[0]).set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(.75).next_to(ln_1,DOWN).shift(2*UP)
+        with RegisterFont("Cousine") as fonts:
+            txt_1=Text("Pythagoras Theorem", font=fonts[0])
+            txt_1.set_color_by_gradient(REANLEA_TXT_COL_LIGHTER).scale(.5).shift(3*UP).set_z_index(4)
 
-            txt_2=Text("dimension = ?", font=fonts[0]).set_color_by_gradient(REANLEA_CYAN_LIGHT).scale(.75)
+        undr_bez=underline_bez_curve().scale(1.25).next_to(txt_1, DOWN).shift(.2*UP).set_z_index(4)
+
+        txt_bez=VGroup(txt_1,undr_bez)
 
         self.play(
-            Write(txt_1)
+            Write(txt_bez)
         )
-        self.wait(2)
 
-        self.play(ReplacementTransform(ln_1_1,ln_1))
-        self.wait()
+        sym_1=Text("\" ").scale(3).set_color_by_gradient(REANLEA_SLATE_BLUE).set_z_index(3).move_to(6*LEFT+.75*UP).rotate(PI)
+        self.play(
+            Create(sym_1)
+        )
 
-        def func(t):
-            return [t,np.exp(1-t ** 2),0]
+        with RegisterFont("Cousine") as fonts:
+            txt_2 = VGroup(*[Text(x, font=fonts[0]) for x in (
+                "In a right-angled triangle, ",
+                "the square of the hypotenuse ",
+                "side is equal to the sum of ",
+                "squares of the other two sides."
+            )]).arrange_submobjects(DOWN).scale(0.4).set_color(REANLEA_GREY).set_z_index(4)
+            txt_2.move_to(ORIGIN).shift(3*LEFT)
         
-        f = ParametricFunction(func, t_range=np.array([-3, 3]), fill_opacity=0).set_stroke(width=7.5, color=["#C1FFFF","#C4C1FF"]).shift(.75*DOWN)
         self.play(
-            AnimationGroup(FadeOut(txt_1),ReplacementTransform(ln_1,f))
-        )
-        self.wait()
-
-        arr_1=MathTex(r"\longrightarrow").rotate(-135*DEGREES).next_to(f,RIGHT).set_stroke(width=2.5, color=["#C1FFFF","#C4C1FF"]).shift(1.5*UP+2.5*LEFT)
-
-        self.play(Create(arr_1))
-
-        txt_2.next_to(arr_1,RIGHT).shift(.5*UP)
-
-        self.play(Create(txt_2))
-
-        grp_1=VGroup(f,arr_1,txt_2)
-
-        self.play(
-            grp_1.animate.shift(3*LEFT)
+            Write(txt_2)
         )
 
-        self.wait(2)
+        dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(0,0))
+        dt_2=Dot().set_color(REANLEA_PURPLE).move_to(ax_1.c2p(3,2))
+        dt_3=Dot().set_color(REANLEA_SLATE_BLUE).move_to(ax_1.c2p(3,0))
 
-        sep_ln_2=Line().rotate(-90*DEGREES).set_stroke(width=2.5, color=[REANLEA_BLUE_SKY,REANLEA_WHITE]).next_to(txt_1,DOWN).scale(1.5).shift(2*RIGHT)
+        tr_angl=Polygon(dt_1.get_center(),dt_2.get_center(),dt_3.get_center()).set_stroke(width=5, color=[REANLEA_VIOLET,REANLEA_AQUA, REANLEA_SLATE_BLUE]).set_z_index(-1)
+
+        a_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=PURE_GREEN).save_state()
+        b_len_ln=DashedLine(start=ax_1.c2p(3,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=PURE_RED).save_state()
+        c_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2)).set_stroke(width=3, color=REANLEA_BLUE_DARKER)
+
+        lns=VGroup(a_len_ln,b_len_ln,c_len_ln)
+
+        a_ln_lab=MathTex("a").scale(.65).set_color(PURE_GREEN).next_to(a_len_ln,DOWN)
+        b_ln_lab=MathTex("b").scale(.65).set_color(PURE_RED).next_to(b_len_ln,RIGHT)
+        c_ln_lab=MathTex("c").scale(.65).set_color(REANLEA_BLUE_SKY).move_to(ax_1.c2p(1.35,1.35))
+
+        labs=VGroup(a_ln_lab,b_ln_lab,c_ln_lab)
+
+        trangl=VGroup(tr_angl,lns,labs).shift(4*RIGHT+.5*UP)
+        dt_1_1=dt_1.copy().shift(4*RIGHT+.5*UP)
+        dt_2_1=dt_2.copy().shift(4*RIGHT+.5*UP)
+
+        trangl_grp=VGroup(trangl,dt_1_1,dt_2_1)
+
+        self.play(
+            FadeIn(trangl)
+        )
+
+        a_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=PURE_GREEN).move_to(4.24*RIGHT+3.05*DOWN)
+        b_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(2,0)).set_stroke(width=3, color=PURE_RED).move_to(3.81*RIGHT+3.35*DOWN)
+        c_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3.61,0)).set_stroke(width=3, color=REANLEA_BLUE_SKY).move_to(4.5*RIGHT+2.75*DOWN)
+
+        lns_1=VGroup(a_len_ln_1,b_len_ln_1,c_len_ln_1)
+
+        a_ln_lab_1=MathTex("a").scale(.6).set_color(PURE_GREEN).next_to(a_len_ln_1,LEFT)
+        b_ln_lab_1=MathTex("b").scale(.6).set_color(PURE_RED).next_to(b_len_ln_1,LEFT)
+        c_ln_lab_1=MathTex("c").scale(.6).set_color(REANLEA_BLUE_SKY).next_to(c_len_ln_1,LEFT)
+
+        ln_labs_1=VGroup(a_ln_lab_1,b_ln_lab_1,c_ln_lab_1)
+
+        self.play(
+            Write(lns_1),
+            Write(ln_labs_1)
+        )
+
+        self.play(
+            Create(dt_1_1),
+            Create(dt_2_1)
+        )
+
+        pythagoras_thm_1=MathTex(r"c","=",r"\sqrt{a^2 + b^2}").to_corner(UR, buff=1)
+        pythagoras_thm_1[0].set_color(REANLEA_BLUE_SKY)
+        pythagoras_thm_1[2][2:4].set_color(PURE_GREEN)
+        pythagoras_thm_1[2][5:7].set_color(PURE_RED)
+
+        self.play(
+            Write(pythagoras_thm_1)
+        )
+
+        ln_1_ref=Line(dt_1_1.get_center(),dt_2_1.get_center())
+
+        pythagoras_thm_1_ref=pythagoras_thm_1.copy().move_to(ax_1.c2p(1.35,1.35)).shift(4*RIGHT+.5*UP).rotate(ln_1_ref.get_angle()).scale(.5)
+
+        pythagoras_thm_grp=VGroup(c_ln_lab,pythagoras_thm_1)
+
+        self.play(
+            ReplacementTransform(pythagoras_thm_grp,pythagoras_thm_1_ref)
+        )
+
+        trangl_grp_1=VGroup(pythagoras_thm_1_ref,trangl_grp)
+
+        fadeout_grp=VGroup(sym_1,txt_2,ln_labs_1,lns_1)
+
+        self.play(
+            FadeOut(fadeout_grp),
+            trangl_grp_1.animate.move_to(4*RIGHT+2*UP)
+        )
+
+        rect_1=Rectangle(width=4, height=4).set_stroke(width=3, color=[RED,GREEN]).set_z_index(-5).shift(4*RIGHT+1*UP)
+
+
+        
+        # bullet list
+
+        sep_ln_2=Line().rotate(-90*DEGREES).set_stroke(width=2.5, color=[REANLEA_BLUE_SKY,REANLEA_WHITE]).scale(1.5).shift(2*RIGHT)
 
         self.play(
             Create(sep_ln_2)
@@ -2120,7 +2202,7 @@ class Scene5_intro_0(Scene):
         self.wait(2)
 
         with RegisterFont("Courier Prime") as fonts:
-            txt_x_1=Text("What is 'dimension'?", font=fonts[0]).scale(.5).set_color(REANLEA_WHITE).next_to(bulet_1,RIGHT)
+            txt_x_1=Text("Pythagoras Theorem", font=fonts[0]).scale(.5).set_color(REANLEA_WHITE).next_to(bulet_1,RIGHT)
 
         self.play(
             Write(txt_x_1)
@@ -2135,7 +2217,7 @@ class Scene5_intro_0(Scene):
         self.wait(2)
 
         with RegisterFont("Courier Prime") as fonts:
-            txt_x_2=Text("What is linearity?", font=fonts[0]).scale(.5).set_color(REANLEA_WHITE).next_to(bulet_2,RIGHT)
+            txt_x_2=Text("Vector Components", font=fonts[0]).scale(.5).set_color(REANLEA_WHITE).next_to(bulet_2,RIGHT)
 
         self.play(
             Write(txt_x_2)
@@ -2151,76 +2233,99 @@ class Scene5_intro_0(Scene):
 
         with RegisterFont("Courier Prime") as fonts:
             txt_x_3 = VGroup(*[Text(x, font=fonts[0]) for x in (
-                "How does a st. line",
-                "determine 'dimension'?",
+                "Geometry of Inner Product",
             )]).scale(.5).set_color(REANLEA_WHITE).arrange_submobjects(DOWN)
 
             txt_x_3[0].next_to(bulet_3,RIGHT)
-            txt_x_3[1].next_to(txt_x_3[0],DOWN).shift(.25*RIGHT)
 
         self.play(
             Write(txt_x_3)
         )
-        self.wait(2)
 
-        sub_def_grp=VGroup(sep_ln_2,bulet_1,bulet_2,bulet_3,txt_x_1,txt_x_2,txt_x_3)
+        sub_def_grp=VGroup(sep_ln_2,bulet_1,bulet_2,bulet_3,txt_x_1,txt_x_2,txt_x_3).shift(8*LEFT+1.5*UP)
 
-        self.play(
-            AnimationGroup(
-                FadeOut(sub_def_grp),
-                FadeOut(grp_1)
-            )
-        )
+        self.play(FadeOut(txt_bez))
+
+        
         self.wait()
 
 
-        ax_1=Axes(
+        # vector components
+
+        ax_2=Axes(
             x_range=[-1.5,5.5],
             y_range=[-1.5,4.5],
             y_length=(round(config.frame_width)-2)*6/7,
             tips=False, 
             axis_config={
                 "font_size": 24,
-                "include_ticks": False,
+                #"include_ticks": False,
             }, 
-        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(-2)
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.4).set_z_index(2).shift(3.85*RIGHT+1.5*DOWN)
 
-        func = lambda x: x - ax_1.c2p(0,0)
-        colors = [REANLEA_BLUE_LAVENDER,REANLEA_AQUA,PURE_GREEN]
+        ax_2_1=ax_2.copy().set_z_index(-5)
+
+        self.add(ax_2_1)
+
+        dt_x_1=Dot().set_color(REANLEA_AQUA).move_to(ax_2.c2p(0,0))
+        dt_x_2=Dot().set_color(REANLEA_PURPLE).move_to(ax_2.c2p(3,2))
         
-        vf = ArrowVectorField(
-            func, min_color_scheme_value=2, 
-            max_color_scheme_value=10, 
-            colors=colors
-        ).set_z_index(-102)
-       
-        dots=VGroup()          
-        for obj in vf:
-            dots += Dot().move_to(obj.get_end()).set_color(obj.get_color()).scale(.75).set_sheen(-.4,DOWN)
-        dots.set_z_index(-102)
+        ln_x_1=Line(start=dt_x_1.get_center(), end=dt_x_2.get_center()).set_stroke(width=5, color=[REANLEA_PURPLE,REANLEA_AQUA]).set_z_index(-1)
+
+        a_x_len_ln=DashedLine(start=ax_2.c2p(0,0),end=ax_2.c2p(3,0)).set_stroke(width=3, color=PURE_GREEN).save_state()
+
+        b_x_len_ln=DashedLine(start=ax_2.c2p(3,0),end=ax_2.c2p(3,2)).set_stroke(width=3, color=PURE_RED).save_state()
+
+        self.add(dt_x_1,dt_x_2,ln_x_1,a_x_len_ln,b_x_len_ln)
+
+        arr_1=Arrow(start=ax_2.c2p(0,0),end=ax_2.c2p(3,2),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_CYAN_LIGHT)
+
+        arr_2=Arrow(start=ax_2.c2p(0,0),end=ax_2.c2p(3,0),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(PURE_GREEN).set_z_index(5)
+
+        arr_3=Arrow(start=ax_2.c2p(0,0),end=ax_2.c2p(0,2),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(PURE_RED).set_z_index(5)
+
+        self.play(
+            Write(arr_1)
+        )
+
+        dot_1=Dot(radius=0.105, color=REANLEA_CYAN_LIGHT).move_to(ax_2.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(3).save_state()
+
+        dot_1_0=Dot(radius=0.105, color=PURE_GREEN).move_to(ax_2.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(2).save_state()
+
+        dot_1_1=Dot(radius=0.105, color=PURE_RED).move_to(ax_2.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(2).save_state()
+
+        self.add(dot_1_0,dot_1_1)
+
+
+        self.play(
+            Write(dot_1)
+        )
+
+        push_arr_2=Arrow(start=ax_2.c2p(-.78,-.52),end=ax_2.c2p(-.45,-.3),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6)
+
+        self.play(
+            FadeIn(push_arr_2)
+        )
         
-        self.wait()
-
         self.play(
-            Write(dots)
+            push_arr_2.animate.move_to(ax_2.c2p(-.27,-.18)),
+            run_time=.35
         )
-        self.wait()
-
         self.play(
-            Write(vf, run_time=2)
+            dot_1.animate.move_to(dt_x_2.get_center()),           
+            AnimationGroup(
+                dot_1_0.animate.move_to(ax_2.c2p(3,0)),
+                Create(arr_2)
+            ),
+             AnimationGroup(
+                dot_1_1.animate.move_to(ax_2.c2p(0,2)),
+                Create(arr_3)
+            )
         )
-        self.wait()
-
+        
         self.play(
-            FadeOut(dots)
+            FadeOut(push_arr_2)           
         )
-        self.wait()
-
-        self.play(
-            Write(dots)
-        )
-
-        self.wait()
 
 
 
