@@ -2053,7 +2053,7 @@ class Scene5_intro_0(Scene):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(0.15).set_z_index(-100)
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(.15).set_z_index(-100)
         self.add(water_mark)
         self.wait()
 
@@ -2081,14 +2081,9 @@ class Scene5_intro_0(Scene):
 
         txt_bez=VGroup(txt_1,undr_bez)
 
-        self.play(
-            Write(txt_bez)
-        )
 
         sym_1=Text("\" ").scale(3).set_color_by_gradient(REANLEA_SLATE_BLUE).set_z_index(3).move_to(6*LEFT+.75*UP).rotate(PI)
-        self.play(
-            Create(sym_1)
-        )
+        
 
         with RegisterFont("Cousine") as fonts:
             txt_2 = VGroup(*[Text(x, font=fonts[0]) for x in (
@@ -2098,10 +2093,9 @@ class Scene5_intro_0(Scene):
                 "squares of the other two sides."
             )]).arrange_submobjects(DOWN).scale(0.4).set_color(REANLEA_GREY).set_z_index(4)
             txt_2.move_to(ORIGIN).shift(3*LEFT)
+
+        txt_2_grp=VGroup(sym_1,txt_2)
         
-        self.play(
-            Write(txt_2)
-        )
 
         dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(0,0))
         dt_2=Dot().set_color(REANLEA_PURPLE).move_to(ax_1.c2p(3,2))
@@ -2125,11 +2119,10 @@ class Scene5_intro_0(Scene):
         dt_1_1=dt_1.copy().shift(4*RIGHT+.5*UP)
         dt_2_1=dt_2.copy().shift(4*RIGHT+.5*UP)
 
+        lns_grp=VGroup(lns,labs)
+
         trangl_grp=VGroup(trangl,dt_1_1,dt_2_1)
 
-        self.play(
-            FadeIn(trangl)
-        )
 
         a_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=3, color=PURE_GREEN).move_to(4.24*RIGHT+3.05*DOWN)
         b_len_ln_1=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(2,0)).set_stroke(width=3, color=PURE_RED).move_to(3.81*RIGHT+3.35*DOWN)
@@ -2143,15 +2136,64 @@ class Scene5_intro_0(Scene):
 
         ln_labs_1=VGroup(a_ln_lab_1,b_ln_lab_1,c_ln_lab_1)
 
-        self.play(
-            Write(lns_1),
-            Write(ln_labs_1)
-        )
+        lns_grp_1=VGroup(lns_1,ln_labs_1)
 
         self.play(
-            Create(dt_1_1),
-            Create(dt_2_1)
+            AnimationGroup(
+                Write(txt_bez),
+                Write(txt_2_grp)
+            ),
+            Create(tr_angl)    
         )
+        self.wait()
+
+        a_lns=VGroup(a_len_ln,a_len_ln_1)
+        a_ln_labs=VGroup(a_ln_lab,a_ln_lab_1)
+
+        self.play(
+            AnimationGroup(
+                AnimationGroup(
+                    Create(a_ln_lab),
+                    Create(a_ln_lab_1),
+                    lag_ratio=0
+                ),
+                AnimationGroup(
+                    Create(a_len_ln),
+                    Create(a_len_ln_1),
+                    lag_ratio=0
+                ),
+                lag_ratio=.5
+            ),
+            AnimationGroup(
+                AnimationGroup(
+                    Create(b_ln_lab),
+                    Create(b_ln_lab_1),
+                    lag_ratio=0
+                ),
+                AnimationGroup(
+                    Create(b_len_ln),
+                    Create(b_len_ln_1),
+                    lag_ratio=0
+                ),
+                lag_ratio=.5
+            ),
+            AnimationGroup(
+                AnimationGroup(
+                    Create(c_ln_lab),
+                    Create(c_ln_lab_1),
+                    lag_ratio=0
+                ),
+                AnimationGroup(
+                    Create(c_len_ln),
+                    Create(c_len_ln_1),
+                    lag_ratio=0
+                ),
+                lag_ratio=.5
+            )             
+        )
+
+        self.wait()
+
 
         pythagoras_thm_1=MathTex(r"c","=",r"\sqrt{a^2 + b^2}").to_corner(UR, buff=1)
         pythagoras_thm_1[0].set_color(REANLEA_BLUE_SKY)
@@ -2159,8 +2201,15 @@ class Scene5_intro_0(Scene):
         pythagoras_thm_1[2][5:7].set_color(PURE_RED)
 
         self.play(
-            Write(pythagoras_thm_1)
+            AnimationGroup(
+                Create(dt_1_1),
+                Create(dt_2_1)
+            ),
+            Write(pythagoras_thm_1),
+            lag_ratio=.5
         )
+
+        self.wait()
 
         ln_1_ref=Line(dt_1_1.get_center(),dt_2_1.get_center())
 
@@ -2171,65 +2220,28 @@ class Scene5_intro_0(Scene):
         self.play(
             ReplacementTransform(pythagoras_thm_grp,pythagoras_thm_1_ref)
         )
+        self.wait()
 
         trangl_grp_1=VGroup(pythagoras_thm_1_ref,trangl_grp)
 
-        fadeout_grp=VGroup(sym_1,txt_2,ln_labs_1,lns_1)
-
-        self.play(
-            FadeOut(fadeout_grp),
-            trangl_grp_1.animate.move_to(4*RIGHT+2*UP)
-        )
-
-        rect_1=Rectangle(width=4, height=4).set_stroke(width=3, color=[RED,GREEN]).set_z_index(-5).shift(4*RIGHT+1*UP)
-
-
-        
-        # bullet list
+        fadeout_grp=VGroup(sym_1,txt_2,ln_labs_1,lns_1,undr_bez)
 
         sep_ln_2=Line().rotate(-90*DEGREES).set_stroke(width=2.5, color=[REANLEA_BLUE_SKY,REANLEA_WHITE]).scale(1.5).shift(2*RIGHT)
 
-        self.play(
-            Create(sep_ln_2)
-        )
-        self.wait(2)
-
         bulet_1=Dot(radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN).move_to(sep_ln_2.get_start()).shift(.5*DOWN)
-
-        self.play(
-            Write(bulet_1)
-        )
-        self.wait(2)
 
         with RegisterFont("Courier Prime") as fonts:
             txt_x_1=Text("Pythagoras Theorem", font=fonts[0]).scale(.5).set_color(REANLEA_WHITE).next_to(bulet_1,RIGHT)
 
-        self.play(
-            Write(txt_x_1)
-        )
-        self.wait(2)
-
         bulet_2=Dot(radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN).next_to(bulet_1,DOWN).shift(.6*DOWN)
 
-        self.play(
-            Write(bulet_2)
-        )
-        self.wait(2)
 
         with RegisterFont("Courier Prime") as fonts:
             txt_x_2=Text("Vector Components", font=fonts[0]).scale(.5).set_color(REANLEA_WHITE).next_to(bulet_2,RIGHT)
 
-        self.play(
-            Write(txt_x_2)
-        )
-        self.wait(2)
 
         bulet_3=Dot(radius=DEFAULT_DOT_RADIUS/1.25, color=REANLEA_WHITE).set_sheen(-.4,DOWN).next_to(bulet_2,DOWN).shift(.6*DOWN)
 
-        self.play(
-            Write(bulet_3)
-        )
-        self.wait(2)
 
         with RegisterFont("Courier Prime") as fonts:
             txt_x_3 = VGroup(*[Text(x, font=fonts[0]) for x in (
@@ -2238,36 +2250,51 @@ class Scene5_intro_0(Scene):
 
             txt_x_3[0].next_to(bulet_3,RIGHT)
 
-        self.play(
-            Write(txt_x_3)
-        )
 
         sub_def_grp=VGroup(sep_ln_2,bulet_1,bulet_2,bulet_3,txt_x_1,txt_x_2,txt_x_3).shift(8*LEFT+1.5*UP)
 
-        self.play(FadeOut(txt_bez))
-
-        
+        self.play(
+            AnimationGroup(
+                FadeOut(fadeout_grp),
+                Create(sep_ln_2)
+            ),
+            AnimationGroup(
+                Write(bulet_1),
+                ReplacementTransform(txt_1,txt_x_1)
+            ),
+            AnimationGroup(
+                trangl_grp_1.animate.move_to(3.85*RIGHT+2*UP)
+            )
+            
+        )
         self.wait()
 
+        sur_cp_grp_1= SurroundingRectangle(trangl_grp_1, corner_radius=.12).set_stroke(width=1, color=[REANLEA_WHITE,REANLEA_YELLOW_GREEN]).scale(1.25)
 
-        # vector components
+        self.play(
+            Create(sur_cp_grp_1)
+        )
+
+        self.wait()
+
+        ind_ln_1=Line().rotate(90*DEGREES).scale(.55).set_stroke(width=2, color=REANLEA_PURPLE_LIGHTER).next_to(trangl_grp_1,DOWN).shift(1.5*RIGHT).set_z_index(5)
 
         ax_2=Axes(
-            x_range=[-1.5,5.5],
-            y_range=[-1.5,4.5],
-            y_length=(round(config.frame_width)-2)*6/7,
+            x_range=[-.5,4.5],
+            y_range=[-.5,3.5],
+            y_length=(round(config.frame_width)-2)*4/5,
             tips=False, 
             axis_config={
                 "font_size": 24,
                 #"include_ticks": False,
             }, 
-        ).set_color(REANLEA_TXT_COL_DARKER).scale(.4).set_z_index(2).shift(3.85*RIGHT+1.5*DOWN)
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.25).set_z_index(2).shift(3.85*RIGHT+1.75*DOWN)
 
         ax_2_1=ax_2.copy().set_z_index(-5)
 
-        self.add(ax_2_1)
+        sur_grp_cp_2=SurroundingRectangle(ax_2, corner_radius=.12).set_stroke(width=1, color=[REANLEA_WHITE,REANLEA_PINK]).scale(1.25)
 
-        dt_x_1=Dot().set_color(REANLEA_AQUA).move_to(ax_2.c2p(0,0))
+        dt_x_1=Dot().set_color(REANLEA_AQUA).move_to(ax_2.c2p(0,0)).set_z_index(7)
         dt_x_2=Dot().set_color(REANLEA_PURPLE).move_to(ax_2.c2p(3,2))
         
         ln_x_1=Line(start=dt_x_1.get_center(), end=dt_x_2.get_center()).set_stroke(width=5, color=[REANLEA_PURPLE,REANLEA_AQUA]).set_z_index(-1)
@@ -2276,36 +2303,65 @@ class Scene5_intro_0(Scene):
 
         b_x_len_ln=DashedLine(start=ax_2.c2p(3,0),end=ax_2.c2p(3,2)).set_stroke(width=3, color=PURE_RED).save_state()
 
-        self.add(dt_x_1,dt_x_2,ln_x_1,a_x_len_ln,b_x_len_ln)
-
         arr_1=Arrow(start=ax_2.c2p(0,0),end=ax_2.c2p(3,2),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(REANLEA_CYAN_LIGHT)
 
         arr_2=Arrow(start=ax_2.c2p(0,0),end=ax_2.c2p(3,0),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(PURE_GREEN).set_z_index(5)
 
         arr_3=Arrow(start=ax_2.c2p(0,0),end=ax_2.c2p(0,2),tip_length=.125,stroke_width=4, buff=0).set_color_by_gradient(PURE_RED).set_z_index(5)
 
-        self.play(
-            Write(arr_1)
-        )
+        dot_1=Dot(radius=0.105, color=REANLEA_CYAN_LIGHT).move_to(ax_2.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(9).save_state()
 
-        dot_1=Dot(radius=0.105, color=REANLEA_CYAN_LIGHT).move_to(ax_2.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(3).save_state()
+        dot_1_0=Dot(radius=0.105, color=PURE_GREEN).move_to(ax_2.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(8).save_state()
 
-        dot_1_0=Dot(radius=0.105, color=PURE_GREEN).move_to(ax_2.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(2).save_state()
-
-        dot_1_1=Dot(radius=0.105, color=PURE_RED).move_to(ax_2.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(2).save_state()
-
-        self.add(dot_1_0,dot_1_1)
+        dot_1_1=Dot(radius=0.105, color=PURE_RED).move_to(ax_2.c2p(0,0)).set_sheen(-0.4,DOWN).set_z_index(8).save_state()
 
 
         self.play(
-            Write(dot_1)
+            AnimationGroup(
+                Write(bulet_2),
+                Create(ind_ln_1.reverse_direction()),
+            ),  
+            AnimationGroup(
+                Create(sur_grp_cp_2),
+                Write(txt_x_2)
+            ),
+            Write(ax_2_1),
+            AnimationGroup(
+                AnimationGroup(
+                    Write(dt_x_1),
+                    Write(dt_x_2)
+                ),
+                AnimationGroup(
+                    Create(ln_x_1),
+                    Create(a_x_len_ln),
+                    Create(b_x_len_ln),
+                ),            
+                lag_ratio=.5                
+            )                    
         )
+        self.wait()
+
+        self.play(
+            AnimationGroup(
+                AnimationGroup(
+                    Create(arr_1),
+                    FadeIn(dot_1)
+                ),
+                AnimationGroup(
+                    FadeIn(dot_1_0),
+                    FadeIn(dot_1_1)
+                ),
+                lag_ratio=.25
+            )     
+        )
+        self.wait()
 
         push_arr_2=Arrow(start=ax_2.c2p(-.78,-.52),end=ax_2.c2p(-.45,-.3),max_tip_length_to_length_ratio=.5, buff=0).set_color(REANLEA_YELLOW_GREEN).set_opacity(1).set_z_index(6)
 
         self.play(
             FadeIn(push_arr_2)
         )
+        
         
         self.play(
             push_arr_2.animate.move_to(ax_2.c2p(-.27,-.18)),
@@ -2315,20 +2371,36 @@ class Scene5_intro_0(Scene):
             dot_1.animate.move_to(dt_x_2.get_center()),           
             AnimationGroup(
                 dot_1_0.animate.move_to(ax_2.c2p(3,0)),
-                Create(arr_2)
+                Create(arr_2),
+                lag_ratio=.25
             ),
              AnimationGroup(
                 dot_1_1.animate.move_to(ax_2.c2p(0,2)),
-                Create(arr_3)
-            )
+                Create(arr_3),
+                lag_ratio=.25
+            ),
+            FadeOut(push_arr_2)      
         )
-        
+        self.wait()
+
+        ind_ln_2=Line().rotate(30*DEGREES).scale(2.25).set_stroke(width=2, color=REANLEA_PURPLE_LIGHTER).next_to(trangl_grp_1,DOWN).shift(3.75*LEFT).set_z_index(5)
+
+        innr_pdct=MathTex(r"\langle , \rangle").scale(3.5).set_color_by_gradient(REANLEA_AQUA,REANLEA_AQUA_GREEN).shift(2.15*DOWN+3.25*LEFT)
+
         self.play(
-            FadeOut(push_arr_2)           
+            AnimationGroup(
+                Create(ind_ln_2.reverse_direction()),
+                Write(bulet_3)
+            ),
+            AnimationGroup(
+                Write(txt_x_3, run_time=.55),
+                Write(innr_pdct)
+            ),
+            lag_ratio=.5           
         )
 
-
-
+        self.wait(5)
+    
 
 
         # manim -pqh anim3.py Scene5_intro_0
