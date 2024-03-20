@@ -2047,13 +2047,13 @@ class Scene4_intro_0(Scene):
         # manim -sqk anim3.py Scene4_intro_0
 
 ###################################################################################################################
-
+config.background_color=REANLEA_BACKGROUND_COLOR_OXFORD_BLUE
 class Scene5_intro_0(Scene):
     def construct(self):
 
         # WATER MARK 
 
-        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(.15).set_z_index(-100)
+        water_mark=ImageMobject("watermark_oxford_blue.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(.15).set_z_index(-100)
         self.add(water_mark)
         self.wait()
 

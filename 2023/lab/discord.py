@@ -3574,6 +3574,73 @@ class raster_perimeter(Scene):
         # manim -pqh discord.py raster_perimeter
 
 
+class riemann_rect_1(Scene):
+    def construct(self):
+        # Create the Axes
+        axes = Axes(
+            x_range=[-5, 5],
+            y_range=[0, 10],
+        ).add_coordinates()
+        self.add(axes)
+
+        # Define the function and plot the curve
+        f = lambda x: 4 + 2 * np.sin(2 * PI * x / 10)
+        curve = axes.plot(f, color=WHITE).set_z_index(2)
+        self.add(curve)
+
+        dx = ValueTracker(1)
+
+        rects = always_redraw(lambda:
+            axes.get_riemann_rectangles(curve, dx=dx.get_value())
+        )
+        self.add(rects)
+
+        self.play(dx.animate.set_value(0.1), run_time=3)
+        self.wait()
+
+        # manim -pqh discord.py riemann_rect_1
+
+radius = 3
+CENTER = np.array([0.0, 0.0, 0.0])
+
+
+class Circle_Subdivide(Scene):
+    def construct(self):
+        rotation_center = CENTER
+        theta_tracker = ValueTracker(0)
+        circle = Circle(radius=radius, color=GREEN).rotate(np.pi / 2)
+
+        line1 = Line(CENTER, UP * radius, color=GREEN)
+        line_moving = Line(CENTER, UP * radius, color=GREEN)
+        line_ref = line_moving.copy()
+        self.add(circle)
+        self.add(line1, line_moving)
+
+        def rotated_line(theta):
+            return line_ref.copy().rotate(
+                theta*DEGREES, about_point=rotation_center
+            )
+
+        line_moving.add_updater(
+            lambda x: x.become(rotated_line(theta_tracker.get_value()))
+        ).update(0)
+
+        delta_theta = 110
+        next_line_at = 0
+        def draw_lines(dt):
+            nonlocal next_line_at, delta_theta
+            if abs(theta_tracker.get_value()) >= abs(next_line_at):
+                self.add(rotated_line(-next_line_at))
+                next_line_at += delta_theta
+                delta_theta *= 0.695
+
+        self.add_updater(draw_lines)
+        self.play(theta_tracker.animate.set_value(-360), run_time=4)
+        self.wait()
+
+        # manim -pqh discord.py Circle_Subdivide
+
+        
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2023\lab" 

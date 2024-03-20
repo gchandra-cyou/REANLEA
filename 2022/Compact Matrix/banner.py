@@ -1152,6 +1152,109 @@ class esp_ex_4_0(Scene):
 
         # manim -sqk banner.py esp_ex_4_0
         
+#config.background_color=WHITE
+class esp_ex_5_0(Scene):
+    def construct(self):
+
+        # WATER MARK 
+
+        water_mark=ImageMobject("watermark.png").scale(0.1).move_to(5*LEFT+3*UP).set_opacity(1).set_z_index(-100)
+        #self.add(water_mark)
+        
+
+        #---------------------------------------
+
+        ax_1=Axes(
+            x_range=[-1.5,5.5],
+            y_range=[-1.5,4.5],
+            y_length=(round(config.frame_width)-2)*6/7,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.5).set_z_index(2)
+        
+
+        dt_1=Dot().set_color(REANLEA_AQUA).move_to(ax_1.c2p(0,0))
+        dt_2=Dot().set_color(REANLEA_PURPLE).move_to(ax_1.c2p(3,2))
+        dt_3=Dot().set_color(REANLEA_SLATE_BLUE).move_to(ax_1.c2p(3,0))
+
+        tr_angl=Polygon(dt_1.get_center(),dt_2.get_center(),dt_3.get_center()).set_stroke(width=10, color=[REANLEA_VIOLET,REANLEA_AQUA, REANLEA_SLATE_BLUE]).set_z_index(-1)
+
+        a_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,0)).set_stroke(width=4, color=PURE_GREEN).save_state()
+        b_len_ln=DashedLine(start=ax_1.c2p(3,0),end=ax_1.c2p(3,2)).set_stroke(width=4, color=PURE_RED).save_state()
+        c_len_ln=DashedLine(start=ax_1.c2p(0,0),end=ax_1.c2p(3,2)).set_stroke(width=4, color=REANLEA_BLUE_DARKER)
+
+        lns=VGroup(a_len_ln,b_len_ln,c_len_ln)
+
+        a_ln_lab=MathTex("a").scale(.65).set_color(PURE_GREEN).next_to(a_len_ln,DOWN)
+        b_ln_lab=MathTex("b").scale(.65).set_color(PURE_RED).next_to(b_len_ln,RIGHT)
+        c_ln_lab=MathTex("c").scale(.65).set_color(REANLEA_BLUE_SKY).move_to(ax_1.c2p(1.35,1.35))
+
+        labs=VGroup(a_ln_lab,b_ln_lab)
+
+
+        pythagoras_thm_1=MathTex(r"c","=",r"\sqrt{a^2 + b^2}").to_corner(UR, buff=1)
+        pythagoras_thm_1[0].set_color(REANLEA_BLUE_SKY)
+        pythagoras_thm_1[2][2:4].set_color(PURE_GREEN)
+        pythagoras_thm_1[2][5:7].set_color(PURE_RED)
+
+        ln_1_ref=Line(dt_1.get_center(),dt_2.get_center())
+
+        pythagoras_thm_1_ref=pythagoras_thm_1.copy().move_to(ax_1.c2p(1.35,1.35)).rotate(ln_1_ref.get_angle()).scale(.5)
+
+        trangl=VGroup(tr_angl,lns,labs,pythagoras_thm_1_ref).shift(3.5*LEFT+UP).scale(1.25)
+
+        sur_cp_grp_1= SurroundingRectangle(trangl, corner_radius=.12).set_stroke(width=1, color=[REANLEA_WHITE,REANLEA_WARM_BLUE]).scale(1.375)
+
+        self.add(trangl,sur_cp_grp_1)
+
+        #------------------------------------------------
+
+        ax_2=Axes(
+            x_range=[-.5,4.5],
+            y_range=[-.5,3.5],
+            y_length=(round(config.frame_width)-2)*4/5,
+            tips=False, 
+            axis_config={
+                "font_size": 24,
+                #"include_ticks": False,
+            }, 
+        ).set_color(REANLEA_TXT_COL_DARKER).scale(.3).set_z_index(2).shift(3.85*RIGHT+1.75*DOWN)
+
+        ax_2_1=ax_2.copy().set_z_index(-5)
+
+        sur_grp_cp_2=SurroundingRectangle(ax_2, corner_radius=.12).set_stroke(width=1, color=[REANLEA_WHITE,REANLEA_PINK]).scale(1.25)
+
+        dt_x_1=Dot().set_color(REANLEA_AQUA).move_to(ax_2.c2p(0,0)).set_z_index(7)
+        dt_x_2=Dot().set_color(REANLEA_PURPLE).move_to(ax_2.c2p(3,2))
+        
+        ln_x_1=Line(start=dt_x_1.get_center(), end=dt_x_2.get_center()).set_stroke(width=5, color=[REANLEA_PURPLE,REANLEA_AQUA]).set_z_index(-1)
+
+        a_x_len_ln=DashedLine(start=ax_2.c2p(0,0),end=ax_2.c2p(3,0)).set_stroke(width=5, color=PURE_GREEN).save_state()
+
+        b_x_len_ln=DashedLine(start=ax_2.c2p(3,0),end=ax_2.c2p(3,2)).set_stroke(width=5, color=PURE_RED).save_state()
+
+        arr_1=Arrow(start=ax_2.c2p(0,0),end=ax_2.c2p(3,2),tip_length=.125,stroke_width=5, buff=0).set_color_by_gradient(REANLEA_CYAN_LIGHT)
+
+        arr_2=Arrow(start=ax_2.c2p(0,0),end=ax_2.c2p(3,0),tip_length=.125,stroke_width=5, buff=0).set_color_by_gradient(PURE_GREEN).set_z_index(5)
+
+        arr_3=Arrow(start=ax_2.c2p(0,0),end=ax_2.c2p(0,2),tip_length=.125,stroke_width=5, buff=0).set_color_by_gradient(PURE_RED).set_z_index(5)
+
+        dot_1=Dot(radius=0.15, color=REANLEA_CYAN_LIGHT).move_to(ax_2.c2p(3,2)).set_sheen(-0.4,DOWN).set_z_index(9).save_state()
+
+        dot_1_0=Dot(radius=0.15, color=PURE_GREEN).move_to(ax_2.c2p(3,0)).set_sheen(-0.4,DOWN).set_z_index(8).save_state()
+
+        dot_1_1=Dot(radius=0.15, color=PURE_RED).move_to(ax_2.c2p(0,2)).set_sheen(-0.4,DOWN).set_z_index(8).save_state()
+
+        vect_com=VGroup(ax_2_1,sur_grp_cp_2,dt_x_1,dt_x_2,dot_1,dot_1_0,dot_1_1,arr_1,arr_2,arr_3,a_x_len_ln,b_x_len_ln).shift(2.25*UP)
+
+        self.add(vect_com)
+
+       
+
+        # manim -sqk banner.py esp_ex_5_0
 
 ###################################################################################################################
 

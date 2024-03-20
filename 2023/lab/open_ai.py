@@ -159,7 +159,45 @@ class MengerSponge(ThreeDScene):
         # manim -sqh open_ai.py MengerSponge
 
 
- 
+class TesseractProjection(ThreeDScene):
+    def construct(self):
+        # Define vertices of the tesseract in 4D space
+        vertices = [
+            [-1, -1, -1, -1],
+            [1, -1, -1, -1],
+            # ... (other vertices)
+            [1, 1, 1, 1],
+            [-1, 1, 1, 1]
+        ]
+
+        # Define edges of the tesseract
+        edges = [
+            (0, 1), (1, 2), (2, 3), (3, 0),
+            # ... (other edges)
+            (14, 15), (15, 12), (12, 13), (13, 14)
+        ]
+
+        # Project 4D vertices to 3D space (ignore 4th dimension)
+        projected_vertices = [vertex[:3] for vertex in vertices]
+
+        # Create dots for each projected vertex
+        dots = VGroup(*[Dot(point=np.array(vertex), radius=0.08) for vertex in projected_vertices])
+
+        # Create lines to represent edges in 3D space
+        lines = VGroup(*[Line(np.array(vertices[i][:3]), np.array(vertices[j][:3])) for (i, j) in edges])
+
+        # Set up camera orientation
+        self.set_camera_orientation(phi=70 * DEGREES, theta=-45 * DEGREES)
+
+        # Display dots and lines in the scene
+        self.add(dots, lines)
+        self.wait(3)
+
+        # manim -pqh open_ai.py Tesseract
+
+        # manim -sqh open_ai.py Tesseract
+
+
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2023\lab" 

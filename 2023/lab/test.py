@@ -70,7 +70,7 @@ import colorsys
 
 
 
-config.background_color= REANLEA_BACKGROUND_COLOR
+#config.background_color= REANLEA_BACKGROUND_COLOR
 
 
 ###################################################################################################################
@@ -1648,7 +1648,7 @@ class CW_KochCurve(Scene):
             #  manim -pqh test.py CW_KochCurve
 
 
-config.background_color=REANLEA_BACKGROUND_COLOR_GHEE
+#config.background_color=REANLEA_BACKGROUND_COLOR_GHEE
 class Cantor_Set(Scene):
         def subdivide(self, line):
             len=line.get_length()/3
@@ -2272,7 +2272,7 @@ class Sierpinski_Banner(Scene):
 
 
 
-        # manim -sql test.py Sierpinski_Banner
+        # manim -sqk test.py Sierpinski_Banner
 
         # manim -pqh test.py Sierpinski_Banner
 
@@ -2476,7 +2476,7 @@ class Peano_Curve_ex(Scene):
 
         # manim -sqk test.py Peano_Curve_ex
 
-config.background_color=REANLEA_BACKGROUND_COLOR_DARK_GHEE
+#config.background_color=REANLEA_BACKGROUND_COLOR_DARK_GHEE
 class ChangingDotsColor(Scene):
     def construct(self):
 
@@ -2617,6 +2617,202 @@ class ChangingDotsLabel(Scene):
 
         # manim -sqk test.py ChangingDotsLabel
 
+#------------------------------------------------------------------------------------------------#
+config.background_color=REANLEA_BACKGROUND_COLOR_OXFORD_BLUE
+class FourierScene(Scene):
+    n_vectors = 101
+    center_point = ORIGIN
+    slow_factor = 0.1
+
+    def get_freqs(self):
+        n = self.n_vectors
+        all_freqs = list(range(n // 2, -n // 2, -1))
+        all_freqs.sort(key=abs)
+        return all_freqs
+
+    # Computing Fourier series
+    # i.e. where all the math happens
+    # taken from Grant Sanderson, 3Blue1Brown
+    # https://github.com/3b1b/videos/tree/master/_2019/diffyq/part4
+    def get_coefficients_of_path(self, path, n_samples=10000, freqs=None):
+        if freqs is None:
+            freqs = self.get_freqs()
+        dt = 1 / n_samples
+        ts = np.arange(0, 1, dt)
+        samples = np.array([
+            path.point_from_proportion(t)
+            for t in ts
+        ])
+        samples -= self.center_point
+        complex_samples = samples[:, 0] + 1j * samples[:, 1]
+
+        result = []
+        for freq in freqs:
+            riemann_sum = np.array([
+                np.exp(-TAU * 1j * freq * t) * cs
+                for t, cs in zip(ts, complex_samples)
+            ]).sum() * dt
+            result.append(riemann_sum)
+
+        return result
+    
+    def get_path(self):
+        tex_mob = MathTex(r"\pi")
+        tex_mob.scale_to_fit_height(4)
+        path = tex_mob.family_members_with_points()[0]
+        path.set_fill(opacity=0)
+        path.set_stroke(WHITE, 1)
+        return path
+        
+    def construct(self):
+        npl = NumberPlane()
+        npl.add_coordinates()
+        self.add(npl)
+
+        freqs = self.get_freqs()
+        path  = self.get_path()
+        coefs = self.get_coefficients_of_path(path, freqs=freqs)
+
+        self.play(Create(path))
+        self.wait(2)
+
+        vectors = VGroup()
+        origin = ORIGIN
+        for i in range(len(freqs)):
+            print("{:3.0f}: abs = {:5.3f}  Z = {:-5.3f} + {:-5.3f}j".format(
+                freqs[i], 
+                np.abs(coefs[i]), 
+                np.real(coefs[i]), 
+                np.imag(coefs[i])))
+            dummy = Line(
+                start = ORIGIN, 
+                end   = [np.real(coefs[i]), np.imag(coefs[i]), 0]
+            ).shift(origin)
+            vectors += dummy
+            origin = dummy.get_end()
+        print(len(vectors))
+        self.add(vectors)
+        self.wait()
+        trace = VMobject().set_points([vectors[-1].get_end()]).set_color(YELLOW)
+        self.add(trace)
+
+        def vectorsUpdater(mobj, dt):
+            origin = mobj[0].get_end()
+            for i in range(1, len(freqs)):
+                mobj[i].rotate(2*PI*dt*freqs[i]*self.slow_factor, about_point=mobj[i].get_start()).shift(origin - mobj[i].get_start())
+                origin = mobj[i].get_end()
+            trace.add_line_to(mobj[-1].get_end())    
+        vectors.add_updater(vectorsUpdater)
+
+        self.wait(1/self.slow_factor)
+
+        vectors.remove_updater(vectorsUpdater)
+        self.wait(2)
+
+        
+        # manim -pqh test.py FourierScene
+
+        # manim -sqk test.py FourierScene
+
+
+
+
+class FourierCirclesScene(Scene):
+    n_vectors = 101
+    center_point = ORIGIN
+    slow_factor = 0.1
+
+    def get_freqs(self):
+        n = self.n_vectors
+        all_freqs = list(range(n // 2, -n // 2, -1))
+        all_freqs.sort(key=abs)
+        return all_freqs
+
+    # Computing Fourier series
+    # i.e. where all the math happens
+    # taken from Grant Sanderson, 3Blue1Brown
+    # https://github.com/3b1b/videos/tree/master/_2019/diffyq/part4
+    def get_coefficients_of_path(self, path, n_samples=10000, freqs=None):
+        if freqs is None:
+            freqs = self.get_freqs()
+        dt = 1 / n_samples
+        ts = np.arange(0, 1, dt)
+        samples = np.array([
+            path.point_from_proportion(t)
+            for t in ts
+        ])
+        samples -= self.center_point
+        complex_samples = samples[:, 0] + 1j * samples[:, 1]
+
+        result = []
+        for freq in freqs:
+            riemann_sum = np.array([
+                np.exp(-TAU * 1j * freq * t) * cs
+                for t, cs in zip(ts, complex_samples)
+            ]).sum() * dt
+            result.append(riemann_sum)
+
+        return result
+    
+    def get_path(self):
+        tex_mob = MathTex(r"\pi")
+        tex_mob.scale_to_fit_height(4)
+        path = tex_mob.family_members_with_points()[0]
+        path.set_fill(opacity=0)
+        path.set_stroke(WHITE, 1)
+        return path
+        
+    def construct(self):
+        npl = NumberPlane()
+        npl.add_coordinates()
+        self.add(npl)
+
+        freqs = self.get_freqs()
+        path  = self.get_path()
+        coefs = self.get_coefficients_of_path(path, freqs=freqs)
+
+        self.play(Create(path))
+        self.wait(2)
+
+        vectorsCircles = VGroup()
+        origin = ORIGIN
+        for i in range(len(freqs)):
+            print("{:3.0f}: abs = {:5.3f}  Z = {:-5.3f} + {:-5.3f}j".format(
+                freqs[i], 
+                np.abs(coefs[i]), 
+                np.real(coefs[i]), 
+                np.imag(coefs[i])))
+            dummy = Line(
+                start = ORIGIN, 
+                end   = [np.real(coefs[i]), np.imag(coefs[i]), 0]
+            )
+            circ = Circle(radius=np.abs(coefs[i])).set_stroke(width=1, color=RED)
+            vectorsCircles += VGroup(dummy, circ).shift(origin)
+            origin = dummy.get_end()
+
+        self.add(vectorsCircles)
+        self.wait()
+        trace = VMobject().set_points([vectorsCircles[-1][0].get_end()]).set_color(YELLOW)
+        self.add(trace)
+
+        def vectorsUpdater(mobj, dt):
+            origin = mobj[0][0].get_end()
+            for i in range(1, len(freqs)):
+                mobj[i][0].rotate(2*PI*dt*freqs[i]*self.slow_factor, about_point=mobj[i][0].get_start())
+                mobj[i].shift(origin - mobj[i][0].get_start())
+                origin = mobj[i][0].get_end()
+            trace.add_line_to(mobj[-1][0].get_end())    
+        vectorsCircles.add_updater(vectorsUpdater)
+
+        self.wait(1/self.slow_factor)
+
+        vectorsCircles.remove_updater(vectorsUpdater)
+        self.wait(2)
+
+        # manim -pqh test.py FourierCirclesScene
+
+        # manim -sqk test.py FourierCirclesScene
+
 
 ###################################################################################################################
 
@@ -2626,3 +2822,4 @@ class ChangingDotsLabel(Scene):
 ###################################################################################################################
 
 # cd "C:\Users\gchan\Desktop\REANLEA\2023\lab"
+
